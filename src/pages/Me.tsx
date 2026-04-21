@@ -5,6 +5,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { Moodie } from "@/components/Moodie";
 import { Button } from "@/components/ui/button";
 import { LogOut, Crown, Heart, Bell, ChevronRight } from "lucide-react";
+import { MonetBackground } from "@/components/MonetBackground";
 
 const Me = () => {
   const { user } = useAuth();

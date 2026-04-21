@@ -5,6 +5,7 @@ import { audioEngine } from "@/lib/audio-engine";
 import { getIcon } from "@/lib/icon-map";
 import { cn } from "@/lib/utils";
 import { Lock } from "lucide-react";
+import { MonetBackground } from "@/components/MonetBackground";
 
 const Sounds = () => {
   const [sounds, setSounds] = useState<SoundRow[]>([]);
@@ -40,7 +41,7 @@ const Sounds = () => {
 
   return (
     <div className="px-5 pt-12 relative">
-      <div className="blob w-[280px] h-[280px] -top-10 -right-10 opacity-30 bg-terracotta -z-10" />
+      <MonetBackground intensity="medium" />
 
       <p className="text-[11px] tracking-[0.3em] uppercase text-sage-deep font-serif">Library</p>
       <h1 className="text-[28px] font-bold text-charcoal mt-1">사운드 라이브러리</h1>

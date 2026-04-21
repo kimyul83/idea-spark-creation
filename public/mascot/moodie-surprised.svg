@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 260" width="240" height="260">
+  <defs>
+    <linearGradient id="bodyGrad" x1="30%" y1="10%" x2="70%" y2="100%">
+      <stop offset="0%" stop-color="#C8E8F2" stop-opacity="0.92"/>
+      <stop offset="45%" stop-color="#A8D8E8" stop-opacity="0.88"/>
+      <stop offset="80%" stop-color="#7FC4D9" stop-opacity="0.85"/>
+      <stop offset="100%" stop-color="#5BA8C9" stop-opacity="0.82"/>
+    </linearGradient>
+    <radialGradient id="glassInner" cx="50%" cy="65%" r="55%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="hiTop" cx="35%" cy="28%" r="22%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.95"/>
+      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="iris" cx="50%" cy="40%" r="55%">
+      <stop offset="0%" stop-color="#3E7FA0"/>
+      <stop offset="70%" stop-color="#2C5F7A"/>
+      <stop offset="100%" stop-color="#1A3F55"/>
+    </radialGradient>
+    <filter id="bodyShadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="3" />
+    </filter>
+  </defs>
+
+  <ellipse cx="120" cy="240" rx="62" ry="7" fill="#1A3F55" opacity="0.18" filter="url(#bodyShadow)"/>
+
+  <g class="moodie-body">
+    <path fill="url(#bodyGrad)" d="
+      M120 30 C 165 32, 195 68, 196 116 C 197 156, 184 192, 160 210
+      C 146 220, 134 224, 120 224 C 106 224, 94 220, 80 210
+      C 56 192, 43 156, 44 116 C 45 68, 75 32, 120 30 Z" />
+    <path fill="url(#glassInner)" d="
+      M120 30 C 165 32, 195 68, 196 116 C 197 156, 184 192, 160 210
+      C 146 220, 134 224, 120 224 C 106 224, 94 220, 80 210
+      C 56 192, 43 156, 44 116 C 45 68, 75 32, 120 30 Z" />
+    <ellipse cx="88" cy="78" rx="32" ry="38" fill="url(#hiTop)" />
+
+    <g class="moodie-eyes">
+      <!-- bigger, rounder eyes -->
+      <g>
+        <ellipse cx="100" cy="138" rx="25" ry="27" fill="#FFFFFF" opacity="0.22"/>
+        <circle cx="100" cy="138" r="23" fill="url(#iris)"/>
+        <circle cx="100" cy="140" r="8" fill="#0A1F2E"/>
+        <circle cx="93" cy="130" r="7" fill="#FFFFFF"/>
+        <circle cx="107" cy="146" r="2.6" fill="#FFFFFF"/>
+      </g>
+      <g>
+        <ellipse cx="140" cy="138" rx="25" ry="27" fill="#FFFFFF" opacity="0.22"/>
+        <circle cx="140" cy="138" r="23" fill="url(#iris)"/>
+        <circle cx="140" cy="140" r="8" fill="#0A1F2E"/>
+        <circle cx="133" cy="130" r="7" fill="#FFFFFF"/>
+        <circle cx="147" cy="146" r="2.6" fill="#FFFFFF"/>
+      </g>
+    </g>
+
+    <!-- Open small "o" mouth -->
+    <ellipse cx="120" cy="182" rx="4" ry="5" fill="#D88BA0" opacity="0.85"/>
+  </g>
+
+  <g class="moodie-sparkles">
+    <g class="sparkle sparkle-1" transform="translate(36 70)"><path d="M0 -8 L 2 -2 L 8 0 L 2 2 L 0 8 L -2 2 L -8 0 L -2 -2 Z" fill="#FFFFFF" opacity="0.9"/></g>
+    <g class="sparkle sparkle-2" transform="translate(208 110)"><path d="M0 -6 L 1.5 -1.5 L 6 0 L 1.5 1.5 L 0 6 L -1.5 1.5 L -6 0 L -1.5 -1.5 Z" fill="#FFF6C2" opacity="0.85"/></g>
+    <g class="sparkle sparkle-3" transform="translate(196 50)"><path d="M0 -5 L 1.2 -1.2 L 5 0 L 1.2 1.2 L 0 5 L -1.2 1.2 L -5 0 L -1.2 -1.2 Z" fill="#FFFFFF" opacity="0.8"/></g>
+    <g class="sparkle sparkle-4" transform="translate(28 168)"><path d="M0 -5 L 1.2 -1.2 L 5 0 L 1.2 1.2 L 0 5 L -1.2 1.2 L -5 0 L -1.2 -1.2 Z" fill="#FFF6C2" opacity="0.75"/></g>
+    <g class="sparkle sparkle-5" transform="translate(214 200)"><path d="M0 -7 L 1.6 -1.6 L 7 0 L 1.6 1.6 L 0 7 L -1.6 1.6 L -7 0 L -1.6 -1.6 Z" fill="#FFFFFF" opacity="0.85"/></g>
+  </g>
+</svg>

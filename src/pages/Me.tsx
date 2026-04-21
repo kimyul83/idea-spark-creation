@@ -83,11 +83,13 @@ const Me = () => {
 
       {/* user info */}
       <div className="mt-3 surface rounded-3xl p-4 flex items-center gap-3 shadow-soft">
-        <div className="w-12 h-12 rounded-2xl bg-primary/15 flex items-center justify-center text-primary font-bold">
+        <div className="w-12 h-12 rounded-2xl bg-primary/15 flex items-center justify-center text-primary font-bold shrink-0">
           {(user?.email ?? "G")[0].toUpperCase()}
         </div>
         <div className="flex-1 min-w-0">
-          <p className="text-[10px] text-foreground/50 tracking-widest uppercase">Account</p>
+          <p className="text-[10px] text-foreground/50 tracking-widest uppercase flex items-center gap-1.5">
+            <ProviderBadge provider={(user?.app_metadata?.provider as string) ?? "guest"} />
+          </p>
           <p className="font-semibold text-foreground truncate">{user?.email ?? "게스트로 둘러보는 중"}</p>
         </div>
       </div>

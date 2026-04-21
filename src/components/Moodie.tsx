@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 
 type MoodieSize = "small" | "medium" | "large";
@@ -13,20 +14,17 @@ const SIZE_PX: Record<MoodieSize, number> = {
   large: 240,
 };
 
-/** Map any emotion → one of the 5 available face SVGs */
 const EMOTION_TO_FACE: Record<MoodieEmotion, MoodieFace> = {
   default: "default",
   happy: "happy",
   sad: "sad",
   surprised: "surprised",
   calm: "calm",
-  // Calm-down group
   anxious: "calm",
   angry: "surprised",
   sleepy: "calm",
   panic: "surprised",
   focused: "calm",
-  // Boost group
   excited: "happy",
   confident: "happy",
   fluttering: "happy",
@@ -43,6 +41,8 @@ const FACE_TO_FILE: Record<MoodieFace, string> = {
   calm: "/mascot/moodie-calm.svg",
 };
 
+const svgCache = new Map<string, string>();
+
 interface MoodieProps {
   size?: MoodieSize | number;
   emotion?: MoodieEmotion;
@@ -52,10 +52,7 @@ interface MoodieProps {
 
 /**
  * Moodie — 반짝이는 블루 젤리 슬라임 + 고양이 눈 마스코트.
- * - 부유 모션(translateY ±8px, 2초)
- * - 몸체 호흡 모션(scale 1↔1.03)
- * - 눈 깜빡임(4초)
- * - 별 sparkle 깜빡임(2초, 각각 살짝 다른 위상)
+ * SVG를 인라인으로 주입해서 외부 CSS(호흡/깜빡임/sparkle)가 적용되게 합니다.
  */
 export const Moodie = ({
   size = "medium",
@@ -66,8 +63,25 @@ export const Moodie = ({
   const px = typeof size === "number" ? size : SIZE_PX[size];
   const face = EMOTION_TO_FACE[emotion] ?? "default";
   const src = FACE_TO_FILE[face];
-  // Aspect of SVG is 240x260 → keep proportions
   const h = Math.round((px * 260) / 240);
+
+  const [svg, setSvg] = useState<string | null>(svgCache.get(src) ?? null);
+
+  useEffect(() => {
+    if (svgCache.has(src)) {
+      setSvg(svgCache.get(src)!);
+      return;
+    }
+    let cancelled = false;
+    fetch(src)
+      .then((r) => r.text())
+      .then((text) => {
+        svgCache.set(src, text);
+        if (!cancelled) setSvg(text);
+      })
+      .catch(() => {});
+    return () => { cancelled = true; };
+  }, [src]);
 
   return (
     <div
@@ -79,14 +93,14 @@ export const Moodie = ({
       style={{ width: px, height: h }}
       aria-hidden
     >
-      <object
-        type="image/svg+xml"
-        data={src}
-        width={px}
-        height={h}
-        className="w-full h-full pointer-events-none drop-shadow-[0_10px_24px_rgba(26,63,85,0.18)]"
-        aria-hidden
-      />
+      {svg ? (
+        <div
+          className="w-full h-full drop-shadow-[0_10px_24px_rgba(26,63,85,0.18)] [&>svg]:w-full [&>svg]:h-full"
+          dangerouslySetInnerHTML={{ __html: svg }}
+        />
+      ) : (
+        <img src={src} alt="" width={px} height={h} className="w-full h-full" />
+      )}
     </div>
   );
 };

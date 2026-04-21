@@ -124,19 +124,48 @@
     50% { transform: translate3d(12px, -16px, 0) rotate(4deg); }
   }
 
-  /* mascot motions */
+  /* === Mascot motions === */
   .animate-mascot-float { animation: mascotFloat 2s ease-in-out infinite; }
-  .animate-mascot-blink .moodie-eyes {
-    transform-origin: center; transform-box: fill-box;
-    animation: mascotBlink 4s ease-in-out infinite;
-  }
   @keyframes mascotFloat {
     0%, 100% { transform: translateY(-8px); }
     50% { transform: translateY(8px); }
   }
+
+  /* Body breathing (subtle scale) — applied to .moodie-body inside the SVG */
+  .moodie .moodie-body {
+    transform-origin: 120px 130px;
+    transform-box: view-box;
+    animation: mascotBreathe 3.2s ease-in-out infinite;
+  }
+  @keyframes mascotBreathe {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.03); }
+  }
+
+  /* Eye blink (scaleY around eye row center) */
+  .moodie .moodie-eyes {
+    transform-origin: 120px 138px;
+    transform-box: view-box;
+    animation: mascotBlink 4s ease-in-out infinite;
+  }
   @keyframes mascotBlink {
     0%, 92%, 100% { transform: scaleY(1); }
     94%, 98% { transform: scaleY(0.1); }
+  }
+
+  /* Sparkles twinkle (each with a slight delay) */
+  .moodie .sparkle {
+    transform-origin: center;
+    transform-box: fill-box;
+    animation: mascotSparkle 2s ease-in-out infinite;
+  }
+  .moodie .sparkle-2 { animation-delay: 0.4s; }
+  .moodie .sparkle-3 { animation-delay: 0.8s; }
+  .moodie .sparkle-4 { animation-delay: 1.2s; }
+  .moodie .sparkle-5 { animation-delay: 1.6s; }
+  @keyframes mascotSparkle {
+    0%, 100% { opacity: 0.25; transform: scale(0.7); }
+    50% { opacity: 1; transform: scale(1.1); }
   }
 
   .animate-breathe { animation: breathe 8s ease-in-out infinite; }
@@ -155,7 +184,8 @@
   @media (prefers-reduced-motion: reduce) {
     .monet-mesh,
     .float-slow, .float-med, .float-fast,
-    .animate-mascot-float, .animate-mascot-blink .moodie-eyes,
+    .animate-mascot-float,
+    .moodie .moodie-body, .moodie .moodie-eyes, .moodie .sparkle,
     .animate-breathe {
       animation: none !important;
     }

@@ -196,7 +196,7 @@ const Session = () => {
       </div>
 
       {/* play button */}
-      <div className="sticky bottom-0 px-5 pb-6 pt-4 bg-gradient-to-t from-cream via-cream/95 to-transparent">
+      <div className="sticky bottom-0 px-5 pb-6 pt-4 bg-gradient-to-t from-cream/85 via-cream/60 to-transparent backdrop-blur-sm">
         <Button
           size="lg"
           onClick={togglePlay}

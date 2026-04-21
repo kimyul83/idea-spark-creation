@@ -75,7 +75,42 @@ export const MonetBackground = ({
       {/* Layer 1: signature drifting orbs */}
       <div className="absolute inset-0 tiffany-mesh" style={{ opacity }} />
 
-      {/* Layer 2: emotion tint */}
+      {/* Layer 2: large glowing marbles (premium pop) */}
+      <div
+        className="blob"
+        style={{
+          top: "-10%",
+          left: "-15%",
+          width: 600,
+          height: 600,
+          background: "hsl(var(--primary) / 0.28)",
+          animation: "orbDrift 22s ease-in-out infinite",
+        }}
+      />
+      <div
+        className="blob"
+        style={{
+          top: "30%",
+          right: "-20%",
+          width: 500,
+          height: 500,
+          background: "hsl(var(--accent) / 0.22)",
+          animation: "orbDrift 28s ease-in-out infinite reverse",
+        }}
+      />
+      <div
+        className="blob"
+        style={{
+          bottom: "-15%",
+          left: "20%",
+          width: 400,
+          height: 400,
+          background: "hsl(var(--tiffany-soft) / 0.18)",
+          animation: "orbDrift 26s ease-in-out infinite",
+        }}
+      />
+
+      {/* Layer 3: emotion tint */}
       {tint && (
         <div
           className="absolute inset-0"

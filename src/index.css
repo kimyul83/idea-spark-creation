@@ -2,56 +2,54 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Moodie · Tiffany Dawn / Dusk */
+/* Moodie · Premium Pop Aqua */
 
 @layer base {
   :root {
-    /* === Tiffany brand (consistent across modes) === */
-    --tiffany:        174 89% 39%;   /* #0ABAB5 */
-    --tiffany-soft:   174 50% 67%;   /* #81D8D0 */
-    --champagne:      34 41% 71%;    /* #D4B896 */
-    --rose-gold:      19 60% 80%;    /* #E8C4B0 */
+    /* === Aqua brand defaults (overridden at runtime by theme-presets) === */
+    --tiffany:        186 100% 45%;   /* #00D9E8 */
+    --tiffany-soft:   186 87% 73%;    /* #7FE8F0 */
+    --champagne:      200 100% 36%;   /* #0077B6 */
+    --rose-gold:      200 100% 36%;
+    --glow:           186 100% 45%;
 
-    /* === DAWN (light) === */
-    --background:     40 47% 96%;    /* #FAF7F0 */
-    --background-end: 173 47% 91%;   /* #E0F2F0 */
+    /* === Light (Aqua) === */
+    --background:     190 50% 98%;
+    --background-end: 186 67% 92%;
     --section:        0 0% 100%;
-    --foreground:     217 33% 15%;   /* #1A2333 */
-    --foreground-muted: 215 9% 40%;  /* #5A6370 */
+    --foreground:     0 0% 4%;
+    --foreground-muted: 215 19% 35%;
 
     --card: 0 0% 100%;
-    --card-foreground: 217 33% 15%;
-
+    --card-foreground: 0 0% 4%;
     --popover: 0 0% 100%;
-    --popover-foreground: 217 33% 15%;
+    --popover-foreground: 0 0% 4%;
 
     --primary: var(--tiffany);
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 173 47% 91%;
-    --secondary-foreground: 217 33% 15%;
+    --secondary: 186 67% 92%;
+    --secondary-foreground: 0 0% 4%;
 
-    --muted: 173 35% 93%;
-    --muted-foreground: 215 9% 40%;
+    --muted: 186 67% 92%;
+    --muted-foreground: 215 19% 35%;
 
     --accent: var(--champagne);
-    --accent-foreground: 217 33% 15%;
+    --accent-foreground: 0 0% 4%;
 
-    --destructive: 8 60% 58%;
+    --destructive: 8 80% 58%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 173 30% 88%;
-    --input: 173 30% 90%;
+    --border: 186 60% 86%;
+    --input: 186 60% 86%;
     --ring: var(--tiffany);
 
     --radius: 1.5rem;
 
-    --shadow-soft: 0 2px 12px -4px hsl(217 33% 15% / 0.08);
-    --shadow-card: 0 8px 32px -16px hsl(217 33% 15% / 0.12);
+    --shadow-soft: 0 2px 12px -4px hsl(186 100% 30% / 0.10);
+    --shadow-card: 0 8px 32px -10px hsl(186 100% 30% / 0.14);
 
-    /* === Legacy brand tokens kept as semantic aliases (so existing
-            cream/sage/charcoal/terracotta usages still work and
-            auto-adapt to dawn/dusk) === */
+    /* Legacy aliases */
     --cream: var(--section);
     --beige: var(--border);
     --sage: var(--tiffany-soft);
@@ -61,39 +59,44 @@
   }
 
   .dark {
-    /* === DUSK === */
-    --background:     217 53% 9%;    /* #0A1525 */
-    --background-end: 217 33% 15%;   /* #1A2333 */
-    --section:        217 38% 13%;   /* #141E2E */
-    --foreground:     35 38% 93%;    /* #F5F0E8 */
-    --foreground-muted: 215 17% 76%; /* #B8C0CC */
+    /* === Dark (Aqua) — near-black with aqua glow === */
+    --background:     0 0% 2%;        /* #050505 */
+    --background-end: 215 50% 6%;
+    --section:        0 0% 6%;
+    --foreground:     0 0% 100%;
+    --foreground-muted: 212 17% 77%;
 
-    --card: 217 38% 13%;
-    --card-foreground: 35 38% 93%;
+    --card: 0 0% 6%;
+    --card-foreground: 0 0% 100%;
 
-    --popover: 217 38% 13%;
-    --popover-foreground: 35 38% 93%;
+    --popover: 0 0% 6%;
+    --popover-foreground: 0 0% 100%;
 
-    --primary: var(--tiffany);
-    --primary-foreground: 217 53% 9%;
+    --primary: 186 95% 64%;           /* #4AEBFB bright aqua */
+    --primary-foreground: 0 0% 4%;
 
-    --secondary: 217 30% 18%;
-    --secondary-foreground: 35 38% 93%;
+    --secondary: 215 50% 6%;
+    --secondary-foreground: 0 0% 100%;
 
-    --muted: 217 30% 18%;
-    --muted-foreground: 215 17% 76%;
+    --muted: 0 0% 8%;
+    --muted-foreground: 212 17% 77%;
 
-    --accent: var(--rose-gold);
-    --accent-foreground: 217 53% 9%;
+    --accent: 200 100% 36%;
+    --accent-foreground: 0 0% 100%;
 
-    --border: 217 25% 22%;
-    --input: 217 25% 22%;
-    --ring: var(--tiffany);
+    --border: 186 50% 18%;
+    --input: 186 50% 18%;
+    --ring: 186 95% 64%;
 
-    --shadow-soft: 0 2px 16px -4px hsl(0 0% 0% / 0.4);
-    --shadow-card: 0 12px 40px -16px hsl(0 0% 0% / 0.55);
+    --shadow-soft: 0 2px 16px -4px hsl(186 100% 45% / 0.20);
+    --shadow-card: 0 0 40px -10px hsl(186 100% 45% / 0.30);
 
-    /* legacy aliases re-mapped to dusk */
+    --tiffany: 186 95% 64%;
+    --tiffany-soft: 186 100% 45%;
+    --champagne: 200 100% 36%;
+    --rose-gold: 200 100% 36%;
+    --glow: 186 100% 45%;
+
     --cream: var(--section);
     --beige: var(--border);
     --sage: var(--tiffany-soft);
@@ -130,37 +133,40 @@
     background: transparent;
   }
 
-  /* ────────── Liquid glass surface (water-droplet feel) ────────── */
+  /* ────────── Liquid glass surface (premium pop) ────────── */
   .surface,
   .liquid-card {
-    @apply relative bg-white/40 backdrop-blur-2xl border border-white/60;
+    @apply relative bg-white/70 backdrop-blur-xl;
     border-radius: 28px;
+    border: 1px solid hsl(var(--glow) / 0.20);
     box-shadow:
-      0 8px 32px -4px hsl(217 33% 15% / 0.08),
-      inset 0 1px 0 hsl(0 0% 100% / 0.6);
+      0 8px 32px -10px hsl(var(--glow) / 0.18),
+      inset 0 1px 0 hsl(0 0% 100% / 0.7);
     transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1),
-                box-shadow 0.45s ease;
+                box-shadow 0.45s ease, border-color 0.45s ease;
   }
   .dark .surface,
   .dark .liquid-card {
-    background: hsl(0 0% 100% / 0.04);
-    border-color: hsl(0 0% 100% / 0.10);
+    background: hsl(0 0% 100% / 0.03);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border-color: hsl(var(--glow) / 0.30);
     box-shadow:
-      0 8px 32px -4px hsl(0 0% 0% / 0.30),
-      inset 0 1px 0 hsl(0 0% 100% / 0.10);
+      0 0 40px -10px hsl(var(--glow) / 0.30),
+      inset 0 1px 0 hsl(var(--glow) / 0.25);
   }
-  /* Top hairline reflection */
+  /* Top hairline reflection — brighter on dark */
   .liquid-card::before {
     content: "";
     position: absolute;
     top: 1px; left: 5%; right: 5%;
     height: 1px;
-    background: linear-gradient(90deg, transparent, hsl(0 0% 100% / 0.55), transparent);
+    background: linear-gradient(90deg, transparent, hsl(0 0% 100% / 0.6), transparent);
     border-radius: 999px;
     pointer-events: none;
   }
   .dark .liquid-card::before {
-    background: linear-gradient(90deg, transparent, hsl(0 0% 100% / 0.25), transparent);
+    background: linear-gradient(90deg, transparent, hsl(var(--glow) / 0.5), transparent);
   }
   /* Tiny corner sparkle */
   .liquid-card::after {
@@ -174,38 +180,52 @@
     border-radius: 999px;
   }
   .dark .liquid-card::after {
-    background: radial-gradient(circle, hsl(0 0% 100% / 0.18) 0%, transparent 70%);
+    background: radial-gradient(circle, hsl(var(--glow) / 0.4) 0%, transparent 70%);
   }
   .liquid-card-hover:hover {
     transform: translateY(-2px) scale(1.01);
     box-shadow:
-      0 14px 40px -8px hsl(217 33% 15% / 0.14),
+      0 14px 40px -8px hsl(var(--glow) / 0.25),
       inset 0 1px 0 hsl(0 0% 100% / 0.7);
   }
+  .dark .liquid-card-hover:hover {
+    box-shadow:
+      0 0 50px -8px hsl(var(--glow) / 0.45),
+      inset 0 1px 0 hsl(var(--glow) / 0.35);
+  }
 
-  /* Premium hero card */
+  /* Premium hero card — vivid glass */
   .liquid-hero {
     @apply relative overflow-hidden;
     border-radius: 28px;
     background: hsl(0 0% 0% / 0.42);
     backdrop-filter: blur(28px);
     -webkit-backdrop-filter: blur(28px);
-    border: 1px solid hsl(0 0% 100% / 0.10);
+    border: 1px solid hsl(var(--glow) / 0.30);
     box-shadow:
       0 16px 48px -12px hsl(0 0% 0% / 0.45),
-      inset 0 1px 0 hsl(0 0% 100% / 0.12);
+      0 0 60px -10px hsl(var(--glow) / 0.30),
+      inset 0 1px 0 hsl(var(--glow) / 0.30);
   }
-  .dark .liquid-hero { background: hsl(0 0% 0% / 0.58); }
+  .dark .liquid-hero {
+    background: hsl(0 0% 0% / 0.65);
+    box-shadow:
+      0 16px 48px -12px hsl(0 0% 0% / 0.7),
+      0 0 80px -10px hsl(var(--glow) / 0.45),
+      inset 0 1px 0 hsl(var(--glow) / 0.45);
+  }
   .liquid-hero::before {
     content: "";
     position: absolute; inset: 0;
-    background: radial-gradient(120% 60% at 80% -10%, hsl(var(--primary) / 0.35), transparent 60%);
+    background:
+      radial-gradient(120% 60% at 80% -10%, hsl(var(--primary) / 0.45), transparent 60%),
+      radial-gradient(80% 50% at 20% 110%, hsl(var(--accent) / 0.30), transparent 60%);
     pointer-events: none;
   }
   .liquid-hero .shimmer {
     position: absolute; top: 0; left: -30%;
     width: 30%; height: 1px;
-    background: linear-gradient(90deg, transparent, hsl(var(--accent) / 0.9), transparent);
+    background: linear-gradient(90deg, transparent, hsl(var(--primary) / 1), transparent);
     animation: shimmerSlide 4.5s ease-in-out infinite;
   }
   @keyframes shimmerSlide {
@@ -215,6 +235,39 @@
     100% { left: 130%; opacity: 0; }
   }
 
+  /* ────────── Primary CTA glow button ────────── */
+  .btn-primary {
+    @apply relative inline-flex items-center justify-center font-semibold text-white;
+    background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--accent)));
+    box-shadow:
+      0 0 20px hsl(var(--primary) / 0.5),
+      0 4px 16px hsl(var(--primary) / 0.3);
+    transition: filter 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+  }
+  .btn-primary:hover {
+    filter: brightness(1.10);
+    box-shadow:
+      0 0 32px hsl(var(--primary) / 0.7),
+      0 6px 24px hsl(var(--primary) / 0.45);
+  }
+  .btn-primary:active { transform: translateY(1px); }
+
+  .btn-premium {
+    @apply relative inline-flex items-center justify-center font-semibold overflow-hidden;
+    color: hsl(var(--primary-foreground));
+    background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--tiffany-soft)));
+    box-shadow:
+      0 0 24px hsl(var(--primary) / 0.55),
+      0 6px 24px hsl(var(--primary) / 0.35);
+  }
+  .btn-premium::after {
+    content: "";
+    position: absolute; top: 0; left: -40%;
+    width: 40%; height: 100%;
+    background: linear-gradient(110deg, transparent, hsl(0 0% 100% / 0.45), transparent);
+    animation: shimmerSlide 3s ease-in-out infinite;
+  }
+
   /* Bouncy segment */
   .segment-item {
     transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1),
@@ -222,13 +275,13 @@
   }
   .segment-item.is-active {
     transform: scale(1.02);
-    box-shadow: 0 4px 14px -4px hsl(var(--primary) / 0.45),
+    box-shadow: 0 4px 14px -4px hsl(var(--primary) / 0.5),
                 inset 0 1px 0 hsl(0 0% 100% / 0.4);
   }
 
   .blob {
     @apply absolute rounded-full pointer-events-none;
-    filter: blur(120px);
+    filter: blur(150px);
   }
 
   /* Floating droplet particles for stat cards */
@@ -243,14 +296,15 @@
     bottom: -10%;
     width: 6px; height: 6px;
     border-radius: 999px;
-    background: radial-gradient(circle at 30% 30%, hsl(0 0% 100% / 0.9),
-                hsl(var(--primary) / 0.45) 60%, transparent 75%);
+    background: radial-gradient(circle at 30% 30%, hsl(0 0% 100% / 0.95),
+                hsl(var(--primary) / 0.55) 60%, transparent 75%);
     animation: dropletRise linear infinite;
-    opacity: 0.7;
+    opacity: 0.8;
   }
   .dark .droplet-particles span {
-    background: radial-gradient(circle at 30% 30%, hsl(0 0% 100% / 0.6),
-                hsl(var(--primary) / 0.4) 60%, transparent 75%);
+    background: radial-gradient(circle at 30% 30%, hsl(var(--primary) / 0.9),
+                hsl(var(--primary) / 0.5) 60%, transparent 75%);
+    box-shadow: 0 0 6px hsl(var(--primary) / 0.6);
   }
   .droplet-particles span:nth-child(1) { left: 18%; animation-duration: 9s;  animation-delay: 0s; }
   .droplet-particles span:nth-child(2) { left: 42%; animation-duration: 11s; animation-delay: 1.6s; width: 4px; height: 4px; }
@@ -258,36 +312,35 @@
   .droplet-particles span:nth-child(4) { left: 86%; animation-duration: 12s; animation-delay: 4.5s; width: 3px; height: 3px; }
   @keyframes dropletRise {
     0%   { transform: translateY(0) scale(0.6); opacity: 0; }
-    10%  { opacity: 0.8; }
-    90%  { opacity: 0.5; }
+    10%  { opacity: 0.9; }
+    90%  { opacity: 0.6; }
     100% { transform: translateY(-220px) scale(1); opacity: 0; }
   }
 }
 
 @layer utilities {
-  /* === Tiffany Dawn / Dusk abstract orbs (no flora) === */
+  /* === Aqua orbs (glass-marble feel) === */
   .tiffany-mesh {
     background-image:
-      radial-gradient(38% 32% at 16% 18%, hsl(var(--tiffany) / 0.30) 0%, transparent 70%),
-      radial-gradient(46% 40% at 82% 28%, hsl(var(--champagne) / 0.30) 0%, transparent 72%),
-      radial-gradient(50% 42% at 50% 88%, hsl(var(--tiffany-soft) / 0.32) 0%, transparent 75%);
+      radial-gradient(38% 32% at 16% 18%, hsl(var(--primary) / 0.40) 0%, transparent 70%),
+      radial-gradient(46% 40% at 82% 28%, hsl(var(--tiffany-soft) / 0.35) 0%, transparent 72%),
+      radial-gradient(50% 42% at 50% 88%, hsl(var(--accent) / 0.32) 0%, transparent 75%);
     background-repeat: no-repeat;
     background-size: 100% 100%, 100% 100%, 100% 100%;
     animation: orbDrift 30s ease-in-out infinite;
   }
   .dark .tiffany-mesh {
     background-image:
-      radial-gradient(40% 34% at 14% 18%, hsl(var(--tiffany) / 0.22) 0%, transparent 72%),
-      radial-gradient(46% 40% at 84% 28%, hsl(var(--rose-gold) / 0.18) 0%, transparent 75%),
-      radial-gradient(52% 44% at 50% 90%, hsl(264 25% 50% / 0.18) 0%, transparent 78%),
-      radial-gradient(48% 40% at 50% 88%, hsl(var(--tiffany-soft) / 0.16) 0%, transparent 80%);
+      radial-gradient(40% 34% at 14% 18%, hsl(var(--primary) / 0.25) 0%, transparent 72%),
+      radial-gradient(46% 40% at 84% 28%, hsl(var(--tiffany-soft) / 0.18) 0%, transparent 75%),
+      radial-gradient(52% 44% at 50% 90%, hsl(var(--accent) / 0.22) 0%, transparent 78%);
   }
   @keyframes orbDrift {
     0%, 100% { background-position: 0% 0%, 100% 0%, 50% 100%; }
     50%      { background-position: 6% 8%, 92% 12%, 54% 92%; }
   }
 
-  /* === Mascot motions (kept) === */
+  /* === Mascot motions === */
   .animate-mascot-float { animation: mascotFloat 2s ease-in-out infinite; }
   @keyframes mascotFloat {
     0%, 100% { transform: translateY(-8px); }
@@ -303,7 +356,7 @@
     50% { transform: scale(1.03); }
   }
   .moodie .eye {
-    filter: drop-shadow(0 0 6px hsl(var(--tiffany) / 0.55));
+    filter: drop-shadow(0 0 6px hsl(var(--primary) / 0.7));
     transform-origin: center;
     transform-box: fill-box;
   }
@@ -343,7 +396,9 @@
     .tiffany-mesh,
     .animate-mascot-float,
     .moodie .moodie-body, .moodie .eye, .moodie .sparkle,
-    .animate-breathe {
+    .animate-breathe,
+    .btn-premium::after,
+    .liquid-hero .shimmer {
       animation: none !important;
     }
   }

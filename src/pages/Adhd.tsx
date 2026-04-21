@@ -41,6 +41,12 @@ const Adhd = () => {
   const [rating, setRating] = useState(0);
   const tickRef = useRef<number | null>(null);
   const startedAtRef = useRef<number>(Date.now());
+  const { isPremium } = usePremium();
+
+  // mark trial as used for free users when this screen mounts
+  useEffect(() => {
+    if (!isPremium) markAdhdUsed();
+  }, [isPremium]);
 
   // start/stop audio when running
   useEffect(() => {

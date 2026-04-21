@@ -129,16 +129,138 @@
     min-height: 100dvh;
     background: transparent;
   }
-  .surface {
-    @apply bg-white/80 backdrop-blur-md border border-white/60;
+
+  /* ────────── Liquid glass surface (water-droplet feel) ────────── */
+  .surface,
+  .liquid-card {
+    @apply relative bg-white/40 backdrop-blur-2xl border border-white/60;
+    border-radius: 28px;
+    box-shadow:
+      0 8px 32px -4px hsl(217 33% 15% / 0.08),
+      inset 0 1px 0 hsl(0 0% 100% / 0.6);
+    transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1),
+                box-shadow 0.45s ease;
   }
-  .dark .surface {
-    background: hsl(0 0% 100% / 0.06);
+  .dark .surface,
+  .dark .liquid-card {
+    background: hsl(0 0% 100% / 0.04);
     border-color: hsl(0 0% 100% / 0.10);
-    backdrop-filter: blur(20px);
+    box-shadow:
+      0 8px 32px -4px hsl(0 0% 0% / 0.30),
+      inset 0 1px 0 hsl(0 0% 100% / 0.10);
   }
+  /* Top hairline reflection */
+  .liquid-card::before {
+    content: "";
+    position: absolute;
+    top: 1px; left: 5%; right: 5%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, hsl(0 0% 100% / 0.55), transparent);
+    border-radius: 999px;
+    pointer-events: none;
+  }
+  .dark .liquid-card::before {
+    background: linear-gradient(90deg, transparent, hsl(0 0% 100% / 0.25), transparent);
+  }
+  /* Tiny corner sparkle */
+  .liquid-card::after {
+    content: "";
+    position: absolute;
+    top: 8px; left: 14px;
+    width: 12px; height: 12px;
+    background: radial-gradient(circle, hsl(0 0% 100% / 0.55) 0%, transparent 70%);
+    filter: blur(2px);
+    pointer-events: none;
+    border-radius: 999px;
+  }
+  .dark .liquid-card::after {
+    background: radial-gradient(circle, hsl(0 0% 100% / 0.18) 0%, transparent 70%);
+  }
+  .liquid-card-hover:hover {
+    transform: translateY(-2px) scale(1.01);
+    box-shadow:
+      0 14px 40px -8px hsl(217 33% 15% / 0.14),
+      inset 0 1px 0 hsl(0 0% 100% / 0.7);
+  }
+
+  /* Premium hero card */
+  .liquid-hero {
+    @apply relative overflow-hidden;
+    border-radius: 28px;
+    background: hsl(0 0% 0% / 0.42);
+    backdrop-filter: blur(28px);
+    -webkit-backdrop-filter: blur(28px);
+    border: 1px solid hsl(0 0% 100% / 0.10);
+    box-shadow:
+      0 16px 48px -12px hsl(0 0% 0% / 0.45),
+      inset 0 1px 0 hsl(0 0% 100% / 0.12);
+  }
+  .dark .liquid-hero { background: hsl(0 0% 0% / 0.58); }
+  .liquid-hero::before {
+    content: "";
+    position: absolute; inset: 0;
+    background: radial-gradient(120% 60% at 80% -10%, hsl(var(--primary) / 0.35), transparent 60%);
+    pointer-events: none;
+  }
+  .liquid-hero .shimmer {
+    position: absolute; top: 0; left: -30%;
+    width: 30%; height: 1px;
+    background: linear-gradient(90deg, transparent, hsl(var(--accent) / 0.9), transparent);
+    animation: shimmerSlide 4.5s ease-in-out infinite;
+  }
+  @keyframes shimmerSlide {
+    0%   { left: -30%; opacity: 0; }
+    20%  { opacity: 1; }
+    80%  { opacity: 1; }
+    100% { left: 130%; opacity: 0; }
+  }
+
+  /* Bouncy segment */
+  .segment-item {
+    transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1),
+                box-shadow 0.3s ease, background-color 0.3s ease;
+  }
+  .segment-item.is-active {
+    transform: scale(1.02);
+    box-shadow: 0 4px 14px -4px hsl(var(--primary) / 0.45),
+                inset 0 1px 0 hsl(0 0% 100% / 0.4);
+  }
+
   .blob {
-    @apply absolute rounded-full blur-3xl pointer-events-none;
+    @apply absolute rounded-full pointer-events-none;
+    filter: blur(120px);
+  }
+
+  /* Floating droplet particles for stat cards */
+  .droplet-particles {
+    position: absolute; inset: 0;
+    overflow: hidden;
+    border-radius: inherit;
+    pointer-events: none;
+  }
+  .droplet-particles span {
+    position: absolute;
+    bottom: -10%;
+    width: 6px; height: 6px;
+    border-radius: 999px;
+    background: radial-gradient(circle at 30% 30%, hsl(0 0% 100% / 0.9),
+                hsl(var(--primary) / 0.45) 60%, transparent 75%);
+    animation: dropletRise linear infinite;
+    opacity: 0.7;
+  }
+  .dark .droplet-particles span {
+    background: radial-gradient(circle at 30% 30%, hsl(0 0% 100% / 0.6),
+                hsl(var(--primary) / 0.4) 60%, transparent 75%);
+  }
+  .droplet-particles span:nth-child(1) { left: 18%; animation-duration: 9s;  animation-delay: 0s; }
+  .droplet-particles span:nth-child(2) { left: 42%; animation-duration: 11s; animation-delay: 1.6s; width: 4px; height: 4px; }
+  .droplet-particles span:nth-child(3) { left: 68%; animation-duration: 8s;  animation-delay: 3s;   width: 7px; height: 7px; }
+  .droplet-particles span:nth-child(4) { left: 86%; animation-duration: 12s; animation-delay: 4.5s; width: 3px; height: 3px; }
+  @keyframes dropletRise {
+    0%   { transform: translateY(0) scale(0.6); opacity: 0; }
+    10%  { opacity: 0.8; }
+    90%  { opacity: 0.5; }
+    100% { transform: translateY(-220px) scale(1); opacity: 0; }
   }
 }
 

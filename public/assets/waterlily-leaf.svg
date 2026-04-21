@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <defs>
+    <radialGradient id="leafA" cx="40%" cy="40%" r="65%">
+      <stop offset="0%" stop-color="#C8DAB8" stop-opacity="0.95"/>
+      <stop offset="60%" stop-color="#B5C9A8" stop-opacity="0.85"/>
+      <stop offset="100%" stop-color="#7B8E6B" stop-opacity="0.7"/>
+    </radialGradient>
+  </defs>
+  <!-- leaf 1: round with a notch -->
+  <g id="leaf-1">
+    <path fill="url(#leafA)" d="
+      M100 18
+      C 158 22, 184 70, 178 118
+      C 172 168, 130 188, 92 184
+      C 48 180, 18 144, 22 96
+      C 26 50, 60 22, 100 18 Z
+      M100 18
+      L 96 100
+      L 22 96 Z" fill-rule="evenodd"/>
+    <!-- veins -->
+    <g stroke="#7B8E6B" stroke-width="0.8" stroke-linecap="round" opacity="0.45" fill="none">
+      <path d="M100 100 L 100 30"/>
+      <path d="M100 100 L 60 50"/>
+      <path d="M100 100 L 140 50"/>
+      <path d="M100 100 L 40 110"/>
+      <path d="M100 100 L 160 110"/>
+      <path d="M100 100 L 70 170"/>
+      <path d="M100 100 L 130 170"/>
+    </g>
+  </g>
+</svg>

@@ -125,6 +125,7 @@ export type Database = {
           subscription_started_at: string | null
           subscription_type: string
           updated_at: string
+          user_preferences: Json
         }
         Insert: {
           created_at?: string
@@ -134,6 +135,7 @@ export type Database = {
           subscription_started_at?: string | null
           subscription_type?: string
           updated_at?: string
+          user_preferences?: Json
         }
         Update: {
           created_at?: string
@@ -143,6 +145,7 @@ export type Database = {
           subscription_started_at?: string | null
           subscription_type?: string
           updated_at?: string
+          user_preferences?: Json
         }
         Relationships: []
       }

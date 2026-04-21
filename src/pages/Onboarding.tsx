@@ -58,7 +58,7 @@ const Onboarding = () => {
           options: { emailRedirectTo: `${window.location.origin}/home` },
         });
         if (error) throw error;
-        toast.success("가입 완료! 환영해요 🌿");
+        toast.success("가입 완료! 환영해요 ✨");
       } else {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
@@ -77,14 +77,13 @@ const Onboarding = () => {
   return (
     <div className="app-shell flex flex-col overflow-hidden">
       <MonetBackground intensity="strong" />
-      {/* progress dots */}
       <div className="flex justify-center gap-1.5 pt-12">
         {slides.map((_, i) => (
           <div
             key={i}
             className={cn(
               "h-1 rounded-full transition-all duration-500",
-              i === step ? "w-10 bg-charcoal" : "w-1 bg-charcoal/20"
+              i === step ? "w-10 bg-primary" : "w-1 bg-foreground/20"
             )}
           />
         ))}
@@ -93,18 +92,18 @@ const Onboarding = () => {
       <div className="flex-1 flex flex-col items-center justify-center px-8 text-center relative">
         <Moodie size="large" />
 
-        <p className="mt-10 text-xs tracking-[0.3em] uppercase text-sage-deep font-medium font-serif animate-fade-up" key={step + "-e"}>
+        <p className="mt-10 text-xs tracking-[0.3em] uppercase text-primary font-medium font-serif animate-fade-up" key={step + "-e"}>
           {slide.eyebrow}
         </p>
         <h1
           key={step + "-t"}
-          className="mt-3 text-[28px] font-bold text-charcoal whitespace-pre-line leading-tight animate-fade-up"
+          className="mt-3 text-[28px] font-bold text-foreground whitespace-pre-line leading-tight animate-fade-up"
         >
           {slide.title}
         </h1>
         <p
           key={step + "-d"}
-          className="mt-4 text-charcoal/60 whitespace-pre-line leading-relaxed animate-fade-up"
+          className="mt-4 text-foreground/60 whitespace-pre-line leading-relaxed animate-fade-up"
         >
           {slide.desc}
         </p>
@@ -116,19 +115,19 @@ const Onboarding = () => {
               placeholder="이메일"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="h-12 rounded-2xl bg-white/90 border-beige text-charcoal"
+              className="h-12 rounded-2xl bg-section/90 border-border text-foreground"
             />
             <Input
               type="password"
               placeholder="비밀번호 (6자 이상)"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="h-12 rounded-2xl bg-white/90 border-beige text-charcoal"
+              className="h-12 rounded-2xl bg-section/90 border-border text-foreground"
             />
             <button
               type="button"
               onClick={() => setMode(mode === "signup" ? "signin" : "signup")}
-              className="text-xs text-charcoal/60 underline pt-1"
+              className="text-xs text-foreground/60 underline pt-1"
             >
               {mode === "signup" ? "이미 계정이 있어요" : "처음이에요 (가입하기)"}
             </button>
@@ -142,11 +141,11 @@ const Onboarding = () => {
             <Button
               size="lg"
               onClick={() => setStep(step + 1)}
-              className="w-full h-14 rounded-2xl bg-charcoal hover:bg-charcoal/90 text-cream text-base font-semibold shadow-soft"
+              className="w-full h-14 rounded-2xl bg-primary hover:bg-primary/90 text-primary-foreground text-base font-semibold shadow-soft"
             >
               다음 <ChevronRight className="ml-1 w-5 h-5" />
             </Button>
-            <button onClick={finish} className="w-full text-sm text-charcoal/50 py-2">
+            <button onClick={finish} className="w-full text-sm text-foreground/50 py-2">
               나중에 할게요
             </button>
           </>
@@ -156,11 +155,11 @@ const Onboarding = () => {
               size="lg"
               disabled={busy}
               onClick={handleAuth}
-              className="w-full h-14 rounded-2xl bg-charcoal hover:bg-charcoal/90 text-cream text-base font-semibold shadow-soft"
+              className="w-full h-14 rounded-2xl bg-primary hover:bg-primary/90 text-primary-foreground text-base font-semibold shadow-soft"
             >
               {busy ? "처리 중..." : mode === "signup" ? "가입하고 시작하기" : "로그인"}
             </Button>
-            <button onClick={finish} className="w-full text-sm text-charcoal/50 py-2">
+            <button onClick={finish} className="w-full text-sm text-foreground/50 py-2">
               둘러보기 (로그인 없이)
             </button>
           </>

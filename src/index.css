@@ -2,64 +2,61 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Moodie Design System — Mint / Cream / Deep Navy */
+/* Moodie · Warm Modern Design System */
 
 @layer base {
   :root {
-    /* Brand */
-    --mint: 162 53% 74%;          /* #9EDDC8 */
-    --mint-soft: 162 60% 90%;
-    --mint-deep: 168 45% 55%;
-    --cream: 38 100% 96%;          /* #FFF8ED */
-    --cream-soft: 38 60% 98%;
-    --navy: 215 32% 17%;           /* #1E2A3A */
-    --navy-soft: 215 25% 30%;
-    --sage: 88 25% 68%;            /* #A8C09A */
+    /* === Brand palette (raw HSL, no hsl() wrapper) === */
+    --cream: 36 43% 96%;          /* #FAF6F0 */
+    --beige: 34 19% 87%;          /* #E8E4DC */
+    --sage: 120 18% 80%;          /* #C4D6C4 */
+    --sage-deep: 165 17% 58%;     /* #7FA89E */
+    --terracotta: 30 51% 64%;     /* #D4A574 */
+    --charcoal: 200 9% 19%;       /* #2D3436 */
 
-    /* Semantic */
+    /* === Semantic === */
     --background: var(--cream);
-    --foreground: var(--navy);
+    --foreground: var(--charcoal);
 
     --card: 0 0% 100%;
-    --card-foreground: var(--navy);
+    --card-foreground: var(--charcoal);
 
     --popover: 0 0% 100%;
-    --popover-foreground: var(--navy);
+    --popover-foreground: var(--charcoal);
 
-    --primary: var(--mint-deep);
+    --primary: var(--sage-deep);
     --primary-foreground: 0 0% 100%;
 
-    --secondary: var(--mint-soft);
-    --secondary-foreground: var(--navy);
+    --secondary: var(--beige);
+    --secondary-foreground: var(--charcoal);
 
-    --muted: 38 40% 92%;
-    --muted-foreground: 215 15% 45%;
+    --muted: var(--beige);
+    --muted-foreground: 200 6% 40%;
 
-    --accent: var(--mint);
-    --accent-foreground: var(--navy);
+    --accent: var(--sage);
+    --accent-foreground: var(--charcoal);
 
-    --destructive: 0 70% 60%;
+    --destructive: 8 60% 58%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 38 30% 88%;
-    --input: 38 30% 90%;
-    --ring: var(--mint-deep);
+    --border: 34 19% 87%;
+    --input: 34 19% 90%;
+    --ring: var(--sage-deep);
 
-    --radius: 1.25rem;
+    --radius: 1.5rem;
 
-    /* Gradients */
-    --gradient-mint: linear-gradient(135deg, hsl(var(--mint)) 0%, hsl(var(--mint-deep)) 100%);
-    --gradient-cream: linear-gradient(180deg, hsl(var(--cream)) 0%, hsl(var(--mint-soft)) 100%);
-    --gradient-hero: radial-gradient(circle at 30% 20%, hsl(var(--mint) / 0.6) 0%, transparent 50%),
-                     radial-gradient(circle at 70% 80%, hsl(38 80% 85% / 0.7) 0%, transparent 50%);
+    /* Gradients & shadows */
+    --gradient-warm: radial-gradient(circle at 20% 10%, hsl(var(--sage) / 0.45) 0%, transparent 45%),
+                     radial-gradient(circle at 85% 90%, hsl(var(--terracotta) / 0.25) 0%, transparent 50%),
+                     hsl(var(--cream));
+    --gradient-mesh: radial-gradient(at 20% 10%, hsl(var(--sage) / 0.5) 0px, transparent 50%),
+                     radial-gradient(at 80% 0%, hsl(var(--terracotta) / 0.3) 0px, transparent 50%),
+                     radial-gradient(at 0% 50%, hsl(var(--beige)) 0px, transparent 50%);
 
-    /* Shadows */
-    --shadow-soft: 0 8px 30px -12px hsl(var(--navy) / 0.15);
-    --shadow-card: 0 12px 40px -16px hsl(var(--navy) / 0.18);
-    --shadow-glow: 0 0 60px hsl(var(--mint) / 0.5);
+    --shadow-soft: 0 2px 12px -4px hsl(var(--charcoal) / 0.08);
+    --shadow-card: 0 8px 32px -16px hsl(var(--charcoal) / 0.12);
 
-    /* Transitions */
-    --transition-smooth: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+    --transition-smooth: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
   }
 }
 
@@ -72,42 +69,67 @@
   }
   body {
     @apply bg-background text-foreground antialiased;
-    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
-    background: var(--gradient-cream);
+    font-family: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    background: var(--gradient-warm);
     background-attachment: fixed;
+  }
+  h1, h2, h3 {
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+  }
+  .font-serif {
+    font-family: 'Instrument Serif', serif;
+    letter-spacing: -0.02em;
   }
 }
 
 @layer components {
   .app-shell {
-    @apply mx-auto w-full max-w-[500px] min-h-screen relative bg-background;
-    box-shadow: var(--shadow-card);
+    @apply mx-auto w-full max-w-[500px] min-h-screen relative;
+    background: transparent;
   }
-  .glass {
-    @apply backdrop-blur-xl bg-white/70 border border-white/40;
+  .surface {
+    @apply bg-white/80 backdrop-blur-xl border border-white/60;
   }
   .blob {
     @apply absolute rounded-full blur-3xl pointer-events-none;
   }
+  .mesh-bg {
+    background: var(--gradient-mesh);
+  }
 }
 
 @layer utilities {
+  /* Mascot motions */
+  .animate-mascot-float {
+    animation: mascotFloat 2s ease-in-out infinite;
+  }
+  .animate-mascot-blink .moodie-eyes {
+    transform-origin: center;
+    transform-box: fill-box;
+    animation: mascotBlink 4s ease-in-out infinite;
+  }
+  @keyframes mascotFloat {
+    0%, 100% { transform: translateY(-8px); }
+    50% { transform: translateY(8px); }
+  }
+  @keyframes mascotBlink {
+    0%, 92%, 100% { transform: scaleY(1); }
+    94%, 98% { transform: scaleY(0.1); }
+  }
+
+  /* General */
   .animate-breathe {
     animation: breathe 8s ease-in-out infinite;
   }
-  .animate-float {
-    animation: float 6s ease-in-out infinite;
+  @keyframes breathe {
+    0%, 100% { transform: scale(1); opacity: 0.7; }
+    50% { transform: scale(1.15); opacity: 1; }
   }
   .animate-fade-up {
     animation: fadeUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
-  }
-  @keyframes breathe {
-    0%, 100% { transform: scale(1); opacity: 0.8; }
-    50% { transform: scale(1.15); opacity: 1; }
-  }
-  @keyframes float {
-    0%, 100% { transform: translateY(0px); }
-    50% { transform: translateY(-12px); }
   }
   @keyframes fadeUp {
     from { opacity: 0; transform: translateY(16px); }

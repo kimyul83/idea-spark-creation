@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { EmotionRow, FOCUS_MODES } from "@/types/db";
 import { getIcon } from "@/lib/icon-map";
 import { Moodie } from "@/components/Moodie";
+import { MonetBackground } from "@/components/MonetBackground";
 import { cn } from "@/lib/utils";
 import { ChevronRight } from "lucide-react";
 
@@ -27,9 +28,7 @@ const Home = () => {
 
   return (
     <div className="px-5 pt-10 relative">
-      {/* mesh blob deco */}
-      <div className="blob w-[300px] h-[300px] top-0 -right-20 opacity-30 bg-terracotta -z-10" />
-      <div className="blob w-[280px] h-[280px] -top-10 -left-10 opacity-30 bg-sage -z-10" />
+      <MonetBackground intensity="medium" />
 
       {/* header */}
       <header className="flex items-center gap-3 mb-8 animate-fade-up">

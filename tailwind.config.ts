@@ -22,6 +22,14 @@ export default {
         sage: { DEFAULT: "hsl(var(--sage))", deep: "hsl(var(--sage-deep))" },
         terracotta: "hsl(var(--terracotta))",
         charcoal: "hsl(var(--charcoal))",
+        monet: {
+          blue: "hsl(var(--monet-blue))",
+          "blue-deep": "hsl(var(--monet-blue-deep))",
+          sage: "hsl(var(--monet-sage))",
+          pink: "hsl(var(--monet-pink))",
+          cream: "hsl(var(--monet-cream))",
+          purple: "hsl(var(--monet-purple))",
+        },
         primary: { DEFAULT: "hsl(var(--primary))", foreground: "hsl(var(--primary-foreground))" },
         secondary: { DEFAULT: "hsl(var(--secondary))", foreground: "hsl(var(--secondary-foreground))" },
         destructive: { DEFAULT: "hsl(var(--destructive))", foreground: "hsl(var(--destructive-foreground))" },
@@ -35,10 +43,6 @@ export default {
         md: "calc(var(--radius) - 4px)",
         sm: "calc(var(--radius) - 8px)",
         "3xl": "1.5rem",
-      },
-      backgroundImage: {
-        "gradient-warm": "var(--gradient-warm)",
-        "gradient-mesh": "var(--gradient-mesh)",
       },
       boxShadow: {
         soft: "var(--shadow-soft)",

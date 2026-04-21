@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Moodie } from "@/components/Moodie";
+import { MonetBackground } from "@/components/MonetBackground";
 
 const Index = () => {
   const navigate = useNavigate();
@@ -10,7 +11,8 @@ const Index = () => {
     return () => clearTimeout(t);
   }, [navigate]);
   return (
-    <div className="app-shell flex items-center justify-center mesh-bg">
+    <div className="app-shell flex items-center justify-center relative">
+      <MonetBackground intensity="strong" />
       <Moodie size="large" />
     </div>
   );

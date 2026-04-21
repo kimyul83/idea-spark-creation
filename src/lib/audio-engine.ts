@@ -21,6 +21,15 @@ type ActiveTrack =
 export type NatureSoundId =
   | "rain" | "ocean" | "wind" | "forest" | "stream" | "cave" | "sun" | "birds";
 export type AsmrSoundId = "typing" | "page" | "brush" | "cafe";
+export type SleepSoundId =
+  | "deep_waves"      // 40Hz delta + ocean
+  | "calm_rain"       // rain + 432Hz
+  | "forest_night"    // crickets + soft chirps
+  | "sleep_asmr"      // lofi-ish + white noise
+  | "delta_meditation" // binaural 0.5–4Hz
+  | "lullaby"         // soft piano (sine pad) + 528Hz
+  | "cosmic_drone"    // deep ambient drone
+  | "meadow_breeze";  // wind + crickets
 
 class AudioEngine {
   private tracks = new Map<string, ActiveTrack>();
@@ -366,6 +375,214 @@ class AudioEngine {
       volume,
       cleanup: () => window.clearTimeout(timer),
     });
+  }
+
+  // ─── Sleep ambient (rich layered synthesis) ──────────────────────
+  /**
+   * Sleep recipes layer multiple synth voices for cinematic ambience.
+   * All voices share one master gain so volume / fade-out is unified.
+   */
+  playSleep(id: string, kind: SleepSoundId, volume = 0.22) {
+    if (this.tracks.has(id)) return;
+    const ctx = this.getCtx();
+    const master = ctx.createGain();
+    master.gain.value = volume;
+    master.connect(ctx.destination);
+
+    const cleanups: (() => void)[] = [];
+
+    const addNoise = (
+      type: "white" | "pink" | "brown",
+      filterType: BiquadFilterType,
+      freq: number,
+      q: number,
+      gainAmt: number,
+    ) => {
+      const src = ctx.createBufferSource();
+      src.buffer = this.makeNoiseBuffer(4, type);
+      src.loop = true;
+      const f = ctx.createBiquadFilter();
+      f.type = filterType; f.frequency.value = freq; f.Q.value = q;
+      const g = ctx.createGain(); g.gain.value = gainAmt;
+      src.connect(f).connect(g).connect(master);
+      src.start();
+      cleanups.push(() => { try { src.stop(); src.disconnect(); } catch {} });
+    };
+
+    const addOsc = (
+      type: OscillatorType,
+      freq: number,
+      gainAmt: number,
+      detune = 0,
+    ) => {
+      const o = ctx.createOscillator();
+      o.type = type; o.frequency.value = freq; o.detune.value = detune;
+      const g = ctx.createGain(); g.gain.value = gainAmt;
+      o.connect(g).connect(master);
+      o.start();
+      cleanups.push(() => { try { o.stop(); o.disconnect(); } catch {} });
+    };
+
+    const addLfoOnFilterFreq = (
+      filter: BiquadFilterNode,
+      rate: number,
+      depth: number,
+    ) => {
+      const lfo = ctx.createOscillator();
+      lfo.frequency.value = rate;
+      const lg = ctx.createGain(); lg.gain.value = depth;
+      lfo.connect(lg).connect(filter.frequency);
+      lfo.start();
+      cleanups.push(() => { try { lfo.stop(); lfo.disconnect(); } catch {} });
+    };
+
+    const addCricketChirps = () => {
+      const t = window.setInterval(() => {
+        if (!this.tracks.has(id)) return;
+        const o = ctx.createOscillator();
+        const g = ctx.createGain();
+        o.type = "sine";
+        o.frequency.value = 4500 + Math.random() * 800;
+        g.gain.value = 0;
+        const now = ctx.currentTime;
+        for (let i = 0; i < 3; i++) {
+          g.gain.setValueAtTime(0.04, now + i * 0.07);
+          g.gain.exponentialRampToValueAtTime(0.0001, now + i * 0.07 + 0.05);
+        }
+        o.connect(g).connect(master);
+        o.start(now);
+        o.stop(now + 0.25);
+      }, 800 + Math.random() * 600);
+      cleanups.push(() => window.clearInterval(t));
+    };
+
+    switch (kind) {
+      case "deep_waves": {
+        // Brown noise wash + 40Hz delta tone
+        const src = ctx.createBufferSource();
+        src.buffer = this.makeNoiseBuffer(4, "brown");
+        src.loop = true;
+        const f = ctx.createBiquadFilter();
+        f.type = "lowpass"; f.frequency.value = 700; f.Q.value = 1.2;
+        const g = ctx.createGain(); g.gain.value = 0.9;
+        src.connect(f).connect(g).connect(master);
+        src.start();
+        addLfoOnFilterFreq(f, 0.1, 400);
+        addOsc("sine", 40, 0.08);
+        cleanups.push(() => { try { src.stop(); src.disconnect(); } catch {} });
+        break;
+      }
+      case "calm_rain": {
+        addNoise("white", "highpass", 1100, 0.7, 0.5);
+        addNoise("white", "bandpass", 4500, 1.2, 0.2);
+        addOsc("sine", 432, 0.05);
+        break;
+      }
+      case "forest_night": {
+        addNoise("pink", "lowpass", 1200, 0.5, 0.25);
+        addCricketChirps();
+        // distant low hum
+        addOsc("sine", 110, 0.04);
+        break;
+      }
+      case "sleep_asmr": {
+        addNoise("white", "lowpass", 3000, 0.5, 0.35);
+        // lofi vinyl crackle = sparse white pops
+        const t = window.setInterval(() => {
+          if (!this.tracks.has(id)) return;
+          const src = ctx.createBufferSource();
+          src.buffer = this.makeNoiseBuffer(0.04, "white");
+          const g = ctx.createGain();
+          g.gain.value = 0.15;
+          g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.04);
+          src.connect(g).connect(master);
+          src.start();
+          src.stop(ctx.currentTime + 0.05);
+        }, 180 + Math.random() * 240);
+        cleanups.push(() => window.clearInterval(t));
+        addOsc("sine", 220, 0.03);
+        addOsc("sine", 330, 0.025);
+        break;
+      }
+      case "delta_meditation": {
+        // Binaural beat: 200Hz left, 202.5Hz right ⇒ 2.5Hz delta perception.
+        // We don't have stereo-split noise; use two slightly detuned sines instead.
+        addOsc("sine", 200, 0.06);
+        addOsc("sine", 202.5, 0.06);
+        addNoise("brown", "lowpass", 200, 1, 0.3);
+        break;
+      }
+      case "lullaby": {
+        // gentle pad chord + 528Hz halo
+        addOsc("sine", 261.6, 0.05);     // C
+        addOsc("sine", 329.6, 0.04, 5);  // E
+        addOsc("sine", 392.0, 0.035, -5);// G
+        addOsc("sine", 528, 0.04);
+        addNoise("pink", "lowpass", 1500, 0.4, 0.1);
+        break;
+      }
+      case "cosmic_drone": {
+        addOsc("sine", 55, 0.08);
+        addOsc("sine", 82.5, 0.05, 7);
+        addOsc("triangle", 110, 0.03, -7);
+        addNoise("brown", "lowpass", 250, 1.5, 0.4);
+        // slow shimmer
+        const f = ctx.createBiquadFilter();
+        f.type = "highpass"; f.frequency.value = 2000;
+        const src = ctx.createBufferSource();
+        src.buffer = this.makeNoiseBuffer(4, "white");
+        src.loop = true;
+        const g = ctx.createGain(); g.gain.value = 0.04;
+        src.connect(f).connect(g).connect(master);
+        src.start();
+        addLfoOnFilterFreq(f, 0.05, 1500);
+        cleanups.push(() => { try { src.stop(); src.disconnect(); } catch {} });
+        break;
+      }
+      case "meadow_breeze": {
+        const src = ctx.createBufferSource();
+        src.buffer = this.makeNoiseBuffer(4, "brown");
+        src.loop = true;
+        const f = ctx.createBiquadFilter();
+        f.type = "lowpass"; f.frequency.value = 600; f.Q.value = 0.5;
+        const g = ctx.createGain(); g.gain.value = 0.6;
+        src.connect(f).connect(g).connect(master);
+        src.start();
+        addLfoOnFilterFreq(f, 0.18, 350);
+        addCricketChirps();
+        cleanups.push(() => { try { src.stop(); src.disconnect(); } catch {} });
+        break;
+      }
+    }
+
+    this.tracks.set(id, {
+      kind: "synth",
+      nodes: [master],
+      gain: master,
+      volume,
+      cleanup: () => cleanups.forEach((c) => c()),
+    });
+  }
+
+  /**
+   * Smoothly fade a track's volume to `to` over `seconds`.
+   * Used by sleep mode for the 20-min-before-end taper.
+   */
+  fadeTo(id: string, to: number, seconds: number) {
+    const t = this.tracks.get(id);
+    if (!t) return;
+    const ctx = this.getCtx();
+    const now = ctx.currentTime;
+    if (t.kind === "howl") {
+      t.howl.fade(t.volume, to, seconds * 1000);
+    } else {
+      try {
+        t.gain.gain.cancelScheduledValues(now);
+        t.gain.gain.setValueAtTime(t.gain.gain.value, now);
+        t.gain.gain.linearRampToValueAtTime(to, now + seconds);
+      } catch {}
+    }
+    t.volume = to;
   }
 
   // ─── Volume / lifecycle ──────────────────────────────────────────

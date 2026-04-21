@@ -11,7 +11,7 @@ const Index = () => {
     return () => clearTimeout(t);
   }, [navigate]);
   return (
-    <div className="app-shell flex items-center justify-center relative">
+    <div className="app-shell flex items-center justify-center relative min-h-[100dvh]">
       <MonetBackground intensity="strong" />
       <Moodie size="large" />
     </div>

@@ -2,59 +2,104 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Moodie · Warm Modern + Monet Water Lilies */
+/* Moodie · Tiffany Dawn / Dusk */
 
 @layer base {
   :root {
-    /* === Brand palette (raw HSL) === */
-    --cream: 36 43% 96%;
-    --beige: 34 19% 87%;
-    --sage: 120 18% 80%;
-    --sage-deep: 165 17% 58%;
-    --terracotta: 30 51% 64%;
-    --charcoal: 200 9% 19%;
+    /* === Tiffany brand (consistent across modes) === */
+    --tiffany:        174 89% 39%;   /* #0ABAB5 */
+    --tiffany-soft:   174 50% 67%;   /* #81D8D0 */
+    --champagne:      34 41% 71%;    /* #D4B896 */
+    --rose-gold:      19 60% 80%;    /* #E8C4B0 */
 
-    /* === Monet "morning pond" palette (clean, separated) === */
-    --monet-cream:      36 56% 92%;   /* #F5EDE0 base */
-    --monet-cream-soft: 38 65% 95%;   /* #FBF6EC */
-    --monet-sky:        210 60% 86%;  /* #C8DEF0 */
-    --monet-pink:       326 56% 89%;  /* #F0D4E2 */
-    --monet-mint:       163 35% 84%;  /* #C8E4DC */
-    --monet-lilac:      266 32% 86%;  /* #DCD0E8 — for lilies only */
-
-    --background: var(--cream);
-    --foreground: var(--charcoal);
+    /* === DAWN (light) === */
+    --background:     40 47% 96%;    /* #FAF7F0 */
+    --background-end: 173 47% 91%;   /* #E0F2F0 */
+    --section:        0 0% 100%;
+    --foreground:     217 33% 15%;   /* #1A2333 */
+    --foreground-muted: 215 9% 40%;  /* #5A6370 */
 
     --card: 0 0% 100%;
-    --card-foreground: var(--charcoal);
+    --card-foreground: 217 33% 15%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: var(--charcoal);
+    --popover-foreground: 217 33% 15%;
 
-    --primary: var(--sage-deep);
+    --primary: var(--tiffany);
     --primary-foreground: 0 0% 100%;
 
-    --secondary: var(--beige);
-    --secondary-foreground: var(--charcoal);
+    --secondary: 173 47% 91%;
+    --secondary-foreground: 217 33% 15%;
 
-    --muted: var(--beige);
-    --muted-foreground: 200 6% 40%;
+    --muted: 173 35% 93%;
+    --muted-foreground: 215 9% 40%;
 
-    --accent: var(--sage);
-    --accent-foreground: var(--charcoal);
+    --accent: var(--champagne);
+    --accent-foreground: 217 33% 15%;
 
     --destructive: 8 60% 58%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 34 19% 87%;
-    --input: 34 19% 90%;
-    --ring: var(--sage-deep);
+    --border: 173 30% 88%;
+    --input: 173 30% 90%;
+    --ring: var(--tiffany);
 
     --radius: 1.5rem;
 
-    --shadow-soft: 0 2px 12px -4px hsl(var(--charcoal) / 0.08);
-    --shadow-card: 0 8px 32px -16px hsl(var(--charcoal) / 0.12);
-    --transition-smooth: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+    --shadow-soft: 0 2px 12px -4px hsl(217 33% 15% / 0.08);
+    --shadow-card: 0 8px 32px -16px hsl(217 33% 15% / 0.12);
+
+    /* === Legacy brand tokens kept as semantic aliases (so existing
+            cream/sage/charcoal/terracotta usages still work and
+            auto-adapt to dawn/dusk) === */
+    --cream: var(--section);
+    --beige: var(--border);
+    --sage: var(--tiffany-soft);
+    --sage-deep: var(--tiffany);
+    --terracotta: var(--champagne);
+    --charcoal: var(--foreground);
+  }
+
+  .dark {
+    /* === DUSK === */
+    --background:     217 53% 9%;    /* #0A1525 */
+    --background-end: 217 33% 15%;   /* #1A2333 */
+    --section:        217 38% 13%;   /* #141E2E */
+    --foreground:     35 38% 93%;    /* #F5F0E8 */
+    --foreground-muted: 215 17% 76%; /* #B8C0CC */
+
+    --card: 217 38% 13%;
+    --card-foreground: 35 38% 93%;
+
+    --popover: 217 38% 13%;
+    --popover-foreground: 35 38% 93%;
+
+    --primary: var(--tiffany);
+    --primary-foreground: 217 53% 9%;
+
+    --secondary: 217 30% 18%;
+    --secondary-foreground: 35 38% 93%;
+
+    --muted: 217 30% 18%;
+    --muted-foreground: 215 17% 76%;
+
+    --accent: var(--rose-gold);
+    --accent-foreground: 217 53% 9%;
+
+    --border: 217 25% 22%;
+    --input: 217 25% 22%;
+    --ring: var(--tiffany);
+
+    --shadow-soft: 0 2px 16px -4px hsl(0 0% 0% / 0.4);
+    --shadow-card: 0 12px 40px -16px hsl(0 0% 0% / 0.55);
+
+    /* legacy aliases re-mapped to dusk */
+    --cream: var(--section);
+    --beige: var(--border);
+    --sage: var(--tiffany-soft);
+    --sage-deep: var(--tiffany);
+    --terracotta: var(--rose-gold);
+    --charcoal: var(--foreground);
   }
 }
 
@@ -62,11 +107,14 @@
   * { @apply border-border; }
   html, body, #root { @apply h-full; }
   body {
-    @apply bg-background text-foreground antialiased;
+    @apply text-foreground antialiased;
     font-family: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
     font-size: 16px;
     line-height: 1.6;
-    background: hsl(var(--cream));
+    background:
+      radial-gradient(ellipse at top, hsl(var(--background)) 0%, hsl(var(--background-end)) 100%);
+    background-attachment: fixed;
+    transition: background-color 0.7s ease, color 0.7s ease;
   }
   h1, h2, h3 { line-height: 1.25; letter-spacing: -0.01em; }
   .font-serif {
@@ -77,11 +125,17 @@
 
 @layer components {
   .app-shell {
-    @apply mx-auto w-full max-w-[500px] min-h-screen relative;
+    @apply mx-auto w-full max-w-[500px] relative;
+    min-height: 100dvh;
     background: transparent;
   }
   .surface {
-    @apply bg-white/85 backdrop-blur-sm border border-white/60;
+    @apply bg-white/80 backdrop-blur-md border border-white/60;
+  }
+  .dark .surface {
+    background: hsl(0 0% 100% / 0.06);
+    border-color: hsl(0 0% 100% / 0.10);
+    backdrop-filter: blur(20px);
   }
   .blob {
     @apply absolute rounded-full blur-3xl pointer-events-none;
@@ -89,44 +143,34 @@
 }
 
 @layer utilities {
-  /* === Monet morning-pond background (clean, no blending) === */
-  .monet-mesh {
-    background-color: #F5EDE0;
+  /* === Tiffany Dawn / Dusk abstract orbs (no flora) === */
+  .tiffany-mesh {
     background-image:
-      radial-gradient(40% 35% at 18% 20%, hsl(var(--monet-sky) / 0.7) 0%, transparent 70%),
-      radial-gradient(50% 45% at 50% 50%, hsl(var(--monet-pink) / 0.5) 0%, transparent 75%),
-      radial-gradient(45% 40% at 82% 80%, hsl(var(--monet-mint) / 0.6) 0%, transparent 72%);
+      radial-gradient(38% 32% at 16% 18%, hsl(var(--tiffany) / 0.30) 0%, transparent 70%),
+      radial-gradient(46% 40% at 82% 28%, hsl(var(--champagne) / 0.30) 0%, transparent 72%),
+      radial-gradient(50% 42% at 50% 88%, hsl(var(--tiffany-soft) / 0.32) 0%, transparent 75%);
     background-repeat: no-repeat;
     background-size: 100% 100%, 100% 100%, 100% 100%;
-    animation: monetFlow 30s ease-in-out infinite;
+    animation: orbDrift 30s ease-in-out infinite;
   }
-  @keyframes monetFlow {
-    0%, 100% { background-position: 0% 0%, 50% 50%, 100% 100%; }
-    50%      { background-position: 8% 12%, 55% 45%, 92% 88%; }
+  .dark .tiffany-mesh {
+    background-image:
+      radial-gradient(40% 34% at 14% 18%, hsl(var(--tiffany) / 0.22) 0%, transparent 72%),
+      radial-gradient(46% 40% at 84% 28%, hsl(var(--rose-gold) / 0.18) 0%, transparent 75%),
+      radial-gradient(52% 44% at 50% 90%, hsl(264 25% 50% / 0.18) 0%, transparent 78%),
+      radial-gradient(48% 40% at 50% 88%, hsl(var(--tiffany-soft) / 0.16) 0%, transparent 80%);
   }
-
-  .float-slow {
-    animation: floatSlow 28s ease-in-out infinite;
-  }
-  .float-med {
-    animation: floatSlow 22s ease-in-out infinite reverse;
-  }
-  .float-fast {
-    animation: floatSlow 16s ease-in-out infinite;
-  }
-  @keyframes floatSlow {
-    0%, 100% { transform: translate3d(0, 0, 0) rotate(0deg); }
-    50% { transform: translate3d(12px, -16px, 0) rotate(4deg); }
+  @keyframes orbDrift {
+    0%, 100% { background-position: 0% 0%, 100% 0%, 50% 100%; }
+    50%      { background-position: 6% 8%, 92% 12%, 54% 92%; }
   }
 
-  /* === Mascot motions === */
+  /* === Mascot motions (kept) === */
   .animate-mascot-float { animation: mascotFloat 2s ease-in-out infinite; }
   @keyframes mascotFloat {
     0%, 100% { transform: translateY(-8px); }
     50% { transform: translateY(8px); }
   }
-
-  /* Body breathing (subtle scale) */
   .moodie .moodie-body {
     transform-origin: 120px 130px;
     transform-box: view-box;
@@ -136,22 +180,17 @@
     0%, 100% { transform: scale(1); }
     50% { transform: scale(1.03); }
   }
-
-  /* Aibo OLED-style glow on each eye */
   .moodie .eye {
-    filter: drop-shadow(0 0 6px rgba(74, 144, 196, 0.55));
+    filter: drop-shadow(0 0 6px hsl(var(--tiffany) / 0.55));
     transform-origin: center;
     transform-box: fill-box;
   }
-  /* Asynchronous blink: each eye on its own schedule */
   .moodie .eye-left  { animation: mascotBlink 4.2s ease-in-out infinite; }
   .moodie .eye-right { animation: mascotBlink 4.2s ease-in-out infinite; animation-delay: 0.12s; }
   @keyframes mascotBlink {
     0%, 92%, 100% { transform: scaleY(1); }
     95%, 97%      { transform: scaleY(0.05); }
   }
-
-  /* Sparkles twinkle */
   .moodie .sparkle {
     transform-origin: center;
     transform-box: fill-box;
@@ -178,10 +217,8 @@
     to { opacity: 1; transform: translateY(0); }
   }
 
-  /* Reduced motion + low-perf fallbacks */
   @media (prefers-reduced-motion: reduce) {
-    .monet-mesh,
-    .float-slow, .float-med, .float-fast,
+    .tiffany-mesh,
     .animate-mascot-float,
     .moodie .moodie-body, .moodie .eye, .moodie .sparkle,
     .animate-breathe {

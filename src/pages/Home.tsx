@@ -6,7 +6,8 @@ import { getIcon } from "@/lib/icon-map";
 import { Moodie } from "@/components/Moodie";
 import { MonetBackground } from "@/components/MonetBackground";
 import { cn } from "@/lib/utils";
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, Lock } from "lucide-react";
+import { PREMIUM_EMOTION_NAMES, usePremium, adhdTrialAvailable } from "@/hooks/usePremium";
 
 type Tab = "calm" | "boost" | "focus";
 
@@ -14,6 +15,7 @@ const Home = () => {
   const [tab, setTab] = useState<Tab>("calm");
   const [emotions, setEmotions] = useState<EmotionRow[]>([]);
   const navigate = useNavigate();
+  const { isPremium } = usePremium();
 
   useEffect(() => {
     supabase
@@ -26,11 +28,28 @@ const Home = () => {
   const calm = emotions.filter((e) => e.category === "calm");
   const boost = emotions.filter((e) => e.category === "boost");
 
+  const pickEmotion = (e: EmotionRow) => {
+    const locked = PREMIUM_EMOTION_NAMES.has(e.name) && !isPremium;
+    if (locked) navigate("/subscribe");
+    else navigate(`/session/emotion/${e.id}`);
+  };
+
+  const pickFocus = (id: string) => {
+    if (id === "adhd") {
+      if (!isPremium && !adhdTrialAvailable()) {
+        navigate("/subscribe");
+        return;
+      }
+      navigate("/focus/adhd");
+      return;
+    }
+    navigate(`/session/focus/${id}`);
+  };
+
   return (
     <div className="px-5 pt-10 relative">
       <MonetBackground intensity="medium" />
 
-      {/* header */}
       <header className="flex items-center gap-3 mb-8 animate-fade-up">
         <Moodie size="small" />
         <div>
@@ -43,7 +62,6 @@ const Home = () => {
         </div>
       </header>
 
-      {/* segmented tabs */}
       <div className="surface p-1 rounded-2xl flex gap-1 mb-6 shadow-soft">
         {([
           { id: "calm", label: "진정하기" },
@@ -66,32 +84,42 @@ const Home = () => {
       </div>
 
       <div key={tab} className="animate-fade-up">
-        {tab === "calm" && <EmotionGrid items={calm} onPick={(e) => navigate(`/session/emotion/${e.id}`)} />}
-        {tab === "boost" && <EmotionGrid items={boost} onPick={(e) => navigate(`/session/emotion/${e.id}`)} />}
-        {tab === "focus" && <FocusList onPick={(id) => navigate(`/session/focus/${id}`)} />}
+        {tab === "calm" && (
+          <EmotionGrid items={calm} isPremium={isPremium} onPick={pickEmotion} />
+        )}
+        {tab === "boost" && (
+          <EmotionGrid items={boost} isPremium={isPremium} onPick={pickEmotion} />
+        )}
+        {tab === "focus" && <FocusList isPremium={isPremium} onPick={pickFocus} />}
       </div>
     </div>
   );
 };
 
-const EmotionGrid = ({ items, onPick }: { items: EmotionRow[]; onPick: (e: EmotionRow) => void }) => (
+const EmotionGrid = ({
+  items, isPremium, onPick,
+}: { items: EmotionRow[]; isPremium: boolean; onPick: (e: EmotionRow) => void }) => (
   <div className="grid grid-cols-2 gap-3">
     {items.map((e) => {
       const Icon = getIcon(e.icon_name);
+      const locked = PREMIUM_EMOTION_NAMES.has(e.name) && !isPremium;
       return (
         <button
           key={e.id}
           onClick={() => onPick(e)}
           className="group relative aspect-square rounded-3xl overflow-hidden shadow-soft transition-all duration-300 active:scale-[0.98] hover:scale-[1.02] hover:shadow-card text-left"
         >
-          {/* cream base */}
           <div className="absolute inset-0 bg-cream" />
-          {/* emotion gradient overlay (preserved) */}
           <div
             className="absolute inset-0 opacity-90"
             style={{ background: `linear-gradient(150deg, ${e.gradient_from} 0%, ${e.gradient_to} 100%)` }}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-charcoal/15 to-transparent" />
+          {locked && (
+            <span className="absolute top-3 right-3 w-8 h-8 rounded-full bg-charcoal/40 backdrop-blur-sm flex items-center justify-center z-10">
+              <Lock className="w-4 h-4 text-white" strokeWidth={2.2} />
+            </span>
+          )}
           <div className="relative h-full flex flex-col justify-between p-4">
             <Icon className="w-6 h-6 text-white/90" strokeWidth={1.6} />
             <div>
@@ -105,21 +133,36 @@ const EmotionGrid = ({ items, onPick }: { items: EmotionRow[]; onPick: (e: Emoti
   </div>
 );
 
-const FocusList = ({ onPick }: { onPick: (id: string) => void }) => (
+const FocusList = ({
+  isPremium, onPick,
+}: { isPremium: boolean; onPick: (id: string) => void }) => (
   <div className="space-y-2.5">
     {FOCUS_MODES.map((m) => {
       const Icon = getIcon(m.icon);
+      const trialUsed = m.id === "adhd" && !isPremium && !adhdTrialAvailable();
       return (
         <button
           key={m.id}
           onClick={() => onPick(m.id)}
-          className="w-full bg-white/80 border border-beige rounded-3xl p-4 flex items-center gap-4 shadow-soft transition-all duration-300 active:scale-[0.98] hover:scale-[1.02] hover:border-sage-deep/40"
+          className="w-full bg-white/80 border border-beige rounded-3xl p-4 flex items-center gap-4 shadow-soft transition-all duration-300 active:scale-[0.98] hover:scale-[1.02] hover:border-sage-deep/40 relative"
         >
+          {trialUsed && (
+            <span className="absolute top-3 right-3 w-7 h-7 rounded-full bg-charcoal/10 flex items-center justify-center">
+              <Lock className="w-3.5 h-3.5 text-charcoal/60" />
+            </span>
+          )}
           <div className="w-12 h-12 rounded-2xl bg-sage/40 flex items-center justify-center shrink-0">
             <Icon className="w-6 h-6 text-sage-deep" strokeWidth={1.8} />
           </div>
           <div className="flex-1 text-left">
-            <div className="font-bold text-charcoal">{m.title}</div>
+            <div className="font-bold text-charcoal flex items-center gap-2">
+              {m.title}
+              {m.id === "adhd" && !isPremium && !trialUsed && (
+                <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-terracotta/20 text-terracotta">
+                  오늘 1회 체험
+                </span>
+              )}
+            </div>
             <div className="text-xs text-charcoal/60 mt-0.5">
               {m.durationMin}분 · {m.recommend}
             </div>

@@ -4,13 +4,16 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { Moodie } from "@/components/Moodie";
 import { Button } from "@/components/ui/button";
-import { LogOut, Crown, Heart, Bell, ChevronRight } from "lucide-react";
+import { Switch } from "@/components/ui/switch";
+import { LogOut, Crown, Heart, Bell, ChevronRight, FlaskConical } from "lucide-react";
 import { MonetBackground } from "@/components/MonetBackground";
+import { usePremium } from "@/hooks/usePremium";
 
 const Me = () => {
   const { user } = useAuth();
   const [stats, setStats] = useState({ total: 0, minutes: 0 });
   const navigate = useNavigate();
+  const { isPremium, devPremium, setDev } = usePremium();
 
   useEffect(() => {
     if (!user) return;
@@ -34,7 +37,7 @@ const Me = () => {
   const isEmpty = stats.total === 0;
 
   return (
-    <div className="px-5 pt-10 relative">
+    <div className="px-5 pt-10 relative pb-10">
       <MonetBackground intensity="soft" />
 
       {/* premium / profile card */}
@@ -44,14 +47,18 @@ const Me = () => {
           <div>
             <p className="text-[11px] tracking-[0.3em] uppercase text-cream/60 font-serif">Moodie+</p>
             <h2 className="text-[22px] font-bold mt-1 leading-tight">
-              프리미엄으로<br />더 깊이 돌봐요
+              {isPremium ? <>프리미엄 활성<br />감사해요 🌿</> : <>프리미엄으로<br />더 깊이 돌봐요</>}
             </h2>
-            <p className="text-cream/70 text-xs mt-2">전체 ASMR · 무제한 믹스 · 통계</p>
+            <p className="text-cream/70 text-xs mt-2">전체 ASMR · 무제한 믹스 · ADHD · 유리 깨기</p>
           </div>
-          <Moodie size={80} />
+          <Moodie size={80} emotion={isPremium ? "happy" : "default"} />
         </div>
-        <Button className="w-full mt-5 h-11 rounded-2xl bg-cream text-charcoal hover:bg-cream/90 font-semibold">
-          준비 중
+        <Button
+          onClick={() => navigate("/subscribe")}
+          className="w-full mt-5 h-11 rounded-2xl bg-cream text-charcoal hover:bg-cream/90 font-semibold"
+        >
+          <Crown className="w-4 h-4 mr-2" />
+          {isPremium ? "구독 관리" : "프리미엄 시작"}
         </Button>
       </div>
 
@@ -69,7 +76,9 @@ const Me = () => {
       {/* stats / empty */}
       {isEmpty ? (
         <div className="mt-4 surface rounded-3xl p-6 text-center shadow-soft">
-          <Moodie size="medium" />
+          <div className="flex justify-center">
+            <Moodie size="medium" />
+          </div>
           <p className="text-charcoal font-semibold mt-2">아직 기록이 없어요</p>
           <p className="text-xs text-charcoal/60 mt-1">첫 세션을 시작해 마음을 돌봐주세요</p>
         </div>
@@ -88,9 +97,32 @@ const Me = () => {
 
       {/* menu */}
       <div className="mt-4 surface rounded-3xl shadow-soft overflow-hidden">
-        <MenuItem Icon={Crown} label="프리미엄 구독" tag="준비 중" />
+        <button
+          onClick={() => navigate("/subscribe")}
+          className="w-full flex items-center gap-3 px-4 py-4 hover:bg-sage/15 transition border-b border-beige"
+        >
+          <div className="w-10 h-10 rounded-xl bg-sage/30 flex items-center justify-center">
+            <Crown className="w-5 h-5 text-sage-deep" strokeWidth={1.8} />
+          </div>
+          <span className="flex-1 text-left text-charcoal font-medium">프리미엄 구독</span>
+          <ChevronRight className="w-4 h-4 text-charcoal/30" />
+        </button>
         <MenuItem Icon={Heart} label="즐겨찾기" tag="준비 중" />
         <MenuItem Icon={Bell} label="알림 설정" tag="준비 중" />
+      </div>
+
+      {/* DEV: premium toggle (개발용) */}
+      <div className="mt-4 surface rounded-3xl p-4 shadow-soft border-2 border-dashed border-terracotta/40">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-terracotta/20 flex items-center justify-center">
+            <FlaskConical className="w-5 h-5 text-terracotta" strokeWidth={1.8} />
+          </div>
+          <div className="flex-1">
+            <p className="font-semibold text-charcoal text-sm">개발용 · 프리미엄 토글</p>
+            <p className="text-[11px] text-charcoal/50 mt-0.5">결제 없이 모든 기능 잠금 해제</p>
+          </div>
+          <Switch checked={devPremium} onCheckedChange={setDev} />
+        </div>
       </div>
 
       {user && (

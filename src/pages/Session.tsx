@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { ArrowLeft, Pause, Play } from "lucide-react";
+import { ArrowLeft, Pause, Play, Wind, Sparkles, Lock } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { EmotionRow, FOCUS_MODES, SoundRow } from "@/types/db";
 import { audioEngine } from "@/lib/audio-engine";
@@ -11,12 +11,15 @@ import { emotionNameToTint } from "@/lib/emotion-tint";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
+import { emotionToBreathingId } from "@/lib/breathing";
+import { usePremium, markAdhdUsed } from "@/hooks/usePremium";
 
 const DURATIONS = [15, 30, 60];
 
 const Session = () => {
   const { type, id } = useParams<{ type: "emotion" | "focus"; id: string }>();
   const navigate = useNavigate();
+  const { isPremium } = usePremium();
 
   const [emotion, setEmotion] = useState<EmotionRow | null>(null);
   const [sounds, setSounds] = useState<SoundRow[]>([]);
@@ -182,6 +185,49 @@ const Session = () => {
           </div>
         </div>
       </div>
+
+      {/* quick actions for emotion sessions */}
+      {emotion && (
+        <div className="px-5 pt-5">
+          <div className="grid grid-cols-2 gap-2">
+            <button
+              onClick={() => {
+                const bid = emotionToBreathingId(emotion.name);
+                navigate(`/breathing/session/${bid}?reps=5&emotion=${encodeURIComponent(emotion.name)}`);
+              }}
+              className="surface rounded-2xl p-4 text-left active:scale-[0.98] transition shadow-soft"
+            >
+              <Wind className="w-5 h-5 text-sage-deep" strokeWidth={1.6} />
+              <div className="font-bold text-charcoal text-sm mt-2">호흡 가이드</div>
+              <div className="text-[11px] text-charcoal/60 mt-0.5">
+                추천: {emotion.recommended_breathing ?? "박스 호흡"}
+              </div>
+            </button>
+            {emotion.name === "분노" ? (
+              <button
+                onClick={() => navigate("/release/glass")}
+                className="surface rounded-2xl p-4 text-left active:scale-[0.98] transition shadow-soft relative"
+              >
+                {!isPremium && (
+                  <Lock className="absolute top-2 right-2 w-3.5 h-3.5 text-charcoal/50" />
+                )}
+                <Sparkles className="w-5 h-5 text-terracotta" strokeWidth={1.6} />
+                <div className="font-bold text-charcoal text-sm mt-2">유리 깨기 영상</div>
+                <div className="text-[11px] text-charcoal/60 mt-0.5">시원하게 풀어내요</div>
+              </button>
+            ) : (
+              <button
+                onClick={() => toast("곧 만나보실 수 있어요 🌿")}
+                className="surface rounded-2xl p-4 text-left active:scale-[0.98] transition shadow-soft opacity-70"
+              >
+                <Sparkles className="w-5 h-5 text-sage-deep" strokeWidth={1.6} />
+                <div className="font-bold text-charcoal text-sm mt-2">영상 가이드</div>
+                <div className="text-[11px] text-charcoal/60 mt-0.5">준비 중</div>
+              </button>
+            )}
+          </div>
+        </div>
+      )}
 
       {/* sound mixer */}
       <div className="flex-1 px-5 py-6">

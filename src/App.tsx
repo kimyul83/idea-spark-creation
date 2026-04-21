@@ -7,9 +7,13 @@ import NotFound from "./pages/NotFound";
 import Onboarding from "./pages/Onboarding";
 import Home from "./pages/Home";
 import Breathing from "./pages/Breathing";
+import BreathingSession from "./pages/BreathingSession";
 import Sounds from "./pages/Sounds";
 import Me from "./pages/Me";
 import Session from "./pages/Session";
+import Adhd from "./pages/Adhd";
+import GlassBreak from "./pages/GlassBreak";
+import Subscribe from "./pages/Subscribe";
 import { AppShell } from "./components/AppShell";
 
 const queryClient = new QueryClient();
@@ -23,6 +27,10 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/onboarding" element={<Onboarding />} />
           <Route path="/session/:type/:id" element={<div className="app-shell"><Session /></div>} />
+          <Route path="/breathing/session/:id" element={<div className="app-shell"><BreathingSession /></div>} />
+          <Route path="/focus/adhd" element={<div className="app-shell"><Adhd /></div>} />
+          <Route path="/release/glass" element={<div className="app-shell"><GlassBreak /></div>} />
+          <Route path="/subscribe" element={<div className="app-shell"><Subscribe /></div>} />
           <Route element={<AppShell />}>
             <Route path="/home" element={<Home />} />
             <Route path="/breathing" element={<Breathing />} />

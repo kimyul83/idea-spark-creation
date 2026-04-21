@@ -1,0 +1,19 @@
+{
+  "name": "Moodie · 감정 사운드 테라피",
+  "short_name": "Moodie",
+  "description": "감정과 상황에 맞춘 사운드, 호흡, 집중 테라피로 마음을 부드럽게 다독여주는 한국형 사운드 케어 앱.",
+  "lang": "ko",
+  "dir": "ltr",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#FAF6F0",
+  "theme_color": "#7FA89E",
+  "icons": [
+    { "src": "/icons/moodie-192.svg", "sizes": "192x192", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "/icons/moodie-512.svg", "sizes": "512x512", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "/icons/moodie-maskable.svg", "sizes": "512x512", "type": "image/svg+xml", "purpose": "maskable" }
+  ],
+  "categories": ["health", "lifestyle", "music"]
+}

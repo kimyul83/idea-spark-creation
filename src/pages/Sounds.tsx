@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { SoundRow } from "@/types/db";
 import { audioEngine } from "@/lib/audio-engine";
@@ -6,10 +7,15 @@ import { getIcon } from "@/lib/icon-map";
 import { cn } from "@/lib/utils";
 import { Lock } from "lucide-react";
 import { MonetBackground } from "@/components/MonetBackground";
+import { usePremium } from "@/hooks/usePremium";
+
+const FREE_NATURE = new Set(["숲속", "바다", "빗소리"]);
 
 const Sounds = () => {
   const [sounds, setSounds] = useState<SoundRow[]>([]);
   const [active, setActive] = useState<string[]>([]);
+  const navigate = useNavigate();
+  const { isPremium } = usePremium();
 
   useEffect(() => {
     supabase.from("sounds").select("*").order("category").then(({ data }) => {
@@ -18,8 +24,19 @@ const Sounds = () => {
     return () => audioEngine.stopAll();
   }, []);
 
+  const isLocked = (s: SoundRow): boolean => {
+    if (isPremium) return false;
+    if (s.is_premium) return true;
+    if (s.category === "frequency" || s.category === "asmr") return true;
+    if (s.category === "nature" && !FREE_NATURE.has(s.name)) return true;
+    return false;
+  };
+
   const toggle = (s: SoundRow) => {
-    if (s.is_premium) return;
+    if (isLocked(s)) {
+      navigate("/subscribe");
+      return;
+    }
     if (active.includes(s.id)) {
       audioEngine.stop(s.id);
       setActive((p) => p.filter((x) => x !== s.id));
@@ -55,6 +72,7 @@ const Sounds = () => {
             <div className="grid grid-cols-3 gap-2">
               {sounds.filter((s) => s.category === g.id).map((s) => {
                 const Icon = getIcon(s.icon_name);
+                const locked = isLocked(s);
                 const isActive = active.includes(s.id);
                 return (
                   <button
@@ -65,11 +83,11 @@ const Sounds = () => {
                       isActive
                         ? "bg-sage-deep border-sage-deep text-white shadow-soft"
                         : "bg-white/80 border-beige text-charcoal",
-                      s.is_premium && "opacity-60"
+                      locked && "opacity-70"
                     )}
                   >
-                    {s.is_premium && (
-                      <Lock className="absolute top-1.5 right-1.5 w-3 h-3 text-charcoal/50" />
+                    {locked && (
+                      <Lock className="absolute top-1.5 right-1.5 w-3 h-3 text-charcoal/60" />
                     )}
                     <Icon className="w-6 h-6" strokeWidth={1.8} />
                     <span className="text-[11px] font-medium leading-tight text-center">{s.name}</span>

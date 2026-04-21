@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { ArrowLeft, Pause, Play } from "lucide-react";
+import { ArrowLeft, Pause, Play, Wind, Sparkles, Lock } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { EmotionRow, FOCUS_MODES, SoundRow } from "@/types/db";
 import { audioEngine } from "@/lib/audio-engine";
@@ -11,6 +11,8 @@ import { emotionNameToTint } from "@/lib/emotion-tint";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
+import { emotionToBreathingId } from "@/lib/breathing";
+import { usePremium, markAdhdUsed } from "@/hooks/usePremium";
 
 const DURATIONS = [15, 30, 60];
 

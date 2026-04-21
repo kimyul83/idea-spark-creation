@@ -10,6 +10,7 @@ import Breathing from "./pages/Breathing";
 import BreathingSession from "./pages/BreathingSession";
 import Sounds from "./pages/Sounds";
 import Me from "./pages/Me";
+import Sleep from "./pages/Sleep";
 import Session from "./pages/Session";
 import Adhd from "./pages/Adhd";
 import GlassBreak from "./pages/GlassBreak";
@@ -39,6 +40,7 @@ const App = () => (
             <Route path="/home" element={<Home />} />
             <Route path="/breathing" element={<Breathing />} />
             <Route path="/sounds" element={<Sounds />} />
+            <Route path="/sleep" element={<Sleep />} />
             <Route path="/me" element={<Me />} />
           </Route>
           <Route path="*" element={<NotFound />} />

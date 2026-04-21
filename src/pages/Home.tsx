@@ -17,8 +17,8 @@ const Home = () => {
   const [emotions, setEmotions] = useState<EmotionRow[]>([]);
   const navigate = useNavigate();
   const { isPremium } = usePremium();
-  const { mode } = useTheme();
-  const greeting = mode === "dawn" ? "좋은 아침이에요 ☀️" : "편안한 밤이에요 🌙";
+  const { resolvedVariant } = useTheme();
+  const greeting = resolvedVariant === "light" ? "좋은 아침이에요 ☀️" : "편안한 밤이에요 🌙";
 
   useEffect(() => {
     supabase

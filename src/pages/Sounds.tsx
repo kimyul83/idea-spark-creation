@@ -39,15 +39,18 @@ const Sounds = () => {
   ];
 
   return (
-    <div className="px-5 pt-12">
-      <h1 className="text-2xl font-bold text-navy">사운드 라이브러리</h1>
-      <p className="text-sm text-navy-soft/70 mt-1">여러 소리를 동시에 재생할 수 있어요</p>
+    <div className="px-5 pt-12 relative">
+      <div className="blob w-[280px] h-[280px] -top-10 -right-10 opacity-30 bg-terracotta -z-10" />
+
+      <p className="text-[11px] tracking-[0.3em] uppercase text-sage-deep font-serif">Library</p>
+      <h1 className="text-[28px] font-bold text-charcoal mt-1">사운드 라이브러리</h1>
+      <p className="text-sm text-charcoal/60 mt-1">여러 소리를 동시에 재생할 수 있어요</p>
 
       <div className="mt-6 space-y-6">
         {groups.map((g) => (
           <section key={g.id}>
-            <h2 className="font-bold text-navy mb-1">{g.title}</h2>
-            <p className="text-xs text-navy-soft/60 mb-3">{g.desc}</p>
+            <h2 className="font-bold text-charcoal">{g.title}</h2>
+            <p className="text-xs text-charcoal/50 mt-0.5 mb-3">{g.desc}</p>
             <div className="grid grid-cols-3 gap-2">
               {sounds.filter((s) => s.category === g.id).map((s) => {
                 const Icon = getIcon(s.icon_name);
@@ -57,15 +60,15 @@ const Sounds = () => {
                     key={s.id}
                     onClick={() => toggle(s)}
                     className={cn(
-                      "relative p-3 rounded-2xl border-2 transition-all active:scale-95 flex flex-col items-center gap-1.5",
+                      "relative p-3 rounded-2xl border transition-all duration-300 active:scale-95 hover:scale-[1.02] flex flex-col items-center gap-1.5",
                       isActive
-                        ? "bg-gradient-mint border-mint-deep text-white shadow-glow"
-                        : "bg-white/80 border-mint/20 text-navy",
+                        ? "bg-sage-deep border-sage-deep text-white shadow-soft"
+                        : "bg-white/80 border-beige text-charcoal",
                       s.is_premium && "opacity-60"
                     )}
                   >
                     {s.is_premium && (
-                      <Lock className="absolute top-1.5 right-1.5 w-3 h-3 text-navy-soft/60" />
+                      <Lock className="absolute top-1.5 right-1.5 w-3 h-3 text-charcoal/50" />
                     )}
                     <Icon className="w-6 h-6" strokeWidth={1.8} />
                     <span className="text-[11px] font-medium leading-tight text-center">{s.name}</span>

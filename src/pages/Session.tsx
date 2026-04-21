@@ -1,10 +1,11 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { ArrowLeft, Pause, Play, Heart, Plus, Minus } from "lucide-react";
+import { ArrowLeft, Pause, Play } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { EmotionRow, FOCUS_MODES, SoundRow } from "@/types/db";
 import { audioEngine } from "@/lib/audio-engine";
 import { getIcon } from "@/lib/icon-map";
+import { Moodie } from "@/components/Moodie";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
@@ -21,9 +22,9 @@ const Session = () => {
   const [durationMin, setDurationMin] = useState(15);
   const [remaining, setRemaining] = useState(15 * 60);
   const [running, setRunning] = useState(false);
+  const [doneOpen, setDoneOpen] = useState(false);
   const tickRef = useRef<number | null>(null);
 
-  // load data
   useEffect(() => {
     (async () => {
       if (type === "emotion") {
@@ -39,16 +40,13 @@ const Session = () => {
       const { data: s } = await supabase.from("sounds").select("*").order("category");
       setSounds((s ?? []) as SoundRow[]);
     })();
-
     return () => {
       audioEngine.stopAll();
       if (tickRef.current) window.clearInterval(tickRef.current);
     };
   }, [type, id]);
 
-  useEffect(() => {
-    setRemaining(durationMin * 60);
-  }, [durationMin]);
+  useEffect(() => setRemaining(durationMin * 60), [durationMin]);
 
   const focusMode = type === "focus" ? FOCUS_MODES.find((m) => m.id === id) : null;
 
@@ -56,7 +54,7 @@ const Session = () => {
     if (emotion) {
       return { background: `linear-gradient(160deg, ${emotion.gradient_from} 0%, ${emotion.gradient_to} 100%)` };
     }
-    return { background: "linear-gradient(160deg, hsl(var(--mint-deep)) 0%, hsl(var(--navy)) 100%)" };
+    return { background: "linear-gradient(160deg, hsl(var(--sage-deep)) 0%, hsl(var(--charcoal)) 100%)" };
   }, [emotion]);
 
   const HeaderIcon = getIcon(emotion?.icon_name ?? focusMode?.icon);
@@ -90,7 +88,6 @@ const Session = () => {
     setRunning((r) => !r);
   };
 
-  // timer tick
   useEffect(() => {
     if (running) {
       tickRef.current = window.setInterval(() => {
@@ -99,7 +96,7 @@ const Session = () => {
             audioEngine.stopAll();
             setRunning(false);
             saveSession(true);
-            toast.success("세션 완료! 잘하셨어요 🌿");
+            setDoneOpen(true);
             return 0;
           }
           return r - 1;
@@ -143,41 +140,36 @@ const Session = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-cream">
       {/* hero */}
-      <div style={headerStyle} className="relative px-5 pt-12 pb-8 text-white">
-        <button onClick={() => navigate(-1)} className="p-2 -ml-2 rounded-full hover:bg-white/10">
+      <div style={headerStyle} className="relative px-5 pt-12 pb-8 text-white rounded-b-[32px]">
+        <button onClick={() => navigate(-1)} className="p-2 -ml-2 rounded-full hover:bg-white/10 transition">
           <ArrowLeft className="w-5 h-5" />
         </button>
-        <div className="mt-6 flex items-center gap-4">
-          <div
-            className={cn(
-              "w-20 h-20 rounded-3xl bg-white/20 backdrop-blur flex items-center justify-center",
-              running && "animate-breathe"
-            )}
-          >
-            <HeaderIcon className="w-9 h-9" strokeWidth={1.5} />
+        <div className="mt-4 flex items-center gap-4">
+          <div className={cn("w-16 h-16 rounded-2xl bg-white/20 backdrop-blur flex items-center justify-center", running && "animate-breathe")}>
+            <HeaderIcon className="w-8 h-8" strokeWidth={1.5} />
           </div>
           <div>
-            <h1 className="text-2xl font-bold">{title}</h1>
-            <p className="text-white/80 text-sm mt-1">{subtitle}</p>
+            <p className="text-[11px] tracking-[0.2em] uppercase text-white/70 font-serif">
+              {emotion ? "Emotion" : "Focus"}
+            </p>
+            <h1 className="text-[24px] font-bold mt-0.5">{title}</h1>
+            <p className="text-white/80 text-xs mt-0.5">{subtitle}</p>
           </div>
         </div>
 
-        {/* timer display */}
         <div className="mt-8 text-center">
-          <div className="text-6xl font-bold tabular-nums tracking-tight">{fmt(remaining)}</div>
-          <div className="mt-3 flex justify-center gap-2">
+          <div className="text-[64px] font-serif tabular-nums tracking-tight leading-none">{fmt(remaining)}</div>
+          <div className="mt-4 flex justify-center gap-2">
             {DURATIONS.map((d) => (
               <button
                 key={d}
                 disabled={running}
                 onClick={() => setDurationMin(d)}
                 className={cn(
-                  "px-4 py-1.5 rounded-full text-xs font-semibold transition-all",
-                  durationMin === d
-                    ? "bg-white text-navy"
-                    : "bg-white/20 text-white",
+                  "px-4 py-1.5 rounded-full text-xs font-semibold transition-all duration-300",
+                  durationMin === d ? "bg-white text-charcoal" : "bg-white/15 text-white",
                   running && "opacity-40"
                 )}
               >
@@ -191,8 +183,8 @@ const Session = () => {
       {/* sound mixer */}
       <div className="flex-1 px-5 py-6">
         <div className="flex items-center justify-between mb-3">
-          <h2 className="font-bold text-navy">사운드 믹스</h2>
-          <span className="text-xs text-navy-soft/60">{activeIds.length}개 선택됨</span>
+          <h2 className="font-bold text-charcoal">사운드 믹스</h2>
+          <span className="text-xs text-charcoal/50">{activeIds.length}개 선택됨</span>
         </div>
 
         <SoundSection title="자연" sounds={sounds.filter((s) => s.category === "nature")} active={activeIds} onToggle={toggleSound} />
@@ -205,12 +197,34 @@ const Session = () => {
         <Button
           size="lg"
           onClick={togglePlay}
-          className="w-full h-16 rounded-2xl bg-navy hover:bg-navy/90 text-white text-base font-bold shadow-card"
+          className="w-full h-16 rounded-2xl bg-charcoal hover:bg-charcoal/90 text-cream text-base font-bold shadow-soft"
         >
           {running ? <Pause className="w-6 h-6 mr-2" /> : <Play className="w-6 h-6 mr-2" />}
           {running ? "일시정지" : "세션 시작"}
         </Button>
       </div>
+
+      {/* done modal */}
+      {doneOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center px-6 bg-charcoal/40 backdrop-blur-sm animate-fade-up">
+          <div className="surface rounded-3xl p-8 w-full max-w-sm text-center shadow-card">
+            <Moodie size="medium" />
+            <p className="text-[11px] tracking-[0.3em] uppercase text-sage-deep font-serif mt-4">
+              Well done
+            </p>
+            <h2 className="text-2xl font-bold text-charcoal mt-2">세션을 마쳤어요</h2>
+            <p className="text-sm text-charcoal/60 mt-2">
+              {durationMin}분 동안 마음을 돌봤어요.<br />잘하셨어요 🌿
+            </p>
+            <Button
+              onClick={() => { setDoneOpen(false); navigate("/home"); }}
+              className="w-full h-12 mt-6 rounded-2xl bg-charcoal hover:bg-charcoal/90 text-cream"
+            >
+              홈으로
+            </Button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
@@ -221,7 +235,7 @@ const SoundSection = ({
   if (sounds.length === 0) return null;
   return (
     <div className="mb-5">
-      <h3 className="text-xs font-semibold text-navy-soft/70 mb-2 px-1">{title}</h3>
+      <h3 className="text-[11px] tracking-[0.2em] uppercase text-charcoal/50 font-serif mb-2 px-1">{title}</h3>
       <div className="grid grid-cols-3 gap-2">
         {sounds.map((s) => {
           const Icon = getIcon(s.icon_name);
@@ -231,10 +245,10 @@ const SoundSection = ({
               key={s.id}
               onClick={() => onToggle(s)}
               className={cn(
-                "p-3 rounded-2xl border-2 transition-all active:scale-95 flex flex-col items-center gap-1.5",
+                "p-3 rounded-2xl border transition-all duration-300 active:scale-95 hover:scale-[1.02] flex flex-col items-center gap-1.5",
                 isActive
-                  ? "bg-gradient-mint border-mint-deep text-white shadow-glow"
-                  : "bg-white/80 border-mint/20 text-navy hover:border-mint/50"
+                  ? "bg-sage-deep border-sage-deep text-white shadow-soft"
+                  : "bg-white/80 border-beige text-charcoal hover:border-sage-deep/40"
               )}
             >
               <Icon className="w-6 h-6" strokeWidth={1.8} />

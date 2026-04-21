@@ -12,7 +12,7 @@ const tabs = [
 export const TabBar = () => {
   return (
     <nav className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[500px] z-40">
-      <div className="mx-3 mb-3 glass rounded-3xl shadow-card">
+      <div className="mx-3 mb-3 surface rounded-3xl shadow-card">
         <ul className="grid grid-cols-4">
           {tabs.map(({ to, label, Icon }) => (
             <li key={to}>
@@ -20,8 +20,8 @@ export const TabBar = () => {
                 to={to}
                 className={({ isActive }) =>
                   cn(
-                    "flex flex-col items-center justify-center gap-1 py-3 transition-all",
-                    isActive ? "text-mint-deep" : "text-navy-soft/60"
+                    "flex flex-col items-center justify-center gap-1 py-3 transition-all duration-300",
+                    isActive ? "text-charcoal" : "text-charcoal/40"
                   )
                 }
               >
@@ -29,11 +29,11 @@ export const TabBar = () => {
                   <>
                     <div
                       className={cn(
-                        "p-2 rounded-2xl transition-all",
-                        isActive && "bg-mint/40 scale-110"
+                        "p-2 rounded-2xl transition-all duration-300",
+                        isActive && "bg-sage/50 scale-110"
                       )}
                     >
-                      <Icon className="w-5 h-5" />
+                      <Icon className="w-5 h-5" strokeWidth={1.8} />
                     </div>
                     <span className="text-[11px] font-medium">{label}</span>
                   </>

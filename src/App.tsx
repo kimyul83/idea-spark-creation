@@ -15,6 +15,7 @@ import Adhd from "./pages/Adhd";
 import GlassBreak from "./pages/GlassBreak";
 import Subscribe from "./pages/Subscribe";
 import AuthCallback from "./pages/AuthCallback";
+import ThemeSettings from "./pages/ThemeSettings";
 import { AppShell } from "./components/AppShell";
 
 const queryClient = new QueryClient();
@@ -33,6 +34,7 @@ const App = () => (
           <Route path="/focus/adhd" element={<div className="app-shell"><Adhd /></div>} />
           <Route path="/release/glass" element={<div className="app-shell"><GlassBreak /></div>} />
           <Route path="/subscribe" element={<div className="app-shell"><Subscribe /></div>} />
+          <Route path="/settings/theme" element={<ThemeSettings />} />
           <Route element={<AppShell />}>
             <Route path="/home" element={<Home />} />
             <Route path="/breathing" element={<Breathing />} />

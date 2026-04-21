@@ -131,7 +131,7 @@
     50% { transform: translateY(8px); }
   }
 
-  /* Body breathing (subtle scale) — applied to .moodie-body inside the SVG */
+  /* Body breathing (subtle scale) */
   .moodie .moodie-body {
     transform-origin: 120px 130px;
     transform-box: view-box;
@@ -142,18 +142,21 @@
     50% { transform: scale(1.03); }
   }
 
-  /* Eye blink (scaleY around eye row center) */
-  .moodie .moodie-eyes {
-    transform-origin: 120px 138px;
-    transform-box: view-box;
-    animation: mascotBlink 4s ease-in-out infinite;
+  /* Aibo OLED-style glow on each eye */
+  .moodie .eye {
+    filter: drop-shadow(0 0 6px rgba(74, 144, 196, 0.55));
+    transform-origin: center;
+    transform-box: fill-box;
   }
+  /* Asynchronous blink: each eye on its own schedule */
+  .moodie .eye-left  { animation: mascotBlink 4.2s ease-in-out infinite; }
+  .moodie .eye-right { animation: mascotBlink 4.2s ease-in-out infinite; animation-delay: 0.12s; }
   @keyframes mascotBlink {
     0%, 92%, 100% { transform: scaleY(1); }
-    94%, 98% { transform: scaleY(0.1); }
+    95%, 97%      { transform: scaleY(0.05); }
   }
 
-  /* Sparkles twinkle (each with a slight delay) */
+  /* Sparkles twinkle */
   .moodie .sparkle {
     transform-origin: center;
     transform-box: fill-box;
@@ -185,7 +188,7 @@
     .monet-mesh,
     .float-slow, .float-med, .float-fast,
     .animate-mascot-float,
-    .moodie .moodie-body, .moodie .moodie-eyes, .moodie .sparkle,
+    .moodie .moodie-body, .moodie .eye, .moodie .sparkle,
     .animate-breathe {
       animation: none !important;
     }

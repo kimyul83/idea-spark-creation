@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 
 type MoodieSize = "small" | "medium" | "large";
-type MoodieFace = "default" | "happy" | "sad" | "surprised" | "calm";
+type MoodieFace = "default" | "happy" | "sad" | "surprised" | "calm" | "love" | "focus";
 type MoodieEmotion =
   | MoodieFace
   | "anxious" | "angry" | "sleepy" | "panic" | "focused"
@@ -20,15 +20,17 @@ const EMOTION_TO_FACE: Record<MoodieEmotion, MoodieFace> = {
   sad: "sad",
   surprised: "surprised",
   calm: "calm",
+  love: "love",
+  focus: "focus",
   anxious: "calm",
   angry: "surprised",
   sleepy: "calm",
   panic: "surprised",
-  focused: "calm",
+  focused: "focus",
   excited: "happy",
-  confident: "happy",
-  fluttering: "happy",
-  loved: "happy",
+  confident: "focus",
+  fluttering: "love",
+  loved: "love",
   grounded: "calm",
   energetic: "happy",
 };
@@ -39,6 +41,8 @@ const FACE_TO_FILE: Record<MoodieFace, string> = {
   sad: "/mascot/moodie-sad.svg",
   surprised: "/mascot/moodie-surprised.svg",
   calm: "/mascot/moodie-calm.svg",
+  love: "/mascot/moodie-love.svg",
+  focus: "/mascot/moodie-focus.svg",
 };
 
 const svgCache = new Map<string, string>();

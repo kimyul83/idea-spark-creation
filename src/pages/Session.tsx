@@ -6,6 +6,8 @@ import { EmotionRow, FOCUS_MODES, SoundRow } from "@/types/db";
 import { audioEngine } from "@/lib/audio-engine";
 import { getIcon } from "@/lib/icon-map";
 import { Moodie } from "@/components/Moodie";
+import { MonetBackground } from "@/components/MonetBackground";
+import { emotionNameToTint } from "@/lib/emotion-tint";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
@@ -140,7 +142,8 @@ const Session = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-cream">
+    <div className="min-h-screen flex flex-col relative">
+      <MonetBackground intensity="strong" emotion={emotionNameToTint(emotion?.name)} />
       {/* hero */}
       <div style={headerStyle} className="relative px-5 pt-12 pb-8 text-white rounded-b-[32px]">
         <button onClick={() => navigate(-1)} className="p-2 -ml-2 rounded-full hover:bg-white/10 transition">

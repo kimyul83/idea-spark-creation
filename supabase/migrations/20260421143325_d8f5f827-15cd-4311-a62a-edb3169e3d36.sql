@@ -1,0 +1,1 @@
+ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS user_preferences jsonb NOT NULL DEFAULT '{}'::jsonb;

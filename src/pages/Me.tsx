@@ -5,18 +5,17 @@ import { useAuth } from "@/hooks/useAuth";
 import { Moodie } from "@/components/Moodie";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
-import { LogOut, Crown, Heart, Bell, ChevronRight, FlaskConical, Sun, Moon, Wand2 } from "lucide-react";
+import { LogOut, Crown, Heart, Bell, ChevronRight, FlaskConical, Palette } from "lucide-react";
 import { MonetBackground } from "@/components/MonetBackground";
 import { usePremium } from "@/hooks/usePremium";
-import { useTheme, type ThemePref } from "@/contexts/ThemeContext";
-import { cn } from "@/lib/utils";
+import { useTheme } from "@/contexts/ThemeContext";
 
 const Me = () => {
   const { user } = useAuth();
   const [stats, setStats] = useState({ total: 0, minutes: 0 });
   const navigate = useNavigate();
   const { isPremium, devPremium, setDev } = usePremium();
-  const { pref, setPref } = useTheme();
+  const { label: themeLabel } = useTheme();
 
   useEffect(() => {
     if (!user) return;
@@ -36,12 +35,6 @@ const Me = () => {
     localStorage.removeItem("moodie_onboarded");
     navigate("/", { replace: true });
   };
-
-  const themeOptions: { id: ThemePref; label: string; Icon: any }[] = [
-    { id: "auto", label: "자동", Icon: Wand2 },
-    { id: "dawn", label: "Dawn", Icon: Sun },
-    { id: "dusk", label: "Dusk", Icon: Moon },
-  ];
 
   return (
     <div className="px-5 pt-10 pb-6 relative flex-1 flex flex-col">
@@ -94,30 +87,6 @@ const Me = () => {
         </div>
       </div>
 
-      {/* Theme toggle */}
-      <div className="mt-3 surface rounded-3xl p-4 shadow-soft">
-        <div className="flex items-center justify-between mb-3">
-          <div>
-            <p className="font-semibold text-foreground text-sm">화면 테마</p>
-            <p className="text-[11px] text-foreground/50 mt-0.5">자동: 아침엔 Dawn, 저녁엔 Dusk</p>
-          </div>
-        </div>
-        <div className="grid grid-cols-3 gap-1.5 bg-foreground/5 p-1 rounded-2xl">
-          {themeOptions.map(({ id, label, Icon }) => (
-            <button
-              key={id}
-              onClick={() => setPref(id)}
-              className={cn(
-                "py-2 rounded-xl text-xs font-semibold transition-all flex items-center justify-center gap-1.5",
-                pref === id ? "bg-primary text-primary-foreground shadow-soft" : "text-foreground/60"
-              )}
-            >
-              <Icon className="w-3.5 h-3.5" /> {label}
-            </button>
-          ))}
-        </div>
-      </div>
-
       {/* menu */}
       <div className="mt-3 surface rounded-3xl shadow-soft overflow-hidden">
         <button
@@ -128,6 +97,19 @@ const Me = () => {
             <Crown className="w-5 h-5 text-primary" strokeWidth={1.8} />
           </div>
           <span className="flex-1 text-left text-foreground font-medium">프리미엄 구독</span>
+          <ChevronRight className="w-4 h-4 text-foreground/30" />
+        </button>
+        <button
+          onClick={() => navigate("/settings/theme")}
+          className="w-full flex items-center gap-3 px-4 py-4 hover:bg-primary/10 transition border-b border-border"
+        >
+          <div className="w-10 h-10 rounded-xl bg-primary/15 flex items-center justify-center">
+            <Palette className="w-5 h-5 text-primary" strokeWidth={1.8} />
+          </div>
+          <span className="flex-1 text-left text-foreground font-medium">테마 설정</span>
+          <span className="text-[11px] text-primary/80 font-medium mr-1 truncate max-w-[140px]">
+            {themeLabel}
+          </span>
           <ChevronRight className="w-4 h-4 text-foreground/30" />
         </button>
         <MenuItem Icon={Heart} label="즐겨찾기" tag="준비 중" />

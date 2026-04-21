@@ -10,11 +10,12 @@ import { supabase } from "@/integrations/supabase/client";
 import { emotionNameToTint } from "@/lib/emotion-tint";
 import { cn } from "@/lib/utils";
 
+// Tiffany Dawn → champagne / Dusk → rose-gold (auto via CSS vars)
 const PHASE_BG: Record<BreathingPhase, string> = {
-  inhale: "radial-gradient(circle at 50% 50%, hsl(var(--monet-mint)) 0%, hsl(var(--sage)) 100%)",
-  hold1:  "radial-gradient(circle at 50% 50%, hsl(var(--monet-cream-soft)) 0%, hsl(var(--monet-mint)) 100%)",
-  exhale: "radial-gradient(circle at 50% 50%, hsl(var(--monet-lilac)) 0%, hsl(var(--monet-sky)) 100%)",
-  hold2:  "radial-gradient(circle at 50% 50%, hsl(var(--monet-sky)) 0%, hsl(var(--monet-lilac)) 100%)",
+  inhale: "radial-gradient(circle at 50% 50%, hsl(var(--tiffany-soft)) 0%, hsl(var(--tiffany)) 100%)",
+  hold1:  "radial-gradient(circle at 50% 50%, hsl(var(--champagne)) 0%, hsl(var(--tiffany-soft)) 100%)",
+  exhale: "radial-gradient(circle at 50% 50%, hsl(var(--accent)) 0%, hsl(var(--tiffany)) 100%)",
+  hold2:  "radial-gradient(circle at 50% 50%, hsl(var(--tiffany)) 0%, hsl(var(--accent)) 100%)",
 };
 
 const BreathingSession = () => {

@@ -11,6 +11,7 @@ import { audioEngine } from "@/lib/audio-engine";
 import { playDing, vibrate } from "@/lib/sfx";
 import { supabase } from "@/integrations/supabase/client";
 import { cn } from "@/lib/utils";
+import { markAdhdUsed, usePremium } from "@/hooks/usePremium";
 
 const FOCUS_MIN = 25;
 const BREAK_MIN = 5;

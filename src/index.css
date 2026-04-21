@@ -14,13 +14,13 @@
     --terracotta: 30 51% 64%;
     --charcoal: 200 9% 19%;
 
-    /* === Monet Water Lilies palette === */
-    --monet-blue: 207 47% 77%;     /* #A8C8E0 */
-    --monet-blue-deep: 207 38% 54%;/* #5A8BB8 */
-    --monet-sage: 92 25% 73%;      /* #B5C9A8 */
-    --monet-pink: 322 33% 78%;     /* #D8B4C9 */
-    --monet-cream: 67 33% 89%;     /* #E8EDD9 */
-    --monet-purple: 263 19% 52%;   /* #7B6A9E */
+    /* === Monet "morning pond" palette (clean, separated) === */
+    --monet-cream:      36 56% 92%;   /* #F5EDE0 base */
+    --monet-cream-soft: 38 65% 95%;   /* #FBF6EC */
+    --monet-sky:        210 60% 86%;  /* #C8DEF0 */
+    --monet-pink:       326 56% 89%;  /* #F0D4E2 */
+    --monet-mint:       163 35% 84%;  /* #C8E4DC */
+    --monet-lilac:      266 32% 86%;  /* #DCD0E8 — for lilies only */
 
     --background: var(--cream);
     --foreground: var(--charcoal);
@@ -89,25 +89,20 @@
 }
 
 @layer utilities {
-  /* === Monet background flow === */
+  /* === Monet morning-pond background (clean, no blending) === */
   .monet-mesh {
+    background-color: #F5EDE0;
     background-image:
-      radial-gradient(at 18% 22%, hsl(var(--monet-blue) / 0.85) 0px, transparent 45%),
-      radial-gradient(at 78% 18%, hsl(var(--monet-pink) / 0.7) 0px, transparent 50%),
-      radial-gradient(at 25% 82%, hsl(var(--monet-sage) / 0.75) 0px, transparent 55%),
-      radial-gradient(at 85% 78%, hsl(var(--monet-purple) / 0.55) 0px, transparent 50%),
-      radial-gradient(at 50% 50%, hsl(var(--monet-cream) / 0.6) 0px, transparent 60%);
-    background-size: 160% 160%, 160% 160%, 160% 160%, 160% 160%, 160% 160%;
-    background-color: hsl(var(--monet-blue) / 0.35);
+      radial-gradient(40% 35% at 18% 20%, hsl(var(--monet-sky) / 0.7) 0%, transparent 70%),
+      radial-gradient(50% 45% at 50% 50%, hsl(var(--monet-pink) / 0.5) 0%, transparent 75%),
+      radial-gradient(45% 40% at 82% 80%, hsl(var(--monet-mint) / 0.6) 0%, transparent 72%);
+    background-repeat: no-repeat;
+    background-size: 100% 100%, 100% 100%, 100% 100%;
     animation: monetFlow 30s ease-in-out infinite;
   }
   @keyframes monetFlow {
-    0%, 100% {
-      background-position: 0% 0%, 100% 0%, 0% 100%, 100% 100%, 50% 50%;
-    }
-    50% {
-      background-position: 20% 30%, 80% 20%, 30% 80%, 70% 70%, 60% 40%;
-    }
+    0%, 100% { background-position: 0% 0%, 50% 50%, 100% 100%; }
+    50%      { background-position: 8% 12%, 55% 45%, 92% 88%; }
   }
 
   .float-slow {

@@ -2,19 +2,26 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Moodie · Warm Modern Design System */
+/* Moodie · Warm Modern + Monet Water Lilies */
 
 @layer base {
   :root {
-    /* === Brand palette (raw HSL, no hsl() wrapper) === */
-    --cream: 36 43% 96%;          /* #FAF6F0 */
-    --beige: 34 19% 87%;          /* #E8E4DC */
-    --sage: 120 18% 80%;          /* #C4D6C4 */
-    --sage-deep: 165 17% 58%;     /* #7FA89E */
-    --terracotta: 30 51% 64%;     /* #D4A574 */
-    --charcoal: 200 9% 19%;       /* #2D3436 */
+    /* === Brand palette (raw HSL) === */
+    --cream: 36 43% 96%;
+    --beige: 34 19% 87%;
+    --sage: 120 18% 80%;
+    --sage-deep: 165 17% 58%;
+    --terracotta: 30 51% 64%;
+    --charcoal: 200 9% 19%;
 
-    /* === Semantic === */
+    /* === Monet Water Lilies palette === */
+    --monet-blue: 207 47% 77%;     /* #A8C8E0 */
+    --monet-blue-deep: 207 38% 54%;/* #5A8BB8 */
+    --monet-sage: 92 25% 73%;      /* #B5C9A8 */
+    --monet-pink: 322 33% 78%;     /* #D8B4C9 */
+    --monet-cream: 67 33% 89%;     /* #E8EDD9 */
+    --monet-purple: 263 19% 52%;   /* #7B6A9E */
+
     --background: var(--cream);
     --foreground: var(--charcoal);
 
@@ -45,40 +52,23 @@
 
     --radius: 1.5rem;
 
-    /* Gradients & shadows */
-    --gradient-warm: radial-gradient(circle at 20% 10%, hsl(var(--sage) / 0.45) 0%, transparent 45%),
-                     radial-gradient(circle at 85% 90%, hsl(var(--terracotta) / 0.25) 0%, transparent 50%),
-                     hsl(var(--cream));
-    --gradient-mesh: radial-gradient(at 20% 10%, hsl(var(--sage) / 0.5) 0px, transparent 50%),
-                     radial-gradient(at 80% 0%, hsl(var(--terracotta) / 0.3) 0px, transparent 50%),
-                     radial-gradient(at 0% 50%, hsl(var(--beige)) 0px, transparent 50%);
-
     --shadow-soft: 0 2px 12px -4px hsl(var(--charcoal) / 0.08);
     --shadow-card: 0 8px 32px -16px hsl(var(--charcoal) / 0.12);
-
     --transition-smooth: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
   }
 }
 
 @layer base {
-  * {
-    @apply border-border;
-  }
-  html, body, #root {
-    @apply h-full;
-  }
+  * { @apply border-border; }
+  html, body, #root { @apply h-full; }
   body {
     @apply bg-background text-foreground antialiased;
     font-family: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
     font-size: 16px;
     line-height: 1.6;
-    background: var(--gradient-warm);
-    background-attachment: fixed;
+    background: hsl(var(--cream));
   }
-  h1, h2, h3 {
-    line-height: 1.25;
-    letter-spacing: -0.01em;
-  }
+  h1, h2, h3 { line-height: 1.25; letter-spacing: -0.01em; }
   .font-serif {
     font-family: 'Instrument Serif', serif;
     letter-spacing: -0.02em;
@@ -91,24 +81,53 @@
     background: transparent;
   }
   .surface {
-    @apply bg-white/80 backdrop-blur-xl border border-white/60;
+    @apply bg-white/85 backdrop-blur-sm border border-white/60;
   }
   .blob {
     @apply absolute rounded-full blur-3xl pointer-events-none;
   }
-  .mesh-bg {
-    background: var(--gradient-mesh);
-  }
 }
 
 @layer utilities {
-  /* Mascot motions */
-  .animate-mascot-float {
-    animation: mascotFloat 2s ease-in-out infinite;
+  /* === Monet background flow === */
+  .monet-mesh {
+    background-image:
+      radial-gradient(at 18% 22%, hsl(var(--monet-blue) / 0.85) 0px, transparent 45%),
+      radial-gradient(at 78% 18%, hsl(var(--monet-pink) / 0.7) 0px, transparent 50%),
+      radial-gradient(at 25% 82%, hsl(var(--monet-sage) / 0.75) 0px, transparent 55%),
+      radial-gradient(at 85% 78%, hsl(var(--monet-purple) / 0.55) 0px, transparent 50%),
+      radial-gradient(at 50% 50%, hsl(var(--monet-cream) / 0.6) 0px, transparent 60%);
+    background-size: 160% 160%, 160% 160%, 160% 160%, 160% 160%, 160% 160%;
+    background-color: hsl(var(--monet-blue) / 0.35);
+    animation: monetFlow 30s ease-in-out infinite;
   }
+  @keyframes monetFlow {
+    0%, 100% {
+      background-position: 0% 0%, 100% 0%, 0% 100%, 100% 100%, 50% 50%;
+    }
+    50% {
+      background-position: 20% 30%, 80% 20%, 30% 80%, 70% 70%, 60% 40%;
+    }
+  }
+
+  .float-slow {
+    animation: floatSlow 28s ease-in-out infinite;
+  }
+  .float-med {
+    animation: floatSlow 22s ease-in-out infinite reverse;
+  }
+  .float-fast {
+    animation: floatSlow 16s ease-in-out infinite;
+  }
+  @keyframes floatSlow {
+    0%, 100% { transform: translate3d(0, 0, 0) rotate(0deg); }
+    50% { transform: translate3d(12px, -16px, 0) rotate(4deg); }
+  }
+
+  /* mascot motions */
+  .animate-mascot-float { animation: mascotFloat 2s ease-in-out infinite; }
   .animate-mascot-blink .moodie-eyes {
-    transform-origin: center;
-    transform-box: fill-box;
+    transform-origin: center; transform-box: fill-box;
     animation: mascotBlink 4s ease-in-out infinite;
   }
   @keyframes mascotFloat {
@@ -120,19 +139,25 @@
     94%, 98% { transform: scaleY(0.1); }
   }
 
-  /* General */
-  .animate-breathe {
-    animation: breathe 8s ease-in-out infinite;
-  }
+  .animate-breathe { animation: breathe 8s ease-in-out infinite; }
   @keyframes breathe {
     0%, 100% { transform: scale(1); opacity: 0.7; }
     50% { transform: scale(1.15); opacity: 1; }
   }
-  .animate-fade-up {
-    animation: fadeUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
-  }
+
+  .animate-fade-up { animation: fadeUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) both; }
   @keyframes fadeUp {
     from { opacity: 0; transform: translateY(16px); }
     to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Reduced motion + low-perf fallbacks */
+  @media (prefers-reduced-motion: reduce) {
+    .monet-mesh,
+    .float-slow, .float-med, .float-fast,
+    .animate-mascot-float, .animate-mascot-blink .moodie-eyes,
+    .animate-breathe {
+      animation: none !important;
+    }
   }
 }

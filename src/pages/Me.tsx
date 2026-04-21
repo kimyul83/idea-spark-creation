@@ -159,16 +159,6 @@ const MenuRow = ({
   </button>
 );
 
-const MenuItem = ({ Icon, label, tag }: { Icon: any; label: string; tag?: string }) => (
-  <button className="w-full flex items-center gap-3 px-4 py-4 hover:bg-primary/10 transition border-b border-border last:border-0">
-    <div className="w-10 h-10 rounded-xl bg-primary/15 flex items-center justify-center">
-      <Icon className="w-5 h-5 text-primary" strokeWidth={1.8} />
-    </div>
-    <span className="flex-1 text-left text-foreground font-medium">{label}</span>
-    {tag && <span className="text-xs text-foreground/40 mr-1">{tag}</span>}
-    <ChevronRight className="w-4 h-4 text-foreground/30" />
-  </button>
-);
 
 const ProviderBadge = ({ provider }: { provider: string }) => {
   const map: Record<string, { label: string; logo: JSX.Element | null }> = {

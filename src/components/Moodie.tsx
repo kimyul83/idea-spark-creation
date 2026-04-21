@@ -99,7 +99,11 @@ export const Moodie = ({
     >
       {svg ? (
         <div
-          className="w-full h-full drop-shadow-[0_10px_24px_rgba(26,63,85,0.18)] [&>svg]:w-full [&>svg]:h-full"
+          className="w-full h-full [&>svg]:w-full [&>svg]:h-full"
+          style={{
+            filter:
+              "drop-shadow(0 0 20px hsl(var(--primary) / 0.45)) drop-shadow(0 10px 24px hsl(var(--glow) / 0.25))",
+          }}
           dangerouslySetInnerHTML={{ __html: svg }}
         />
       ) : (

@@ -1,138 +1,138 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 260" width="240" height="260">
   <defs>
-    <!-- Body gradient: pastel blue → aqua → deeper aqua -->
     <linearGradient id="bodyGrad" x1="30%" y1="10%" x2="70%" y2="100%">
       <stop offset="0%" stop-color="#C8E8F2" stop-opacity="0.92"/>
       <stop offset="45%" stop-color="#A8D8E8" stop-opacity="0.88"/>
       <stop offset="80%" stop-color="#7FC4D9" stop-opacity="0.85"/>
       <stop offset="100%" stop-color="#5BA8C9" stop-opacity="0.82"/>
     </linearGradient>
-    <!-- Inner glass tint (translucent inner reflection) -->
     <radialGradient id="glassInner" cx="50%" cy="65%" r="55%">
       <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.35"/>
-      <stop offset="60%" stop-color="#FFFFFF" stop-opacity="0.05"/>
       <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0"/>
     </radialGradient>
-    <!-- Big top-left highlight -->
     <radialGradient id="hiTop" cx="35%" cy="28%" r="22%">
       <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.95"/>
-      <stop offset="60%" stop-color="#FFFFFF" stop-opacity="0.35"/>
       <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0"/>
     </radialGradient>
-    <!-- Small bottom-right highlight -->
-    <radialGradient id="hiBot" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.85"/>
-      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0"/>
+
+    <!-- Aibo iris: sapphire → cyan, slightly darker at edge -->
+    <radialGradient id="aiboIris" cx="50%" cy="45%" r="60%">
+      <stop offset="0%"  stop-color="#7BC4E8"/>
+      <stop offset="50%" stop-color="#4A90C4"/>
+      <stop offset="85%" stop-color="#2E5C8A"/>
+      <stop offset="100%" stop-color="#1B3A5C"/>
     </radialGradient>
-    <!-- Iris gradient -->
-    <radialGradient id="iris" cx="50%" cy="40%" r="55%">
-      <stop offset="0%" stop-color="#3E7FA0"/>
-      <stop offset="70%" stop-color="#2C5F7A"/>
-      <stop offset="100%" stop-color="#1A3F55"/>
+    <!-- Outer ring (deep blue) -->
+    <radialGradient id="aiboRing" cx="50%" cy="50%" r="50%">
+      <stop offset="80%" stop-color="#1B3A5C"/>
+      <stop offset="100%" stop-color="#0A1F35"/>
     </radialGradient>
-    <!-- Soft outer glow -->
+    <!-- Soft blue glow above iris -->
+    <radialGradient id="aiboGlow" cx="50%" cy="40%" r="55%">
+      <stop offset="0%" stop-color="#9FD8F2" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="#9FD8F2" stop-opacity="0"/>
+    </radialGradient>
+
     <filter id="bodyShadow" x="-30%" y="-30%" width="160%" height="160%">
       <feGaussianBlur stdDeviation="3" />
     </filter>
+    <filter id="aiboBloom" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="2.2" />
+    </filter>
   </defs>
 
-  <!-- Ground shadow -->
   <ellipse cx="120" cy="240" rx="62" ry="7" fill="#1A3F55" opacity="0.18" filter="url(#bodyShadow)"/>
 
-  <!-- Body wrapper for breathing animation -->
   <g class="moodie-body">
-    <!-- Soft body shadow halo -->
-    <path filter="url(#bodyShadow)" opacity="0.35" fill="#5BA8C9" d="
-      M120 32
-      C 168 34, 198 70, 198 118
-      C 198 158, 184 192, 162 210
-      C 148 222, 134 226, 120 226
-      C 106 226, 92 222, 78 210
-      C 56 192, 42 158, 42 118
-      C 42 70, 72 34, 120 32 Z" />
-
-    <!-- Jelly body: teardrop, narrower top, wider bottom -->
     <path fill="url(#bodyGrad)" d="
-      M120 30
-      C 165 32, 195 68, 196 116
-      C 197 156, 184 192, 160 210
-      C 146 220, 134 224, 120 224
-      C 106 224, 94 220, 80 210
-      C 56 192, 43 156, 44 116
-      C 45 68, 75 32, 120 30 Z" />
-
-    <!-- Inner glass tint -->
+      M120 30 C 165 32, 195 68, 196 116 C 197 156, 184 192, 160 210
+      C 146 220, 134 224, 120 224 C 106 224, 94 220, 80 210
+      C 56 192, 43 156, 44 116 C 45 68, 75 32, 120 30 Z" />
     <path fill="url(#glassInner)" d="
-      M120 30
-      C 165 32, 195 68, 196 116
-      C 197 156, 184 192, 160 210
-      C 146 220, 134 224, 120 224
-      C 106 224, 94 220, 80 210
-      C 56 192, 43 156, 44 116
-      C 45 68, 75 32, 120 30 Z" />
-
-    <!-- Big top-left highlight -->
+      M120 30 C 165 32, 195 68, 196 116 C 197 156, 184 192, 160 210
+      C 146 220, 134 224, 120 224 C 106 224, 94 220, 80 210
+      C 56 192, 43 156, 44 116 C 45 68, 75 32, 120 30 Z" />
     <ellipse cx="88" cy="78" rx="32" ry="38" fill="url(#hiTop)" />
-    <!-- Small bottom-right shine -->
-    <ellipse cx="168" cy="170" rx="10" ry="14" fill="url(#hiBot)" opacity="0.7" />
-    <!-- Tiny crescent shine -->
-    <path d="M70 60 Q 78 50, 88 54 Q 80 58, 74 68 Z" fill="#FFFFFF" opacity="0.55"/>
 
-    <!-- ===== Cat eyes (large, close-set) ===== -->
+    <!-- ===== Aibo OLED-style eyes ===== -->
     <g class="moodie-eyes">
-      <!-- Left eye -->
-      <g>
-        <!-- eye white base (very subtle glassy ring) -->
-        <ellipse cx="100" cy="138" rx="22" ry="24" fill="#FFFFFF" opacity="0.18"/>
-        <!-- iris -->
-        <circle cx="100" cy="138" r="20" fill="url(#iris)"/>
-        <!-- pupil -->
-        <ellipse cx="100" cy="140" rx="9" ry="13" fill="#0A1F2E"/>
-        <!-- big shine -->
-        <circle cx="94" cy="131" r="6" fill="#FFFFFF"/>
-        <!-- small shine -->
-        <circle cx="106" cy="146" r="2.4" fill="#FFFFFF"/>
-        <!-- lashes -->
-        <path d="M82 122 Q 86 118, 90 121" stroke="#1A3F55" stroke-width="1.6" fill="none" stroke-linecap="round"/>
-        <path d="M88 117 Q 92 113, 96 117" stroke="#1A3F55" stroke-width="1.6" fill="none" stroke-linecap="round"/>
-        <path d="M96 115 Q 100 112, 104 115" stroke="#1A3F55" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+      <!-- LEFT EYE -->
+      <g class="eye eye-left">
+        <!-- subtle eyeshadow above -->
+        <ellipse cx="98" cy="115" rx="30" ry="6" fill="#1A3F55" opacity="0.15"/>
+        <!-- 1. black display frame -->
+        <circle cx="98" cy="138" r="29" fill="#0A1525"/>
+        <!-- 2. deep blue ring -->
+        <circle cx="98" cy="138" r="27" fill="url(#aiboRing)"/>
+        <!-- 3. iris -->
+        <circle cx="98" cy="138" r="24" fill="url(#aiboIris)" filter="url(#aiboBloom)"/>
+        <!-- iris radial lines -->
+        <g stroke="#1B3A5C" stroke-width="0.6" opacity="0.55" stroke-linecap="round">
+          <line x1="98" y1="116" x2="98" y2="124"/>
+          <line x1="98" y1="160" x2="98" y2="152"/>
+          <line x1="76" y1="138" x2="84" y2="138"/>
+          <line x1="120" y1="138" x2="112" y2="138"/>
+          <line x1="82" y1="122" x2="87" y2="127"/>
+          <line x1="114" y1="154" x2="109" y2="149"/>
+          <line x1="114" y1="122" x2="109" y2="127"/>
+          <line x1="82" y1="154" x2="87" y2="149"/>
+          <line x1="89" y1="118" x2="91" y2="125"/>
+          <line x1="107" y1="158" x2="105" y2="151"/>
+          <line x1="78" y1="129" x2="85" y2="131"/>
+          <line x1="118" y1="147" x2="111" y2="145"/>
+        </g>
+        <!-- blue bloom overlay -->
+        <circle cx="98" cy="134" r="22" fill="url(#aiboGlow)"/>
+        <!-- 4. pupil -->
+        <circle cx="98" cy="138" r="11" fill="#050B18"/>
+        <!-- 5a. main highlight (top-left, ~30% of eye) -->
+        <circle cx="89" cy="128" r="8" fill="#FFFFFF"/>
+        <!-- 5b. sub highlight (bottom-right, ~10%) -->
+        <circle cx="106" cy="148" r="2.6" fill="#FFFFFF"/>
+        <!-- tiny extra glint -->
+        <circle cx="93" cy="134" r="1.4" fill="#FFFFFF" opacity="0.85"/>
       </g>
-      <!-- Right eye -->
-      <g>
-        <ellipse cx="140" cy="138" rx="22" ry="24" fill="#FFFFFF" opacity="0.18"/>
-        <circle cx="140" cy="138" r="20" fill="url(#iris)"/>
-        <ellipse cx="140" cy="140" rx="9" ry="13" fill="#0A1F2E"/>
-        <circle cx="134" cy="131" r="6" fill="#FFFFFF"/>
-        <circle cx="146" cy="146" r="2.4" fill="#FFFFFF"/>
-        <path d="M158 122 Q 154 118, 150 121" stroke="#1A3F55" stroke-width="1.6" fill="none" stroke-linecap="round"/>
-        <path d="M152 117 Q 148 113, 144 117" stroke="#1A3F55" stroke-width="1.6" fill="none" stroke-linecap="round"/>
-        <path d="M144 115 Q 140 112, 136 115" stroke="#1A3F55" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+
+      <!-- RIGHT EYE -->
+      <g class="eye eye-right">
+        <ellipse cx="142" cy="115" rx="30" ry="6" fill="#1A3F55" opacity="0.15"/>
+        <circle cx="142" cy="138" r="29" fill="#0A1525"/>
+        <circle cx="142" cy="138" r="27" fill="url(#aiboRing)"/>
+        <circle cx="142" cy="138" r="24" fill="url(#aiboIris)" filter="url(#aiboBloom)"/>
+        <g stroke="#1B3A5C" stroke-width="0.6" opacity="0.55" stroke-linecap="round">
+          <line x1="142" y1="116" x2="142" y2="124"/>
+          <line x1="142" y1="160" x2="142" y2="152"/>
+          <line x1="120" y1="138" x2="128" y2="138"/>
+          <line x1="164" y1="138" x2="156" y2="138"/>
+          <line x1="126" y1="122" x2="131" y2="127"/>
+          <line x1="158" y1="154" x2="153" y2="149"/>
+          <line x1="158" y1="122" x2="153" y2="127"/>
+          <line x1="126" y1="154" x2="131" y2="149"/>
+          <line x1="133" y1="118" x2="135" y2="125"/>
+          <line x1="151" y1="158" x2="149" y2="151"/>
+          <line x1="122" y1="129" x2="129" y2="131"/>
+          <line x1="162" y1="147" x2="155" y2="145"/>
+        </g>
+        <circle cx="142" cy="134" r="22" fill="url(#aiboGlow)"/>
+        <circle cx="142" cy="138" r="11" fill="#050B18"/>
+        <circle cx="133" cy="128" r="8" fill="#FFFFFF"/>
+        <circle cx="150" cy="148" r="2.6" fill="#FFFFFF"/>
+        <circle cx="137" cy="134" r="1.4" fill="#FFFFFF" opacity="0.85"/>
       </g>
     </g>
 
-    <!-- Tiny smile -->
-    <path d="M114 178 Q 120 184, 126 178" stroke="#D88BA0" stroke-width="2.2" stroke-linecap="round" fill="none" opacity="0.85"/>
-    <!-- Subtle blush -->
-    <ellipse cx="80" cy="172" rx="8" ry="4" fill="#F4B5C4" opacity="0.45"/>
-    <ellipse cx="160" cy="172" rx="8" ry="4" fill="#F4B5C4" opacity="0.45"/>
+    <!-- tiny smile + blush -->
+    <path d="M114 188 Q 120 194, 126 188" stroke="#D88BA0" stroke-width="2.2" stroke-linecap="round" fill="none" opacity="0.85"/>
+    <ellipse cx="74" cy="180" rx="8" ry="4" fill="#F4B5C4" opacity="0.45"/>
+    <ellipse cx="166" cy="180" rx="8" ry="4" fill="#F4B5C4" opacity="0.45"/>
   </g>
 
-  <!-- ===== Sparkles ===== -->
+  <!-- sparkles -->
   <g class="moodie-sparkles">
-    <g class="sparkle sparkle-1" transform="translate(36 70)">
-      <path d="M0 -8 L 2 -2 L 8 0 L 2 2 L 0 8 L -2 2 L -8 0 L -2 -2 Z" fill="#FFFFFF" opacity="0.9"/>
-    </g>
-    <g class="sparkle sparkle-2" transform="translate(208 110)">
-      <path d="M0 -6 L 1.5 -1.5 L 6 0 L 1.5 1.5 L 0 6 L -1.5 1.5 L -6 0 L -1.5 -1.5 Z" fill="#FFF6C2" opacity="0.85"/>
-    </g>
-    <g class="sparkle sparkle-3" transform="translate(196 50)">
-      <path d="M0 -5 L 1.2 -1.2 L 5 0 L 1.2 1.2 L 0 5 L -1.2 1.2 L -5 0 L -1.2 -1.2 Z" fill="#FFFFFF" opacity="0.8"/>
-    </g>
-    <g class="sparkle sparkle-4" transform="translate(28 168)">
-      <path d="M0 -5 L 1.2 -1.2 L 5 0 L 1.2 1.2 L 0 5 L -1.2 1.2 L -5 0 L -1.2 -1.2 Z" fill="#FFF6C2" opacity="0.75"/>
-    </g>
-    <g class="sparkle sparkle-5" transform="translate(214 200)">
-      <path d="M0 -7 L 1.6 -1.6 L 7 0 L 1.6 1.6 L 0 7 L -1.6 1.6 L -7 0 L -1.6 -1.6 Z" fill="#FFFFFF" opacity="0.85"/>
-    </g>
+    <g class="sparkle sparkle-1" transform="translate(36 70)"><path d="M0 -8 L 2 -2 L 8 0 L 2 2 L 0 8 L -2 2 L -8 0 L -2 -2 Z" fill="#FFFFFF" opacity="0.9"/></g>
+    <g class="sparkle sparkle-2" transform="translate(208 110)"><path d="M0 -6 L 1.5 -1.5 L 6 0 L 1.5 1.5 L 0 6 L -1.5 1.5 L -6 0 L -1.5 -1.5 Z" fill="#FFF6C2" opacity="0.85"/></g>
+    <g class="sparkle sparkle-3" transform="translate(196 50)"><path d="M0 -5 L 1.2 -1.2 L 5 0 L 1.2 1.2 L 0 5 L -1.2 1.2 L -5 0 L -1.2 -1.2 Z" fill="#FFFFFF" opacity="0.8"/></g>
+    <g class="sparkle sparkle-4" transform="translate(28 168)"><path d="M0 -5 L 1.2 -1.2 L 5 0 L 1.2 1.2 L 0 5 L -1.2 1.2 L -5 0 L -1.2 -1.2 Z" fill="#FFF6C2" opacity="0.75"/></g>
+    <g class="sparkle sparkle-5" transform="translate(214 200)"><path d="M0 -7 L 1.6 -1.6 L 7 0 L 1.6 1.6 L 0 7 L -1.6 1.6 L -7 0 L -1.6 -1.6 Z" fill="#FFFFFF" opacity="0.85"/></g>
   </g>
 </svg>

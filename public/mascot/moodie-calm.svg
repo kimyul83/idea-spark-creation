@@ -14,6 +14,12 @@
       <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.95"/>
       <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0"/>
     </radialGradient>
+    <!-- Calm: deeper, richer blue -->
+    <radialGradient id="aiboIrisC" cx="50%" cy="50%" r="60%">
+      <stop offset="0%"  stop-color="#5BA8C9"/>
+      <stop offset="55%" stop-color="#2E5C8A"/>
+      <stop offset="100%" stop-color="#0F2640"/>
+    </radialGradient>
     <filter id="bodyShadow" x="-30%" y="-30%" width="160%" height="160%">
       <feGaussianBlur stdDeviation="3" />
     </filter>
@@ -32,20 +38,34 @@
       C 56 192, 43 156, 44 116 C 45 68, 75 32, 120 30 Z" />
     <ellipse cx="88" cy="78" rx="32" ry="38" fill="url(#hiTop)" />
 
-    <!-- Closed/calm eyes (gentle downward arcs ⌒ ⌒) -->
-    <g class="moodie-eyes" fill="none" stroke="#1A3F55" stroke-width="4.5" stroke-linecap="round">
-      <path d="M82 138 Q 100 152, 118 138"/>
-      <path d="M122 138 Q 140 152, 158 138"/>
-      <!-- subtle lashes -->
-      <path d="M118 138 L 122 134" stroke-width="1.6"/>
-      <path d="M82 138 L 78 134" stroke-width="1.6"/>
-      <path d="M158 138 L 162 134" stroke-width="1.6"/>
+    <g class="moodie-eyes">
+      <g class="eye eye-left">
+        <ellipse cx="98" cy="115" rx="30" ry="6" fill="#1A3F55" opacity="0.18"/>
+        <circle cx="98" cy="138" r="29" fill="#0A1525"/>
+        <circle cx="98" cy="138" r="27" fill="#0F2640"/>
+        <circle cx="98" cy="138" r="24" fill="url(#aiboIrisC)"/>
+        <circle cx="98" cy="138" r="11" fill="#050B18"/>
+        <circle cx="89" cy="128" r="7" fill="#FFFFFF" opacity="0.9"/>
+        <circle cx="106" cy="148" r="2.4" fill="#FFFFFF" opacity="0.85"/>
+        <!-- slightly closed lid (sleepy) -->
+        <path d="M67 138 Q 98 118, 129 138 L 129 108 L 67 108 Z" fill="#A8D8E8" opacity="0.95"/>
+      </g>
+      <g class="eye eye-right">
+        <ellipse cx="142" cy="115" rx="30" ry="6" fill="#1A3F55" opacity="0.18"/>
+        <circle cx="142" cy="138" r="29" fill="#0A1525"/>
+        <circle cx="142" cy="138" r="27" fill="#0F2640"/>
+        <circle cx="142" cy="138" r="24" fill="url(#aiboIrisC)"/>
+        <circle cx="142" cy="138" r="11" fill="#050B18"/>
+        <circle cx="133" cy="128" r="7" fill="#FFFFFF" opacity="0.9"/>
+        <circle cx="150" cy="148" r="2.4" fill="#FFFFFF" opacity="0.85"/>
+        <path d="M111 138 Q 142 118, 173 138 L 173 108 L 111 108 Z" fill="#A8D8E8" opacity="0.95"/>
+      </g>
     </g>
 
     <!-- gentle smile -->
-    <path d="M112 178 Q 120 184, 128 178" stroke="#D88BA0" stroke-width="2.2" stroke-linecap="round" fill="none" opacity="0.9"/>
-    <ellipse cx="80" cy="172" rx="8" ry="4" fill="#F4B5C4" opacity="0.45"/>
-    <ellipse cx="160" cy="172" rx="8" ry="4" fill="#F4B5C4" opacity="0.45"/>
+    <path d="M112 188 Q 120 194, 128 188" stroke="#D88BA0" stroke-width="2.2" stroke-linecap="round" fill="none" opacity="0.9"/>
+    <ellipse cx="74" cy="180" rx="8" ry="4" fill="#F4B5C4" opacity="0.45"/>
+    <ellipse cx="166" cy="180" rx="8" ry="4" fill="#F4B5C4" opacity="0.45"/>
   </g>
 
   <g class="moodie-sparkles">

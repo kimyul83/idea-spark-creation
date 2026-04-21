@@ -14,10 +14,11 @@
       <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.95"/>
       <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0"/>
     </radialGradient>
-    <radialGradient id="iris" cx="50%" cy="40%" r="55%">
-      <stop offset="0%" stop-color="#3E7FA0"/>
-      <stop offset="70%" stop-color="#2C5F7A"/>
-      <stop offset="100%" stop-color="#1A3F55"/>
+    <!-- Sad iris: dimmer, more navy -->
+    <radialGradient id="aiboIrisS" cx="50%" cy="55%" r="60%">
+      <stop offset="0%"  stop-color="#4A7AA0"/>
+      <stop offset="60%" stop-color="#2E5C8A"/>
+      <stop offset="100%" stop-color="#0F2640"/>
     </radialGradient>
     <filter id="bodyShadow" x="-30%" y="-30%" width="160%" height="160%">
       <feGaussianBlur stdDeviation="3" />
@@ -38,33 +39,41 @@
     <ellipse cx="88" cy="78" rx="32" ry="38" fill="url(#hiTop)" />
 
     <g class="moodie-eyes">
-      <g>
-        <ellipse cx="100" cy="142" rx="22" ry="22" fill="#FFFFFF" opacity="0.18"/>
-        <circle cx="100" cy="142" r="20" fill="url(#iris)"/>
-        <ellipse cx="100" cy="146" rx="8" ry="12" fill="#0A1F2E"/>
-        <circle cx="94" cy="135" r="6" fill="#FFFFFF"/>
-        <circle cx="106" cy="150" r="2.4" fill="#FFFFFF"/>
-        <!-- droopy lashes -->
-        <path d="M82 132 Q 86 130, 90 133" stroke="#1A3F55" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+      <!-- LEFT -->
+      <g class="eye eye-left">
+        <ellipse cx="98" cy="115" rx="30" ry="6" fill="#1A3F55" opacity="0.15"/>
+        <circle cx="98" cy="138" r="29" fill="#0A1525"/>
+        <circle cx="98" cy="138" r="27" fill="#1B3A5C"/>
+        <circle cx="98" cy="138" r="24" fill="url(#aiboIrisS)"/>
+        <circle cx="98" cy="142" r="11" fill="#050B18"/>
+        <circle cx="89" cy="132" r="7" fill="#FFFFFF" opacity="0.9"/>
+        <circle cx="106" cy="150" r="2.4" fill="#FFFFFF" opacity="0.85"/>
+        <!-- half-closed eyelid (top) -->
+        <path d="M67 138 Q 98 122, 129 138 L 129 110 L 67 110 Z" fill="#A8D8E8"/>
+        <path d="M67 138 Q 98 130, 129 138" stroke="#1B3A5C" stroke-width="2" fill="none" stroke-linecap="round" opacity="0.7"/>
         <!-- tear -->
-        <path d="M82 152 Q 80 162, 84 168 Q 88 162, 86 152 Z" fill="#7FC4D9" opacity="0.9"/>
+        <path d="M84 162 Q 82 174, 86 180 Q 90 174, 88 162 Z" fill="#7FC4D9" opacity="0.95"/>
       </g>
-      <g>
-        <ellipse cx="140" cy="142" rx="22" ry="22" fill="#FFFFFF" opacity="0.18"/>
-        <circle cx="140" cy="142" r="20" fill="url(#iris)"/>
-        <ellipse cx="140" cy="146" rx="8" ry="12" fill="#0A1F2E"/>
-        <circle cx="134" cy="135" r="6" fill="#FFFFFF"/>
-        <circle cx="146" cy="150" r="2.4" fill="#FFFFFF"/>
-        <path d="M158 132 Q 154 130, 150 133" stroke="#1A3F55" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+      <!-- RIGHT -->
+      <g class="eye eye-right">
+        <ellipse cx="142" cy="115" rx="30" ry="6" fill="#1A3F55" opacity="0.15"/>
+        <circle cx="142" cy="138" r="29" fill="#0A1525"/>
+        <circle cx="142" cy="138" r="27" fill="#1B3A5C"/>
+        <circle cx="142" cy="138" r="24" fill="url(#aiboIrisS)"/>
+        <circle cx="142" cy="142" r="11" fill="#050B18"/>
+        <circle cx="133" cy="132" r="7" fill="#FFFFFF" opacity="0.9"/>
+        <circle cx="150" cy="150" r="2.4" fill="#FFFFFF" opacity="0.85"/>
+        <path d="M111 138 Q 142 122, 173 138 L 173 110 L 111 110 Z" fill="#A8D8E8"/>
+        <path d="M111 138 Q 142 130, 173 138" stroke="#1B3A5C" stroke-width="2" fill="none" stroke-linecap="round" opacity="0.7"/>
       </g>
     </g>
 
-    <!-- Frown -->
-    <path d="M112 184 Q 120 178, 128 184" stroke="#D88BA0" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+    <!-- frown -->
+    <path d="M112 192 Q 120 184, 128 192" stroke="#D88BA0" stroke-width="2.2" stroke-linecap="round" fill="none"/>
   </g>
 
   <g class="moodie-sparkles">
-    <g class="sparkle sparkle-1" transform="translate(36 70)"><path d="M0 -6 L 1.5 -1.5 L 6 0 L 1.5 1.5 L 0 6 L -1.5 1.5 L -6 0 L -1.5 -1.5 Z" fill="#FFFFFF" opacity="0.6"/></g>
+    <g class="sparkle sparkle-1" transform="translate(36 70)"><path d="M0 -5 L 1.2 -1.2 L 5 0 L 1.2 1.2 L 0 5 L -1.2 1.2 L -5 0 L -1.2 -1.2 Z" fill="#FFFFFF" opacity="0.55"/></g>
     <g class="sparkle sparkle-3" transform="translate(196 50)"><path d="M0 -4 L 1 -1 L 4 0 L 1 1 L 0 4 L -1 1 L -4 0 L -1 -1 Z" fill="#FFFFFF" opacity="0.5"/></g>
   </g>
 </svg>

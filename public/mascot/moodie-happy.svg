@@ -14,9 +14,17 @@
       <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.95"/>
       <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0"/>
     </radialGradient>
+    <radialGradient id="aiboIrisH" cx="50%" cy="50%" r="60%">
+      <stop offset="0%"  stop-color="#9FD8F2"/>
+      <stop offset="55%" stop-color="#4A90C4"/>
+      <stop offset="100%" stop-color="#1B3A5C"/>
+    </radialGradient>
     <filter id="bodyShadow" x="-30%" y="-30%" width="160%" height="160%">
       <feGaussianBlur stdDeviation="3" />
     </filter>
+    <!-- Half-moon clip for happy eyes (upper half hidden) -->
+    <clipPath id="happyClipL"><rect x="68" y="138" width="60" height="40"/></clipPath>
+    <clipPath id="happyClipR"><rect x="112" y="138" width="60" height="40"/></clipPath>
   </defs>
 
   <ellipse cx="120" cy="240" rx="62" ry="7" fill="#1A3F55" opacity="0.18" filter="url(#bodyShadow)"/>
@@ -32,23 +40,46 @@
       C 56 192, 43 156, 44 116 C 45 68, 75 32, 120 30 Z" />
     <ellipse cx="88" cy="78" rx="32" ry="38" fill="url(#hiTop)" />
 
-    <!-- Happy: arc-shaped eyes (^ ^) -->
-    <g class="moodie-eyes" fill="none" stroke="#1A3F55" stroke-width="5" stroke-linecap="round">
-      <path d="M82 138 Q 100 118, 118 138"/>
-      <path d="M122 138 Q 140 118, 158 138"/>
+    <!-- Happy: half-moon eyes (upper flat) -->
+    <g class="moodie-eyes">
+      <g class="eye eye-left">
+        <!-- bottom half of OLED -->
+        <g clip-path="url(#happyClipL)">
+          <circle cx="98" cy="138" r="29" fill="#0A1525"/>
+          <circle cx="98" cy="138" r="27" fill="#1B3A5C"/>
+          <circle cx="98" cy="138" r="24" fill="url(#aiboIrisH)"/>
+          <circle cx="98" cy="138" r="11" fill="#050B18"/>
+        </g>
+        <!-- flat top edge line -->
+        <line x1="68" y1="138" x2="128" y2="138" stroke="#0A1525" stroke-width="3" stroke-linecap="round"/>
+        <!-- glossy highlights enlarged -->
+        <circle cx="89" cy="148" r="6" fill="#FFFFFF"/>
+        <circle cx="108" cy="160" r="2.6" fill="#FFFFFF"/>
+      </g>
+      <g class="eye eye-right">
+        <g clip-path="url(#happyClipR)">
+          <circle cx="142" cy="138" r="29" fill="#0A1525"/>
+          <circle cx="142" cy="138" r="27" fill="#1B3A5C"/>
+          <circle cx="142" cy="138" r="24" fill="url(#aiboIrisH)"/>
+          <circle cx="142" cy="138" r="11" fill="#050B18"/>
+        </g>
+        <line x1="112" y1="138" x2="172" y2="138" stroke="#0A1525" stroke-width="3" stroke-linecap="round"/>
+        <circle cx="133" cy="148" r="6" fill="#FFFFFF"/>
+        <circle cx="152" cy="160" r="2.6" fill="#FFFFFF"/>
+      </g>
     </g>
 
-    <!-- Bigger smile -->
-    <path d="M108 176 Q 120 190, 132 176" stroke="#D88BA0" stroke-width="2.6" stroke-linecap="round" fill="none"/>
-    <ellipse cx="78" cy="170" rx="9" ry="5" fill="#F4B5C4" opacity="0.55"/>
-    <ellipse cx="162" cy="170" rx="9" ry="5" fill="#F4B5C4" opacity="0.55"/>
+    <!-- bigger smile + cheeks -->
+    <path d="M108 186 Q 120 200, 132 186" stroke="#D88BA0" stroke-width="2.8" stroke-linecap="round" fill="none"/>
+    <ellipse cx="74" cy="180" rx="9" ry="5" fill="#F4B5C4" opacity="0.6"/>
+    <ellipse cx="166" cy="180" rx="9" ry="5" fill="#F4B5C4" opacity="0.6"/>
   </g>
 
   <g class="moodie-sparkles">
-    <g class="sparkle sparkle-1" transform="translate(36 70)"><path d="M0 -8 L 2 -2 L 8 0 L 2 2 L 0 8 L -2 2 L -8 0 L -2 -2 Z" fill="#FFFFFF" opacity="0.9"/></g>
-    <g class="sparkle sparkle-2" transform="translate(208 110)"><path d="M0 -6 L 1.5 -1.5 L 6 0 L 1.5 1.5 L 0 6 L -1.5 1.5 L -6 0 L -1.5 -1.5 Z" fill="#FFF6C2" opacity="0.85"/></g>
-    <g class="sparkle sparkle-3" transform="translate(196 50)"><path d="M0 -5 L 1.2 -1.2 L 5 0 L 1.2 1.2 L 0 5 L -1.2 1.2 L -5 0 L -1.2 -1.2 Z" fill="#FFFFFF" opacity="0.8"/></g>
-    <g class="sparkle sparkle-4" transform="translate(28 168)"><path d="M0 -5 L 1.2 -1.2 L 5 0 L 1.2 1.2 L 0 5 L -1.2 1.2 L -5 0 L -1.2 -1.2 Z" fill="#FFF6C2" opacity="0.75"/></g>
-    <g class="sparkle sparkle-5" transform="translate(214 200)"><path d="M0 -7 L 1.6 -1.6 L 7 0 L 1.6 1.6 L 0 7 L -1.6 1.6 L -7 0 L -1.6 -1.6 Z" fill="#FFFFFF" opacity="0.85"/></g>
+    <g class="sparkle sparkle-1" transform="translate(36 70)"><path d="M0 -8 L 2 -2 L 8 0 L 2 2 L 0 8 L -2 2 L -8 0 L -2 -2 Z" fill="#FFFFFF" opacity="0.95"/></g>
+    <g class="sparkle sparkle-2" transform="translate(208 110)"><path d="M0 -6 L 1.5 -1.5 L 6 0 L 1.5 1.5 L 0 6 L -1.5 1.5 L -6 0 L -1.5 -1.5 Z" fill="#FFF6C2" opacity="0.9"/></g>
+    <g class="sparkle sparkle-3" transform="translate(196 50)"><path d="M0 -5 L 1.2 -1.2 L 5 0 L 1.2 1.2 L 0 5 L -1.2 1.2 L -5 0 L -1.2 -1.2 Z" fill="#FFFFFF" opacity="0.85"/></g>
+    <g class="sparkle sparkle-4" transform="translate(28 168)"><path d="M0 -5 L 1.2 -1.2 L 5 0 L 1.2 1.2 L 0 5 L -1.2 1.2 L -5 0 L -1.2 -1.2 Z" fill="#FFF6C2" opacity="0.8"/></g>
+    <g class="sparkle sparkle-5" transform="translate(214 200)"><path d="M0 -7 L 1.6 -1.6 L 7 0 L 1.6 1.6 L 0 7 L -1.6 1.6 L -7 0 L -1.6 -1.6 Z" fill="#FFFFFF" opacity="0.9"/></g>
   </g>
 </svg>

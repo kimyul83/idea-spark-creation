@@ -14,6 +14,7 @@ import Session from "./pages/Session";
 import Adhd from "./pages/Adhd";
 import GlassBreak from "./pages/GlassBreak";
 import Subscribe from "./pages/Subscribe";
+import AuthCallback from "./pages/AuthCallback";
 import { AppShell } from "./components/AppShell";
 
 const queryClient = new QueryClient();
@@ -26,6 +27,7 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/onboarding" element={<Onboarding />} />
+          <Route path="/auth/callback" element={<AuthCallback />} />
           <Route path="/session/:type/:id" element={<div className="app-shell"><Session /></div>} />
           <Route path="/breathing/session/:id" element={<div className="app-shell"><BreathingSession /></div>} />
           <Route path="/focus/adhd" element={<div className="app-shell"><Adhd /></div>} />

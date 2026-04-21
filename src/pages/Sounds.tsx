@@ -2,14 +2,32 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { SoundRow } from "@/types/db";
-import { audioEngine } from "@/lib/audio-engine";
+import { audioEngine, NatureSoundId, AsmrSoundId } from "@/lib/audio-engine";
 import { getIcon } from "@/lib/icon-map";
 import { cn } from "@/lib/utils";
 import { Lock, Pause, Play } from "lucide-react";
 import { MonetBackground } from "@/components/MonetBackground";
 import { usePremium } from "@/hooks/usePremium";
+import { toast } from "sonner";
 
-const FREE_NATURE = new Set(["숲속", "바다", "빗소리"]);
+const FREE_NATURE = new Set(["숲속", "바다 파도", "빗소리"]);
+
+// Map Korean sound names → synth recipe id
+const NATURE_MAP: Record<string, NatureSoundId> = {
+  "숲속": "forest",
+  "바다 파도": "ocean",
+  "빗소리": "rain",
+  "새소리": "birds",
+  "폭포": "stream",
+  "바람 소리": "wind",
+  "동굴 울림": "cave",
+  "따뜻한 햇살": "sun",
+};
+const ASMR_MAP: Record<string, AsmrSoundId> = {
+  "타이핑 ASMR": "typing",
+  "페이지 넘기기": "page",
+  "카페 분위기": "cafe",
+};
 
 const Sounds = () => {
   const [sounds, setSounds] = useState<SoundRow[]>([]);
@@ -40,13 +58,34 @@ const Sounds = () => {
     if (active.includes(s.id)) {
       audioEngine.stop(s.id);
       setActive((p) => p.filter((x) => x !== s.id));
-    } else {
-      if (s.source_type === "url" && s.audio_url) audioEngine.playUrl(s.id, s.audio_url);
-      else if (s.name.includes("브라운")) audioEngine.playNoise(s.id, "brown");
-      else if (s.name.includes("핑크")) audioEngine.playNoise(s.id, "pink");
-      else if (s.name.includes("화이트")) audioEngine.playNoise(s.id, "white");
-      else audioEngine.playTone(s.id, s.frequency_hz ?? 432);
+      return;
+    }
+
+    try {
+      if (s.category === "nature") {
+        const kind = NATURE_MAP[s.name];
+        if (!kind) throw new Error("unknown nature kind");
+        audioEngine.playNature(s.id, kind);
+      } else if (s.category === "asmr") {
+        const kind = ASMR_MAP[s.name];
+        if (!kind) throw new Error("unknown asmr kind");
+        audioEngine.playAsmr(s.id, kind);
+      } else if (s.name.includes("브라운")) {
+        audioEngine.playNoise(s.id, "brown");
+      } else if (s.name.includes("핑크")) {
+        audioEngine.playNoise(s.id, "pink");
+      } else if (s.name.includes("화이트")) {
+        audioEngine.playNoise(s.id, "white");
+      } else if (s.frequency_hz && s.frequency_hz > 0) {
+        audioEngine.playTone(s.id, s.frequency_hz);
+      } else if (s.source_type === "url" && s.audio_url) {
+        audioEngine.playUrl(s.id, s.audio_url, 0.6, (msg) => toast.error(msg));
+      } else {
+        throw new Error("no playable source");
+      }
       setActive((p) => [...p, s.id]);
+    } catch {
+      toast.error(`${s.name}을(를) 재생할 수 없어요`);
     }
   };
 

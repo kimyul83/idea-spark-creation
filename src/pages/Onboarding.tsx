@@ -4,6 +4,7 @@ import { ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Moodie } from "@/components/Moodie";
+import { MonetBackground } from "@/components/MonetBackground";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
@@ -74,7 +75,8 @@ const Onboarding = () => {
   const slide = slides[step];
 
   return (
-    <div className="app-shell flex flex-col mesh-bg overflow-hidden">
+    <div className="app-shell flex flex-col overflow-hidden">
+      <MonetBackground intensity="strong" />
       {/* progress dots */}
       <div className="flex justify-center gap-1.5 pt-12">
         {slides.map((_, i) => (
@@ -89,9 +91,6 @@ const Onboarding = () => {
       </div>
 
       <div className="flex-1 flex flex-col items-center justify-center px-8 text-center relative">
-        {/* soft background blob */}
-        <div className="blob w-[420px] h-[420px] -z-10 opacity-30 bg-sage-deep" />
-
         <Moodie size="large" />
 
         <p className="mt-10 text-xs tracking-[0.3em] uppercase text-sage-deep font-medium font-serif animate-fade-up" key={step + "-e"}>

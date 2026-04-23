@@ -1,16 +1,21 @@
 import { useNavigate } from "react-router-dom";
-import { Music, Wind, Sparkles, ChevronRight } from "lucide-react";
+import { Wind, Sparkles, ChevronRight } from "lucide-react";
 import { MonetBackground } from "@/components/MonetBackground";
 import { Moodie } from "@/components/Moodie";
 import { MUSIC_SITUATIONS } from "@/lib/modes";
 import { SITUATION_DETAILS } from "@/lib/situation-details";
+import { useTheme } from "@/contexts/ThemeContext";
+import { FOCUS_MODES } from "@/types/db";
+import { getIcon } from "@/lib/icon-map";
+import { cn } from "@/lib/utils";
 
 /**
- * 홈 — Breath 페이지 통일 스타일.
- * liquid-card 리스트 중심. 컬러풀 위젯 X.
+ * Home — 심리 음악 상황 + 호흡·깨기 빠른 진입.
+ * 복잡한 자연 소리는 Music 탭으로 분리.
  */
 const Home = () => {
   const navigate = useNavigate();
+  const { resolvedVariant } = useTheme();
   const hour = new Date().getHours();
 
   const greeting =
@@ -20,111 +25,129 @@ const Home = () => {
     hour < 22 ? "편안한 저녁이에요" :
     "하루를 마무리해요";
 
-  const recommended = MUSIC_SITUATIONS.filter((s) => {
-    if (!s.showHours) return s.group === "core";
-    const [start, end] = s.showHours;
-    if (start <= end) return hour >= start && hour < end;
-    return hour >= start || hour < end;
-  }).slice(0, 4);
+  const core = MUSIC_SITUATIONS.filter((s) => s.group === "core");
+  const mood = MUSIC_SITUATIONS.filter((s) => s.group === "mood");
+  const travel = MUSIC_SITUATIONS.filter((s) => s.group === "travel");
 
   return (
     <div className="px-5 pt-12 pb-6 relative flex-1 flex flex-col">
       <MonetBackground intensity="medium" />
 
       {/* Header */}
-      <div className="animate-fade-up">
-        <p className="text-[11px] tracking-[0.3em] uppercase text-primary font-serif">
-          Home
-        </p>
-        <h1 className="text-[26px] font-bold text-foreground mt-1 leading-tight">
-          {greeting}
-        </h1>
-        <p className="text-sm text-foreground/60 mt-1">
-          어떤 시간이 필요해요?
-        </p>
-      </div>
-
-      {/* 3대 기능 */}
-      <div className="mt-5 space-y-2.5">
-        <PillarCard
-          icon={<Music className="w-6 h-6 text-primary" strokeWidth={1.6} />}
-          title="음악"
-          subtitle="상황별 심리 음악 · 자연 소리 · 주파수"
-          tag="98 Tracks · 15 Situations"
-          onClick={() => navigate("/music")}
-        />
-        <PillarCard
-          icon={<Wind className="w-6 h-6 text-primary" strokeWidth={1.6} />}
-          title="호흡"
-          subtitle="4-7-8 · 박스 · 코히어런트 호흡법"
-          tag="10 Techniques · 임상 검증"
-          onClick={() => navigate("/breathing")}
-        />
-        <PillarCard
-          icon={<Sparkles className="w-6 h-6 text-primary" strokeWidth={1.6} />}
-          title="깨기"
-          subtitle="터치해서 깨부수는 스트레스 해소"
-          tag="12 Visuals · 파편 카타르시스"
-          onClick={() => navigate("/release/glass")}
-        />
-      </div>
-
-      {/* 지금 어울리는 순간 */}
-      <div className="mt-7 animate-fade-up">
-        <div className="flex items-end justify-between mb-3">
-          <div>
-            <p className="text-[10px] tracking-[0.25em] uppercase text-primary font-serif">
-              For this moment
-            </p>
-            <p className="text-[15px] font-bold text-foreground mt-0.5">
-              지금 어울리는 순간
-            </p>
-          </div>
-          <button
-            onClick={() => navigate("/music")}
-            className="text-[11px] text-foreground/55"
-          >
-            전체 →
-          </button>
+      <div className="animate-fade-up flex items-start justify-between">
+        <div>
+          <p className="text-[11px] tracking-[0.3em] uppercase text-primary font-serif">
+            Home
+          </p>
+          <h1 className="text-[26px] font-bold text-foreground mt-1 leading-tight">
+            {greeting}
+          </h1>
+          <p className="text-sm text-foreground/60 mt-1">
+            어떤 시간이 필요해요?
+          </p>
         </div>
+        <Moodie size="small" />
+      </div>
 
+      {/* 호흡 · 깨기 빠른 진입 */}
+      <div className="mt-5 grid grid-cols-2 gap-2.5">
+        <button
+          onClick={() => navigate("/breathing")}
+          className="liquid-card liquid-card-hover p-3.5 flex items-center gap-3 text-left"
+        >
+          <div className="w-10 h-10 rounded-xl bg-primary/15 flex items-center justify-center shrink-0">
+            <Wind className="w-5 h-5 text-primary" strokeWidth={1.6} />
+          </div>
+          <div className="flex-1 min-w-0">
+            <p className="font-bold text-foreground text-[13px]">호흡</p>
+            <p className="text-[10px] text-foreground/55">10 Techniques</p>
+          </div>
+        </button>
+        <button
+          onClick={() => navigate("/release/glass")}
+          className="liquid-card liquid-card-hover p-3.5 flex items-center gap-3 text-left"
+        >
+          <div className="w-10 h-10 rounded-xl bg-primary/15 flex items-center justify-center shrink-0">
+            <Sparkles className="w-5 h-5 text-primary" strokeWidth={1.6} />
+          </div>
+          <div className="flex-1 min-w-0">
+            <p className="font-bold text-foreground text-[13px]">깨기</p>
+            <p className="text-[10px] text-foreground/55">스트레스 해소</p>
+          </div>
+        </button>
+      </div>
+
+      {/* 일상 · Core 6 */}
+      <section className="mt-7">
+        <h2 className="text-[11px] tracking-[0.2em] uppercase text-primary/80 font-serif mb-3 px-1">
+          일상 · 심리 음악
+        </h2>
         <div className="space-y-2">
-          {recommended.map((s) => {
-            const d = SITUATION_DETAILS[s.id];
-            if (!d) return null;
-            const Icon = s.icon;
+          {core.map((s) => (
+            <SituationRow key={s.id} id={s.id} icon={s.icon} onClick={() => navigate(`/music/${s.id}`)} />
+          ))}
+        </div>
+      </section>
+
+      {/* 무드 */}
+      <section className="mt-6">
+        <h2 className="text-[11px] tracking-[0.2em] uppercase text-primary/80 font-serif mb-3 px-1">
+          무드 · 라이프스타일
+        </h2>
+        <div className="space-y-2">
+          {mood.map((s) => (
+            <SituationRow key={s.id} id={s.id} icon={s.icon} onClick={() => navigate(`/music/${s.id}`)} />
+          ))}
+        </div>
+      </section>
+
+      {/* 여행 */}
+      <section className="mt-6">
+        <h2 className="text-[11px] tracking-[0.2em] uppercase text-primary/80 font-serif mb-3 px-1">
+          여행 바이브
+        </h2>
+        <div className="space-y-2">
+          {travel.map((s) => (
+            <SituationRow key={s.id} id={s.id} icon={s.icon} onClick={() => navigate(`/music/${s.id}`)} />
+          ))}
+        </div>
+      </section>
+
+      {/* 집중 */}
+      <section className="mt-6">
+        <h2 className="text-[11px] tracking-[0.2em] uppercase text-primary/80 font-serif mb-3 px-1">
+          집중 · 몰입
+        </h2>
+        <div className="space-y-2">
+          {FOCUS_MODES.map((m) => {
+            const Icon = getIcon(m.icon);
+            const route = m.id === "adhd" ? "/focus/adhd" : `/session/focus/${m.id}`;
             return (
               <button
-                key={s.id}
-                onClick={() => navigate(`/music/${s.id}`)}
-                className="liquid-card liquid-card-hover w-full p-3.5 flex items-center gap-3 text-left"
+                key={m.id}
+                onClick={() => navigate(route)}
+                className="liquid-card liquid-card-hover w-full p-4 flex items-center gap-3 text-left"
               >
                 <div className="w-11 h-11 rounded-2xl bg-primary/15 flex items-center justify-center shrink-0">
                   <Icon className="w-5 h-5 text-primary" strokeWidth={1.6} />
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-baseline gap-2">
-                    <p className="font-bold text-foreground text-[14px]">{d.mood}</p>
-                    <span className="text-[10px] font-mono text-primary tracking-wide">
-                      {d.frequencyLabel}
-                    </span>
+                    <span className="font-bold text-foreground text-[14px]">{m.title}</span>
+                    <span className="text-[10px] font-mono text-primary">{m.durationMin} min</span>
                   </div>
-                  <p className="text-[11px] text-foreground/55 mt-0.5 truncate">
-                    {d.scene}
-                  </p>
+                  <div className="text-[11px] text-foreground/55 mt-0.5">{m.recommend}</div>
                 </div>
-                <ChevronRight className="w-4 h-4 text-foreground/30 shrink-0" />
+                <ChevronRight className="w-4 h-4 text-foreground/25 shrink-0" />
               </button>
             );
           })}
         </div>
-      </div>
+      </section>
 
-      {/* Moodie */}
       <div className="flex-1 flex items-end justify-center pt-8">
-        <div className="text-center opacity-80">
-          <Moodie size={48} />
-          <p className="text-[11px] text-foreground/50 mt-2 font-serif tracking-widest">
+        <div className="text-center opacity-75">
+          <p className="text-[11px] text-foreground/45 font-serif tracking-widest">
             마음에 · 내리는 · 윤슬
           </p>
         </div>
@@ -133,29 +156,33 @@ const Home = () => {
   );
 };
 
-interface PillarCardProps {
-  icon: React.ReactNode;
-  title: string;
-  subtitle: string;
-  tag: string;
+interface SituationRowProps {
+  id: string;
+  icon: React.ComponentType<{ className?: string; strokeWidth?: number }>;
   onClick: () => void;
 }
 
-const PillarCard = ({ icon, title, subtitle, tag, onClick }: PillarCardProps) => (
-  <button
-    onClick={onClick}
-    className="liquid-card liquid-card-hover w-full p-4 flex items-center gap-3 text-left"
-  >
-    <div className="w-12 h-12 rounded-2xl bg-primary/15 flex items-center justify-center shrink-0">
-      {icon}
-    </div>
-    <div className="flex-1 min-w-0">
-      <p className="font-bold text-foreground text-[16px]">{title}</p>
-      <p className="text-[11px] text-foreground/60 mt-0.5">{subtitle}</p>
-      <p className="text-[10px] text-primary mt-1 font-medium">{tag}</p>
-    </div>
-    <ChevronRight className="w-4 h-4 text-foreground/30 shrink-0" />
-  </button>
-);
+const SituationRow = ({ id, icon: Icon, onClick }: SituationRowProps) => {
+  const d = SITUATION_DETAILS[id];
+  if (!d) return null;
+  return (
+    <button
+      onClick={onClick}
+      className="liquid-card liquid-card-hover w-full p-4 flex items-center gap-3 text-left"
+    >
+      <div className="w-11 h-11 rounded-2xl bg-primary/15 flex items-center justify-center shrink-0">
+        <Icon className="w-5 h-5 text-primary" strokeWidth={1.6} />
+      </div>
+      <div className="flex-1 min-w-0">
+        <div className="flex items-baseline gap-2 flex-wrap">
+          <span className="font-bold text-foreground text-[14px]">{d.mood}</span>
+          <span className="text-[10px] font-mono text-primary tracking-wide">{d.frequencyLabel}</span>
+        </div>
+        <div className="text-[11px] text-foreground/60 mt-0.5">{d.scene}</div>
+      </div>
+      <ChevronRight className="w-4 h-4 text-foreground/25 shrink-0" />
+    </button>
+  );
+};
 
 export default Home;

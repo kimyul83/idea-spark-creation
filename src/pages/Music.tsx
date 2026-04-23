@@ -18,26 +18,29 @@ import { cn } from "@/lib/utils";
 interface NatureItem {
   id: string;
   label: string;
+  /** 과학적 태그 (뇌파·연구 근거) */
+  tag: string;
   icon: React.ComponentType<{ className?: string; strokeWidth?: number }>;
   file: string;
 }
 
 const NATURE: NatureItem[] = [
-  { id: "waterfall", label: "폭포",        icon: Droplets,  file: "/sounds/ES_Ambience, Underground, Cave, Water, Dripping, Flowing 02 - Epidemic Sound.mp3" },
-  { id: "rain",      label: "빗소리",      icon: CloudRain, file: "/sounds/ES_Rain, Vegetation, Medium Leaves, Drop, Tropical, Jungle - Epidemic Sound.mp3" },
-  { id: "bird",      label: "새소리",      icon: Bird,      file: "/sounds/ES_Ambience, Birdsong, Chaffinch, Blackbird, Black Woodpecker, Coniferous Forest, Summer, Afternoon - Epidemic Sound.mp3" },
-  { id: "sun",       label: "따뜻한 햇살",  icon: Sun,       file: "/sounds/ES_Ambience, Birdsong, Meadow, Summer, Birds Sing, Wind, Light Rustle In Trees - Epidemic Sound.mp3" },
-  { id: "wind",      label: "바람 소리",   icon: Wind,      file: "/sounds/ES_Wind, Vegetation, Blowing Through Deciduous Trees, Leaves Rustling, Moderate Intensity, Winter, Afternoon - Epidemic Sound.mp3" },
-  { id: "cave",      label: "동굴 울림",   icon: Mountain,  file: "/sounds/ES_Ambience, Underground, Cave, Magic, Deep, Wind, Howling 02 - Epidemic Sound.mp3" },
-  { id: "ocean",     label: "바다 파도",   icon: Waves,     file: "/sounds/ES_Water, Lap, Gentle, On Rocks, Quiet, Peaceful, Calm Waves - Epidemic Sound.mp3" },
-  { id: "forest",    label: "숲속",        icon: Trees,     file: "/sounds/ES_Ambience, Forest, Birds Chirping, Light Rain, Light Wind - Epidemic Sound.mp3" },
-  { id: "fire",      label: "모닥불",      icon: Flame,     file: "/sounds/ES_Fire, Burning, Bonfire, Moderate Size, Close, Crackling - Epidemic Sound.mp3" },
-  { id: "night",     label: "밤 풀벌레",   icon: Moon,      file: "/sounds/ES_Ambience, Insect, Cricket, Night, Clean - Epidemic Sound.mp3" },
+  { id: "waterfall", label: "폭포",        tag: "Pink Noise · 집중",        icon: Droplets,  file: "/sounds/ES_Ambience, Underground, Cave, Water, Dripping, Flowing 02 - Epidemic Sound.mp3" },
+  { id: "rain",      label: "빗소리",      tag: "Pink Noise · 수면 +23%",   icon: CloudRain, file: "/sounds/ES_Rain, Vegetation, Medium Leaves, Drop, Tropical, Jungle - Epidemic Sound.mp3" },
+  { id: "bird",      label: "새소리",      tag: "Stress −50% · 산림치유",   icon: Bird,      file: "/sounds/ES_Ambience, Birdsong, Chaffinch, Blackbird, Black Woodpecker, Coniferous Forest, Summer, Afternoon - Epidemic Sound.mp3" },
+  { id: "sun",       label: "따뜻한 햇살",  tag: "Serotonin · Alpha",        icon: Sun,       file: "/sounds/ES_Ambience, Birdsong, Meadow, Summer, Birds Sing, Wind, Light Rustle In Trees - Epidemic Sound.mp3" },
+  { id: "wind",      label: "바람 소리",   tag: "Masking · 이완",           icon: Wind,      file: "/sounds/ES_Wind, Vegetation, Blowing Through Deciduous Trees, Leaves Rustling, Moderate Intensity, Winter, Afternoon - Epidemic Sound.mp3" },
+  { id: "cave",      label: "동굴 울림",   tag: "Deep Reverb · Theta",      icon: Mountain,  file: "/sounds/ES_Ambience, Underground, Cave, Magic, Deep, Wind, Howling 02 - Epidemic Sound.mp3" },
+  { id: "ocean",     label: "바다 파도",   tag: "1Hz Breath · HRV",         icon: Waves,     file: "/sounds/ES_Water, Lap, Gentle, On Rocks, Quiet, Peaceful, Calm Waves - Epidemic Sound.mp3" },
+  { id: "forest",    label: "숲속",        tag: "Forest Bathing · Cortisol",icon: Trees,     file: "/sounds/ES_Ambience, Forest, Birds Chirping, Light Rain, Light Wind - Epidemic Sound.mp3" },
+  { id: "fire",      label: "모닥불",      tag: "저주파 · 세로토닌",         icon: Flame,     file: "/sounds/ES_Fire, Burning, Bonfire, Moderate Size, Close, Crackling - Epidemic Sound.mp3" },
+  { id: "night",     label: "밤 풀벌레",   tag: "Delta 유도 · 수면",         icon: Moon,      file: "/sounds/ES_Ambience, Insect, Cricket, Night, Clean - Epidemic Sound.mp3" },
 ];
 
 interface FreqItem {
   id: string;
   label: string;
+  tag: string;
   icon: React.ComponentType<{ className?: string; strokeWidth?: number }>;
   hz: number;
   type: "tone" | "noise";
@@ -45,25 +48,26 @@ interface FreqItem {
 }
 
 const FREQUENCIES: FreqItem[] = [
-  { id: "brown",  label: "브라운 노이즈", icon: Music2, hz: 0,   type: "noise", noiseType: "brown" },
-  { id: "pink",   label: "핑크 노이즈",   icon: Music2, hz: 0,   type: "noise", noiseType: "pink" },
-  { id: "white",  label: "화이트 노이즈", icon: Music2, hz: 0,   type: "noise", noiseType: "white" },
-  { id: "432",    label: "432Hz 힐링",    icon: Waves,  hz: 432, type: "tone" },
-  { id: "528",    label: "528Hz 사랑",    icon: Heart,  hz: 528, type: "tone" },
-  { id: "40",     label: "40Hz 감마파",   icon: Brain,  hz: 40,  type: "tone" },
+  { id: "brown",  label: "브라운 노이즈", tag: "수면·이완 (Delta)",        icon: Music2, hz: 0,   type: "noise", noiseType: "brown" },
+  { id: "pink",   label: "핑크 노이즈",   tag: "Northwestern 임상",        icon: Music2, hz: 0,   type: "noise", noiseType: "pink" },
+  { id: "white",  label: "화이트 노이즈", tag: "Masking · 집중",           icon: Music2, hz: 0,   type: "noise", noiseType: "white" },
+  { id: "432",    label: "432Hz",         tag: "Healing · HRV 개선",       icon: Waves,  hz: 432, type: "tone" },
+  { id: "528",    label: "528Hz",         tag: "Love · Oxytocin",          icon: Heart,  hz: 528, type: "tone" },
+  { id: "40",     label: "40Hz",          tag: "Gamma · MIT 임상",         icon: Brain,  hz: 40,  type: "tone" },
 ];
 
 interface AsmrItem {
   id: string;
   label: string;
+  tag: string;
   icon: React.ComponentType<{ className?: string; strokeWidth?: number }>;
   file: string;
 }
 
 const ASMR: AsmrItem[] = [
-  { id: "cafe",   label: "카페 분위기",   icon: Coffee,   file: "/sounds/ES_Fire, Burning, Burning Wood, Bonfire, Crispy, Soft Intensity, Loop - Epidemic Sound.mp3" },
-  { id: "page",   label: "페이지 넘기기", icon: BookOpen, file: "/sounds/ES_Human, Breath, Female, Nose Breathing, Inhale, Exhale, Calm 01 - Epidemic Sound.mp3" },
-  { id: "typing", label: "타이핑 ASMR",   icon: Keyboard, file: "/sounds/ES_Human, Breath, Breathing Mask, Close, Isolated, Heavy Breathing, Long Inhale & Exhale 01 - Epidemic Sound.mp3" },
+  { id: "asmr_cafe",   label: "카페 분위기",   tag: "Ambient · Low-freq",  icon: Coffee,   file: "/sounds/ES_Fire, Burning, Burning Wood, Bonfire, Crispy, Soft Intensity, Loop - Epidemic Sound.mp3" },
+  { id: "asmr_breath", label: "깊은 호흡",     tag: "Parasympathetic",     icon: BookOpen, file: "/sounds/ES_Human, Breath, Female, Nose Breathing, Inhale, Exhale, Calm 01 - Epidemic Sound.mp3" },
+  { id: "asmr_heavy",  label: "ASMR 호흡",     tag: "Triggered Response",  icon: Keyboard, file: "/sounds/ES_Human, Breath, Breathing Mask, Close, Isolated, Heavy Breathing, Long Inhale & Exhale 01 - Epidemic Sound.mp3" },
 ];
 
 const Music = () => {
@@ -155,6 +159,7 @@ const Music = () => {
             <SoundTile
               key={item.id}
               label={item.label}
+              tag={item.tag}
               icon={item.icon}
               active={activeIds.has(item.id)}
               onClick={() => toggleNature(item)}
@@ -173,6 +178,7 @@ const Music = () => {
             <SoundTile
               key={item.id}
               label={item.label}
+              tag={item.tag}
               icon={item.icon}
               active={activeIds.has(item.id)}
               onClick={() => toggleFreq(item)}
@@ -191,6 +197,7 @@ const Music = () => {
             <SoundTile
               key={item.id}
               label={item.label}
+              tag={item.tag}
               icon={item.icon}
               active={activeIds.has(item.id)}
               onClick={() => toggleNature(item)}
@@ -218,16 +225,17 @@ const Music = () => {
 
 interface TileProps {
   label: string;
+  tag?: string;
   icon: React.ComponentType<{ className?: string; strokeWidth?: number }>;
   active: boolean;
   onClick: () => void;
 }
 
-const SoundTile = ({ label, icon: Icon, active, onClick }: TileProps) => (
+const SoundTile = ({ label, tag, icon: Icon, active, onClick }: TileProps) => (
   <button
     onClick={onClick}
     className={cn(
-      "liquid-card aspect-[1.1] p-3 flex flex-col items-center justify-center gap-1.5 transition-all active:scale-95",
+      "liquid-card aspect-[1.1] p-2.5 flex flex-col items-center justify-center gap-1 transition-all active:scale-95",
       active && "ring-2 ring-primary shadow-[0_0_20px_-4px_hsl(var(--primary)/0.5)]"
     )}
   >
@@ -235,11 +243,16 @@ const SoundTile = ({ label, icon: Icon, active, onClick }: TileProps) => (
       "w-8 h-8 rounded-xl flex items-center justify-center",
       active ? "bg-primary text-primary-foreground" : "text-primary"
     )}>
-      {active ? <Pause className="w-4 h-4" /> : <Icon className="w-5 h-5" strokeWidth={1.6} />}
+      {active ? <Pause className="w-4 h-4" /> : <Icon className="w-4 h-4" strokeWidth={1.6} />}
     </div>
-    <span className="text-[11px] font-medium text-foreground text-center leading-tight">
+    <span className="text-[11px] font-semibold text-foreground text-center leading-tight">
       {label}
     </span>
+    {tag && (
+      <span className="text-[8.5px] text-primary/70 tracking-wide text-center leading-tight mt-0.5">
+        {tag}
+      </span>
+    )}
   </button>
 );
 

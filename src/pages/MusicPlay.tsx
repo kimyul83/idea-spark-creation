@@ -41,7 +41,16 @@ const MusicPlay = () => {
   const tracks = id ? SITUATION_TRACK_MAP[id] : undefined;
   const detail = id ? SITUATION_DETAILS[id] : undefined;
 
-  const [variant, setVariant] = useState<VariantId>("alpha");
+  // 상황별 초기 뇌파 매칭 (사용자 기대치에 맞게)
+  const defaultVariant: VariantId = (() => {
+    if (!id) return "alpha";
+    if (id === "sleep" || id === "nap" || id === "candle") return "delta";
+    if (id === "meditate") return "theta";
+    if (id === "focus") return "gamma";
+    if (id === "wake" || id === "resort" || id === "tropical") return "beta";
+    return "alpha";
+  })();
+  const [variant, setVariant] = useState<VariantId>(defaultVariant);
   const [playing, setPlaying] = useState(false);
   const [infoOpen, setInfoOpen] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);

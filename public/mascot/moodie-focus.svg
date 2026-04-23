@@ -1,95 +1,82 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 260" width="240" height="260">
   <defs>
-    <linearGradient id="bodyGrad" x1="30%" y1="10%" x2="70%" y2="100%"><stop offset="0%" stop-color="#4AEBFB" stop-opacity="0.95"/><stop offset="50%" stop-color="#00D9E8" stop-opacity="0.92"/><stop offset="100%" stop-color="#0077B6" stop-opacity="0.90"/></linearGradient>
+    <linearGradient id="bodyGrad" x1="30%" y1="10%" x2="70%" y2="100%">
+      <stop offset="0%" stop-color="#7FF5FF" stop-opacity="0.95"/>
+      <stop offset="40%" stop-color="#4AEBFB" stop-opacity="0.92"/>
+      <stop offset="80%" stop-color="#00D9E8" stop-opacity="0.95"/>
+      <stop offset="100%" stop-color="#0077B6" stop-opacity="0.95"/>
+    </linearGradient>
     <radialGradient id="glassInner" cx="50%" cy="65%" r="55%">
-      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.35"/>
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.4"/>
       <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0"/>
     </radialGradient>
     <radialGradient id="hiTop" cx="35%" cy="28%" r="22%">
       <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.95"/>
       <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0"/>
     </radialGradient>
-    <radialGradient id="aiboIris" cx="50%" cy="45%" r="60%">
-      <stop offset="0%"  stop-color="#7BC4E8"/>
-      <stop offset="50%" stop-color="#4A90C4"/>
-      <stop offset="100%" stop-color="#1B3A5C"/>
+    <radialGradient id="focusGlow" cx="50%" cy="45%" r="50%">
+      <stop offset="0%" stop-color="#FFE89E" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#FFE89E" stop-opacity="0"/>
     </radialGradient>
     <filter id="bodyShadow" x="-30%" y="-30%" width="160%" height="160%">
       <feGaussianBlur stdDeviation="3" />
     </filter>
   </defs>
 
-  <ellipse cx="120" cy="240" rx="62" ry="7" fill="#1A3F55" opacity="0.18" filter="url(#bodyShadow)"/>
+  <!-- Concentrating golden glow -->
+  <circle cx="120" cy="150" r="100" fill="url(#focusGlow)"/>
+
+  <ellipse cx="120" cy="225" rx="68" ry="8" fill="#1A3F55" opacity="0.22" filter="url(#bodyShadow)"/>
 
   <g class="moodie-body">
     <path fill="url(#bodyGrad)" d="
-      M120 30 C 165 32, 195 68, 196 116 C 197 156, 184 192, 160 210
-      C 146 220, 134 224, 120 224 C 106 224, 94 220, 80 210
-      C 56 192, 43 156, 44 116 C 45 68, 75 32, 120 30 Z" />
+      M 70 218
+      C 56 218, 44 208, 44 190
+      C 44 130, 76 80, 120 80
+      C 164 80, 196 130, 196 190
+      C 196 208, 184 218, 170 218
+      Z" />
     <path fill="url(#glassInner)" d="
-      M120 30 C 165 32, 195 68, 196 116 C 197 156, 184 192, 160 210
-      C 146 220, 134 224, 120 224 C 106 224, 94 220, 80 210
-      C 56 192, 43 156, 44 116 C 45 68, 75 32, 120 30 Z" />
-    <ellipse cx="88" cy="78" rx="32" ry="38" fill="url(#hiTop)" />
+      M 70 218
+      C 56 218, 44 208, 44 190
+      C 44 130, 76 80, 120 80
+      C 164 80, 196 130, 196 190
+      C 196 208, 184 218, 170 218
+      Z" />
 
+    <ellipse cx="84" cy="115" rx="26" ry="32" fill="url(#hiTop)" />
+    <ellipse cx="68" cy="140" rx="6" ry="9" fill="#FFFFFF" opacity="0.55" />
+
+    <!-- Focused eyes: narrow + concentrated pupils -->
     <g class="moodie-eyes">
-      <g class="eye eye-left">
-        <ellipse cx="98" cy="115" rx="30" ry="6" fill="#1A3F55" opacity="0.15"/>
-        <circle cx="98" cy="138" r="29" fill="#0A1525"/>
-        <circle cx="98" cy="138" r="27" fill="#1B3A5C"/>
-        <circle cx="98" cy="138" r="24" fill="url(#aiboIris)"/>
-        <!-- bold radial iris striations -->
-        <g stroke="#0F2640" stroke-width="1.2" opacity="0.85" stroke-linecap="round">
-          <line x1="98" y1="116" x2="98" y2="126"/>
-          <line x1="98" y1="160" x2="98" y2="150"/>
-          <line x1="76" y1="138" x2="86" y2="138"/>
-          <line x1="120" y1="138" x2="110" y2="138"/>
-          <line x1="82" y1="122" x2="89" y2="129"/>
-          <line x1="114" y1="154" x2="107" y2="147"/>
-          <line x1="114" y1="122" x2="107" y2="129"/>
-          <line x1="82" y1="154" x2="89" y2="147"/>
-          <line x1="89" y1="118" x2="92" y2="127"/>
-          <line x1="107" y1="158" x2="104" y2="149"/>
-          <line x1="78" y1="129" x2="86" y2="132"/>
-          <line x1="118" y1="147" x2="110" y2="144"/>
-        </g>
-        <!-- shrunken pupil -->
-        <circle cx="98" cy="138" r="5.5" fill="#050B18"/>
-        <circle cx="89" cy="128" r="6" fill="#FFFFFF"/>
-        <circle cx="106" cy="148" r="2.2" fill="#FFFFFF"/>
-      </g>
-      <g class="eye eye-right">
-        <ellipse cx="142" cy="115" rx="30" ry="6" fill="#1A3F55" opacity="0.15"/>
-        <circle cx="142" cy="138" r="29" fill="#0A1525"/>
-        <circle cx="142" cy="138" r="27" fill="#1B3A5C"/>
-        <circle cx="142" cy="138" r="24" fill="url(#aiboIris)"/>
-        <g stroke="#0F2640" stroke-width="1.2" opacity="0.85" stroke-linecap="round">
-          <line x1="142" y1="116" x2="142" y2="126"/>
-          <line x1="142" y1="160" x2="142" y2="150"/>
-          <line x1="120" y1="138" x2="130" y2="138"/>
-          <line x1="164" y1="138" x2="154" y2="138"/>
-          <line x1="126" y1="122" x2="133" y2="129"/>
-          <line x1="158" y1="154" x2="151" y2="147"/>
-          <line x1="158" y1="122" x2="151" y2="129"/>
-          <line x1="126" y1="154" x2="133" y2="147"/>
-          <line x1="133" y1="118" x2="136" y2="127"/>
-          <line x1="151" y1="158" x2="148" y2="149"/>
-          <line x1="122" y1="129" x2="130" y2="132"/>
-          <line x1="162" y1="147" x2="154" y2="144"/>
-        </g>
-        <circle cx="142" cy="138" r="5.5" fill="#050B18"/>
-        <circle cx="133" cy="128" r="6" fill="#FFFFFF"/>
-        <circle cx="150" cy="148" r="2.2" fill="#FFFFFF"/>
-      </g>
+      <!-- LEFT EYE - narrow with sharp small pupil -->
+      <ellipse cx="98" cy="155" rx="11" ry="8" fill="#FFFFFF" stroke="#1A1A2E" stroke-width="1.5"/>
+      <ellipse cx="98" cy="155" rx="4" ry="6" fill="#1A1A2E"/>
+      <circle cx="100" cy="153" r="1.5" fill="#FFFFFF"/>
+      <!-- Eyebrow furrow -->
+      <path d="M 86 138 L 110 142" stroke="#1A1A2E" stroke-width="2.5" stroke-linecap="round"/>
+
+      <!-- RIGHT EYE -->
+      <ellipse cx="142" cy="155" rx="11" ry="8" fill="#FFFFFF" stroke="#1A1A2E" stroke-width="1.5"/>
+      <ellipse cx="142" cy="155" rx="4" ry="6" fill="#1A1A2E"/>
+      <circle cx="144" cy="153" r="1.5" fill="#FFFFFF"/>
+      <path d="M 130 142 L 154 138" stroke="#1A1A2E" stroke-width="2.5" stroke-linecap="round"/>
     </g>
 
-    <!-- straight, focused mouth -->
-    <line x1="114" y1="190" x2="126" y2="190" stroke="#D88BA0" stroke-width="2.2" stroke-linecap="round"/>
+    <!-- Determined small mouth: straight line with slight arc -->
+    <path d="M 113 184 Q 120 188, 127 184"
+          stroke="#1A1A2E" stroke-width="2.5" stroke-linecap="round"
+          fill="none"/>
+
+    <!-- Subtle blush -->
+    <ellipse cx="78" cy="178" rx="9" ry="5" fill="#FF9EBE" opacity="0.4"/>
+    <ellipse cx="162" cy="178" rx="9" ry="5" fill="#FF9EBE" opacity="0.4"/>
   </g>
 
+  <!-- Targeted focused sparkles, arranged near eyes -->
   <g class="moodie-sparkles">
-    <g class="sparkle sparkle-1" transform="translate(36 70)"><path d="M0 -6 L 1.5 -1.5 L 6 0 L 1.5 1.5 L 0 6 L -1.5 1.5 L -6 0 L -1.5 -1.5 Z" fill="#FFFFFF" opacity="0.7"/></g>
-    <g class="sparkle sparkle-3" transform="translate(196 50)"><path d="M0 -5 L 1.2 -1.2 L 5 0 L 1.2 1.2 L 0 5 L -1.2 1.2 L -5 0 L -1.2 -1.2 Z" fill="#FFFFFF" opacity="0.65"/></g>
-    <g class="sparkle sparkle-5" transform="translate(214 200)"><path d="M0 -6 L 1.4 -1.4 L 6 0 L 1.4 1.4 L 0 6 L -1.4 1.4 L -6 0 L -1.4 -1.4 Z" fill="#FFFFFF" opacity="0.7"/></g>
+    <g class="sparkle" transform="translate(36 70)" opacity="0.85"><path d="M0 -6 L 1.5 -1.5 L 6 0 L 1.5 1.5 L 0 6 L -1.5 1.5 L -6 0 L -1.5 -1.5 Z" fill="#FFE89E"/></g>
+    <g class="sparkle" transform="translate(208 110)" opacity="0.85"><path d="M0 -6 L 1.5 -1.5 L 6 0 L 1.5 1.5 L 0 6 L -1.5 1.5 L -6 0 L -1.5 -1.5 Z" fill="#FFE89E"/></g>
+    <g class="sparkle" transform="translate(196 50)" opacity="0.8"><path d="M0 -5 L 1.2 -1.2 L 5 0 L 1.2 1.2 L 0 5 L -1.2 1.2 L -5 0 L -1.2 -1.2 Z" fill="#FFFFFF"/></g>
   </g>
 </svg>

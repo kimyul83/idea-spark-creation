@@ -9,6 +9,7 @@ import { cn } from "@/lib/utils";
 import { ChevronRight, Lock } from "lucide-react";
 import { PREMIUM_EMOTION_NAMES, usePremium, adhdTrialAvailable } from "@/hooks/usePremium";
 import { useTheme } from "@/contexts/ThemeContext";
+import { emotionToBreathingId } from "@/lib/breathing";
 
 type Tab = "calm" | "boost" | "focus";
 
@@ -33,8 +34,18 @@ const Home = () => {
 
   const pickEmotion = (e: EmotionRow) => {
     const locked = PREMIUM_EMOTION_NAMES.has(e.name) && !isPremium;
-    if (locked) navigate("/subscribe");
-    else navigate(`/session/emotion/${e.id}`);
+    if (locked) {
+      navigate("/subscribe");
+      return;
+    }
+    // Endel-style: 감정 클릭하면 곧바로 추천 호흡 세션으로 진입
+    const breathingId = emotionToBreathingId(e.name);
+    const params = new URLSearchParams({
+      reps: "5",
+      emotion: e.name,
+      emotionId: e.id,
+    });
+    navigate(`/breathing/session/${breathingId}?${params.toString()}`);
   };
 
   const pickFocus = (id: string) => {

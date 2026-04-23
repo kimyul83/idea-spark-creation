@@ -136,23 +136,24 @@ class AudioEngine {
     });
   }
 
-  // ─── Real CC0 nature recordings (Internet Archive CDN) ──────────
+  // ─── Real CC0 nature recordings ──────────
   /**
-   * Maps each nature sound to a known-good CC0 mp3 URL.
-   * Internet Archive serves these with permissive CORS, so they play
-   * directly via Howler.js without proxying.
-   * Fallback: synthesized version if URL fails to load.
+   * 로컬 /public/sounds/ 에 있는 Epidemic CC0 mp3 파일을 1순위로 사용.
+   * 파일 없으면 합성 버전으로 폴백.
+   *
+   * 실제 파일 매핑은 sound-files-generated.ts (94개 자동 분류) 기반.
+   * 아래 URL은 카테고리 대표 트랙 1개씩만 지정 (빠른 미리듣기용).
    */
   private static readonly NATURE_URLS: Record<NatureSoundId, string> = {
-    // Internet Archive CC0 nature recordings (long-form ambient)
-    rain:   "https://archive.org/download/relaxingrainsounds/Relaxing%20Rain%20Sounds.mp3",
-    ocean:  "https://archive.org/download/naturesounds-soundtheraphy/Birds-with-ocean-waves.mp3",
-    wind:   "https://archive.org/download/naturesounds-soundtheraphy/Sea-storm.mp3",
-    forest: "https://archive.org/download/naturesounds-soundtheraphy/Birdsong.mp3",
-    stream: "https://archive.org/download/naturesounds-soundtheraphy/Trickling-stream.mp3",
-    cave:   "https://archive.org/download/naturesounds-soundtheraphy/Light-gentle-rain.mp3",
-    sun:    "https://archive.org/download/naturesounds-soundtheraphy/Birdsong.mp3",
-    birds:  "https://archive.org/download/naturesounds-soundtheraphy/Birdsong.mp3",
+    // /public/sounds/ 내부 파일 직접 참조 (GitHub 통해 Lovable 배포됨)
+    rain:   "/sounds/ES_Rain, Heavy, On Window, Looped - Epidemic Sound.mp3",
+    ocean:  "/sounds/ES_Ambience, Beach, Calm Waves, Pebbles - Epidemic Sound.mp3",
+    wind:   "/sounds/ES_Wind, Vegetation, Blowing Through Deciduous Trees, Leaves Rustling, Moderate Intensity, Winter, Afternoon - Epidemic Sound.mp3",
+    forest: "/sounds/ES_Ambience, Forest, Birds Chirping, Light Rain, Light Wind - Epidemic Sound.mp3",
+    stream: "/sounds/ES_Ambience, Underground, Cave, Water, Dripping, Flowing 02 - Epidemic Sound.mp3",
+    cave:   "/sounds/ES_Ambience, Underground, Cave, Magic, Deep, Bubbling - Epidemic Sound.mp3",
+    sun:    "/sounds/ES_Ambience, Birdsong, Meadow, Summer, Birds Sing, Wind, Light Rustle In Trees - Epidemic Sound.mp3",
+    birds:  "/sounds/ES_Ambience, Birdsong, Chaffinch, Blackbird, Black Woodpecker, Coniferous Forest, Summer, Afternoon - Epidemic Sound.mp3",
   };
 
   /**

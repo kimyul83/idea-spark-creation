@@ -194,3 +194,103 @@ export function vibrate(pattern: number | number[]) {
     try { navigator.vibrate(pattern); } catch { /* noop */ }
   }
 }
+
+// ─── 실제 Epidemic mp3 파일 재생 (jsDelivr CDN) ─────────
+const CDN = "https://cdn.jsdelivr.net/gh/kimyul83/idea-spark-creation@main/public/sounds";
+const enc = (s: string) => s.split("/").map(encodeURIComponent).join("/");
+
+// 유리/얼음 깨짐 실제 녹음 (8개 랜덤 재생)
+const GLASS_FILES = [
+  "ES_Glass, Break, Bottle, Smash x3 - Epidemic Sound.mp3",
+  "ES_Glass, Break, Glassware Breaking, Big Smash - Epidemic Sound.mp3",
+  "ES_Glass, Break, Window, Large, Smash - Epidemic Sound.mp3",
+  "ES_Glass, Break, Window, Smash - Epidemic Sound.mp3",
+  "ES_Ice, Break, Crack, Crispy, Close Up 11 - Epidemic Sound.mp3",
+  "ES_Ice, Break, Cracks, Frosty, Crispy, Sharp Details - Epidemic Sound.mp3",
+  "ES_Ice, Break, Ice Cracking, Push 02 - Epidemic Sound.mp3",
+  "ES_Ice, Break, Thin Ice Cracks - Epidemic Sound.mp3",
+];
+
+// 사람 호흡 실제 녹음 (4개)
+const BREATH_FILES = [
+  "ES_Human, Breath, Breathing Mask, Close, Isolated, Heavy Breathing, Long Inhale & Exhale 01 - Epidemic Sound.mp3",
+  "ES_Human, Breath, Breathing Mask, Close, Isolated, Heavy Breathing, Long Inhale & Exhale 02 - Epidemic Sound.mp3",
+  "ES_Human, Breath, Female, Nose Breathing, Inhale, Exhale, Calm 01 - Epidemic Sound.mp3",
+  "ES_Human, Breath, Inhale, Exhale, Smoking Cigarette - Epidemic Sound.mp3",
+];
+
+// 여러 Audio 인스턴스 풀 (동시 재생 대응)
+const audioPool: HTMLAudioElement[] = [];
+
+function playFromCdn(files: string[], volume = 0.7) {
+  if (files.length === 0) return;
+  const file = files[Math.floor(Math.random() * files.length)];
+  const url = `${CDN}/${enc(file)}`;
+  const audio = new Audio(url);
+  audio.volume = volume;
+  audio.play().catch((err) => console.warn("SFX play failed", err));
+  audioPool.push(audio);
+  if (audioPool.length > 10) {
+    const old = audioPool.shift();
+    old?.pause();
+  }
+}
+
+/** 실제 유리 깨짐 녹음 재생 (실패 시 합성 버전) */
+export function playRealGlass(category: GlassCategory = "smash", volume = 0.6) {
+  try {
+    playFromCdn(GLASS_FILES, volume);
+  } catch {
+    playGlassFx(category, volume); // 폴백
+  }
+}
+
+/** 실제 사람 호흡 녹음 재생 (한 번만) */
+export function playRealBreath(volume = 0.35) {
+  try {
+    playFromCdn(BREATH_FILES, volume);
+  } catch { /* silent */ }
+}
+
+// ─── 들숨·날숨 분리 합성 (Web Audio) ─────────────────────
+/** 들숨 사운드: 부드러운 상승 whoosh. */
+export function playInhaleFx(volume = 0.2, duration = 3.5) {
+  const c = getCtx();
+  const now = c.currentTime;
+  const src = c.createBufferSource();
+  src.buffer = noiseBuffer(c, duration, 1.5);
+  const bp = c.createBiquadFilter();
+  bp.type = "bandpass";
+  bp.frequency.setValueAtTime(200, now);
+  bp.frequency.exponentialRampToValueAtTime(900, now + duration);
+  bp.Q.value = 1.0;
+  const g = c.createGain();
+  g.gain.setValueAtTime(0, now);
+  g.gain.linearRampToValueAtTime(volume, now + duration * 0.3);
+  g.gain.linearRampToValueAtTime(volume, now + duration * 0.8);
+  g.gain.exponentialRampToValueAtTime(0.0001, now + duration);
+  src.connect(bp).connect(g).connect(c.destination);
+  src.start(now);
+  src.stop(now + duration + 0.1);
+}
+
+/** 날숨 사운드: 부드러운 하강 sigh. */
+export function playExhaleFx(volume = 0.25, duration = 5) {
+  const c = getCtx();
+  const now = c.currentTime;
+  const src = c.createBufferSource();
+  src.buffer = noiseBuffer(c, duration, 1.2);
+  const bp = c.createBiquadFilter();
+  bp.type = "bandpass";
+  bp.frequency.setValueAtTime(800, now);
+  bp.frequency.exponentialRampToValueAtTime(150, now + duration);
+  bp.Q.value = 1.1;
+  const g = c.createGain();
+  g.gain.setValueAtTime(0, now);
+  g.gain.linearRampToValueAtTime(volume, now + 0.3);
+  g.gain.linearRampToValueAtTime(volume * 0.5, now + duration * 0.7);
+  g.gain.exponentialRampToValueAtTime(0.0001, now + duration);
+  src.connect(bp).connect(g).connect(c.destination);
+  src.start(now);
+  src.stop(now + duration + 0.1);
+}

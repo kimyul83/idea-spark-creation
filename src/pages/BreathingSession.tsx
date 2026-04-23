@@ -10,7 +10,7 @@ import {
   type BreathingVisualId,
 } from "@/lib/breathing";
 import { BreathingVisual } from "@/components/BreathingVisuals";
-import { vibrate } from "@/lib/sfx";
+import { vibrate, playInhaleFx, playExhaleFx } from "@/lib/sfx";
 import { supabase } from "@/integrations/supabase/client";
 import { emotionNameToTint } from "@/lib/emotion-tint";
 import { cn } from "@/lib/utils";
@@ -56,9 +56,16 @@ const BreathingSession = () => {
     speak(initial, { rate: 0.95 });
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // 단계가 바뀔 때마다 음성 안내
+  // 단계가 바뀔 때마다 음성 안내 + 들숨/날숨 별개 합성 사운드
   useEffect(() => {
-    if (muted || done || !running) return;
+    if (done || !running) return;
+    // 단계 별개 호흡 소리 — 들숨은 상승 whoosh, 날숨은 하강 sigh
+    if (currentPhase.phase === "inhale") {
+      playInhaleFx(0.22, currentPhase.seconds);
+    } else if (currentPhase.phase === "exhale") {
+      playExhaleFx(0.28, currentPhase.seconds);
+    }
+    if (muted) return;
     const phrase = isCycle
       ? BREATH_PHRASES_SHORT[currentPhase.phase]
       : BREATH_PHRASES[currentPhase.phase];

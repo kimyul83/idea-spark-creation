@@ -74,7 +74,17 @@ const Session = () => {
       setActiveIds((p) => p.filter((x) => x !== s.id));
       return;
     }
-    if (s.source_type === "url" && s.audio_url) {
+    // 자연 사운드는 실제 CC0 mp3 우선, 실패 시 합성 폴백
+    if (s.category === "nature") {
+      const map: Record<string, "rain"|"ocean"|"wind"|"forest"|"stream"|"cave"|"sun"|"birds"> = {
+        "숲속": "forest", "바다 파도": "ocean", "빗소리": "rain",
+        "새소리": "birds", "폭포": "stream", "바람 소리": "wind",
+        "동굴 울림": "cave", "따뜻한 햇살": "sun",
+      };
+      const kind = map[s.name];
+      if (kind) audioEngine.playNatureReal(s.id, kind);
+      else audioEngine.playTone(s.id, 432);
+    } else if (s.source_type === "url" && s.audio_url) {
       audioEngine.playUrl(s.id, s.audio_url, 0.6);
     } else if (s.source_type === "web_audio") {
       if (s.name.includes("브라운")) audioEngine.playNoise(s.id, "brown");

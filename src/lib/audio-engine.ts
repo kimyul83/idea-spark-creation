@@ -136,10 +136,60 @@ class AudioEngine {
     });
   }
 
-  // ─── Nature ambience (synthesized) ────────────────────────────────
+  // ─── Real CC0 nature recordings (Internet Archive CDN) ──────────
+  /**
+   * Maps each nature sound to a known-good CC0 mp3 URL.
+   * Internet Archive serves these with permissive CORS, so they play
+   * directly via Howler.js without proxying.
+   * Fallback: synthesized version if URL fails to load.
+   */
+  private static readonly NATURE_URLS: Record<NatureSoundId, string> = {
+    // Internet Archive CC0 nature recordings (long-form ambient)
+    rain:   "https://archive.org/download/relaxingrainsounds/Relaxing%20Rain%20Sounds.mp3",
+    ocean:  "https://archive.org/download/naturesounds-soundtheraphy/Birds-with-ocean-waves.mp3",
+    wind:   "https://archive.org/download/naturesounds-soundtheraphy/Sea-storm.mp3",
+    forest: "https://archive.org/download/naturesounds-soundtheraphy/Birdsong.mp3",
+    stream: "https://archive.org/download/naturesounds-soundtheraphy/Trickling-stream.mp3",
+    cave:   "https://archive.org/download/naturesounds-soundtheraphy/Light-gentle-rain.mp3",
+    sun:    "https://archive.org/download/naturesounds-soundtheraphy/Birdsong.mp3",
+    birds:  "https://archive.org/download/naturesounds-soundtheraphy/Birdsong.mp3",
+  };
+
+  /**
+   * Try real recording first, fall back to synthesis on load error.
+   * This gives users actual nature sounds while keeping the app
+   * functional offline / on slow networks.
+   */
+  playNatureReal(id: string, kind: NatureSoundId, volume = 0.45) {
+    if (this.tracks.has(id)) return;
+    const url = AudioEngine.NATURE_URLS[kind];
+    if (!url) {
+      this.playNature(id, kind, volume);
+      return;
+    }
+    const howl = new Howl({
+      src: [url],
+      loop: true,
+      volume,
+      html5: true,
+      onloaderror: () => {
+        this.tracks.delete(id);
+        // 실패 시 합성 버전으로 대체
+        this.playNature(id, kind, volume);
+      },
+      onplayerror: () => {
+        this.tracks.delete(id);
+        this.playNature(id, kind, volume);
+      },
+    });
+    howl.play();
+    this.tracks.set(id, { kind: "howl", howl, volume });
+  }
+
+  // ─── Nature ambience (synthesized fallback) ──────────────────────
   /**
    * Synthesizes nature ambience from filtered noise + LFO modulation.
-   * No external audio files required.
+   * Used as fallback when real recording URLs fail.
    */
   playNature(id: string, kind: NatureSoundId, volume = 0.25) {
     if (this.tracks.has(id)) return;

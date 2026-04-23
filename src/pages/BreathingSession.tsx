@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
-import { ArrowLeft, Pause, Play, Square as Stop } from "lucide-react";
+import { ArrowLeft, Pause, Play, Square as Stop, Volume2, VolumeX } from "lucide-react";
 import { MonetBackground } from "@/components/MonetBackground";
 import { Moodie } from "@/components/Moodie";
 import { Button } from "@/components/ui/button";
@@ -14,6 +14,10 @@ import { vibrate } from "@/lib/sfx";
 import { supabase } from "@/integrations/supabase/client";
 import { emotionNameToTint } from "@/lib/emotion-tint";
 import { cn } from "@/lib/utils";
+import {
+  speak, stopSpeaking, isTtsMuted, setTtsMuted, primeTts,
+  BREATH_PHRASES, BREATH_PHRASES_SHORT,
+} from "@/lib/tts";
 
 const BreathingSession = () => {
   const { id } = useParams<{ id: string }>();
@@ -34,10 +38,50 @@ const BreathingSession = () => {
   const [microRep, setMicroRep] = useState(1); // counter inside a cycle rep
   const [running, setRunning] = useState(true);
   const [done, setDone] = useState(false);
+  const [muted, setMutedState] = useState(isTtsMuted());
   const startedAtRef = useRef<number>(Date.now());
   const tickRef = useRef<number | null>(null);
 
   const currentPhase = pattern.phases[phaseIdx];
+
+  // TTS 초기화 (voice 리스트 미리 로드)
+  useEffect(() => { primeTts(); }, []);
+
+  // 시작 시 첫 안내
+  useEffect(() => {
+    if (muted || done) return;
+    const initial = isCycle
+      ? `${pattern.title}, 시작할게요`
+      : `${pattern.title}을 시작할게요. 편안하게 따라해보세요.`;
+    speak(initial, { rate: 0.95 });
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // 단계가 바뀔 때마다 음성 안내
+  useEffect(() => {
+    if (muted || done || !running) return;
+    const phrase = isCycle
+      ? BREATH_PHRASES_SHORT[currentPhase.phase]
+      : BREATH_PHRASES[currentPhase.phase];
+    speak(phrase, { rate: isCycle ? 1.2 : 0.92 });
+    return () => { /* 단계 이동 시 자동 cancel 됨 */ };
+  }, [phaseIdx, rep, microRep, muted]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // 완료 메시지
+  useEffect(() => {
+    if (done && !muted) {
+      speak("잘하셨어요. 호흡을 마쳤어요.", { rate: 0.9 });
+    }
+  }, [done, muted]);
+
+  // 컴포넌트 unmount 시 음성 중단
+  useEffect(() => () => stopSpeaking(), []);
+
+  const toggleMute = () => {
+    const next = !muted;
+    setMutedState(next);
+    setTtsMuted(next);
+    if (next) stopSpeaking();
+  };
 
   // Tick — supports fractional seconds (cycle styles use 0.6–1.5s).
   useEffect(() => {
@@ -137,7 +181,17 @@ const BreathingSession = () => {
             {isCycle && ` · ${microRep}/${cycleReps}`}
           </p>
         </div>
-        <div className="w-10" />
+        <button
+          onClick={toggleMute}
+          className="w-10 h-10 rounded-full liquid-card flex items-center justify-center"
+          aria-label={muted ? "음성 안내 켜기" : "음성 안내 끄기"}
+        >
+          {muted ? (
+            <VolumeX className="w-5 h-5 text-foreground/60" />
+          ) : (
+            <Volume2 className="w-5 h-5 text-primary" />
+          )}
+        </button>
       </div>
 
       {/* phase label */}

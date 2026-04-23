@@ -38,7 +38,7 @@ export const BREATHING_PATTERNS: BreathingPattern[] = [
     id: "4-7-8",
     title: "4-7-8 호흡",
     subtitle: "들숨 4 · 참기 7 · 날숨 8",
-    description: "수면·불안 완화",
+    description: "수면·불안 완화 (숙련자용)",
     category: "calm",
     icon: Moon,
     phases: [
@@ -47,7 +47,22 @@ export const BREATHING_PATTERNS: BreathingPattern[] = [
       { phase: "exhale", seconds: 8 },
     ],
     premium: false,
-    origin: "웨일 박사 개발",
+    origin: "웨일 박사 · 숙련자 기준",
+  },
+  {
+    id: "4-7-8-easy",
+    title: "4-4-6 호흡 (초보)",
+    subtitle: "들숨 4 · 참기 4 · 날숨 6",
+    description: "수면·불안 완화 (부담 없이)",
+    category: "calm",
+    icon: Moon,
+    phases: [
+      { phase: "inhale", seconds: 4 },
+      { phase: "hold1", seconds: 4 },
+      { phase: "exhale", seconds: 6 },
+    ],
+    premium: false,
+    origin: "4-7-8 초보자 버전",
   },
   {
     id: "box",
@@ -97,18 +112,18 @@ export const BREATHING_PATTERNS: BreathingPattern[] = [
   // ── Emergency ────────────────────────────────────────
   {
     id: "8-2-8",
-    title: "8-2-8 호흡",
-    subtitle: "들숨 8 · 참기 2 · 날숨 8",
-    description: "공황·과각성",
+    title: "6-2-6 진정 호흡",
+    subtitle: "들숨 6 · 참기 2 · 날숨 6",
+    description: "공황·과각성 (현실적)",
     category: "emergency",
     icon: Wind,
     phases: [
-      { phase: "inhale", seconds: 8 },
+      { phase: "inhale", seconds: 6 },
       { phase: "hold1", seconds: 2 },
-      { phase: "exhale", seconds: 8 },
+      { phase: "exhale", seconds: 6 },
     ],
     premium: false,
-    origin: "급성 스트레스 대응",
+    origin: "급성 스트레스 대응 · 초보자 친화",
   },
   {
     id: "3-3-3",

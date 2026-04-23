@@ -1,40 +1,37 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { ArrowLeft, Play, Pause, SkipForward, Music as MusicIcon, Leaf } from "lucide-react";
+import { ArrowLeft, Play, Pause, Shuffle, Timer, Info } from "lucide-react";
 import { Howl } from "howler";
-import { MonetBackground } from "@/components/MonetBackground";
+import { Moodie } from "@/components/Moodie";
 import { getSituationById } from "@/lib/modes";
-import { SITUATION_TRACK_MAP, pickRandom } from "@/lib/situation-tracks";
+import { SITUATION_TRACK_MAP, pickRandom, toCdnUrl } from "@/lib/situation-tracks";
+import { SITUATION_DETAILS } from "@/lib/situation-details";
 import { audioEngine } from "@/lib/audio-engine";
 import { cn } from "@/lib/utils";
 
 /**
- * 상황별 음악 재생 — 감정 중심 UX.
- *
- * 영어 파일명은 숨기고, 사용자에겐:
- * - 번호 (Track 1, 2, 3...)
- * - 종류 (음악 vs 자연)
- * - 감정적 설명
- * 만 노출.
+ * Endel 스타일 재생 화면.
+ * 트랙 제목·번호 X. 뇌파 주파수 기반 variant switcher.
  */
 
-// 상황별 감정 한국어 설명
-const SITUATION_FEELINGS: Record<string, { feeling: string; description: string; emoji: string }> = {
-  relax:    { feeling: "지친 날", description: "긴장을 풀고 숨을 고르는 시간", emoji: "🌊" },
-  meditate: { feeling: "마음이 흐릴 때", description: "고요 속에서 나를 바라봐요", emoji: "🧘" },
-  focus:    { feeling: "집중하고 싶을 때", description: "흐트러진 마음을 한 곳으로", emoji: "🎯" },
-  nap:      { feeling: "잠깐 쉬고 싶은 날", description: "15~20분 낮잠으로 리프레시", emoji: "☕" },
-  wake:     { feeling: "상쾌한 아침", description: "부드럽게 하루를 열어요", emoji: "☀️" },
-  sleep:    { feeling: "깊이 자고 싶은 밤", description: "내려놓고 잠에 빠져요", emoji: "🌙" },
-  reading:  { feeling: "독서의 시간", description: "조용한 카페처럼 잔잔하게", emoji: "📖" },
-  wine:     { feeling: "와인 한 잔", description: "은은한 저녁의 여유", emoji: "🍷" },
-  date:     { feeling: "둘만의 시간", description: "로맨틱한 분위기를 만들어요", emoji: "💕" },
-  candle:   { feeling: "캔들 라이트", description: "불빛처럼 흔들리는 앰비언트", emoji: "🕯️" },
-  tropical: { feeling: "트로피컬 해변", description: "야자수 그늘 아래 파도 소리", emoji: "🌴" },
-  resort:   { feeling: "리조트 수영장", description: "칵테일과 풀사이드 라운지", emoji: "🏝️" },
-  sunset:   { feeling: "노을 지는 바닷가", description: "해 질 녘의 여유", emoji: "🌇" },
-  mountain: { feeling: "산장의 밤", description: "벽난로와 침엽수 숲의 고요", emoji: "🏔️" },
-  tokyo:    { feeling: "도쿄의 밤", description: "네온 사인과 시티팝 라운지", emoji: "🌃" },
+type VariantId = "delta" | "theta" | "alpha" | "beta" | "gamma";
+
+const VARIANTS: { id: VariantId; label: string; hz: string; symbol: string }[] = [
+  { id: "delta", label: "Delta", hz: "0.5–4 Hz", symbol: "δ" },
+  { id: "theta", label: "Theta", hz: "4–8 Hz",   symbol: "θ" },
+  { id: "alpha", label: "Alpha", hz: "8–13 Hz",  symbol: "α" },
+  { id: "beta",  label: "Beta",  hz: "13–30 Hz", symbol: "β" },
+  { id: "gamma", label: "Gamma", hz: "40 Hz",    symbol: "γ" },
+];
+
+const variantMatches = (url: string, v: VariantId): boolean => {
+  const u = url.toLowerCase();
+  if (v === "delta") return /drone|cosmic|space|night|underground|havsdrommar|nattdrommar|sweet.dreams|shadowed|winter/.test(u);
+  if (v === "theta") return /meditation|ethereal|dream|mystical|wonder|tibetan|celestial|mysterious|head.in.the.clouds/.test(u);
+  if (v === "alpha") return /ocean|wave|water|stream|forest|birdsong|boundless|softest|solace|quiet|home|movements|green/.test(u);
+  if (v === "beta")  return /sunrise|morning|carefree|happy|sunny|leap|bright|glorious|momentum|now.or.never|kerfuffle/.test(u);
+  if (v === "gamma") return /motion|redline|clarity|focus|principle|velvet|jazz|saxophone/.test(u);
+  return false;
 };
 
 const MusicPlay = () => {
@@ -42,200 +39,159 @@ const MusicPlay = () => {
   const navigate = useNavigate();
   const situation = id ? getSituationById(id) : undefined;
   const tracks = id ? SITUATION_TRACK_MAP[id] : undefined;
-  const feeling = id ? SITUATION_FEELINGS[id] : undefined;
+  const detail = id ? SITUATION_DETAILS[id] : undefined;
 
-  const [currentUrl, setCurrentUrl] = useState<string | null>(null);
-  const [howl, setHowl] = useState<Howl | null>(null);
+  const [variant, setVariant] = useState<VariantId>("alpha");
   const [playing, setPlaying] = useState(false);
+  const [infoOpen, setInfoOpen] = useState(false);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const howlRef = useRef<Howl | null>(null);
 
   useEffect(() => {
     return () => {
-      howl?.stop();
-      howl?.unload();
+      howlRef.current?.stop();
+      howlRef.current?.unload();
       audioEngine.stopAll();
     };
-  }, [howl]);
+  }, []);
 
-  if (!situation || !tracks || !feeling) {
+  if (!situation || !tracks || !detail) {
     return (
-      <div className="min-h-[100dvh] flex items-center justify-center">
-        <p className="text-foreground/60">상황을 찾을 수 없어요</p>
+      <div className="min-h-[100dvh] flex items-center justify-center bg-black">
+        <p className="text-white/60">상황을 찾을 수 없어요</p>
       </div>
     );
   }
 
   const allTracks = useMemo(
-    () => [
-      ...tracks.music.map((url) => ({ url, kind: "music" as const })),
-      ...tracks.nature.map((url) => ({ url, kind: "nature" as const })),
-    ],
+    () => [...tracks.music, ...tracks.nature],
     [tracks]
   );
 
-  const playTrack = (url: string) => {
-    howl?.stop();
-    howl?.unload();
+  const pickForVariant = (v: VariantId): string | undefined => {
+    const preferred = allTracks.filter((t) => variantMatches(t, v));
+    const pool = preferred.length > 0 ? preferred : allTracks;
+    return pickRandom(pool);
+  };
+
+  const playVariant = (v: VariantId) => {
+    setVariant(v);
+    const url = pickForVariant(v);
+    if (!url) {
+      setErrorMsg("재생 가능한 트랙이 없어요");
+      return;
+    }
+    setErrorMsg(null);
+
+    howlRef.current?.stop();
+    howlRef.current?.unload();
     audioEngine.stopAll();
 
-    // 공백·쉼표 URL 인코딩 필수
-    const encodedUrl = url.split("/").map((part, i) =>
-      i === 0 ? part : encodeURIComponent(part)
-    ).join("/");
+    // CDN URL 변환 (jsDelivr — GitHub public repo 서빙)
+    const cdnUrl = toCdnUrl(url);
 
-    const newHowl = new Howl({
-      src: [encodedUrl],
+    const howl = new Howl({
+      src: [cdnUrl],
       html5: true,
       loop: true,
       volume: 0.75,
-      onplay: () => setPlaying(true),
+      onplay: () => { setPlaying(true); setErrorMsg(null); },
       onpause: () => setPlaying(false),
       onstop: () => setPlaying(false),
-      onloaderror: (_, err) => console.error("Audio load error:", err, encodedUrl),
+      onloaderror: () => { setErrorMsg("파일 로딩 실패"); setPlaying(false); },
+      onplayerror: () => setErrorMsg("재생 실패 — 화면을 다시 탭해주세요"),
     });
-    newHowl.play();
-    setHowl(newHowl);
-    setCurrentUrl(url);
+    howl.play();
+    howlRef.current = howl;
 
-    // 주파수 레이어 자동 (거의 안 들리지만 효과 있음)
-    const freq = situation.recommendedFrequency;
-    if (freq.hz < 50) {
-      audioEngine.playTone("freq-layer", freq.hz, 0.04);
-    } else if (freq.hz < 500) {
-      audioEngine.playTone("freq-layer", freq.hz, 0.06);
-    }
+    const hzMap: Record<VariantId, number> = { delta: 2, theta: 5, alpha: 10, beta: 15, gamma: 40 };
+    audioEngine.playTone("freq-layer", hzMap[v], 0.03);
   };
 
   const togglePlay = () => {
-    if (!howl) {
-      const random = pickRandom(allTracks.map((t) => t.url));
-      if (random) playTrack(random);
-      return;
-    }
-    if (playing) howl.pause();
-    else howl.play();
+    if (!howlRef.current) { playVariant(variant); return; }
+    if (playing) howlRef.current.pause();
+    else howlRef.current.play();
   };
-
-  const skipNext = () => {
-    const random = pickRandom(allTracks.map((t) => t.url));
-    if (random) playTrack(random);
-  };
-
-  const currentIdx = allTracks.findIndex((t) => t.url === currentUrl);
 
   return (
-    <div className="min-h-[100dvh] flex flex-col relative">
-      <MonetBackground intensity="strong" />
+    <div className="min-h-[100dvh] flex flex-col relative bg-[#050505]">
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] rounded-full bg-primary/10 blur-[150px]" />
+        <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] rounded-full bg-primary/5 blur-[120px]" />
+      </div>
 
-      {/* Hero */}
-      <div
-        className="relative px-5 pt-12 pb-10 text-white"
-        style={{
-          background: `linear-gradient(160deg, ${situation.gradient.from} 0%, ${situation.gradient.to} 100%)`,
-          borderRadius: "0 0 32px 32px",
-        }}
-      >
-        <button
-          onClick={() => navigate(-1)}
-          className="w-10 h-10 rounded-full bg-white/15 backdrop-blur flex items-center justify-center"
-        >
-          <ArrowLeft className="w-5 h-5" />
+      <div className="relative px-5 pt-12 flex items-center justify-between z-10">
+        <button onClick={() => navigate(-1)} className="w-10 h-10 rounded-full bg-white/[0.06] border border-white/10 flex items-center justify-center">
+          <ArrowLeft className="w-4 h-4 text-white/80" />
         </button>
+        <button onClick={() => setInfoOpen((o) => !o)} className="w-10 h-10 rounded-full bg-white/[0.06] border border-white/10 flex items-center justify-center">
+          <Info className="w-4 h-4 text-white/80" />
+        </button>
+      </div>
 
-        <div className="mt-6">
-          <p className="text-[10px] tracking-[0.3em] uppercase text-white/70 font-serif">
-            For this moment
-          </p>
-          <div className="mt-2 flex items-baseline gap-2">
-            <span className="text-4xl">{feeling.emoji}</span>
-            <h1 className="text-[32px] font-bold leading-tight">
-              {feeling.feeling}
-            </h1>
-          </div>
-          <p className="mt-2 text-[15px] text-white/90 leading-snug">
-            {feeling.description}
-          </p>
-        </div>
+      <div className="relative px-5 mt-10 text-center z-10">
+        <h1 className="text-[48px] font-serif font-bold text-white leading-none tracking-tight">
+          {detail.mood}
+        </h1>
+        <p className="mt-3 text-sm text-white/60 tracking-wider">
+          {detail.scene}
+        </p>
+      </div>
 
-        {/* 재생 컨트롤 */}
-        <div className="mt-8 flex items-center gap-3">
-          <button
-            onClick={togglePlay}
-            className="w-16 h-16 rounded-full bg-white text-foreground flex items-center justify-center shadow-xl active:scale-95 transition"
-          >
-            {playing ? <Pause className="w-7 h-7" /> : <Play className="w-7 h-7 ml-0.5" />}
-          </button>
-          <button
-            onClick={skipNext}
-            className="w-12 h-12 rounded-full bg-white/15 backdrop-blur flex items-center justify-center active:scale-95"
-          >
-            <SkipForward className="w-5 h-5" />
-          </button>
-          <div className="flex-1 min-w-0">
-            {currentIdx >= 0 ? (
-              <>
-                <p className="text-[10px] text-white/60 uppercase tracking-wider">
-                  {allTracks[currentIdx].kind === "music" ? "음악" : "자연 소리"}
-                </p>
-                <p className="text-base font-bold">
-                  {currentIdx + 1} / {allTracks.length}
-                </p>
-              </>
-            ) : (
-              <p className="text-sm text-white/80">재생 버튼을 눌러 시작</p>
-            )}
-          </div>
+      <div className="relative flex-1 flex items-center justify-center z-10">
+        <div className="relative">
+          <div className={cn("absolute inset-0 rounded-full bg-primary/30 blur-[60px] scale-125", playing && "animate-pulse")} />
+          <Moodie size="large" emotion={playing ? "happy" : "calm"} />
         </div>
       </div>
 
-      {/* 트랙 선택 - 번호 카드 */}
-      <div className="flex-1 px-5 py-6">
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-sm font-semibold text-foreground/80">
-            다른 버전 선택
-          </h2>
-          <span className="text-xs text-foreground/50">
-            총 {allTracks.length}개
-          </span>
+      {infoOpen && (
+        <div className="relative mx-5 mb-4 p-4 rounded-2xl bg-white/[0.04] border border-white/10 backdrop-blur-xl z-10">
+          <p className="text-[10px] tracking-widest uppercase text-primary font-serif">{detail.frequencyLabel}</p>
+          <p className="text-xs text-white/70 mt-1 leading-relaxed">{detail.frequencyScience}</p>
+          <p className="text-[11px] text-white/50 mt-2 leading-snug">{detail.effect}</p>
         </div>
+      )}
 
-        <div className="grid grid-cols-4 gap-2">
-          {allTracks.map((track, i) => {
-            const isActive = currentUrl === track.url;
-            const isMusic = track.kind === "music";
-            return (
-              <button
-                key={track.url}
-                onClick={() => playTrack(track.url)}
-                className={cn(
-                  "aspect-square rounded-2xl flex flex-col items-center justify-center gap-1 transition-all active:scale-95",
-                  isActive
-                    ? "bg-primary text-primary-foreground shadow-lg"
-                    : "bg-foreground/[0.04] hover:bg-foreground/[0.08] text-foreground"
-                )}
-              >
-                {isMusic ? (
-                  <MusicIcon className="w-4 h-4" strokeWidth={1.8} />
-                ) : (
-                  <Leaf className="w-4 h-4" strokeWidth={1.8} />
-                )}
-                <span className="text-xs font-bold">{i + 1}</span>
-                <span className="text-[9px] opacity-70">
-                  {isMusic ? "음악" : "자연"}
-                </span>
-              </button>
-            );
-          })}
+      {errorMsg && (
+        <div className="relative mx-5 mb-3 p-3 rounded-xl bg-red-500/10 border border-red-500/30 z-10 text-center">
+          <p className="text-xs text-red-300">{errorMsg}</p>
         </div>
+      )}
 
-        <div className="mt-6 p-4 rounded-2xl bg-foreground/[0.04]">
-          <p className="text-[11px] tracking-wider uppercase text-foreground/50 font-serif">
-            Tip
-          </p>
-          <p className="text-sm text-foreground/70 mt-1 leading-relaxed">
-            마음에 드는 버전 찾을 때까지 ▶️ 스킵하거나,
-            아래 번호 중 원하는 것 직접 선택해보세요.
-          </p>
-        </div>
+      <div className="relative px-3 pb-4 flex items-center justify-center gap-2 z-10">
+        {VARIANTS.map((v) => {
+          const isActive = variant === v.id;
+          return (
+            <button
+              key={v.id}
+              onClick={() => playVariant(v.id)}
+              className={cn(
+                "flex-1 max-w-[72px] h-[64px] rounded-2xl flex flex-col items-center justify-center transition-all",
+                isActive ? "bg-white text-black" : "bg-white/[0.04] border border-white/10 text-white/60 active:scale-95"
+              )}
+              aria-label={`${v.label} ${v.hz}`}
+            >
+              <span className="text-xl font-serif leading-none">{v.symbol}</span>
+              <span className={cn("text-[10px] mt-1 tracking-wider", isActive ? "text-black/70 font-semibold" : "text-white/50")}>
+                {v.label}
+              </span>
+            </button>
+          );
+        })}
+      </div>
+
+      <div className="relative px-5 pb-10 flex items-center justify-center gap-5 z-10">
+        <button onClick={() => playVariant(variant)} className="w-11 h-11 rounded-full bg-white/[0.06] border border-white/10 flex items-center justify-center active:scale-95">
+          <Shuffle className="w-4 h-4 text-white/70" />
+        </button>
+        <button onClick={togglePlay} className="w-16 h-16 rounded-full bg-white flex items-center justify-center shadow-xl active:scale-95 transition">
+          {playing ? <Pause className="w-7 h-7 text-black" /> : <Play className="w-7 h-7 text-black ml-0.5" />}
+        </button>
+        <button className="w-11 h-11 rounded-full bg-white/[0.06] border border-white/10 flex items-center justify-center active:scale-95">
+          <Timer className="w-4 h-4 text-white/70" />
+        </button>
       </div>
     </div>
   );

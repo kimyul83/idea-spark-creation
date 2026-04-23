@@ -1,11 +1,13 @@
 import { NavLink } from "react-router-dom";
-import { Home, Wind, Music, Moon, User } from "lucide-react";
+import { Home, Wind, Sparkles, Moon, User } from "lucide-react";
 import { cn } from "@/lib/utils";
 
+// 사운드 탭을 "깨기"(유리 깨기)로 교체 — 킬러 기능 독립 노출
+// 사운드 믹서는 호흡·세션에서 계속 접근 가능
 const tabs = [
   { to: "/home", label: "홈", Icon: Home },
   { to: "/breathing", label: "호흡", Icon: Wind },
-  { to: "/sounds", label: "사운드", Icon: Music },
+  { to: "/release/glass", label: "깨기", Icon: Sparkles },
   { to: "/sleep", label: "수면", Icon: Moon },
   { to: "/me", label: "마이", Icon: User },
 ];

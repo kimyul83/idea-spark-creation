@@ -352,3 +352,16 @@ export const SFX_FIRE: string[] = [
 
 export const pickRandom = <T>(arr: T[]): T | undefined =>
   arr.length > 0 ? arr[Math.floor(Math.random() * arr.length)] : undefined;
+/**
+ * /sounds/xxx.mp3 → jsDelivr CDN URL 변환.
+ * Lovable 배포가 대용량 mp3 서빙 못 해서 CDN 우회.
+ */
+const CDN_BASE = "https://cdn.jsdelivr.net/gh/kimyul83/idea-spark-creation@main/public";
+
+export const toCdnUrl = (localPath: string): string => {
+  if (localPath.startsWith("http")) return localPath;
+  const clean = localPath.startsWith("/") ? localPath : `/${localPath}`;
+  // 공백·쉼표 URL 인코딩
+  const encoded = clean.split("/").map((p, i) => i === 0 ? p : encodeURIComponent(p)).join("/");
+  return `${CDN_BASE}${encoded}`;
+};

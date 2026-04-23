@@ -65,7 +65,8 @@ const Sounds = () => {
       if (s.category === "nature") {
         const kind = NATURE_MAP[s.name];
         if (!kind) throw new Error("unknown nature kind");
-        audioEngine.playNature(s.id, kind);
+        // 진짜 CC0 자연 녹음을 먼저 시도, 실패 시 합성으로 자동 대체
+        audioEngine.playNatureReal(s.id, kind);
       } else if (s.category === "asmr") {
         const kind = ASMR_MAP[s.name];
         if (!kind) throw new Error("unknown asmr kind");

@@ -90,43 +90,60 @@ const BreathingSession = () => {
     if (next) stopSpeaking();
   };
 
-  // Tick — supports fractional seconds (cycle styles use 0.6–1.5s).
+  // Tick — 벽시계 기반 정밀 타이머 (Date.now() 사용).
+  // 이전 setInterval decrement 방식은 브라우저 throttling·React re-render로 지연 발생.
+  const phaseStartRef = useRef<number>(Date.now());
+
+  useEffect(() => {
+    // 단계가 바뀔 때마다 시작 시각 기록
+    phaseStartRef.current = Date.now();
+  }, [phaseIdx, rep, microRep]);
+
   useEffect(() => {
     if (!running || done) return;
-    const tickMs = 100; // 100ms tick for fractional precision
-    tickRef.current = window.setInterval(() => {
-      setSecondsLeft((s) => {
-        const next = +(s - tickMs / 1000).toFixed(2);
-        if (next > 0) return next;
-        // advance phase
-        const nextPhaseIdx = phaseIdx + 1;
-        if (nextPhaseIdx >= pattern.phases.length) {
-          // micro-cycle complete
-          if (isCycle && microRep < cycleReps) {
-            setMicroRep((m) => m + 1);
-            setPhaseIdx(0);
-            return pattern.phases[0].seconds;
-          }
-          // full rep complete
-          if (rep >= totalReps) {
-            setRunning(false);
-            setDone(true);
-            saveSession();
-            return 0;
-          }
-          setRep((r) => r + 1);
-          setMicroRep(1);
+    const currentPhaseDuration = pattern.phases[phaseIdx].seconds;
+
+    const tick = () => {
+      const elapsed = (Date.now() - phaseStartRef.current) / 1000;
+      const remaining = currentPhaseDuration - elapsed;
+
+      if (remaining > 0) {
+        setSecondsLeft(remaining);
+        tickRef.current = requestAnimationFrame(tick) as unknown as number;
+        return;
+      }
+
+      // 단계 전환
+      const nextPhaseIdx = phaseIdx + 1;
+      if (nextPhaseIdx >= pattern.phases.length) {
+        if (isCycle && microRep < cycleReps) {
+          setMicroRep((m) => m + 1);
           setPhaseIdx(0);
-          vibrate([200]);
-          return pattern.phases[0].seconds;
+          setSecondsLeft(pattern.phases[0].seconds);
+          return;
         }
-        setPhaseIdx(nextPhaseIdx);
-        vibrate(isCycle ? [60] : [200]);
-        return pattern.phases[nextPhaseIdx].seconds;
-      });
-    }, tickMs);
+        if (rep >= totalReps) {
+          setRunning(false);
+          setDone(true);
+          saveSession();
+          setSecondsLeft(0);
+          return;
+        }
+        setRep((r) => r + 1);
+        setMicroRep(1);
+        setPhaseIdx(0);
+        setSecondsLeft(pattern.phases[0].seconds);
+        vibrate([200]);
+        return;
+      }
+      setPhaseIdx(nextPhaseIdx);
+      setSecondsLeft(pattern.phases[nextPhaseIdx].seconds);
+      vibrate(isCycle ? [60] : [200]);
+    };
+
+    tickRef.current = requestAnimationFrame(tick) as unknown as number;
     return () => {
-      if (tickRef.current) window.clearInterval(tickRef.current);
+      if (tickRef.current) cancelAnimationFrame(tickRef.current);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [running, phaseIdx, rep, microRep, done]);

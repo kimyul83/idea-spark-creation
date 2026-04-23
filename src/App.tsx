@@ -8,7 +8,6 @@ import Onboarding from "./pages/Onboarding";
 import Home from "./pages/Home";
 import Breathing from "./pages/Breathing";
 import BreathingSession from "./pages/BreathingSession";
-import Sounds from "./pages/Sounds";
 import Music from "./pages/Music";
 import MusicPlay from "./pages/MusicPlay";
 import Me from "./pages/Me";
@@ -43,7 +42,6 @@ const App = () => (
             <Route path="/home" element={<Home />} />
             <Route path="/music" element={<Music />} />
             <Route path="/breathing" element={<Breathing />} />
-            <Route path="/sounds" element={<Sounds />} />
             <Route path="/sleep" element={<Sleep />} />
             <Route path="/me" element={<Me />} />
           </Route>

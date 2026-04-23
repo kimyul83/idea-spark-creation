@@ -139,9 +139,8 @@ const GlassBreak = () => {
 
     // Volume scales gently with combo
     const vol = Math.min(0.7, 0.4 + combo * 0.02);
-    // 실제 Epidemic 유리 깨짐 녹음 (8개 중 랜덤) + 폴백 합성
+    // 실제 Epidemic 유리 깨짐 녹음 (8개 중 랜덤)
     playRealGlass(active.category, vol);
-    playGlassFx(active.category, vol * 0.4); // 합성은 살짝 보조로
     vibrate(active.category === "smash" ? [40, 25, 40] : 25);
     setTaps((t) => t + 1);
   };

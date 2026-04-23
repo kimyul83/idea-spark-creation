@@ -1,191 +1,153 @@
-import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { supabase } from "@/integrations/supabase/client";
-import { EmotionRow, FOCUS_MODES } from "@/types/db";
-import { getIcon } from "@/lib/icon-map";
-import { Moodie } from "@/components/Moodie";
 import { MonetBackground } from "@/components/MonetBackground";
-import { cn } from "@/lib/utils";
-import { ChevronRight, Lock } from "lucide-react";
-import { PREMIUM_EMOTION_NAMES, usePremium, adhdTrialAvailable } from "@/hooks/usePremium";
+import { Moodie } from "@/components/Moodie";
+import { PILLARS, MUSIC_SITUATIONS } from "@/lib/modes";
 import { useTheme } from "@/contexts/ThemeContext";
-import { emotionToBreathingId } from "@/lib/breathing";
+import { cn } from "@/lib/utils";
 
-type Tab = "calm" | "boost" | "focus";
-
+/**
+ * 홈 화면 — Endel 스타일 3대 기둥 중심.
+ *
+ * 구조:
+ *   [Moodie + 인사]
+ *   [3 Pillar 큰 카드: Music · Breath · Release]
+ *   [오늘의 추천 상황 (가로 스크롤)]
+ */
 const Home = () => {
-  const [tab, setTab] = useState<Tab>("calm");
-  const [emotions, setEmotions] = useState<EmotionRow[]>([]);
   const navigate = useNavigate();
-  const { isPremium } = usePremium();
   const { resolvedVariant } = useTheme();
-  const greeting = resolvedVariant === "light" ? "좋은 아침이에요 ☀️" : "편안한 밤이에요 🌙";
 
-  useEffect(() => {
-    supabase
-      .from("emotions")
-      .select("*")
-      .order("sort_order")
-      .then(({ data }) => setEmotions((data ?? []) as EmotionRow[]));
-  }, []);
+  const hour = new Date().getHours();
+  const greeting =
+    hour < 6 ? "깊은 밤이에요 🌙" :
+    hour < 11 ? "좋은 아침이에요 ☀️" :
+    hour < 18 ? "오늘 어때요 ✨" :
+    hour < 22 ? "편안한 저녁이에요 🌆" :
+    "하루를 마무리해요 🌙";
 
-  const calm = emotions.filter((e) => e.category === "calm");
-  const boost = emotions.filter((e) => e.category === "boost");
-
-  const pickEmotion = (e: EmotionRow) => {
-    const locked = PREMIUM_EMOTION_NAMES.has(e.name) && !isPremium;
-    if (locked) {
-      navigate("/subscribe");
-      return;
-    }
-    // Endel-style: 감정 클릭하면 곧바로 추천 호흡 세션으로 진입
-    const breathingId = emotionToBreathingId(e.name);
-    const params = new URLSearchParams({
-      reps: "5",
-      emotion: e.name,
-      emotionId: e.id,
-    });
-    navigate(`/breathing/session/${breathingId}?${params.toString()}`);
-  };
-
-  const pickFocus = (id: string) => {
-    if (id === "adhd") {
-      if (!isPremium && !adhdTrialAvailable()) {
-        navigate("/subscribe");
-        return;
-      }
-      navigate("/focus/adhd");
-      return;
-    }
-    navigate(`/session/focus/${id}`);
-  };
+  // 현재 시간에 어울리는 음악 상황 3개만 추천 (가로 스크롤)
+  const recommended = MUSIC_SITUATIONS.filter((s) => {
+    if (!s.showHours) return s.group === "core";
+    const [start, end] = s.showHours;
+    if (start <= end) return hour >= start && hour < end;
+    return hour >= start || hour < end;
+  }).slice(0, 4);
 
   return (
     <div className="px-5 pt-10 pb-6 relative flex-1 flex flex-col">
       <MonetBackground intensity="medium" />
 
+      {/* Header */}
       <header className="flex items-center gap-3 mb-7 animate-fade-up">
         <Moodie size="small" />
         <div>
           <p className="text-[11px] tracking-[0.2em] uppercase text-primary font-medium font-serif">
             {greeting}
           </p>
-          <h1 className="text-[20px] font-bold text-foreground mt-0.5">
-            오늘 기분이 어때요?
+          <h1 className="text-[22px] font-bold text-foreground mt-0.5 leading-tight">
+            지금, 어떤 시간이 필요해요?
           </h1>
         </div>
       </header>
 
-      <div className="surface p-1 rounded-2xl flex gap-1 mb-5 shadow-soft">
-        {([
-          { id: "calm", label: "진정하기" },
-          { id: "boost", label: "끌어올리기" },
-          { id: "focus", label: "집중하기" },
-        ] as const).map((t) => (
-          <button
-            key={t.id}
-            onClick={() => setTab(t.id)}
-            className={cn(
-              "flex-1 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300",
-              tab === t.id
-                ? "bg-primary text-primary-foreground shadow-soft"
-                : "text-foreground/60"
-            )}
-          >
-            {t.label}
-          </button>
-        ))}
-      </div>
+      {/* 3대 기둥 */}
+      <section className="space-y-3 animate-fade-up">
+        {PILLARS.map((p) => {
+          const Icon = p.icon;
+          return (
+            <button
+              key={p.id}
+              onClick={() => navigate(p.route)}
+              className="group relative w-full overflow-hidden rounded-[28px] shadow-soft transition-all duration-300 active:scale-[0.98] hover:scale-[1.01] hover:shadow-card text-left"
+              style={{ minHeight: 120 }}
+            >
+              <div
+                className="absolute inset-0 opacity-95"
+                style={{
+                  background: `linear-gradient(135deg, ${p.gradient.from} 0%, ${p.gradient.to} 100%)`,
+                }}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-transparent" />
+              <div className="absolute -right-6 -bottom-8 opacity-15 text-white">
+                <Icon className="w-[140px] h-[140px]" strokeWidth={0.9} />
+              </div>
 
-      <div key={tab} className="animate-fade-up flex-1">
-        {tab === "calm" && (
-          <EmotionGrid items={calm} isPremium={isPremium} onPick={pickEmotion} />
-        )}
-        {tab === "boost" && (
-          <EmotionGrid items={boost} isPremium={isPremium} onPick={pickEmotion} />
-        )}
-        {tab === "focus" && <FocusList isPremium={isPremium} onPick={pickFocus} />}
-      </div>
+              <div className="relative p-6">
+                <div className="flex items-center gap-2">
+                  <Icon className="w-5 h-5 text-white/90" strokeWidth={1.8} />
+                  <span className="text-[10px] tracking-[0.25em] uppercase text-white/75 font-serif">
+                    {p.subtitle}
+                  </span>
+                </div>
+                <h2 className="mt-3 text-[28px] font-bold text-white drop-shadow-sm leading-none">
+                  {p.title}
+                </h2>
+                <p className="mt-2 text-[13px] text-white/85 leading-snug max-w-[75%]">
+                  {p.description}
+                </p>
+              </div>
+            </button>
+          );
+        })}
+      </section>
+
+      {/* 오늘의 추천 상황 (가로 스크롤) */}
+      <section className="mt-7 animate-fade-up">
+        <div className="flex items-end justify-between mb-3 px-1">
+          <div>
+            <p className="text-[10px] tracking-[0.2em] uppercase text-primary font-serif">
+              For This Moment
+            </p>
+            <h3 className="text-[15px] font-bold text-foreground mt-0.5">
+              지금 어울리는 순간
+            </h3>
+          </div>
+          <button
+            onClick={() => navigate("/music")}
+            className="text-xs text-foreground/60 font-medium"
+          >
+            전체 보기 →
+          </button>
+        </div>
+        <div className="flex gap-3 overflow-x-auto pb-2 -mx-5 px-5 snap-x snap-mandatory no-scrollbar">
+          {recommended.map((s) => {
+            const Icon = s.icon;
+            return (
+              <button
+                key={s.id}
+                onClick={() => navigate(`/music/${s.id}`)}
+                className={cn(
+                  "relative snap-start shrink-0 w-[150px] aspect-[3/4] rounded-[22px] overflow-hidden shadow-soft transition-all duration-300 active:scale-[0.97] text-left"
+                )}
+              >
+                <div
+                  className="absolute inset-0"
+                  style={{
+                    background: `linear-gradient(160deg, ${s.gradient.from} 0%, ${s.gradient.to} 100%)`,
+                  }}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
+                <div className="relative h-full flex flex-col justify-between p-3.5">
+                  <Icon className="w-5 h-5 text-white/90" strokeWidth={1.7} />
+                  <div>
+                    <p className="text-[10px] text-white/75 tracking-wider uppercase font-serif">
+                      {s.recommendedFrequency.label}
+                    </p>
+                    <div className="text-white font-bold text-[16px] mt-0.5 leading-tight">
+                      {s.title}
+                    </div>
+                    <div className="text-[11px] text-white/80 mt-0.5 leading-tight">
+                      {s.subtitle}
+                    </div>
+                  </div>
+                </div>
+              </button>
+            );
+          })}
+        </div>
+      </section>
     </div>
   );
 };
-
-const EmotionGrid = ({
-  items, isPremium, onPick,
-}: { items: EmotionRow[]; isPremium: boolean; onPick: (e: EmotionRow) => void }) => (
-  <div className="grid grid-cols-2 gap-3">
-    {items.map((e) => {
-      const Icon = getIcon(e.icon_name);
-      const locked = PREMIUM_EMOTION_NAMES.has(e.name) && !isPremium;
-      return (
-        <button
-          key={e.id}
-          onClick={() => onPick(e)}
-          className="group relative aspect-square rounded-3xl overflow-hidden shadow-soft transition-all duration-300 active:scale-[0.98] hover:scale-[1.02] hover:shadow-card text-left"
-        >
-          <div className="absolute inset-0 bg-section" />
-          <div
-            className="absolute inset-0 opacity-90"
-            style={{ background: `linear-gradient(150deg, ${e.gradient_from} 0%, ${e.gradient_to} 100%)` }}
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/15 to-transparent" />
-          {locked && (
-            <span className="absolute top-3 right-3 w-8 h-8 rounded-full bg-black/40 backdrop-blur-sm flex items-center justify-center z-10">
-              <Lock className="w-4 h-4 text-white" strokeWidth={2.2} />
-            </span>
-          )}
-          <div className="relative h-full flex flex-col justify-between p-4">
-            <Icon className="w-6 h-6 text-white/90" strokeWidth={1.6} />
-            <div>
-              <div className="text-xl mb-0.5">{e.emoji}</div>
-              <div className="text-white font-bold text-[17px] drop-shadow-sm">{e.name}</div>
-            </div>
-          </div>
-        </button>
-      );
-    })}
-  </div>
-);
-
-const FocusList = ({
-  isPremium, onPick,
-}: { isPremium: boolean; onPick: (id: string) => void }) => (
-  <div className="space-y-2.5">
-    {FOCUS_MODES.map((m) => {
-      const Icon = getIcon(m.icon);
-      const trialUsed = m.id === "adhd" && !isPremium && !adhdTrialAvailable();
-      return (
-        <button
-          key={m.id}
-          onClick={() => onPick(m.id)}
-          className="w-full surface rounded-3xl p-4 flex items-center gap-4 shadow-soft transition-all duration-300 active:scale-[0.98] hover:scale-[1.02] hover:border-primary/40 relative"
-        >
-          {trialUsed && (
-            <span className="absolute top-3 right-3 w-7 h-7 rounded-full bg-foreground/10 flex items-center justify-center">
-              <Lock className="w-3.5 h-3.5 text-foreground/60" />
-            </span>
-          )}
-          <div className="w-12 h-12 rounded-2xl bg-primary/15 flex items-center justify-center shrink-0">
-            <Icon className="w-6 h-6 text-primary" strokeWidth={1.8} />
-          </div>
-          <div className="flex-1 text-left">
-            <div className="font-bold text-foreground flex items-center gap-2">
-              {m.title}
-              {m.id === "adhd" && !isPremium && !trialUsed && (
-                <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-accent/30 text-accent-foreground">
-                  오늘 1회 체험
-                </span>
-              )}
-            </div>
-            <div className="text-xs text-foreground/60 mt-0.5">
-              {m.durationMin}분 · {m.recommend}
-            </div>
-          </div>
-          <ChevronRight className="w-5 h-5 text-foreground/30" />
-        </button>
-      );
-    })}
-  </div>
-);
 
 export default Home;

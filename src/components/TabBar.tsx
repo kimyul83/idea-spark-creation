@@ -1,14 +1,23 @@
 import { NavLink } from "react-router-dom";
-import { Home, Wind, Sparkles, Moon, User } from "lucide-react";
+import { Home, Music, Wind, Sparkles, User } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-// 사운드 탭을 "깨기"(유리 깨기)로 교체 — 킬러 기능 독립 노출
-// 사운드 믹서는 호흡·세션에서 계속 접근 가능
+/**
+ * 하단 탭바 — 3대 기둥 + 홈 + 마이 = 5개 탭.
+ *
+ * 홈: 전체 요약·추천
+ * 음악: 상황별 주파수 + 심리 음악
+ * 호흡: 호흡법 컨트롤
+ * 깨기: 유리 깨기 스트레스 해소
+ * 마이: 설정·통계
+ *
+ * 수면·사운드는 음악 탭 또는 홈에서 접근.
+ */
 const tabs = [
   { to: "/home", label: "홈", Icon: Home },
+  { to: "/music", label: "음악", Icon: Music },
   { to: "/breathing", label: "호흡", Icon: Wind },
   { to: "/release/glass", label: "깨기", Icon: Sparkles },
-  { to: "/sleep", label: "수면", Icon: Moon },
   { to: "/me", label: "마이", Icon: User },
 ];
 

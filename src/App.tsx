@@ -9,6 +9,7 @@ import Home from "./pages/Home";
 import Breathing from "./pages/Breathing";
 import BreathingSession from "./pages/BreathingSession";
 import Sounds from "./pages/Sounds";
+import Music from "./pages/Music";
 import Me from "./pages/Me";
 import Sleep from "./pages/Sleep";
 import Session from "./pages/Session";
@@ -38,6 +39,7 @@ const App = () => (
           <Route path="/settings/theme" element={<ThemeSettings />} />
           <Route element={<AppShell />}>
             <Route path="/home" element={<Home />} />
+            <Route path="/music" element={<Music />} />
             <Route path="/breathing" element={<Breathing />} />
             <Route path="/sounds" element={<Sounds />} />
             <Route path="/sleep" element={<Sleep />} />

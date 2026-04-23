@@ -1,73 +1,80 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 260" width="240" height="260">
   <defs>
-    <linearGradient id="bodyGrad" x1="30%" y1="10%" x2="70%" y2="100%"><stop offset="0%" stop-color="#4AEBFB" stop-opacity="0.95"/><stop offset="50%" stop-color="#00D9E8" stop-opacity="0.92"/><stop offset="100%" stop-color="#0077B6" stop-opacity="0.90"/></linearGradient>
+    <linearGradient id="bodyGrad" x1="30%" y1="10%" x2="70%" y2="100%">
+      <stop offset="0%" stop-color="#7FF5FF" stop-opacity="0.92"/>
+      <stop offset="40%" stop-color="#4AEBFB" stop-opacity="0.9"/>
+      <stop offset="80%" stop-color="#00B5C8" stop-opacity="0.92"/>
+      <stop offset="100%" stop-color="#005A8A" stop-opacity="0.95"/>
+    </linearGradient>
     <radialGradient id="glassInner" cx="50%" cy="65%" r="55%">
-      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.35"/>
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.4"/>
       <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0"/>
     </radialGradient>
     <radialGradient id="hiTop" cx="35%" cy="28%" r="22%">
-      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.95"/>
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.85"/>
       <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0"/>
     </radialGradient>
-    <!-- Calm: deeper, richer blue -->
-    <radialGradient id="aiboIrisC" cx="50%" cy="50%" r="60%">
-      <stop offset="0%"  stop-color="#5BA8C9"/>
-      <stop offset="55%" stop-color="#2E5C8A"/>
-      <stop offset="100%" stop-color="#0F2640"/>
+    <radialGradient id="auraGlow" cx="50%" cy="50%" r="60%">
+      <stop offset="0%" stop-color="#7FE8F0" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#7FE8F0" stop-opacity="0"/>
     </radialGradient>
     <filter id="bodyShadow" x="-30%" y="-30%" width="160%" height="160%">
       <feGaussianBlur stdDeviation="3" />
     </filter>
   </defs>
 
-  <ellipse cx="120" cy="240" rx="62" ry="7" fill="#1A3F55" opacity="0.18" filter="url(#bodyShadow)"/>
+  <!-- Aura glow around body -->
+  <circle cx="120" cy="150" r="105" fill="url(#auraGlow)"/>
+
+  <ellipse cx="120" cy="225" rx="68" ry="8" fill="#1A3F55" opacity="0.22" filter="url(#bodyShadow)"/>
 
   <g class="moodie-body">
     <path fill="url(#bodyGrad)" d="
-      M120 30 C 165 32, 195 68, 196 116 C 197 156, 184 192, 160 210
-      C 146 220, 134 224, 120 224 C 106 224, 94 220, 80 210
-      C 56 192, 43 156, 44 116 C 45 68, 75 32, 120 30 Z" />
+      M 70 218
+      C 56 218, 44 208, 44 190
+      C 44 130, 76 80, 120 80
+      C 164 80, 196 130, 196 190
+      C 196 208, 184 218, 170 218
+      Z" />
     <path fill="url(#glassInner)" d="
-      M120 30 C 165 32, 195 68, 196 116 C 197 156, 184 192, 160 210
-      C 146 220, 134 224, 120 224 C 106 224, 94 220, 80 210
-      C 56 192, 43 156, 44 116 C 45 68, 75 32, 120 30 Z" />
-    <ellipse cx="88" cy="78" rx="32" ry="38" fill="url(#hiTop)" />
+      M 70 218
+      C 56 218, 44 208, 44 190
+      C 44 130, 76 80, 120 80
+      C 164 80, 196 130, 196 190
+      C 196 208, 184 218, 170 218
+      Z" />
 
+    <ellipse cx="84" cy="115" rx="26" ry="32" fill="url(#hiTop)" />
+
+    <!-- Calm eyes: nearly closed, peaceful arc -->
     <g class="moodie-eyes">
-      <g class="eye eye-left">
-        <ellipse cx="98" cy="115" rx="30" ry="6" fill="#1A3F55" opacity="0.18"/>
-        <circle cx="98" cy="138" r="29" fill="#0A1525"/>
-        <circle cx="98" cy="138" r="27" fill="#0F2640"/>
-        <circle cx="98" cy="138" r="24" fill="url(#aiboIrisC)"/>
-        <circle cx="98" cy="138" r="11" fill="#050B18"/>
-        <circle cx="89" cy="128" r="7" fill="#FFFFFF" opacity="0.9"/>
-        <circle cx="106" cy="148" r="2.4" fill="#FFFFFF" opacity="0.85"/>
-        <!-- slightly closed lid (sleepy) -->
-        <path d="M67 138 Q 98 118, 129 138 L 129 108 L 67 108 Z" fill="#A8D8E8" opacity="0.95"/>
-      </g>
-      <g class="eye eye-right">
-        <ellipse cx="142" cy="115" rx="30" ry="6" fill="#1A3F55" opacity="0.18"/>
-        <circle cx="142" cy="138" r="29" fill="#0A1525"/>
-        <circle cx="142" cy="138" r="27" fill="#0F2640"/>
-        <circle cx="142" cy="138" r="24" fill="url(#aiboIrisC)"/>
-        <circle cx="142" cy="138" r="11" fill="#050B18"/>
-        <circle cx="133" cy="128" r="7" fill="#FFFFFF" opacity="0.9"/>
-        <circle cx="150" cy="148" r="2.4" fill="#FFFFFF" opacity="0.85"/>
-        <path d="M111 138 Q 142 118, 173 138 L 173 108 L 111 108 Z" fill="#A8D8E8" opacity="0.95"/>
-      </g>
+      <path d="M 84 156 Q 98 152, 112 156"
+            stroke="#1A1A2E" stroke-width="3" stroke-linecap="round"
+            fill="none"/>
+      <path d="M 128 156 Q 142 152, 156 156"
+            stroke="#1A1A2E" stroke-width="3" stroke-linecap="round"
+            fill="none"/>
     </g>
 
-    <!-- gentle smile -->
-    <path d="M112 188 Q 120 194, 128 188" stroke="#D88BA0" stroke-width="2.2" stroke-linecap="round" fill="none" opacity="0.9"/>
-    <ellipse cx="74" cy="180" rx="8" ry="4" fill="#F4B5C4" opacity="0.45"/>
-    <ellipse cx="166" cy="180" rx="8" ry="4" fill="#F4B5C4" opacity="0.45"/>
+    <!-- Peaceful smile: gentle curve -->
+    <path d="M 110 182 Q 120 188, 130 182"
+          stroke="#1A1A2E" stroke-width="2.5" stroke-linecap="round"
+          fill="none"/>
+
+    <!-- Subtle blush -->
+    <ellipse cx="78" cy="175" rx="9" ry="5" fill="#FF9EBE" opacity="0.45"/>
+    <ellipse cx="162" cy="175" rx="9" ry="5" fill="#FF9EBE" opacity="0.45"/>
+
+    <!-- ZZ sleep marks (optional, peaceful) -->
+    <text x="170" y="105" font-family="serif" font-size="14" fill="#7FE8F0" opacity="0.75">z</text>
+    <text x="180" y="90" font-family="serif" font-size="11" fill="#7FE8F0" opacity="0.6">z</text>
   </g>
 
+  <!-- Soft sparkles -->
   <g class="moodie-sparkles">
-    <g class="sparkle sparkle-1" transform="translate(36 70)"><path d="M0 -6 L 1.5 -1.5 L 6 0 L 1.5 1.5 L 0 6 L -1.5 1.5 L -6 0 L -1.5 -1.5 Z" fill="#FFFFFF" opacity="0.75"/></g>
-    <g class="sparkle sparkle-2" transform="translate(208 110)"><path d="M0 -5 L 1.2 -1.2 L 5 0 L 1.2 1.2 L 0 5 L -1.2 1.2 L -5 0 L -1.2 -1.2 Z" fill="#FFF6C2" opacity="0.7"/></g>
-    <g class="sparkle sparkle-3" transform="translate(196 50)"><path d="M0 -5 L 1.2 -1.2 L 5 0 L 1.2 1.2 L 0 5 L -1.2 1.2 L -5 0 L -1.2 -1.2 Z" fill="#FFFFFF" opacity="0.7"/></g>
-    <g class="sparkle sparkle-4" transform="translate(28 168)"><path d="M0 -4 L 1 -1 L 4 0 L 1 1 L 0 4 L -1 1 L -4 0 L -1 -1 Z" fill="#FFF6C2" opacity="0.65"/></g>
-    <g class="sparkle sparkle-5" transform="translate(214 200)"><path d="M0 -6 L 1.4 -1.4 L 6 0 L 1.4 1.4 L 0 6 L -1.4 1.4 L -6 0 L -1.4 -1.4 Z" fill="#FFFFFF" opacity="0.75"/></g>
+    <g class="sparkle sparkle-1" transform="translate(36 80)" opacity="0.7"><path d="M0 -6 L 1.5 -1.5 L 6 0 L 1.5 1.5 L 0 6 L -1.5 1.5 L -6 0 L -1.5 -1.5 Z" fill="#7FE8F0"/></g>
+    <g class="sparkle sparkle-2" transform="translate(210 130)" opacity="0.7"><path d="M0 -5 L 1.2 -1.2 L 5 0 L 1.2 1.2 L 0 5 L -1.2 1.2 L -5 0 L -1.2 -1.2 Z" fill="#FFFFFF"/></g>
+    <g class="sparkle sparkle-3" transform="translate(28 180)" opacity="0.7"><path d="M0 -4 L 1 -1 L 4 0 L 1 1 L 0 4 L -1 1 L -4 0 L -1 -1 Z" fill="#7FE8F0"/></g>
+    <g class="sparkle sparkle-4" transform="translate(214 200)" opacity="0.7"><path d="M0 -5 L 1.2 -1.2 L 5 0 L 1.2 1.2 L 0 5 L -1.2 1.2 L -5 0 L -1.2 -1.2 Z" fill="#FFFFFF"/></g>
   </g>
 </svg>

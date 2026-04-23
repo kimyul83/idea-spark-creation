@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { ArrowLeft, Play, Pause, Shuffle, Timer, Info } from "lucide-react";
-import { Howl } from "howler";
+import { Howl, Howler } from "howler";
 import { Moodie } from "@/components/Moodie";
 import { getSituationById } from "@/lib/modes";
 import { SITUATION_TRACK_MAP, pickRandom, toCdnUrl } from "@/lib/situation-tracks";
@@ -87,19 +87,41 @@ const MusicPlay = () => {
     howlRef.current?.unload();
     audioEngine.stopAll();
 
+    // iOS Safari 오디오 컨텍스트 언락 (사용자 제스처 필요)
+    try {
+      const ctx = (Howler as any).ctx;
+      if (ctx && ctx.state === "suspended") {
+        ctx.resume();
+      }
+    } catch { /* ignore */ }
+
     // CDN URL 변환 (jsDelivr — GitHub public repo 서빙)
     const cdnUrl = toCdnUrl(url);
+    console.log("[MusicPlay] Loading:", cdnUrl);
 
     const howl = new Howl({
       src: [cdnUrl],
       html5: true,
       loop: true,
       volume: 0.75,
-      onplay: () => { setPlaying(true); setErrorMsg(null); },
+      onplay: () => {
+        console.log("[MusicPlay] Playing OK");
+        setPlaying(true); setErrorMsg(null);
+      },
       onpause: () => setPlaying(false),
       onstop: () => setPlaying(false),
-      onloaderror: () => { setErrorMsg("파일 로딩 실패"); setPlaying(false); },
-      onplayerror: () => setErrorMsg("재생 실패 — 화면을 다시 탭해주세요"),
+      onload: () => console.log("[MusicPlay] Loaded"),
+      onloaderror: (id, err) => {
+        console.error("[MusicPlay] Load error:", err, cdnUrl);
+        setErrorMsg(`로딩 실패: ${err}`);
+        setPlaying(false);
+      },
+      onplayerror: (id, err) => {
+        console.error("[MusicPlay] Play error:", err);
+        setErrorMsg(`재생 실패: ${err} — 화면을 다시 탭해주세요`);
+        // iOS 자동 재시도
+        howl.once("unlock", () => howl.play());
+      },
     });
     howl.play();
     howlRef.current = howl;

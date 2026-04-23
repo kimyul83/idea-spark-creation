@@ -5,7 +5,7 @@ import { MonetBackground } from "@/components/MonetBackground";
 import { Button } from "@/components/ui/button";
 import { Moodie } from "@/components/Moodie";
 import { ParticleCanvas, type ParticleHandle } from "@/components/ParticleCanvas";
-import { playGlassFx, vibrate } from "@/lib/sfx";
+import { playGlassFx, playRealGlass, vibrate } from "@/lib/sfx";
 import {
   GLASS_CATEGORIES,
   GLASS_CLIPS,
@@ -139,7 +139,9 @@ const GlassBreak = () => {
 
     // Volume scales gently with combo
     const vol = Math.min(0.7, 0.4 + combo * 0.02);
-    playGlassFx(active.category, vol);
+    // 실제 Epidemic 유리 깨짐 녹음 (8개 중 랜덤) + 폴백 합성
+    playRealGlass(active.category, vol);
+    playGlassFx(active.category, vol * 0.4); // 합성은 살짝 보조로
     vibrate(active.category === "smash" ? [40, 25, 40] : 25);
     setTaps((t) => t + 1);
   };
@@ -240,14 +242,15 @@ const GlassBreak = () => {
               <div
                 className="absolute inset-0"
                 style={{
-                  background: `linear-gradient(160deg, hsl(${c.hue} 70% 65%) 0%, hsl(${c.hue + 30} 50% 25%) 100%)`,
+                  background: `linear-gradient(160deg, hsl(${c.hue} 55% 82% / 0.55) 0%, hsl(${c.hue + 20} 45% 72% / 0.35) 100%)`,
+                  backdropFilter: "blur(16px)",
                 }}
               />
               <svg className="absolute inset-0 w-full h-full opacity-30" viewBox="0 0 100 100" preserveAspectRatio="none">
                 <path d="M50 50 L20 10 M50 50 L80 15 M50 50 L90 60 M50 50 L60 95 M50 50 L10 80" stroke="white" strokeWidth="0.5" fill="none" />
                 <path d="M50 50 L35 30 M50 50 L70 40 M50 50 L65 70 M50 50 L30 60" stroke="white" strokeWidth="0.3" fill="none" />
               </svg>
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-white/10 via-transparent to-white/15" />
 
               {/* Badges */}
               <div className="absolute top-2.5 left-2.5 flex flex-col gap-1">

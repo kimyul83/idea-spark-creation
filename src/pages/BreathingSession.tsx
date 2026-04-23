@@ -194,18 +194,27 @@ const BreathingSession = () => {
         </button>
       </div>
 
-      {/* phase label */}
-      <div className="text-center mt-6 relative z-10">
+      {/* phase label — 크고 선명한 자막 */}
+      <div className="text-center mt-6 relative z-10 px-6">
         <p
           key={`${rep}-${phaseIdx}-${microRep}`}
-          className="text-[20px] font-semibold text-foreground animate-fade-up"
+          className="text-[32px] md:text-[36px] font-bold text-foreground animate-fade-up tracking-tight leading-tight"
         >
           {PHASE_LABEL[currentPhase.phase]}
-          {!isCycle && ` ${currentPhase.seconds}초`}
         </p>
-        <p className="text-foreground/50 text-sm mt-1 tabular-nums">
-          {isCycle ? "" : displaySecondsLeft}
-        </p>
+        {!isCycle && (
+          <div className="mt-3 flex items-baseline justify-center gap-1.5">
+            <span className="text-[72px] font-serif tabular-nums leading-none text-primary">
+              {displaySecondsLeft}
+            </span>
+            <span className="text-foreground/60 text-lg font-medium mb-1">초</span>
+          </div>
+        )}
+        {isCycle && (
+          <p className="text-foreground/50 text-sm mt-2 tracking-wider">
+            {microRep} / {cycleReps}
+          </p>
+        )}
       </div>
 
       {/* visual stage */}

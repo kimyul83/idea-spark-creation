@@ -11,9 +11,16 @@
 
 const MUTE_KEY = "yunseul_tts_muted";
 
+/**
+ * 기본값: 음성 OFF (자막으로만 안내).
+ * 사용자가 필요하면 설정에서 켤 수 있음.
+ */
 export const isTtsMuted = (): boolean => {
-  if (typeof window === "undefined") return false;
-  return localStorage.getItem(MUTE_KEY) === "1";
+  if (typeof window === "undefined") return true;
+  const stored = localStorage.getItem(MUTE_KEY);
+  // 저장된 값 없으면 기본 뮤트 (조용함 선호)
+  if (stored === null) return true;
+  return stored === "1";
 };
 
 export const setTtsMuted = (muted: boolean): void => {

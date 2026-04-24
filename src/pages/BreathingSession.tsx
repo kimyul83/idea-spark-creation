@@ -99,6 +99,18 @@ const BreathingSession = () => {
     phaseStartRef.current = Date.now();
   }, [phaseIdx, rep, microRep]);
 
+  // 일시정지→재개 시 phaseStartRef 보정 (남은 시간 유지)
+  const prevRunningRef = useRef(running);
+  useEffect(() => {
+    if (!prevRunningRef.current && running) {
+      // pause → resume: 현재 남은 시간 기준으로 시작 시각 재계산
+      const currentDuration = pattern.phases[phaseIdx].seconds;
+      phaseStartRef.current = Date.now() - (currentDuration - secondsLeft) * 1000;
+    }
+    prevRunningRef.current = running;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [running]);
+
   useEffect(() => {
     if (!running || done) return;
     const currentPhaseDuration = pattern.phases[phaseIdx].seconds;

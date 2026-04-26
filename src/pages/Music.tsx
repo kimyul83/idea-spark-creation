@@ -8,6 +8,13 @@ import { Howl } from "howler";
 import { MonetBackground } from "@/components/MonetBackground";
 import { audioEngine } from "@/lib/audio-engine";
 import { toCdnUrl } from "@/lib/situation-tracks";
+import {
+  setMediaSession,
+  setMediaSessionPlaying,
+  clearMediaSession,
+  requestWakeLock,
+  releaseWakeLock,
+} from "@/lib/media-session";
 import { cn } from "@/lib/utils";
 
 /**
@@ -174,6 +181,8 @@ const Music = () => {
       howlsRef.current.forEach((h) => { h.stop(); h.unload(); });
       howlsRef.current.clear();
       audioEngine.stopAll();
+      clearMediaSession();
+      releaseWakeLock();
     };
   }, []);
 
@@ -213,6 +222,13 @@ const Music = () => {
     howlsRef.current.set(item.id, howl);
     setVersionIdx((prev) => ({ ...prev, [item.id]: idx }));
     setActiveIds((prev) => new Set(prev).add(item.id));
+
+    setMediaSession(
+      { title: item.label, artist: "Yunseul · Sound Mix", album: item.tag },
+      { onPause: () => stopAll() }
+    );
+    setMediaSessionPlaying(true);
+    requestWakeLock();
   };
 
   const stopFile = (id: string) => {
@@ -223,6 +239,10 @@ const Music = () => {
     setActiveIds((prev) => {
       const next = new Set(prev);
       next.delete(id);
+      if (next.size === 0) {
+        clearMediaSession();
+        releaseWakeLock();
+      }
       return next;
     });
   };
@@ -230,7 +250,15 @@ const Music = () => {
   const toggleFreq = (item: FreqItem) => {
     if (activeIds.has(item.id)) {
       audioEngine.stop(item.id);
-      setActiveIds((prev) => { const n = new Set(prev); n.delete(item.id); return n; });
+      setActiveIds((prev) => {
+        const n = new Set(prev);
+        n.delete(item.id);
+        if (n.size === 0) {
+          clearMediaSession();
+          releaseWakeLock();
+        }
+        return n;
+      });
       return;
     }
     if (item.type === "noise" && item.noiseType) {
@@ -239,6 +267,12 @@ const Music = () => {
       audioEngine.playTone(item.id, item.hz, 0.12);
     }
     setActiveIds((prev) => new Set(prev).add(item.id));
+    setMediaSession(
+      { title: item.label, artist: "Yunseul · Frequency", album: item.tag },
+      { onPause: () => stopAll() }
+    );
+    setMediaSessionPlaying(true);
+    requestWakeLock();
   };
 
   const stopAll = () => {
@@ -246,6 +280,8 @@ const Music = () => {
     howlsRef.current.clear();
     audioEngine.stopAll();
     setActiveIds(new Set());
+    clearMediaSession();
+    releaseWakeLock();
   };
 
   return (

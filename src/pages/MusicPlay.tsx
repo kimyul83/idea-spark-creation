@@ -7,6 +7,13 @@ import { getSituationById } from "@/lib/modes";
 import { SITUATION_TRACK_MAP, pickRandom, toCdnUrl } from "@/lib/situation-tracks";
 import { SITUATION_DETAILS } from "@/lib/situation-details";
 import { audioEngine } from "@/lib/audio-engine";
+import {
+  setMediaSession,
+  setMediaSessionPlaying,
+  clearMediaSession,
+  requestWakeLock,
+  releaseWakeLock,
+} from "@/lib/media-session";
 import { cn } from "@/lib/utils";
 
 /**
@@ -61,6 +68,8 @@ const MusicPlay = () => {
       howlRef.current?.stop();
       howlRef.current?.unload();
       audioEngine.stopAll();
+      clearMediaSession();
+      releaseWakeLock();
     };
   }, []);
 
@@ -116,9 +125,17 @@ const MusicPlay = () => {
       onplay: () => {
         console.log("[MusicPlay] Playing OK");
         setPlaying(true); setErrorMsg(null);
+        setMediaSessionPlaying(true);
+        requestWakeLock();
       },
-      onpause: () => setPlaying(false),
-      onstop: () => setPlaying(false),
+      onpause: () => {
+        setPlaying(false);
+        setMediaSessionPlaying(false);
+      },
+      onstop: () => {
+        setPlaying(false);
+        setMediaSessionPlaying(false);
+      },
       onload: () => console.log("[MusicPlay] Loaded"),
       onloaderror: (id, err) => {
         console.error("[MusicPlay] Load error:", err, cdnUrl);
@@ -134,6 +151,14 @@ const MusicPlay = () => {
     });
     howl.play();
     howlRef.current = howl;
+
+    setMediaSession(
+      { title: detail.mood, artist: "Yunseul", album: detail.scene },
+      {
+        onPlay: () => howl.play(),
+        onPause: () => howl.pause(),
+      }
+    );
 
     const hzMap: Record<VariantId, number> = { delta: 2, theta: 5, alpha: 10, beta: 15, gamma: 40 };
     audioEngine.playTone("freq-layer", hzMap[v], 0.03);

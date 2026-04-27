@@ -34,7 +34,6 @@ const App = () => (
           <Route path="/session/:type/:id" element={<div className="app-shell"><Session /></div>} />
           <Route path="/breathing/session/:id" element={<div className="app-shell"><BreathingSession /></div>} />
           <Route path="/focus/adhd" element={<div className="app-shell"><Adhd /></div>} />
-          <Route path="/release/glass" element={<div className="app-shell"><GlassBreak /></div>} />
           <Route path="/music/:id" element={<div className="app-shell"><MusicPlay /></div>} />
           <Route path="/subscribe" element={<div className="app-shell"><Subscribe /></div>} />
           <Route path="/settings/theme" element={<ThemeSettings />} />
@@ -42,6 +41,7 @@ const App = () => (
             <Route path="/home" element={<Home />} />
             <Route path="/music" element={<Music />} />
             <Route path="/breathing" element={<Breathing />} />
+            <Route path="/release/glass" element={<GlassBreak />} />
             <Route path="/sleep" element={<Sleep />} />
             <Route path="/me" element={<Me />} />
           </Route>

@@ -26,13 +26,13 @@ const Home = () => {
       {/* Header */}
       <div className="animate-fade-up flex items-start justify-between">
         <div>
-          <p className="text-[11px] tracking-[0.3em] uppercase text-primary font-serif">
+          <p className="text-[13px] tracking-[0.3em] uppercase text-primary font-serif">
             Home
           </p>
-          <h1 className="text-[26px] font-bold text-foreground mt-1 leading-tight">
+          <h1 className="text-[30px] font-bold text-foreground mt-1 leading-tight">
             {greeting}
           </h1>
-          <p className="text-sm text-foreground/60 mt-1">
+          <p className="text-base text-foreground/65 mt-1.5">
             어떤 시간이 필요해요?
           </p>
         </div>
@@ -40,39 +40,39 @@ const Home = () => {
       </div>
 
       {/* 호흡 · 깨기 빠른 진입 */}
-      <div className="mt-5 grid grid-cols-2 gap-2.5">
+      <div className="mt-5 grid grid-cols-2 gap-3">
         <button
           onClick={() => navigate("/breathing")}
-          className="liquid-card liquid-card-hover p-3.5 flex items-center gap-3 text-left"
+          className="liquid-card liquid-card-hover p-4 flex items-center gap-3 text-left"
         >
-          <div className="w-10 h-10 rounded-xl bg-primary/15 flex items-center justify-center shrink-0">
-            <Wind className="w-5 h-5 text-primary" strokeWidth={1.6} />
+          <div className="w-12 h-12 rounded-2xl bg-primary/15 flex items-center justify-center shrink-0">
+            <Wind className="w-6 h-6 text-primary" strokeWidth={1.6} />
           </div>
           <div className="flex-1 min-w-0">
-            <p className="font-bold text-foreground text-[13px]">호흡</p>
-            <p className="text-[10px] text-foreground/55">10 Techniques</p>
+            <p className="font-bold text-foreground text-[16px]">호흡</p>
+            <p className="text-[12px] text-foreground/60 mt-0.5">10 Techniques</p>
           </div>
         </button>
         <button
           onClick={() => navigate("/release/glass")}
-          className="liquid-card liquid-card-hover p-3.5 flex items-center gap-3 text-left"
+          className="liquid-card liquid-card-hover p-4 flex items-center gap-3 text-left"
         >
-          <div className="w-10 h-10 rounded-xl bg-primary/15 flex items-center justify-center shrink-0">
-            <Sparkles className="w-5 h-5 text-primary" strokeWidth={1.6} />
+          <div className="w-12 h-12 rounded-2xl bg-primary/15 flex items-center justify-center shrink-0">
+            <Sparkles className="w-6 h-6 text-primary" strokeWidth={1.6} />
           </div>
           <div className="flex-1 min-w-0">
-            <p className="font-bold text-foreground text-[13px]">깨기</p>
-            <p className="text-[10px] text-foreground/55">스트레스 해소</p>
+            <p className="font-bold text-foreground text-[16px]">깨기</p>
+            <p className="text-[12px] text-foreground/60 mt-0.5">스트레스 해소</p>
           </div>
         </button>
       </div>
 
       {/* 6개 상황 */}
       <section className="mt-7">
-        <h2 className="text-[11px] tracking-[0.2em] uppercase text-primary/80 font-serif mb-3 px-1">
+        <h2 className="text-[13px] tracking-[0.2em] uppercase text-primary/80 font-serif mb-3 px-1">
           힐링 사운드
         </h2>
-        <div className="space-y-2">
+        <div className="space-y-2.5">
           {MUSIC_SITUATIONS.map((s) => (
             <SituationRow key={s.id} id={s.id} icon={s.icon} onClick={() => navigate(`/music/${s.id}`)} />
           ))}
@@ -81,7 +81,7 @@ const Home = () => {
 
       <div className="flex-1 flex items-end justify-center pt-8">
         <div className="text-center opacity-75">
-          <p className="text-[11px] text-foreground/45 font-serif tracking-widest">
+          <p className="text-[12px] text-foreground/50 font-serif tracking-widest">
             마음에 · 내리는 · 윤슬
           </p>
         </div>
@@ -102,19 +102,19 @@ const SituationRow = ({ id, icon: Icon, onClick }: SituationRowProps) => {
   return (
     <button
       onClick={onClick}
-      className="liquid-card liquid-card-hover w-full p-4 flex items-center gap-3 text-left"
+      className="liquid-card liquid-card-hover w-full p-4 flex items-center gap-3.5 text-left"
     >
-      <div className="w-11 h-11 rounded-2xl bg-primary/15 flex items-center justify-center shrink-0">
-        <Icon className="w-5 h-5 text-primary" strokeWidth={1.6} />
+      <div className="w-12 h-12 rounded-2xl bg-primary/15 flex items-center justify-center shrink-0">
+        <Icon className="w-6 h-6 text-primary" strokeWidth={1.6} />
       </div>
       <div className="flex-1 min-w-0">
         <div className="flex items-baseline gap-2 flex-wrap">
-          <span className="font-bold text-foreground text-[14px]">{d.mood}</span>
-          <span className="text-[10px] font-mono text-primary tracking-wide">{d.frequencyLabel}</span>
+          <span className="font-bold text-foreground text-[16px]">{d.mood}</span>
+          <span className="text-[12px] font-mono text-primary tracking-wide">{d.frequencyLabel}</span>
         </div>
-        <div className="text-[11px] text-foreground/60 mt-0.5">{d.scene}</div>
+        <div className="text-[13px] text-foreground/65 mt-0.5">{d.scene}</div>
       </div>
-      <ChevronRight className="w-4 h-4 text-foreground/25 shrink-0" />
+      <ChevronRight className="w-5 h-5 text-foreground/30 shrink-0" />
     </button>
   );
 };

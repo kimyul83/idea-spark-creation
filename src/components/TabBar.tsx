@@ -1,22 +1,17 @@
 import { NavLink } from "react-router-dom";
-import { Home, Music, Wind, Sparkles, User } from "lucide-react";
+import { Home, Music, Wind, Moon, Sparkles, User } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 /**
- * 하단 탭바 — 3대 기둥 + 홈 + 마이 = 5개 탭.
- *
- * 홈: 전체 요약·추천
- * 음악: 상황별 주파수 + 심리 음악
- * 호흡: 호흡법 컨트롤
- * 깨기: 유리 깨기 스트레스 해소
- * 마이: 설정·통계
- *
- * 수면·사운드는 음악 탭 또는 홈에서 접근.
+ * 하단 탭바 — 6개.
+ * 홈/음악/호흡/수면/깨기/마이.
+ * 수면: 타이머 설정 + 자장가 사운드 장시간 재생.
  */
 const tabs = [
   { to: "/home", label: "홈", Icon: Home },
   { to: "/music", label: "음악", Icon: Music },
   { to: "/breathing", label: "호흡", Icon: Wind },
+  { to: "/sleep", label: "수면", Icon: Moon },
   { to: "/release/glass", label: "깨기", Icon: Sparkles },
   { to: "/me", label: "마이", Icon: User },
 ];
@@ -31,7 +26,7 @@ export const TabBar = () => {
             "0 12px 36px -8px hsl(var(--shadow-hue, 217 33% 15%) / 0.18), inset 0 1px 0 hsl(0 0% 100% / 0.5)",
         }}
       >
-        <ul className="grid grid-cols-5">
+        <ul className="grid grid-cols-6">
           {tabs.map(({ to, label, Icon }) => (
             <li key={to}>
               <NavLink

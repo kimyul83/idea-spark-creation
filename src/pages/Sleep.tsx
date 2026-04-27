@@ -1,11 +1,17 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  Lock, Moon, Pause, Play, Sparkles,
-} from "lucide-react";
+import { Lock, Pause, Play, Sparkles } from "lucide-react";
+import { Howl } from "howler";
 import { MonetBackground } from "@/components/MonetBackground";
 import { Moodie } from "@/components/Moodie";
-import { audioEngine, SleepSoundId } from "@/lib/audio-engine";
+import { toCdnUrl } from "@/lib/situation-tracks";
+import {
+  setMediaSession,
+  setMediaSessionPlaying,
+  clearMediaSession,
+  requestWakeLock,
+  releaseWakeLock,
+} from "@/lib/media-session";
 import { usePremium } from "@/hooks/usePremium";
 import { useTheme } from "@/contexts/ThemeContext";
 import { supabase } from "@/integrations/supabase/client";
@@ -13,30 +19,98 @@ import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 
+interface Variant {
+  name: string;
+  file: string;
+}
+
 interface SleepTrack {
-  id: SleepSoundId;
+  id: string;
   emoji: string;
   name: string;
-  desc: string;
   premium: boolean;
+  variants: Variant[];
 }
 
 const TRACKS: SleepTrack[] = [
-  { id: "deep_waves",       emoji: "🌊", name: "깊은 파도",       desc: "40Hz 델타파 + 바다",      premium: false },
-  { id: "calm_rain",        emoji: "🌧️", name: "잔잔한 빗소리",   desc: "비 + 432Hz",              premium: false },
-  { id: "forest_night",     emoji: "🌲", name: "숲의 밤",         desc: "풀벌레 + 새벽 공기",       premium: false },
-  { id: "sleep_asmr",       emoji: "🎵", name: "수면 ASMR",       desc: "로파이 + 화이트노이즈",    premium: true  },
-  { id: "delta_meditation", emoji: "🌙", name: "델타파 명상",     desc: "0.5–4Hz 바이노럴",        premium: true  },
-  { id: "lullaby",          emoji: "🕯️", name: "자장가",          desc: "부드러운 피아노 + 528Hz",  premium: true  },
-  { id: "cosmic_drone",     emoji: "💤", name: "우주 앰비언트",   desc: "딥 드론 사운드",          premium: true  },
-  { id: "meadow_breeze",    emoji: "🌾", name: "초원 밤바람",     desc: "바람 + 귀뚜라미",         premium: true  },
+  {
+    id: "deep_waves",
+    emoji: "🌊",
+    name: "깊은 파도",
+    premium: false,
+    variants: [
+      { name: "스칸디나비아 군도", file: "/sounds/ES_Water, Wave, Waves Sweeping Over Rocks, Calm, Lapping, Scandinavian Archipelago - Epidemic Sound.mp3" },
+      { name: "호수의 잔물결", file: "/sounds/ES_Water, Lap, Lake, Small Waves Lapping, Detailed, 1m, Loop 01 - Epidemic Sound.mp3" },
+      { name: "바위에 부서지는 잔파도", file: "/sounds/ES_Water, Lap, Gentle Waves, Splashing Against Rocks, Calm, Light Water Fizz - Epidemic Sound.mp3" },
+      { name: "해변의 작은 파도", file: "/sounds/ES_Water, Wave, Ocean, Beach Waves, Small, Lapping - Epidemic Sound.mp3" },
+      { name: "망그로브 해안", file: "/sounds/ES_Water, Wave, Seaside, Waves, Inside, Mangroves, South Andaman - Epidemic Sound.mp3" },
+    ],
+  },
+  {
+    id: "calm_rain",
+    emoji: "🌧️",
+    name: "잔잔한 빗소리",
+    premium: false,
+    variants: [
+      { name: "잎새 위 빗방울", file: "/sounds/ES_Rain, Vegetation, Medium Leaves, Drop, Tropical, Jungle - Epidemic Sound.mp3" },
+      { name: "낮의 거센 빗줄기", file: "/sounds/ES_Rain, Vegetation, Rain, Daytime, Incoming Hard Rain, Baratang Island - Epidemic Sound.mp3" },
+    ],
+  },
+  {
+    id: "forest_night",
+    emoji: "🌲",
+    name: "숲의 밤",
+    premium: false,
+    variants: [
+      { name: "맑은 밤의 귀뚜라미", file: "/sounds/ES_Ambience, Insect, Cricket, Night, Clean - Epidemic Sound.mp3" },
+      { name: "밤 풀밭 귀뚜라미 1", file: "/sounds/ES_Ambience, Insect, Cricket, Night, Meadow, Jungle 01 - Epidemic Sound.mp3" },
+      { name: "밤 풀밭 귀뚜라미 2", file: "/sounds/ES_Ambience, Insect, Cricket, Night, Meadow, Jungle 02 - Epidemic Sound.mp3" },
+      { name: "아마존 강가의 밤", file: "/sounds/ES_Ambience, Tropical, Amazonas, Night Close, River Crickets, Frogs Bird Sometimes - Epidemic Sound.mp3" },
+      { name: "열대우림의 밤", file: "/sounds/ES_Ambience, Tropical, Rainforest, Night, Insects, Boobook, Middle Jarawa, Edge 02 - Epidemic Sound.mp3" },
+    ],
+  },
+  {
+    id: "stream",
+    emoji: "💧",
+    name: "물 흐르는 소리",
+    premium: false,
+    variants: [
+      { name: "고요한 숲의 시내", file: "/sounds/ES_Water, Flow, Creek, Light, Flowing, Foam Details, Calm Forest 01 - Epidemic Sound.mp3" },
+      { name: "돌 사이 흐르는 강", file: "/sounds/ES_Water, Flow, River, Small, Soft, Burbling Between Stones - Epidemic Sound.mp3" },
+      { name: "꾸준히 흐르는 작은 강", file: "/sounds/ES_Water, Movement, Small River, Continuous, Calm, Happy, Steady Stream 01 Schoeps (MS) - Epidemic Sound.mp3" },
+      { name: "안정적인 폭포", file: "/sounds/ES_Water, Waterfall, Steady, Perspective - Epidemic Sound.mp3" },
+    ],
+  },
+  {
+    id: "fire_asmr",
+    emoji: "🔥",
+    name: "모닥불 ASMR",
+    premium: true,
+    variants: [
+      { name: "잔잔한 장작 모닥불", file: "/sounds/ES_Fire, Burning, Burning Wood, Bonfire, Crispy, Soft Intensity, Loop - Epidemic Sound.mp3" },
+      { name: "타닥거리는 모닥불", file: "/sounds/ES_Fire, Burning, Bonfire, Moderate Size, Close, Crackling - Epidemic Sound.mp3" },
+      { name: "중간 세기의 장작불", file: "/sounds/ES_Fire, Burning, Wood, Crispy, Medium Intensity - Epidemic Sound.mp3" },
+    ],
+  },
+  {
+    id: "deep_ambience",
+    emoji: "🌙",
+    name: "깊은 밤 명상",
+    premium: true,
+    variants: [
+      { name: "동굴 물방울 흐름", file: "/sounds/ES_Ambience, Underground, Cave, Water, Dripping, Flowing 02 - Epidemic Sound.mp3" },
+      { name: "동굴 깊은 물방울", file: "/sounds/ES_Ambience, Underground, Cave, Water, Dripping, Flowing 03 - Epidemic Sound.mp3" },
+      { name: "히말라야 천둥번개", file: "/sounds/ES_Weather, Storm, Strong, Storm 2, Lightning, High Mountains, Bhaleydhunga, Himalaya 04 - Epidemic Sound.mp3" },
+    ],
+  },
 ];
 
 const MIN_HOURS = 1;
 const MAX_HOURS = 10;
 const STEP_HOURS = 0.5;
-const FADE_BEFORE_END_SECONDS = 20 * 60; // 20-min taper
-const FADE_DURATION_SECONDS = 5 * 60;     // smooth 5-min fade
+const FADE_BEFORE_END_SECONDS = 20 * 60;
+const FADE_DURATION_SECONDS = 5 * 60;
+const TRACK_VOLUME = 0.55;
 
 const formatHours = (h: number) =>
   Number.isInteger(h) ? `${h}시간` : `${Math.floor(h)}시간 30분`;
@@ -51,11 +125,13 @@ const Sleep = () => {
   const { resolvedVariant } = useTheme();
 
   const [hours, setHours] = useState(8);
-  const [activeId, setActiveId] = useState<SleepSoundId | null>(null);
+  const [activeId, setActiveId] = useState<string | null>(null);
+  const [activeVariantIdx, setActiveVariantIdx] = useState(0);
   const [endsAt, setEndsAt] = useState<Date | null>(null);
   const startedAt = useRef<number>(0);
   const endTimer = useRef<number>();
   const fadeTimer = useRef<number>();
+  const howlRef = useRef<Howl | null>(null);
 
   const wakeAt = useMemo(() => {
     const d = new Date();
@@ -68,23 +144,25 @@ const Sleep = () => {
       ? "오늘 밤 좋은 꿈 꾸세요 🌙"
       : "푹 주무실 준비 되셨나요 🌙";
 
-  // Cleanup on unmount
+  const cleanup = () => {
+    howlRef.current?.stop();
+    howlRef.current?.unload();
+    howlRef.current = null;
+    if (endTimer.current) window.clearTimeout(endTimer.current);
+    if (fadeTimer.current) window.clearTimeout(fadeTimer.current);
+    clearMediaSession();
+    releaseWakeLock();
+  };
+
   useEffect(() => {
-    return () => {
-      if (activeId) audioEngine.stop(activeId);
-      if (endTimer.current) window.clearTimeout(endTimer.current);
-      if (fadeTimer.current) window.clearTimeout(fadeTimer.current);
-    };
+    return cleanup;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const stopActive = async () => {
     if (!activeId) return;
     const elapsedSec = Math.round((Date.now() - startedAt.current) / 1000);
-    audioEngine.stop(activeId);
-    if (endTimer.current) window.clearTimeout(endTimer.current);
-    if (fadeTimer.current) window.clearTimeout(fadeTimer.current);
-    // Save session if signed in
+    cleanup();
     if (user && elapsedSec > 30) {
       try {
         await supabase.from("sessions").insert({
@@ -99,23 +177,39 @@ const Sleep = () => {
     setEndsAt(null);
   };
 
-  const startTrack = (track: SleepTrack) => {
+  const playVariant = (track: SleepTrack, variantIdx: number) => {
     if (track.premium && !isPremium) {
       navigate("/subscribe");
       return;
     }
-    if (activeId === track.id) {
-      stopActive();
-      return;
-    }
-    if (activeId) audioEngine.stop(activeId);
-    audioEngine.playSleep(track.id, track.id, 0.22);
+    cleanup();
+
+    const v = track.variants[variantIdx];
+    const howl = new Howl({
+      src: [toCdnUrl(v.file)],
+      html5: true,
+      loop: true,
+      volume: TRACK_VOLUME,
+      onplay: () => {
+        setMediaSessionPlaying(true);
+        requestWakeLock();
+      },
+      onpause: () => setMediaSessionPlaying(false),
+      onstop: () => setMediaSessionPlaying(false),
+    });
+    howl.play();
+    howlRef.current = howl;
+
+    setMediaSession(
+      { title: `${track.name} · ${v.name}`, artist: "Yunseul · Sleep", album: formatHours(hours) },
+      { onPause: () => stopActive() },
+    );
 
     const totalSec = Math.round(hours * 3600);
     const fadeStartIn = Math.max(0, totalSec - FADE_BEFORE_END_SECONDS) * 1000;
 
     fadeTimer.current = window.setTimeout(() => {
-      audioEngine.fadeTo(track.id, 0, FADE_DURATION_SECONDS);
+      howlRef.current?.fade(TRACK_VOLUME, 0, FADE_DURATION_SECONDS * 1000);
     }, fadeStartIn);
 
     endTimer.current = window.setTimeout(() => {
@@ -125,15 +219,23 @@ const Sleep = () => {
 
     startedAt.current = Date.now();
     setActiveId(track.id);
+    setActiveVariantIdx(variantIdx);
     setEndsAt(new Date(Date.now() + totalSec * 1000));
-    toast(`${track.name} · ${formatHours(hours)} 재생`);
+    toast(`${track.name} ${variantIdx + 1} · ${formatHours(hours)} 재생`);
+  };
+
+  const handleTrackClick = (track: SleepTrack) => {
+    if (activeId === track.id) {
+      stopActive();
+      return;
+    }
+    playVariant(track, 0);
   };
 
   return (
     <div className="px-5 pt-10 pb-6 relative flex-1 flex flex-col gap-5">
       <MonetBackground intensity="soft" emotion="sleepy" />
 
-      {/* Header */}
       <header className="flex items-start justify-between">
         <div>
           <p className="text-[11px] tracking-[0.3em] uppercase text-foreground/55 font-serif">
@@ -147,7 +249,6 @@ const Sleep = () => {
         <Moodie size={64} emotion="calm" />
       </header>
 
-      {/* Duration dial */}
       <section className="liquid-card p-5">
         <div className="flex items-baseline justify-between">
           <p className="text-[10px] uppercase tracking-widest text-foreground/45">
@@ -192,60 +293,89 @@ const Sleep = () => {
         )}
       </section>
 
-      {/* Sleep music list */}
       <section className="space-y-2">
         <p className="text-[10px] uppercase tracking-widest text-foreground/45 px-1">
-          수면 음악
+          수면 사운드 · 번호 클릭해서 다른 느낌으로
         </p>
         <div className="grid gap-2">
           {TRACKS.map((t) => {
             const locked = t.premium && !isPremium;
             const isActive = activeId === t.id;
             return (
-              <button
+              <div
                 key={t.id}
-                onClick={() => startTrack(t)}
                 className={cn(
-                  "liquid-card liquid-card-hover w-full p-4 flex items-center gap-3 text-left",
+                  "liquid-card w-full p-4",
                   isActive && "ring-2 ring-primary/60",
                 )}
               >
-                <div className="w-12 h-12 rounded-2xl bg-primary/15 flex items-center justify-center text-2xl shrink-0">
-                  {t.emoji}
-                </div>
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-1.5">
-                    <p className="font-semibold text-foreground text-[15px] truncate">
-                      {t.name}
-                    </p>
-                    {locked && <Lock className="w-3 h-3 text-foreground/40" />}
-                  </div>
-                  <p className="text-[11px] text-foreground/55 mt-0.5 truncate">
-                    {t.desc}
-                  </p>
-                </div>
-                <div
-                  className={cn(
-                    "w-10 h-10 rounded-full flex items-center justify-center shrink-0 transition-colors",
-                    isActive
-                      ? "bg-primary text-primary-foreground"
-                      : "bg-foreground/5 text-foreground/70",
-                  )}
-                  aria-label={isActive ? "정지" : "재생"}
+                <button
+                  onClick={() => handleTrackClick(t)}
+                  className="w-full flex items-center gap-3 text-left"
                 >
-                  {isActive ? (
-                    <Pause className="w-4 h-4" strokeWidth={2.4} />
-                  ) : (
-                    <Play className="w-4 h-4 ml-0.5" strokeWidth={2.4} />
-                  )}
-                </div>
-              </button>
+                  <div className="w-12 h-12 rounded-2xl bg-primary/15 flex items-center justify-center text-2xl shrink-0">
+                    {t.emoji}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-1.5">
+                      <p className="font-semibold text-foreground text-[15px] truncate">
+                        {t.name}
+                      </p>
+                      {locked && <Lock className="w-3 h-3 text-foreground/40" />}
+                    </div>
+                    <p className="text-[11px] text-foreground/55 mt-0.5 truncate">
+                      {isActive
+                        ? t.variants[activeVariantIdx].name
+                        : `${t.variants.length}종 · 번호로 선택`}
+                    </p>
+                  </div>
+                  <div
+                    className={cn(
+                      "w-10 h-10 rounded-full flex items-center justify-center shrink-0 transition-colors",
+                      isActive
+                        ? "bg-primary text-primary-foreground"
+                        : "bg-foreground/5 text-foreground/70",
+                    )}
+                    aria-label={isActive ? "정지" : "재생"}
+                  >
+                    {isActive ? (
+                      <Pause className="w-4 h-4" strokeWidth={2.4} />
+                    ) : (
+                      <Play className="w-4 h-4 ml-0.5" strokeWidth={2.4} />
+                    )}
+                  </div>
+                </button>
+                {!locked && t.variants.length > 1 && (
+                  <div className="mt-3 flex items-center gap-1.5 flex-wrap">
+                    {t.variants.map((v, i) => {
+                      const isCurrent = isActive && activeVariantIdx === i;
+                      return (
+                        <button
+                          key={i}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            playVariant(t, i);
+                          }}
+                          title={v.name}
+                          className={cn(
+                            "min-w-[28px] h-7 px-2 rounded-full text-[11px] font-semibold transition",
+                            isCurrent
+                              ? "bg-primary text-primary-foreground"
+                              : "bg-foreground/8 text-foreground/65 hover:bg-foreground/15",
+                          )}
+                        >
+                          {i + 1}
+                        </button>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
             );
           })}
         </div>
       </section>
 
-      {/* Tip */}
       <p className="text-[11px] text-foreground/45 leading-relaxed text-center px-4 pt-2">
         화면을 꺼도 재생은 유지돼요. 알람 대신 부드러운 페이드 아웃으로 깨워드려요.
       </p>

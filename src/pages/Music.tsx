@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import {
   CloudRain, Waves, Trees, Mountain, Wind, Bird, Flame, Moon,
   Droplets, Sun, Music2, Heart, Brain,
-  Pause, Zap, Shuffle, ChevronUp, ChevronDown,
+  Pause, Zap,
 } from "lucide-react";
 import { Howl } from "howler";
 import { MonetBackground } from "@/components/MonetBackground";
@@ -170,7 +170,6 @@ const FREQUENCIES: FreqItem[] = [
 const Music = () => {
   const [activeIds, setActiveIds] = useState<Set<string>>(new Set());
   const [versionIdx, setVersionIdx] = useState<Record<string, number>>({});
-  const [pickerId, setPickerId] = useState<string | null>(null);
   const howlsRef = useRef<Map<string, Howl>>(new Map());
 
   useEffect(() => {
@@ -183,13 +182,22 @@ const Music = () => {
     };
   }, []);
 
+  /** 탭 동작:
+   *  - 비활성 → 1번 변주 재생
+   *  - 활성 + 단일 변주 → 정지
+   *  - 활성 + 다중 변주 → 다음 변주로 순환
+   */
   const handleNatureClick = (item: NatureItem) => {
     const isActive = activeIds.has(item.id);
     const currentIdx = versionIdx[item.id] ?? 0;
-    if (isActive) {
-      stopFile(item.id);
-    } else {
+    if (!isActive) {
       playFile(item, currentIdx);
+      return;
+    }
+    if (item.variants.length > 1) {
+      playFile(item, (currentIdx + 1) % item.variants.length);
+    } else {
+      stopFile(item.id);
     }
   };
 
@@ -273,34 +281,32 @@ const Music = () => {
     releaseWakeLock();
   };
 
-  const pickerItem = pickerId ? NATURE.find((n) => n.id === pickerId) : null;
-
   return (
     <div className="px-5 pt-12 pb-6 relative flex-1 flex flex-col">
       <MonetBackground intensity="medium" />
 
       <div className="flex items-end justify-between animate-fade-up">
         <div>
-          <p className="text-[11px] tracking-[0.3em] uppercase text-primary font-serif">
+          <p className="text-[13px] tracking-[0.3em] uppercase text-primary font-serif">
             Sound Mix
           </p>
-          <h1 className="text-[26px] font-bold text-foreground mt-1 leading-tight">
+          <h1 className="text-[28px] font-bold text-foreground mt-1 leading-tight">
             사운드 믹스
           </h1>
-          <p className="text-sm text-foreground/60 mt-1">
-            동시 재생 가능 · ↓ 버튼으로 다른 버전 선택
+          <p className="text-[15px] text-foreground/65 mt-1.5">
+            동시 재생 가능 · 같은 타일 다시 누르면 다른 버전
           </p>
         </div>
-        <span className="text-xs text-foreground/55 font-medium">
-          {activeIds.size}개 선택됨
+        <span className="text-sm text-foreground/55 font-medium">
+          {activeIds.size}개
         </span>
       </div>
 
       <section className="mt-7">
-        <h2 className="text-[11px] tracking-[0.2em] uppercase text-primary/80 font-serif mb-3 px-1">
+        <h2 className="text-[13px] tracking-[0.2em] uppercase text-primary/80 font-serif mb-3 px-1">
           자연
         </h2>
-        <div className="grid grid-cols-3 gap-2.5">
+        <div className="grid grid-cols-3 gap-3">
           {NATURE.map((item) => (
             <NatureTile
               key={item.id}
@@ -308,21 +314,17 @@ const Music = () => {
               active={activeIds.has(item.id)}
               versionIdx={versionIdx[item.id] ?? 0}
               onClick={() => handleNatureClick(item)}
-              onShuffle={() => {
-                const cur = versionIdx[item.id] ?? 0;
-                playFile(item, (cur + 1) % item.variants.length);
-              }}
-              onOpenPicker={() => setPickerId(item.id)}
+              onStop={() => stopFile(item.id)}
             />
           ))}
         </div>
       </section>
 
       <section className="mt-7">
-        <h2 className="text-[11px] tracking-[0.2em] uppercase text-primary/80 font-serif mb-3 px-1">
+        <h2 className="text-[13px] tracking-[0.2em] uppercase text-primary/80 font-serif mb-3 px-1">
           주파수
         </h2>
-        <div className="grid grid-cols-3 gap-2.5">
+        <div className="grid grid-cols-3 gap-3">
           {FREQUENCIES.map((item) => (
             <FreqTile
               key={item.id}
@@ -337,59 +339,10 @@ const Music = () => {
       {activeIds.size > 0 && (
         <button
           onClick={stopAll}
-          className="mt-7 liquid-card w-full py-3 text-sm font-semibold text-primary"
+          className="mt-7 liquid-card w-full py-3.5 text-base font-semibold text-primary"
         >
           전체 정지
         </button>
-      )}
-
-      {pickerItem && (
-        <div
-          className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-end"
-          onClick={() => setPickerId(null)}
-        >
-          <div
-            className="w-full bg-background rounded-t-3xl p-5 pb-8 max-h-[70vh] overflow-y-auto animate-slide-up"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="flex items-center justify-between mb-4">
-              <div>
-                <p className="text-[11px] tracking-[0.2em] uppercase text-primary/80 font-serif">
-                  {pickerItem.label}
-                </p>
-                <h3 className="text-lg font-bold text-foreground mt-0.5">버전 선택</h3>
-              </div>
-              <button
-                onClick={() => setPickerId(null)}
-                className="w-8 h-8 rounded-full bg-foreground/10 flex items-center justify-center text-foreground/60"
-                aria-label="닫기"
-              >
-                <ChevronDown className="w-4 h-4" />
-              </button>
-            </div>
-            <div className="space-y-2">
-              {pickerItem.variants.map((v, i) => {
-                const isCurrent = (versionIdx[pickerItem.id] ?? 0) === i && activeIds.has(pickerItem.id);
-                return (
-                  <button
-                    key={i}
-                    onClick={() => {
-                      playFile(pickerItem, i);
-                      setPickerId(null);
-                    }}
-                    className={cn(
-                      "liquid-card w-full p-3.5 flex items-center justify-between text-left",
-                      isCurrent && "ring-2 ring-primary"
-                    )}
-                  >
-                    <span className="text-sm font-semibold text-foreground">{v.name}</span>
-                    {isCurrent && <span className="text-[10px] text-primary font-mono tracking-wider">재생 중</span>}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-        </div>
       )}
     </div>
   );
@@ -400,11 +353,10 @@ interface NatureTileProps {
   active: boolean;
   versionIdx: number;
   onClick: () => void;
-  onShuffle: () => void;
-  onOpenPicker: () => void;
+  onStop: () => void;
 }
 
-const NatureTile = ({ item, active, versionIdx, onClick, onShuffle, onOpenPicker }: NatureTileProps) => {
+const NatureTile = ({ item, active, versionIdx, onClick, onStop }: NatureTileProps) => {
   const Icon = item.icon;
   const hasMultiple = item.variants.length > 1;
   const currentName = item.variants[versionIdx]?.name;
@@ -413,53 +365,35 @@ const NatureTile = ({ item, active, versionIdx, onClick, onShuffle, onOpenPicker
       <button
         onClick={onClick}
         className={cn(
-          "liquid-card w-full aspect-[1.05] p-2.5 flex flex-col items-center justify-center gap-1 transition-all active:scale-95",
-          active && "ring-2 ring-primary shadow-[0_0_20px_-4px_hsl(var(--primary)/0.5)]"
+          "liquid-card w-full aspect-[0.95] p-3 flex flex-col items-center justify-center gap-1.5 transition-all active:scale-95",
+          active && "ring-2 ring-primary shadow-[0_0_24px_-4px_hsl(var(--primary)/0.55)]"
         )}
       >
         <div className={cn(
-          "w-8 h-8 rounded-xl flex items-center justify-center",
+          "w-10 h-10 rounded-2xl flex items-center justify-center",
           active ? "bg-primary text-primary-foreground" : "text-primary"
         )}>
-          <Icon className="w-4 h-4" strokeWidth={active ? 1.8 : 1.6} />
+          <Icon className="w-5 h-5" strokeWidth={active ? 1.9 : 1.7} />
         </div>
-        <span className="text-[11px] font-semibold text-foreground text-center leading-tight">
+        <span className="text-[14px] font-bold text-foreground text-center leading-tight">
           {item.label}
         </span>
-        <span className="text-[8.5px] text-primary/70 tracking-wide text-center leading-tight mt-0.5 line-clamp-1">
+        <span className="text-[10.5px] text-primary/70 tracking-wide text-center leading-tight line-clamp-1">
           {item.tag}
         </span>
         {hasMultiple && (
-          <span className="text-[8px] text-foreground/55 mt-0.5 line-clamp-1 max-w-full px-1">
-            {active ? currentName : `${item.variants.length}종`}
+          <span className="text-[10px] text-foreground/60 line-clamp-1 max-w-full px-1">
+            {active ? `${versionIdx + 1}/${item.variants.length} · ${currentName}` : `${item.variants.length}종 · 탭으로 변경`}
           </span>
         )}
       </button>
-      {active && hasMultiple && (
-        <button
-          onClick={(e) => { e.stopPropagation(); onShuffle(); }}
-          className="absolute top-1 left-1 w-5 h-5 rounded-full bg-primary/85 text-primary-foreground flex items-center justify-center hover:bg-primary"
-          aria-label="다음 버전"
-        >
-          <Shuffle className="w-2.5 h-2.5" />
-        </button>
-      )}
-      {hasMultiple && (
-        <button
-          onClick={(e) => { e.stopPropagation(); onOpenPicker(); }}
-          className="absolute bottom-1 left-1/2 -translate-x-1/2 px-1.5 h-4 rounded-full bg-foreground/15 text-foreground/70 flex items-center justify-center hover:bg-foreground/25"
-          aria-label="버전 선택"
-        >
-          <ChevronUp className="w-2.5 h-2.5" />
-        </button>
-      )}
       {active && (
         <button
-          onClick={(e) => { e.stopPropagation(); onClick(); }}
-          className="absolute top-1 right-1 w-5 h-5 rounded-full bg-foreground/70 text-background flex items-center justify-center hover:bg-foreground"
+          onClick={(e) => { e.stopPropagation(); onStop(); }}
+          className="absolute top-1.5 right-1.5 w-6 h-6 rounded-full bg-foreground/75 text-background flex items-center justify-center hover:bg-foreground"
           aria-label="정지"
         >
-          <Pause className="w-2.5 h-2.5" />
+          <Pause className="w-3 h-3" />
         </button>
       )}
     </div>
@@ -478,20 +412,20 @@ const FreqTile = ({ item, active, onClick }: FreqTileProps) => {
     <button
       onClick={onClick}
       className={cn(
-        "liquid-card aspect-[1.1] p-2.5 flex flex-col items-center justify-center gap-1 transition-all active:scale-95",
-        active && "ring-2 ring-primary shadow-[0_0_20px_-4px_hsl(var(--primary)/0.5)]"
+        "liquid-card aspect-[0.95] p-3 flex flex-col items-center justify-center gap-1.5 transition-all active:scale-95",
+        active && "ring-2 ring-primary shadow-[0_0_24px_-4px_hsl(var(--primary)/0.55)]"
       )}
     >
       <div className={cn(
-        "w-8 h-8 rounded-xl flex items-center justify-center",
+        "w-10 h-10 rounded-2xl flex items-center justify-center",
         active ? "bg-primary text-primary-foreground" : "text-primary"
       )}>
-        {active ? <Pause className="w-4 h-4" /> : <Icon className="w-4 h-4" strokeWidth={1.6} />}
+        {active ? <Pause className="w-5 h-5" /> : <Icon className="w-5 h-5" strokeWidth={1.7} />}
       </div>
-      <span className="text-[11px] font-semibold text-foreground text-center leading-tight">
+      <span className="text-[14px] font-bold text-foreground text-center leading-tight">
         {item.label}
       </span>
-      <span className="text-[8.5px] text-primary/70 tracking-wide text-center leading-tight mt-0.5">
+      <span className="text-[10.5px] text-primary/70 tracking-wide text-center leading-tight">
         {item.tag}
       </span>
     </button>

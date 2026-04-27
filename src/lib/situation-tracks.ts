@@ -1,55 +1,27 @@
-// Auto-generated 상황별 음악·자연 매핑 (94개 Epidemic CC0)
-// 파일 위치: /public/sounds/
+// 상황별 자연 사운드 매핑.
+// 음악(앰비언트 곡) 제거 — 자연 소리만 사용. 사용자가 일관되지 않은 음악 재생을 거절.
 
 export interface SituationTracks {
-  music: string[];  // 해당 상황에 어울리는 음악 파일명
-  nature: string[]; // 배경 자연 소리 파일명
+  /** 호환을 위해 남김. 항상 빈 배열. */
+  music: string[];
+  /** 자연 소리 — 상황 진입 시 이 풀에서 variant 매칭. */
+  nature: string[];
 }
 
 export const SITUATION_TRACK_MAP: Record<string, SituationTracks> = {
   wake: {
-    music: [
-      "/sounds/ES_A Small Hope - Center of Attention.mp3",
-      "/sounds/ES_Belief - Roots and Recognition.mp3",
-      "/sounds/ES_Carefree Morning - Rebecca Mardal.mp3",
-      "/sounds/ES_Dreamlike Sunrise - Mandala Dreams.mp3",
-      "/sounds/ES_Glorious (Instrumental Version) - Adelyn Paik.mp3",
-      "/sounds/ES_Happy Mood - Sarah, the Illstrumentalist.mp3",
-      "/sounds/ES_Kerfuffle - Jobii.mp3",
-      "/sounds/ES_Leap - Dylan Sitts.mp3",
-      "/sounds/ES_Momentum of Life - Rachel Sandy.mp3",
-      "/sounds/ES_Now or Never - Mizlo.mp3",
-      "/sounds/ES_Sunny Days (Instrumental Version) - Siine.mp3",
-      "/sounds/ES_The Bird's World - Elm Lake.mp3",
-    ],
+    music: [],
     nature: [
       "/sounds/ES_Ambience, Birdsong, Chaffinch, Blackbird, Black Woodpecker, Coniferous Forest, Summer, Afternoon - Epidemic Sound.mp3",
       "/sounds/ES_Ambience, Birdsong, Meadow, Summer, Birds Sing, Wind, Light Rustle In Trees - Epidemic Sound.mp3",
       "/sounds/ES_Ambience, Forest, Singing Birds, Distant Traffic - Epidemic Sound.mp3",
-      "/sounds/ES_Ambience, Forest, Wind, Daytime, Creaking Tree In Wind, Little Andaman - Epidemic Sound.mp3",
-      "/sounds/ES_Ambience, Swamp, Mangroves, Morning, Mangrove Whistler, Middle Andaman - Epidemic Sound.mp3",
-      "/sounds/ES_Ambience, Forest, Birds Chirping, Light Rain, Light Wind - Epidemic Sound.mp3",
-      "/sounds/ES_Ambience, Tropical, Rainforest, Night, Insects, Boobook, Middle Jarawa, Edge 02 - Epidemic Sound.mp3",
       "/sounds/ES_Birds, Songbird, Rainforest, Dawn, Pied, Imperial, Pigeon, Ambience, Havelock Island - Epidemic Sound.mp3",
-      "/sounds/ES_Birds, Tropical, Rainforest, Afternoon, Singing Bird, Insects, Little Andaman 02 - Epidemic Sound.mp3",
       "/sounds/ES_Birds, Tropical, Rainforest, Morning, Rich, Bird, Drongo, Baratang Island 01 - Epidemic Sound.mp3",
-      "/sounds/ES_Rain, Vegetation, Medium Leaves, Drop, Tropical, Jungle - Epidemic Sound.mp3",
-      "/sounds/ES_Rain, Vegetation, Rain, Daytime, Incoming Hard Rain, Baratang Island - Epidemic Sound.mp3",
+      "/sounds/ES_Ambience, Swamp, Mangroves, Morning, Mangrove Whistler, Middle Andaman - Epidemic Sound.mp3",
     ],
   },
   relax: {
-    music: [
-      "/sounds/ES_Boundless - Luba Hilman.mp3",
-      "/sounds/ES_Green Hours - Center of Attention.mp3",
-      "/sounds/ES_Home Again - DonVayei.mp3",
-      "/sounds/ES_I Will Travel - Elin Piel.mp3",
-      "/sounds/ES_Movements - Elm Lake.mp3",
-      "/sounds/ES_Softest of Feathers - Calm Shores.mp3",
-      "/sounds/ES_Solace - Staffan Carlen.mp3",
-      "/sounds/ES_Stay (Wide Open) (Instrumental Version) - Loving Caliber.mp3",
-      "/sounds/ES_Wonder - Henry Miles.mp3",
-      "/sounds/ES_quiet days (Instrumental Version) - Victor Lundberg.mp3",
-    ],
+    music: [],
     nature: [
       "/sounds/ES_Water, Lap, Gentle Waves, Splashing Against Rocks, Calm, Light Water Fizz - Epidemic Sound.mp3",
       "/sounds/ES_Water, Lap, Gentle, On Rocks, Quiet, Peaceful, Calm Waves - Epidemic Sound.mp3",
@@ -63,134 +35,64 @@ export const SITUATION_TRACK_MAP: Record<string, SituationTracks> = {
       "/sounds/ES_Water, Flow, Creek, Light, Flowing, Foam Details, Calm Forest 01 - Epidemic Sound.mp3",
       "/sounds/ES_Water, Flow, River, Small, Soft, Burbling Between Stones - Epidemic Sound.mp3",
       "/sounds/ES_Water, Movement, Small River, Continuous, Calm, Happy, Steady Stream 01 Schoeps (MS) - Epidemic Sound.mp3",
-      "/sounds/ES_Water, Waterfall, Small, Long Fall, Flowing, Trickle - Epidemic Sound.mp3",
       "/sounds/ES_Water, Waterfall, Steady, Perspective - Epidemic Sound.mp3",
-      "/sounds/ES_Water, Waterfall, Top, Deep, Water Flowing Before Falling - Epidemic Sound.mp3",
       "/sounds/ES_Water, Waterfall, Waterfall, Medium Flow 01 - Epidemic Sound.mp3",
     ],
   },
   meditate: {
-    music: [
-      "/sounds/ES_Havsdrommar - Center of Attention.mp3",
-      "/sounds/ES_Head in the Clouds - Mizlo.mp3",
-      "/sounds/ES_Softest of Feathers - Calm Shores.mp3",
-      "/sounds/ES_Wonder - Henry Miles.mp3",
-    ],
+    music: [],
     nature: [
       "/sounds/ES_Ambience, Birdsong, Chaffinch, Blackbird, Black Woodpecker, Coniferous Forest, Summer, Afternoon - Epidemic Sound.mp3",
       "/sounds/ES_Ambience, Birdsong, Meadow, Summer, Birds Sing, Wind, Light Rustle In Trees - Epidemic Sound.mp3",
       "/sounds/ES_Ambience, Forest, Singing Birds, Distant Traffic - Epidemic Sound.mp3",
       "/sounds/ES_Ambience, Forest, Wind, Daytime, Creaking Tree In Wind, Little Andaman - Epidemic Sound.mp3",
       "/sounds/ES_Ambience, Swamp, Mangroves, Morning, Mangrove Whistler, Middle Andaman - Epidemic Sound.mp3",
-      "/sounds/ES_Weather, Storm, Snow Storm, Cold, Freezing, Heavy Wind, Whistling - Epidemic Sound.mp3",
-      "/sounds/ES_Wind, Gust, Mountain Wind, Very Strong, Cold Wind, Heavy Gusts, Jotunheimen, Norway 01 - Epidemic Sound.mp3",
+      "/sounds/ES_Ambience, Underground, Cave, Magic, Deep, Bubbling - Epidemic Sound.mp3",
+      "/sounds/ES_Ambience, Underground, Cave, Magic, Deep, Wind, Howling 02 - Epidemic Sound.mp3",
       "/sounds/ES_Wind, Vegetation, Blowing Through Deciduous Trees, Leaves Rustling, Moderate Intensity, Winter, Afternoon - Epidemic Sound.mp3",
-      "/sounds/ES_Wind, Vegetation, Blowing Through Defoliated Deciduous Trees, Moderate Intensity, Crow Flying By, Winter, Evening - Epidemic Sound.mp3",
     ],
   },
   focus: {
-    music: [
-      "/sounds/ES_Momentum of Life - Rachel Sandy.mp3",
-      "/sounds/ES_Motion Clarity - Out To The World.mp3",
-      "/sounds/ES_Now or Never - Mizlo.mp3",
-      "/sounds/ES_The Redline Principle - Rachel Sandy.mp3",
-    ],
+    music: [],
     nature: [
-      "/sounds/ES_Ambience, Forest, Birds Chirping, Light Rain, Light Wind - Epidemic Sound.mp3",
-      "/sounds/ES_Ambience, Tropical, Rainforest, Night, Insects, Boobook, Middle Jarawa, Edge 02 - Epidemic Sound.mp3",
-      "/sounds/ES_Birds, Songbird, Rainforest, Dawn, Pied, Imperial, Pigeon, Ambience, Havelock Island - Epidemic Sound.mp3",
-      "/sounds/ES_Birds, Tropical, Rainforest, Afternoon, Singing Bird, Insects, Little Andaman 02 - Epidemic Sound.mp3",
-      "/sounds/ES_Birds, Tropical, Rainforest, Morning, Rich, Bird, Drongo, Baratang Island 01 - Epidemic Sound.mp3",
       "/sounds/ES_Rain, Vegetation, Medium Leaves, Drop, Tropical, Jungle - Epidemic Sound.mp3",
       "/sounds/ES_Rain, Vegetation, Rain, Daytime, Incoming Hard Rain, Baratang Island - Epidemic Sound.mp3",
-    ],
-  },
-  nap: {
-    music: [
-      "/sounds/ES_Home (Instrumental Version) - Hector Gabriel.mp3",
-      "/sounds/ES_Home Again - DonVayei.mp3",
-      "/sounds/ES_Softest of Feathers - Calm Shores.mp3",
-      "/sounds/ES_Solace - Staffan Carlen.mp3",
-      "/sounds/ES_Sweet Dreams - Mizlo.mp3",
-      "/sounds/ES_Winter Light - Shuta Yasukochi.mp3",
-      "/sounds/ES_quiet days (Instrumental Version) - Victor Lundberg.mp3",
-    ],
-    nature: [
+      "/sounds/ES_Water, Waterfall, Steady, Perspective - Epidemic Sound.mp3",
+      "/sounds/ES_Water, Waterfall, Waterfall, Medium Flow 01 - Epidemic Sound.mp3",
       "/sounds/ES_Ambience, Forest, Birds Chirping, Light Rain, Light Wind - Epidemic Sound.mp3",
-      "/sounds/ES_Ambience, Tropical, Rainforest, Night, Insects, Boobook, Middle Jarawa, Edge 02 - Epidemic Sound.mp3",
-      "/sounds/ES_Birds, Songbird, Rainforest, Dawn, Pied, Imperial, Pigeon, Ambience, Havelock Island - Epidemic Sound.mp3",
-      "/sounds/ES_Birds, Tropical, Rainforest, Afternoon, Singing Bird, Insects, Little Andaman 02 - Epidemic Sound.mp3",
-      "/sounds/ES_Birds, Tropical, Rainforest, Morning, Rich, Bird, Drongo, Baratang Island 01 - Epidemic Sound.mp3",
-      "/sounds/ES_Rain, Vegetation, Medium Leaves, Drop, Tropical, Jungle - Epidemic Sound.mp3",
-      "/sounds/ES_Rain, Vegetation, Rain, Daytime, Incoming Hard Rain, Baratang Island - Epidemic Sound.mp3",
-      "/sounds/ES_Water, Lap, Gentle Waves, Splashing Against Rocks, Calm, Light Water Fizz - Epidemic Sound.mp3",
-      "/sounds/ES_Water, Lap, Gentle, On Rocks, Quiet, Peaceful, Calm Waves - Epidemic Sound.mp3",
-      "/sounds/ES_Water, Lap, Lake, Small Waves Lapping, Detailed, 1m, Loop 01 - Epidemic Sound.mp3",
-      "/sounds/ES_Water, Wave, Ocean, Beach Waves, Small, Lapping - Epidemic Sound.mp3",
-      "/sounds/ES_Water, Wave, Seaside, Waves, Inside, Mangroves, South Andaman - Epidemic Sound.mp3",
-      "/sounds/ES_Water, Wave, Small Waves Close, Bigger Distant Waves, 5 Meters From Ocean, Halmstad, Sweden - Epidemic Sound.mp3",
-      "/sounds/ES_Water, Wave, Waves Sweeping Over Rocks, Calm, Lapping, Scandinavian Archipelago - Epidemic Sound.mp3",
     ],
   },
   sleep: {
-    music: [
-      "/sounds/ES_Havsdrommar - Center of Attention.mp3",
-      "/sounds/ES_Nattdrommar - Center of Attention.mp3",
-      "/sounds/ES_Shadowed - John B. Lund.mp3",
-      "/sounds/ES_Softest of Feathers - Calm Shores.mp3",
-      "/sounds/ES_Solace - Staffan Carlen.mp3",
-      "/sounds/ES_Sweet Dreams - Mizlo.mp3",
-      "/sounds/ES_Winter Light - Shuta Yasukochi.mp3",
-    ],
+    music: [],
     nature: [
       "/sounds/ES_Water, Lap, Gentle Waves, Splashing Against Rocks, Calm, Light Water Fizz - Epidemic Sound.mp3",
       "/sounds/ES_Water, Lap, Gentle, On Rocks, Quiet, Peaceful, Calm Waves - Epidemic Sound.mp3",
       "/sounds/ES_Water, Lap, Lake, Small Waves Lapping, Detailed, 1m, Loop 01 - Epidemic Sound.mp3",
       "/sounds/ES_Water, Wave, Ocean, Beach Waves, Small, Lapping - Epidemic Sound.mp3",
-      "/sounds/ES_Water, Wave, Seaside, Waves, Inside, Mangroves, South Andaman - Epidemic Sound.mp3",
-      "/sounds/ES_Water, Wave, Small Waves Close, Bigger Distant Waves, 5 Meters From Ocean, Halmstad, Sweden - Epidemic Sound.mp3",
       "/sounds/ES_Water, Wave, Waves Sweeping Over Rocks, Calm, Lapping, Scandinavian Archipelago - Epidemic Sound.mp3",
+      "/sounds/ES_Ambience, Insect, Cricket, Night, Clean - Epidemic Sound.mp3",
+      "/sounds/ES_Ambience, Insect, Cricket, Night, Meadow, Jungle 01 - Epidemic Sound.mp3",
+      "/sounds/ES_Ambience, Insect, Cricket, Night, Meadow, Jungle 02 - Epidemic Sound.mp3",
       "/sounds/ES_Ambience, Tropical, Amazonas, Night Close, River Crickets, Frogs Bird Sometimes - Epidemic Sound.mp3",
       "/sounds/ES_Ambience, Tropical, Mysterious Night, Cricket - Epidemic Sound.mp3",
-      "/sounds/ES_Ambience, Forest, Birds Chirping, Light Rain, Light Wind - Epidemic Sound.mp3",
       "/sounds/ES_Ambience, Tropical, Rainforest, Night, Insects, Boobook, Middle Jarawa, Edge 02 - Epidemic Sound.mp3",
-      "/sounds/ES_Birds, Songbird, Rainforest, Dawn, Pied, Imperial, Pigeon, Ambience, Havelock Island - Epidemic Sound.mp3",
-      "/sounds/ES_Birds, Tropical, Rainforest, Afternoon, Singing Bird, Insects, Little Andaman 02 - Epidemic Sound.mp3",
-      "/sounds/ES_Birds, Tropical, Rainforest, Morning, Rich, Bird, Drongo, Baratang Island 01 - Epidemic Sound.mp3",
-      "/sounds/ES_Rain, Vegetation, Medium Leaves, Drop, Tropical, Jungle - Epidemic Sound.mp3",
       "/sounds/ES_Rain, Vegetation, Rain, Daytime, Incoming Hard Rain, Baratang Island - Epidemic Sound.mp3",
     ],
   },
   reading: {
-    music: [
-      "/sounds/ES_Carefree Morning - Rebecca Mardal.mp3",
-      "/sounds/ES_Green Hours - Center of Attention.mp3",
-      "/sounds/ES_Home (Instrumental Version) - Hector Gabriel.mp3",
-      "/sounds/ES_Home Again - DonVayei.mp3",
-      "/sounds/ES_In the Barn - Roy Edwin Williams.mp3",
-      "/sounds/ES_Picturesque - Dusty Decks.mp3",
-      "/sounds/ES_Softest of Feathers - Calm Shores.mp3",
-      "/sounds/ES_Winter Light - Shuta Yasukochi.mp3",
-      "/sounds/ES_quiet days (Instrumental Version) - Victor Lundberg.mp3",
-    ],
+    music: [],
     nature: [
       "/sounds/ES_Ambience, Forest, Birds Chirping, Light Rain, Light Wind - Epidemic Sound.mp3",
-      "/sounds/ES_Ambience, Tropical, Rainforest, Night, Insects, Boobook, Middle Jarawa, Edge 02 - Epidemic Sound.mp3",
       "/sounds/ES_Birds, Songbird, Rainforest, Dawn, Pied, Imperial, Pigeon, Ambience, Havelock Island - Epidemic Sound.mp3",
       "/sounds/ES_Birds, Tropical, Rainforest, Afternoon, Singing Bird, Insects, Little Andaman 02 - Epidemic Sound.mp3",
-      "/sounds/ES_Birds, Tropical, Rainforest, Morning, Rich, Bird, Drongo, Baratang Island 01 - Epidemic Sound.mp3",
       "/sounds/ES_Rain, Vegetation, Medium Leaves, Drop, Tropical, Jungle - Epidemic Sound.mp3",
       "/sounds/ES_Rain, Vegetation, Rain, Daytime, Incoming Hard Rain, Baratang Island - Epidemic Sound.mp3",
+      "/sounds/ES_Fire, Burning, Bonfire, Moderate Size, Close, Crackling - Epidemic Sound.mp3",
+      "/sounds/ES_Fire, Burning, Burning Wood, Bonfire, Crispy, Soft Intensity, Loop - Epidemic Sound.mp3",
     ],
   },
   wine: {
-    music: [
-      "/sounds/ES_Bohemian Fairy - Franz Gordon.mp3",
-      "/sounds/ES_Lens Flare 3 - Peter Sandberg.mp3",
-      "/sounds/ES_Shadowed - John B. Lund.mp3",
-      "/sounds/ES_Velvet - Dylan Sitts.mp3",
-      "/sounds/ES_Who Are You (Instrumental Version) - Zorro.mp3",
-    ],
+    music: [],
     nature: [
       "/sounds/ES_Fire, Burning, Bonfire, Moderate Size, Close, Crackling - Epidemic Sound.mp3",
       "/sounds/ES_Fire, Burning, Burning Wood, Bonfire, Crispy, Soft Intensity, Loop - Epidemic Sound.mp3",
@@ -198,28 +100,7 @@ export const SITUATION_TRACK_MAP: Record<string, SituationTracks> = {
     ],
   },
   date: {
-    music: [
-      "/sounds/ES_Bohemian Fairy - Franz Gordon.mp3",
-      "/sounds/ES_O Que Ficou (Instrumental Version) - Clara Mendes.mp3",
-      "/sounds/ES_Stay (Wide Open) (Instrumental Version) - Loving Caliber.mp3",
-      "/sounds/ES_Wedding Plans - Von Meyer.mp3",
-      "/sounds/ES_Who Are You (Instrumental Version) - Zorro.mp3",
-    ],
-    nature: [
-      "/sounds/ES_Fire, Burning, Bonfire, Moderate Size, Close, Crackling - Epidemic Sound.mp3",
-      "/sounds/ES_Fire, Burning, Burning Wood, Bonfire, Crispy, Soft Intensity, Loop - Epidemic Sound.mp3",
-      "/sounds/ES_Fire, Burning, Wood, Crispy, Medium Intensity - Epidemic Sound.mp3",
-    ],
-  },
-  candle: {
-    music: [
-      "/sounds/ES_Bohemian Fairy - Franz Gordon.mp3",
-      "/sounds/ES_Home Again - DonVayei.mp3",
-      "/sounds/ES_Shadowed - John B. Lund.mp3",
-      "/sounds/ES_Solace - Staffan Carlen.mp3",
-      "/sounds/ES_Velvet - Dylan Sitts.mp3",
-      "/sounds/ES_Wonder - Henry Miles.mp3",
-    ],
+    music: [],
     nature: [
       "/sounds/ES_Fire, Burning, Bonfire, Moderate Size, Close, Crackling - Epidemic Sound.mp3",
       "/sounds/ES_Fire, Burning, Burning Wood, Bonfire, Crispy, Soft Intensity, Loop - Epidemic Sound.mp3",
@@ -227,35 +108,20 @@ export const SITUATION_TRACK_MAP: Record<string, SituationTracks> = {
     ],
   },
   tropical: {
-    music: [
-      "/sounds/ES_Boundless - Luba Hilman.mp3",
-      "/sounds/ES_O Que Ficou (Instrumental Version) - Clara Mendes.mp3",
-      "/sounds/ES_The Bird's World - Elm Lake.mp3",
-    ],
+    music: [],
     nature: [
       "/sounds/ES_Water, Lap, Gentle Waves, Splashing Against Rocks, Calm, Light Water Fizz - Epidemic Sound.mp3",
       "/sounds/ES_Water, Lap, Gentle, On Rocks, Quiet, Peaceful, Calm Waves - Epidemic Sound.mp3",
-      "/sounds/ES_Water, Lap, Lake, Small Waves Lapping, Detailed, 1m, Loop 01 - Epidemic Sound.mp3",
       "/sounds/ES_Water, Wave, Ocean, Beach Waves, Small, Lapping - Epidemic Sound.mp3",
       "/sounds/ES_Water, Wave, Seaside, Waves, Inside, Mangroves, South Andaman - Epidemic Sound.mp3",
       "/sounds/ES_Water, Wave, Small Waves Close, Bigger Distant Waves, 5 Meters From Ocean, Halmstad, Sweden - Epidemic Sound.mp3",
       "/sounds/ES_Water, Wave, Waves Sweeping Over Rocks, Calm, Lapping, Scandinavian Archipelago - Epidemic Sound.mp3",
-      "/sounds/ES_Ambience, Birdsong, Chaffinch, Blackbird, Black Woodpecker, Coniferous Forest, Summer, Afternoon - Epidemic Sound.mp3",
-      "/sounds/ES_Ambience, Birdsong, Meadow, Summer, Birds Sing, Wind, Light Rustle In Trees - Epidemic Sound.mp3",
-      "/sounds/ES_Ambience, Forest, Singing Birds, Distant Traffic - Epidemic Sound.mp3",
-      "/sounds/ES_Ambience, Forest, Wind, Daytime, Creaking Tree In Wind, Little Andaman - Epidemic Sound.mp3",
-      "/sounds/ES_Ambience, Swamp, Mangroves, Morning, Mangrove Whistler, Middle Andaman - Epidemic Sound.mp3",
+      "/sounds/ES_Birds, Tropical, Rainforest, Afternoon, Singing Bird, Insects, Little Andaman 02 - Epidemic Sound.mp3",
+      "/sounds/ES_Birds, Tropical, Rainforest, Morning, Rich, Bird, Drongo, Baratang Island 01 - Epidemic Sound.mp3",
     ],
   },
   resort: {
-    music: [
-      "/sounds/ES_Boundless - Luba Hilman.mp3",
-      "/sounds/ES_Carefree Morning - Rebecca Mardal.mp3",
-      "/sounds/ES_Happy Mood - Sarah, the Illstrumentalist.mp3",
-      "/sounds/ES_Stay (Wide Open) (Instrumental Version) - Loving Caliber.mp3",
-      "/sounds/ES_Sunny Days (Instrumental Version) - Siine.mp3",
-      "/sounds/ES_The Bird's World - Elm Lake.mp3",
-    ],
+    music: [],
     nature: [
       "/sounds/ES_Water, Lap, Gentle Waves, Splashing Against Rocks, Calm, Light Water Fizz - Epidemic Sound.mp3",
       "/sounds/ES_Water, Lap, Gentle, On Rocks, Quiet, Peaceful, Calm Waves - Epidemic Sound.mp3",
@@ -267,62 +133,35 @@ export const SITUATION_TRACK_MAP: Record<string, SituationTracks> = {
     ],
   },
   sunset: {
-    music: [
-      "/sounds/ES_Lens Flare 3 - Peter Sandberg.mp3",
-      "/sounds/ES_Shadowed - John B. Lund.mp3",
-      "/sounds/ES_Velvet - Dylan Sitts.mp3",
-      "/sounds/ES_Weather, Storm, Strong, Storm 2, Lightning, High Mountains, Bhaleydhunga, Himalaya 04 - Epidemic Sound.mp3",
-      "/sounds/ES_Winds of Change - William Claeson.mp3",
-    ],
+    music: [],
     nature: [
       "/sounds/ES_Water, Lap, Gentle Waves, Splashing Against Rocks, Calm, Light Water Fizz - Epidemic Sound.mp3",
       "/sounds/ES_Water, Lap, Gentle, On Rocks, Quiet, Peaceful, Calm Waves - Epidemic Sound.mp3",
-      "/sounds/ES_Water, Lap, Lake, Small Waves Lapping, Detailed, 1m, Loop 01 - Epidemic Sound.mp3",
       "/sounds/ES_Water, Wave, Ocean, Beach Waves, Small, Lapping - Epidemic Sound.mp3",
       "/sounds/ES_Water, Wave, Seaside, Waves, Inside, Mangroves, South Andaman - Epidemic Sound.mp3",
-      "/sounds/ES_Water, Wave, Small Waves Close, Bigger Distant Waves, 5 Meters From Ocean, Halmstad, Sweden - Epidemic Sound.mp3",
-      "/sounds/ES_Water, Wave, Waves Sweeping Over Rocks, Calm, Lapping, Scandinavian Archipelago - Epidemic Sound.mp3",
+      "/sounds/ES_Wind, Vegetation, Blowing Through Deciduous Trees, Leaves Rustling, Moderate Intensity, Winter, Afternoon - Epidemic Sound.mp3",
     ],
   },
   mountain: {
-    music: [
-      "/sounds/ES_Conifers - Dusty Decks.mp3",
-      "/sounds/ES_In the Barn - Roy Edwin Williams.mp3",
-      "/sounds/ES_Open Fields - Johan Landqvist.mp3",
-      "/sounds/ES_Picturesque - Dusty Decks.mp3",
-      "/sounds/ES_The Bird's World - Elm Lake.mp3",
-      "/sounds/ES_Weather, Storm, Strong, Storm 2, Lightning, High Mountains, Bhaleydhunga, Himalaya 04 - Epidemic Sound.mp3",
-      "/sounds/ES_Winter Light - Shuta Yasukochi.mp3",
-    ],
+    music: [],
     nature: [
       "/sounds/ES_Ambience, Birdsong, Chaffinch, Blackbird, Black Woodpecker, Coniferous Forest, Summer, Afternoon - Epidemic Sound.mp3",
       "/sounds/ES_Ambience, Birdsong, Meadow, Summer, Birds Sing, Wind, Light Rustle In Trees - Epidemic Sound.mp3",
       "/sounds/ES_Ambience, Forest, Singing Birds, Distant Traffic - Epidemic Sound.mp3",
       "/sounds/ES_Ambience, Forest, Wind, Daytime, Creaking Tree In Wind, Little Andaman - Epidemic Sound.mp3",
-      "/sounds/ES_Ambience, Swamp, Mangroves, Morning, Mangrove Whistler, Middle Andaman - Epidemic Sound.mp3",
       "/sounds/ES_Weather, Storm, Snow Storm, Cold, Freezing, Heavy Wind, Whistling - Epidemic Sound.mp3",
       "/sounds/ES_Wind, Gust, Mountain Wind, Very Strong, Cold Wind, Heavy Gusts, Jotunheimen, Norway 01 - Epidemic Sound.mp3",
       "/sounds/ES_Wind, Vegetation, Blowing Through Deciduous Trees, Leaves Rustling, Moderate Intensity, Winter, Afternoon - Epidemic Sound.mp3",
       "/sounds/ES_Wind, Vegetation, Blowing Through Defoliated Deciduous Trees, Moderate Intensity, Crow Flying By, Winter, Evening - Epidemic Sound.mp3",
       "/sounds/ES_Fire, Burning, Bonfire, Moderate Size, Close, Crackling - Epidemic Sound.mp3",
       "/sounds/ES_Fire, Burning, Burning Wood, Bonfire, Crispy, Soft Intensity, Loop - Epidemic Sound.mp3",
-      "/sounds/ES_Fire, Burning, Wood, Crispy, Medium Intensity - Epidemic Sound.mp3",
     ],
   },
   tokyo: {
-    music: [
-      "/sounds/ES_Head in the Clouds - Mizlo.mp3",
-      "/sounds/ES_Lens Flare 3 - Peter Sandberg.mp3",
-      "/sounds/ES_Shadowed - John B. Lund.mp3",
-      "/sounds/ES_Velvet - Dylan Sitts.mp3",
-      "/sounds/ES_Who Are You (Instrumental Version) - Zorro.mp3",
-    ],
+    music: [],
     nature: [
       "/sounds/ES_Ambience, Forest, Birds Chirping, Light Rain, Light Wind - Epidemic Sound.mp3",
-      "/sounds/ES_Ambience, Tropical, Rainforest, Night, Insects, Boobook, Middle Jarawa, Edge 02 - Epidemic Sound.mp3",
       "/sounds/ES_Birds, Songbird, Rainforest, Dawn, Pied, Imperial, Pigeon, Ambience, Havelock Island - Epidemic Sound.mp3",
-      "/sounds/ES_Birds, Tropical, Rainforest, Afternoon, Singing Bird, Insects, Little Andaman 02 - Epidemic Sound.mp3",
-      "/sounds/ES_Birds, Tropical, Rainforest, Morning, Rich, Bird, Drongo, Baratang Island 01 - Epidemic Sound.mp3",
       "/sounds/ES_Rain, Vegetation, Medium Leaves, Drop, Tropical, Jungle - Epidemic Sound.mp3",
       "/sounds/ES_Rain, Vegetation, Rain, Daytime, Incoming Hard Rain, Baratang Island - Epidemic Sound.mp3",
     ],
@@ -352,6 +191,7 @@ export const SFX_FIRE: string[] = [
 
 export const pickRandom = <T>(arr: T[]): T | undefined =>
   arr.length > 0 ? arr[Math.floor(Math.random() * arr.length)] : undefined;
+
 /**
  * /sounds/xxx.mp3 → jsDelivr CDN URL 변환.
  * Lovable 배포가 대용량 mp3 서빙 못 해서 CDN 우회.

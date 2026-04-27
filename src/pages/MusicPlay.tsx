@@ -7,6 +7,13 @@ import { getSituationById } from "@/lib/modes";
 import { SITUATION_TRACK_MAP, pickRandom, toCdnUrl } from "@/lib/situation-tracks";
 import { SITUATION_DETAILS } from "@/lib/situation-details";
 import { audioEngine } from "@/lib/audio-engine";
+import {
+  setMediaSession,
+  setMediaSessionPlaying,
+  clearMediaSession,
+  requestWakeLock,
+  releaseWakeLock,
+} from "@/lib/media-session";
 import { cn } from "@/lib/utils";
 
 /**
@@ -24,13 +31,14 @@ const VARIANTS: { id: VariantId; label: string; hz: string; symbol: string }[] =
   { id: "gamma", label: "Gamma", hz: "40 Hz",    symbol: "γ" },
 ];
 
+// variant → 자연 사운드 키워드 매칭. (음악 트랙은 더 이상 사용하지 않음)
 const variantMatches = (url: string, v: VariantId): boolean => {
   const u = url.toLowerCase();
-  if (v === "delta") return /drone|cosmic|space|night|underground|havsdrommar|nattdrommar|sweet.dreams|shadowed|winter/.test(u);
-  if (v === "theta") return /meditation|ethereal|dream|mystical|wonder|tibetan|celestial|mysterious|head.in.the.clouds/.test(u);
-  if (v === "alpha") return /ocean|wave|water|stream|forest|birdsong|boundless|softest|solace|quiet|home|movements|green/.test(u);
-  if (v === "beta")  return /sunrise|morning|carefree|happy|sunny|leap|bright|glorious|momentum|now.or.never|kerfuffle/.test(u);
-  if (v === "gamma") return /motion|redline|clarity|focus|principle|velvet|jazz|saxophone/.test(u);
+  if (v === "delta") return /night|cricket|underground|cave|wave|lap|gentle|peaceful|calm/.test(u);
+  if (v === "theta") return /cave|wind|forest|swamp|mangrove|underground|deep|howling/.test(u);
+  if (v === "alpha") return /water|stream|creek|river|wave|lap|gentle|birdsong|forest|peaceful|quiet/.test(u);
+  if (v === "beta")  return /morning|dawn|chirping|songbird|meadow|afternoon|daytime|light.wind|light.rain/.test(u);
+  if (v === "gamma") return /rain|waterfall|rainforest|insects|hard.rain|tropical/.test(u);
   return false;
 };
 
@@ -41,13 +49,13 @@ const MusicPlay = () => {
   const tracks = id ? SITUATION_TRACK_MAP[id] : undefined;
   const detail = id ? SITUATION_DETAILS[id] : undefined;
 
-  // 상황별 초기 뇌파 매칭 (사용자 기대치에 맞게)
+  // 상황별 초기 뇌파 매칭
   const defaultVariant: VariantId = (() => {
     if (!id) return "alpha";
-    if (id === "sleep" || id === "nap" || id === "candle") return "delta";
-    if (id === "meditate") return "theta";
+    if (id === "sleep") return "delta";
     if (id === "focus") return "gamma";
-    if (id === "wake" || id === "resort" || id === "tropical") return "beta";
+    if (id === "tropical") return "beta";
+    if (id === "mountain") return "theta";
     return "alpha";
   })();
   const [variant, setVariant] = useState<VariantId>(defaultVariant);
@@ -61,6 +69,8 @@ const MusicPlay = () => {
       howlRef.current?.stop();
       howlRef.current?.unload();
       audioEngine.stopAll();
+      clearMediaSession();
+      releaseWakeLock();
     };
   }, []);
 
@@ -116,9 +126,17 @@ const MusicPlay = () => {
       onplay: () => {
         console.log("[MusicPlay] Playing OK");
         setPlaying(true); setErrorMsg(null);
+        setMediaSessionPlaying(true);
+        requestWakeLock();
       },
-      onpause: () => setPlaying(false),
-      onstop: () => setPlaying(false),
+      onpause: () => {
+        setPlaying(false);
+        setMediaSessionPlaying(false);
+      },
+      onstop: () => {
+        setPlaying(false);
+        setMediaSessionPlaying(false);
+      },
       onload: () => console.log("[MusicPlay] Loaded"),
       onloaderror: (id, err) => {
         console.error("[MusicPlay] Load error:", err, cdnUrl);
@@ -134,6 +152,14 @@ const MusicPlay = () => {
     });
     howl.play();
     howlRef.current = howl;
+
+    setMediaSession(
+      { title: detail.mood, artist: "Yunseul", album: detail.scene },
+      {
+        onPlay: () => howl.play(),
+        onPause: () => howl.pause(),
+      }
+    );
 
     const hzMap: Record<VariantId, number> = { delta: 2, theta: 5, alpha: 10, beta: 15, gamma: 40 };
     audioEngine.playTone("freq-layer", hzMap[v], 0.03);

@@ -1,145 +1,149 @@
 import { useEffect, useRef, useState } from "react";
 import {
   CloudRain, Waves, Trees, Mountain, Wind, Bird, Flame, Moon,
-  Droplets, Sun, Music2, Heart, Brain, Coffee, BookOpen, Keyboard,
-  Pause, ChevronDown, Zap,
+  Droplets, Sun, Music2, Heart, Brain,
+  Pause, Zap, Shuffle, ChevronUp, ChevronDown,
 } from "lucide-react";
 import { Howl } from "howler";
 import { MonetBackground } from "@/components/MonetBackground";
 import { audioEngine } from "@/lib/audio-engine";
 import { toCdnUrl } from "@/lib/situation-tracks";
+import {
+  setMediaSession,
+  setMediaSessionPlaying,
+  clearMediaSession,
+  requestWakeLock,
+  releaseWakeLock,
+} from "@/lib/media-session";
 import { cn } from "@/lib/utils";
 
 /**
- * Music — 사운드 믹스.
- * 정확한 카테고리 매핑 + 각 카테고리에 여러 버전.
- * 재생 중 같은 타일 다시 누르면 다음 버전으로 순환.
+ * Music — 자연 사운드 믹스.
+ * 각 카테고리마다 여러 버전을 이름으로 골라 재생.
+ * 섬뜩하거나 신비한 분위기 사운드는 제외 — 힐링되는 자연만.
  */
+
+interface Variant {
+  name: string;
+  file: string;
+}
 
 interface NatureItem {
   id: string;
   label: string;
   tag: string;
   icon: React.ComponentType<{ className?: string; strokeWidth?: number }>;
-  /** 카테고리 내 여러 버전 (순환 재생) */
-  files: string[];
+  variants: Variant[];
 }
 
 const NATURE: NatureItem[] = [
   {
     id: "waterfall", label: "폭포", tag: "Pink Noise · 집중",
     icon: Droplets,
-    files: [
-      "/sounds/ES_Water, Waterfall, Small, Long Fall, Flowing, Trickle - Epidemic Sound.mp3",
-      "/sounds/ES_Water, Waterfall, Steady, Perspective - Epidemic Sound.mp3",
-      "/sounds/ES_Water, Waterfall, Top, Deep, Water Flowing Before Falling - Epidemic Sound.mp3",
-      "/sounds/ES_Water, Waterfall, Waterfall, Medium Flow 01 - Epidemic Sound.mp3",
+    variants: [
+      { name: "안정적인 폭포 (멀리서)", file: "/sounds/ES_Water, Waterfall, Steady, Perspective - Epidemic Sound.mp3" },
+      { name: "중간 세기 폭포", file: "/sounds/ES_Water, Waterfall, Waterfall, Medium Flow 01 - Epidemic Sound.mp3" },
+      { name: "작고 긴 폭포 (Trickle)", file: "/sounds/ES_Water, Waterfall, Small, Long Fall, Flowing, Trickle - Epidemic Sound.mp3" },
     ],
   },
   {
     id: "rain", label: "빗소리", tag: "Pink Noise · 수면 +23%",
     icon: CloudRain,
-    files: [
-      "/sounds/ES_Rain, Vegetation, Medium Leaves, Drop, Tropical, Jungle - Epidemic Sound.mp3",
-      "/sounds/ES_Rain, Vegetation, Rain, Daytime, Incoming Hard Rain, Baratang Island - Epidemic Sound.mp3",
+    variants: [
+      { name: "잎새 위 빗방울 (열대 정글)", file: "/sounds/ES_Rain, Vegetation, Medium Leaves, Drop, Tropical, Jungle - Epidemic Sound.mp3" },
+      { name: "낮의 거센 빗줄기", file: "/sounds/ES_Rain, Vegetation, Rain, Daytime, Incoming Hard Rain, Baratang Island - Epidemic Sound.mp3" },
     ],
   },
   {
     id: "ocean", label: "바다 파도", tag: "1Hz Breath · HRV",
     icon: Waves,
-    files: [
-      "/sounds/ES_Water, Lap, Gentle, On Rocks, Quiet, Peaceful, Calm Waves - Epidemic Sound.mp3",
-      "/sounds/ES_Water, Lap, Gentle Waves, Splashing Against Rocks, Calm, Light Water Fizz - Epidemic Sound.mp3",
-      "/sounds/ES_Water, Lap, Lake, Small Waves Lapping, Detailed, 1m, Loop 01 - Epidemic Sound.mp3",
-      "/sounds/ES_Water, Wave, Ocean, Beach Waves, Small, Lapping - Epidemic Sound.mp3",
-      "/sounds/ES_Water, Wave, Seaside, Waves, Inside, Mangroves, South Andaman - Epidemic Sound.mp3",
-      "/sounds/ES_Water, Wave, Small Waves Close, Bigger Distant Waves, 5 Meters From Ocean, Halmstad, Sweden - Epidemic Sound.mp3",
-      "/sounds/ES_Water, Wave, Waves Sweeping Over Rocks, Calm, Lapping, Scandinavian Archipelago - Epidemic Sound.mp3",
+    variants: [
+      { name: "고요한 바위 위 잔파도", file: "/sounds/ES_Water, Lap, Gentle, On Rocks, Quiet, Peaceful, Calm Waves - Epidemic Sound.mp3" },
+      { name: "바위에 부서지는 잔파도", file: "/sounds/ES_Water, Lap, Gentle Waves, Splashing Against Rocks, Calm, Light Water Fizz - Epidemic Sound.mp3" },
+      { name: "호수의 잔물결", file: "/sounds/ES_Water, Lap, Lake, Small Waves Lapping, Detailed, 1m, Loop 01 - Epidemic Sound.mp3" },
+      { name: "해변의 작은 파도", file: "/sounds/ES_Water, Wave, Ocean, Beach Waves, Small, Lapping - Epidemic Sound.mp3" },
+      { name: "망그로브 해안 (남안다만)", file: "/sounds/ES_Water, Wave, Seaside, Waves, Inside, Mangroves, South Andaman - Epidemic Sound.mp3" },
+      { name: "가깝고 먼 파도 (스웨덴)", file: "/sounds/ES_Water, Wave, Small Waves Close, Bigger Distant Waves, 5 Meters From Ocean, Halmstad, Sweden - Epidemic Sound.mp3" },
+      { name: "바위를 쓸고 가는 파도", file: "/sounds/ES_Water, Wave, Waves Sweeping Over Rocks, Calm, Lapping, Scandinavian Archipelago - Epidemic Sound.mp3" },
     ],
   },
   {
     id: "stream", label: "시냇물", tag: "Alpha · 이완",
     icon: Waves,
-    files: [
-      "/sounds/ES_Water, Flow, Creek, Light, Flowing, Foam Details, Calm Forest 01 - Epidemic Sound.mp3",
-      "/sounds/ES_Water, Flow, River, Small, Soft, Burbling Between Stones - Epidemic Sound.mp3",
-      "/sounds/ES_Water, Movement, Small River, Continuous, Calm, Happy, Steady Stream 01 Schoeps (MS) - Epidemic Sound.mp3",
+    variants: [
+      { name: "고요한 숲의 작은 시내", file: "/sounds/ES_Water, Flow, Creek, Light, Flowing, Foam Details, Calm Forest 01 - Epidemic Sound.mp3" },
+      { name: "돌 사이 졸졸 흐르는 강", file: "/sounds/ES_Water, Flow, River, Small, Soft, Burbling Between Stones - Epidemic Sound.mp3" },
+      { name: "꾸준히 흐르는 작은 강", file: "/sounds/ES_Water, Movement, Small River, Continuous, Calm, Happy, Steady Stream 01 Schoeps (MS) - Epidemic Sound.mp3" },
+      { name: "폭포 위 흐르는 물", file: "/sounds/ES_Water, Waterfall, Top, Deep, Water Flowing Before Falling - Epidemic Sound.mp3" },
     ],
   },
   {
     id: "bird", label: "새소리", tag: "Stress −50% · 산림치유",
     icon: Bird,
-    files: [
-      "/sounds/ES_Ambience, Birdsong, Chaffinch, Blackbird, Black Woodpecker, Coniferous Forest, Summer, Afternoon - Epidemic Sound.mp3",
-      "/sounds/ES_Birds, Songbird, Rainforest, Dawn, Pied, Imperial, Pigeon, Ambience, Havelock Island - Epidemic Sound.mp3",
-      "/sounds/ES_Birds, Tropical, Rainforest, Afternoon, Singing Bird, Insects, Little Andaman 02 - Epidemic Sound.mp3",
-      "/sounds/ES_Birds, Tropical, Rainforest, Morning, Rich, Bird, Drongo, Baratang Island 01 - Epidemic Sound.mp3",
+    variants: [
+      { name: "여름 침엽수 숲의 새들 (오후)", file: "/sounds/ES_Ambience, Birdsong, Chaffinch, Blackbird, Black Woodpecker, Coniferous Forest, Summer, Afternoon - Epidemic Sound.mp3" },
+      { name: "새벽 열대우림 (하벨록 섬)", file: "/sounds/ES_Birds, Songbird, Rainforest, Dawn, Pied, Imperial, Pigeon, Ambience, Havelock Island - Epidemic Sound.mp3" },
+      { name: "오후 열대우림의 새와 곤충", file: "/sounds/ES_Birds, Tropical, Rainforest, Afternoon, Singing Bird, Insects, Little Andaman 02 - Epidemic Sound.mp3" },
+      { name: "아침의 풍부한 새소리 (Drongo)", file: "/sounds/ES_Birds, Tropical, Rainforest, Morning, Rich, Bird, Drongo, Baratang Island 01 - Epidemic Sound.mp3" },
     ],
   },
   {
     id: "forest", label: "숲속", tag: "Forest Bathing · Cortisol",
     icon: Trees,
-    files: [
-      "/sounds/ES_Ambience, Forest, Birds Chirping, Light Rain, Light Wind - Epidemic Sound.mp3",
-      "/sounds/ES_Ambience, Forest, Singing Birds, Distant Traffic - Epidemic Sound.mp3",
-      "/sounds/ES_Ambience, Forest, Wind, Daytime, Creaking Tree In Wind, Little Andaman - Epidemic Sound.mp3",
+    variants: [
+      { name: "약한 비와 바람 부는 숲", file: "/sounds/ES_Ambience, Forest, Birds Chirping, Light Rain, Light Wind - Epidemic Sound.mp3" },
+      { name: "노래하는 숲의 새 (멀리 도시)", file: "/sounds/ES_Ambience, Forest, Singing Birds, Distant Traffic - Epidemic Sound.mp3" },
+      { name: "낮 바람에 삐걱이는 나무", file: "/sounds/ES_Ambience, Forest, Wind, Daytime, Creaking Tree In Wind, Little Andaman - Epidemic Sound.mp3" },
     ],
   },
   {
     id: "meadow", label: "풀밭", tag: "Serotonin · Alpha",
     icon: Sun,
-    files: [
-      "/sounds/ES_Ambience, Birdsong, Meadow, Summer, Birds Sing, Wind, Light Rustle In Trees - Epidemic Sound.mp3",
-      "/sounds/ES_Ambience, Grassland, Bird Chirping Close, Insects, Flies 02 - Epidemic Sound.mp3",
-      "/sounds/ES_Ambience, Swamp, Mangroves, Morning, Mangrove Whistler, Middle Andaman - Epidemic Sound.mp3",
+    variants: [
+      { name: "여름 풀밭의 새와 잎사귀", file: "/sounds/ES_Ambience, Birdsong, Meadow, Summer, Birds Sing, Wind, Light Rustle In Trees - Epidemic Sound.mp3" },
+      { name: "풀밭의 가까운 새와 곤충", file: "/sounds/ES_Ambience, Grassland, Bird Chirping Close, Insects, Flies 02 - Epidemic Sound.mp3" },
     ],
   },
   {
-    id: "wind", label: "바람 소리", tag: "Masking · 이완",
+    id: "wind", label: "바람", tag: "Masking · 이완",
     icon: Wind,
-    files: [
-      "/sounds/ES_Wind, Vegetation, Blowing Through Deciduous Trees, Leaves Rustling, Moderate Intensity, Winter, Afternoon - Epidemic Sound.mp3",
-      "/sounds/ES_Wind, Vegetation, Blowing Through Defoliated Deciduous Trees, Moderate Intensity, Crow Flying By, Winter, Evening - Epidemic Sound.mp3",
-      "/sounds/ES_Wind, Gust, Mountain Wind, Very Strong, Cold Wind, Heavy Gusts, Jotunheimen, Norway 01 - Epidemic Sound.mp3",
+    variants: [
+      { name: "겨울 활엽수 사이 바람", file: "/sounds/ES_Wind, Vegetation, Blowing Through Deciduous Trees, Leaves Rustling, Moderate Intensity, Winter, Afternoon - Epidemic Sound.mp3" },
     ],
   },
   {
-    id: "cave", label: "동굴 울림", tag: "Deep Reverb · Theta",
+    id: "cave", label: "동굴", tag: "Deep · 물방울",
     icon: Mountain,
-    files: [
-      "/sounds/ES_Ambience, Underground, Cave, Magic, Deep, Bubbling - Epidemic Sound.mp3",
-      "/sounds/ES_Ambience, Underground, Cave, Magic, Deep, Wind, Howling 02 - Epidemic Sound.mp3",
-      "/sounds/ES_Ambience, Underground, Cave, Water, Dripping, Flowing 02 - Epidemic Sound.mp3",
-      "/sounds/ES_Ambience, Underground, Cave, Water, Dripping, Flowing 03 - Epidemic Sound.mp3",
+    variants: [
+      { name: "동굴의 물방울 흐름", file: "/sounds/ES_Ambience, Underground, Cave, Water, Dripping, Flowing 02 - Epidemic Sound.mp3" },
+      { name: "동굴의 깊은 물방울", file: "/sounds/ES_Ambience, Underground, Cave, Water, Dripping, Flowing 03 - Epidemic Sound.mp3" },
     ],
   },
   {
     id: "fire", label: "모닥불", tag: "저주파 · 세로토닌",
     icon: Flame,
-    files: [
-      "/sounds/ES_Fire, Burning, Bonfire, Moderate Size, Close, Crackling - Epidemic Sound.mp3",
-      "/sounds/ES_Fire, Burning, Burning Wood, Bonfire, Crispy, Soft Intensity, Loop - Epidemic Sound.mp3",
-      "/sounds/ES_Fire, Burning, Wood, Crispy, Medium Intensity - Epidemic Sound.mp3",
+    variants: [
+      { name: "타닥거리는 모닥불 (가까이)", file: "/sounds/ES_Fire, Burning, Bonfire, Moderate Size, Close, Crackling - Epidemic Sound.mp3" },
+      { name: "잔잔한 장작 모닥불 (Loop)", file: "/sounds/ES_Fire, Burning, Burning Wood, Bonfire, Crispy, Soft Intensity, Loop - Epidemic Sound.mp3" },
+      { name: "중간 세기의 장작불", file: "/sounds/ES_Fire, Burning, Wood, Crispy, Medium Intensity - Epidemic Sound.mp3" },
     ],
   },
   {
     id: "night", label: "밤 풀벌레", tag: "Delta 유도 · 수면",
     icon: Moon,
-    files: [
-      "/sounds/ES_Ambience, Insect, Cricket, Night, Clean - Epidemic Sound.mp3",
-      "/sounds/ES_Ambience, Insect, Cricket, Night, Meadow, Jungle 01 - Epidemic Sound.mp3",
-      "/sounds/ES_Ambience, Insect, Cricket, Night, Meadow, Jungle 02 - Epidemic Sound.mp3",
-      "/sounds/ES_Ambience, Tropical, Amazonas, Night Close, River Crickets, Frogs Bird Sometimes - Epidemic Sound.mp3",
-      "/sounds/ES_Ambience, Tropical, Mysterious Night, Cricket - Epidemic Sound.mp3",
-      "/sounds/ES_Ambience, Tropical, Rainforest, Night, Insects, Boobook, Middle Jarawa, Edge 02 - Epidemic Sound.mp3",
+    variants: [
+      { name: "맑은 밤의 귀뚜라미", file: "/sounds/ES_Ambience, Insect, Cricket, Night, Clean - Epidemic Sound.mp3" },
+      { name: "밤 풀밭 귀뚜라미 1", file: "/sounds/ES_Ambience, Insect, Cricket, Night, Meadow, Jungle 01 - Epidemic Sound.mp3" },
+      { name: "밤 풀밭 귀뚜라미 2", file: "/sounds/ES_Ambience, Insect, Cricket, Night, Meadow, Jungle 02 - Epidemic Sound.mp3" },
+      { name: "아마존 강가의 밤 (귀뚜라미·개구리)", file: "/sounds/ES_Ambience, Tropical, Amazonas, Night Close, River Crickets, Frogs Bird Sometimes - Epidemic Sound.mp3" },
+      { name: "열대우림의 밤 (Boobook)", file: "/sounds/ES_Ambience, Tropical, Rainforest, Night, Insects, Boobook, Middle Jarawa, Edge 02 - Epidemic Sound.mp3" },
     ],
   },
   {
     id: "storm", label: "폭풍우", tag: "Pink Noise · 수면",
     icon: Zap,
-    files: [
-      "/sounds/ES_Weather, Storm, Snow Storm, Cold, Freezing, Heavy Wind, Whistling - Epidemic Sound.mp3",
-      "/sounds/ES_Weather, Storm, Strong, Storm 2, Lightning, High Mountains, Bhaleydhunga, Himalaya 04 - Epidemic Sound.mp3",
+    variants: [
+      { name: "히말라야 산속 천둥번개", file: "/sounds/ES_Weather, Storm, Strong, Storm 2, Lightning, High Mountains, Bhaleydhunga, Himalaya 04 - Epidemic Sound.mp3" },
     ],
   },
 ];
@@ -164,9 +168,9 @@ const FREQUENCIES: FreqItem[] = [
 ];
 
 const Music = () => {
-  // 재생 중인 카테고리 id → 현재 버전 idx
   const [activeIds, setActiveIds] = useState<Set<string>>(new Set());
   const [versionIdx, setVersionIdx] = useState<Record<string, number>>({});
+  const [pickerId, setPickerId] = useState<string | null>(null);
   const howlsRef = useRef<Map<string, Howl>>(new Map());
 
   useEffect(() => {
@@ -174,25 +178,18 @@ const Music = () => {
       howlsRef.current.forEach((h) => { h.stop(); h.unload(); });
       howlsRef.current.clear();
       audioEngine.stopAll();
+      clearMediaSession();
+      releaseWakeLock();
     };
   }, []);
 
-  /** 자연/ASMR 타일 클릭 */
   const handleNatureClick = (item: NatureItem) => {
     const isActive = activeIds.has(item.id);
     const currentIdx = versionIdx[item.id] ?? 0;
-
-    if (!isActive) {
-      // 새로 재생
-      playFile(item, currentIdx);
+    if (isActive) {
+      stopFile(item.id);
     } else {
-      // 재생 중 → 다음 버전으로 순환
-      const nextIdx = (currentIdx + 1) % item.files.length;
-      if (item.files.length > 1) {
-        playFile(item, nextIdx);
-      } else {
-        stopFile(item.id);
-      }
+      playFile(item, currentIdx);
     }
   };
 
@@ -202,7 +199,8 @@ const Music = () => {
       existing.stop();
       existing.unload();
     }
-    const url = toCdnUrl(item.files[idx]);
+    const v = item.variants[idx];
+    const url = toCdnUrl(v.file);
     const howl = new Howl({
       src: [url],
       html5: true,
@@ -213,6 +211,13 @@ const Music = () => {
     howlsRef.current.set(item.id, howl);
     setVersionIdx((prev) => ({ ...prev, [item.id]: idx }));
     setActiveIds((prev) => new Set(prev).add(item.id));
+
+    setMediaSession(
+      { title: `${item.label} · ${v.name}`, artist: "Yunseul · Sound Mix", album: item.tag },
+      { onPause: () => stopAll() }
+    );
+    setMediaSessionPlaying(true);
+    requestWakeLock();
   };
 
   const stopFile = (id: string) => {
@@ -223,6 +228,10 @@ const Music = () => {
     setActiveIds((prev) => {
       const next = new Set(prev);
       next.delete(id);
+      if (next.size === 0) {
+        clearMediaSession();
+        releaseWakeLock();
+      }
       return next;
     });
   };
@@ -230,7 +239,15 @@ const Music = () => {
   const toggleFreq = (item: FreqItem) => {
     if (activeIds.has(item.id)) {
       audioEngine.stop(item.id);
-      setActiveIds((prev) => { const n = new Set(prev); n.delete(item.id); return n; });
+      setActiveIds((prev) => {
+        const n = new Set(prev);
+        n.delete(item.id);
+        if (n.size === 0) {
+          clearMediaSession();
+          releaseWakeLock();
+        }
+        return n;
+      });
       return;
     }
     if (item.type === "noise" && item.noiseType) {
@@ -239,6 +256,12 @@ const Music = () => {
       audioEngine.playTone(item.id, item.hz, 0.12);
     }
     setActiveIds((prev) => new Set(prev).add(item.id));
+    setMediaSession(
+      { title: item.label, artist: "Yunseul · Frequency", album: item.tag },
+      { onPause: () => stopAll() }
+    );
+    setMediaSessionPlaying(true);
+    requestWakeLock();
   };
 
   const stopAll = () => {
@@ -246,7 +269,11 @@ const Music = () => {
     howlsRef.current.clear();
     audioEngine.stopAll();
     setActiveIds(new Set());
+    clearMediaSession();
+    releaseWakeLock();
   };
+
+  const pickerItem = pickerId ? NATURE.find((n) => n.id === pickerId) : null;
 
   return (
     <div className="px-5 pt-12 pb-6 relative flex-1 flex flex-col">
@@ -261,7 +288,7 @@ const Music = () => {
             사운드 믹스
           </h1>
           <p className="text-sm text-foreground/60 mt-1">
-            동시 재생 가능 · 같은 타일 다시 누르면 다른 버전
+            동시 재생 가능 · ↓ 버튼으로 다른 버전 선택
           </p>
         </div>
         <span className="text-xs text-foreground/55 font-medium">
@@ -281,7 +308,11 @@ const Music = () => {
               active={activeIds.has(item.id)}
               versionIdx={versionIdx[item.id] ?? 0}
               onClick={() => handleNatureClick(item)}
-              onStop={() => stopFile(item.id)}
+              onShuffle={() => {
+                const cur = versionIdx[item.id] ?? 0;
+                playFile(item, (cur + 1) % item.variants.length);
+              }}
+              onOpenPicker={() => setPickerId(item.id)}
             />
           ))}
         </div>
@@ -311,6 +342,55 @@ const Music = () => {
           전체 정지
         </button>
       )}
+
+      {pickerItem && (
+        <div
+          className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-end"
+          onClick={() => setPickerId(null)}
+        >
+          <div
+            className="w-full bg-background rounded-t-3xl p-5 pb-8 max-h-[70vh] overflow-y-auto animate-slide-up"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between mb-4">
+              <div>
+                <p className="text-[11px] tracking-[0.2em] uppercase text-primary/80 font-serif">
+                  {pickerItem.label}
+                </p>
+                <h3 className="text-lg font-bold text-foreground mt-0.5">버전 선택</h3>
+              </div>
+              <button
+                onClick={() => setPickerId(null)}
+                className="w-8 h-8 rounded-full bg-foreground/10 flex items-center justify-center text-foreground/60"
+                aria-label="닫기"
+              >
+                <ChevronDown className="w-4 h-4" />
+              </button>
+            </div>
+            <div className="space-y-2">
+              {pickerItem.variants.map((v, i) => {
+                const isCurrent = (versionIdx[pickerItem.id] ?? 0) === i && activeIds.has(pickerItem.id);
+                return (
+                  <button
+                    key={i}
+                    onClick={() => {
+                      playFile(pickerItem, i);
+                      setPickerId(null);
+                    }}
+                    className={cn(
+                      "liquid-card w-full p-3.5 flex items-center justify-between text-left",
+                      isCurrent && "ring-2 ring-primary"
+                    )}
+                  >
+                    <span className="text-sm font-semibold text-foreground">{v.name}</span>
+                    {isCurrent && <span className="text-[10px] text-primary font-mono tracking-wider">재생 중</span>}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
@@ -320,17 +400,20 @@ interface NatureTileProps {
   active: boolean;
   versionIdx: number;
   onClick: () => void;
-  onStop: () => void;
+  onShuffle: () => void;
+  onOpenPicker: () => void;
 }
 
-const NatureTile = ({ item, active, versionIdx, onClick, onStop }: NatureTileProps) => {
+const NatureTile = ({ item, active, versionIdx, onClick, onShuffle, onOpenPicker }: NatureTileProps) => {
   const Icon = item.icon;
+  const hasMultiple = item.variants.length > 1;
+  const currentName = item.variants[versionIdx]?.name;
   return (
     <div className="relative">
       <button
         onClick={onClick}
         className={cn(
-          "liquid-card w-full aspect-[1.1] p-2.5 flex flex-col items-center justify-center gap-1 transition-all active:scale-95",
+          "liquid-card w-full aspect-[1.05] p-2.5 flex flex-col items-center justify-center gap-1 transition-all active:scale-95",
           active && "ring-2 ring-primary shadow-[0_0_20px_-4px_hsl(var(--primary)/0.5)]"
         )}
       >
@@ -338,24 +421,42 @@ const NatureTile = ({ item, active, versionIdx, onClick, onStop }: NatureTilePro
           "w-8 h-8 rounded-xl flex items-center justify-center",
           active ? "bg-primary text-primary-foreground" : "text-primary"
         )}>
-          {active ? <Icon className="w-4 h-4" strokeWidth={1.8} /> : <Icon className="w-4 h-4" strokeWidth={1.6} />}
+          <Icon className="w-4 h-4" strokeWidth={active ? 1.8 : 1.6} />
         </div>
         <span className="text-[11px] font-semibold text-foreground text-center leading-tight">
           {item.label}
         </span>
-        <span className="text-[8.5px] text-primary/70 tracking-wide text-center leading-tight mt-0.5">
+        <span className="text-[8.5px] text-primary/70 tracking-wide text-center leading-tight mt-0.5 line-clamp-1">
           {item.tag}
         </span>
-        {item.files.length > 1 && (
-          <span className="text-[8px] text-foreground/50 mt-0.5">
-            {active ? `${versionIdx + 1}/${item.files.length} · 탭 변경` : `${item.files.length}종`}
+        {hasMultiple && (
+          <span className="text-[8px] text-foreground/55 mt-0.5 line-clamp-1 max-w-full px-1">
+            {active ? currentName : `${item.variants.length}종`}
           </span>
         )}
       </button>
+      {active && hasMultiple && (
+        <button
+          onClick={(e) => { e.stopPropagation(); onShuffle(); }}
+          className="absolute top-1 left-1 w-5 h-5 rounded-full bg-primary/85 text-primary-foreground flex items-center justify-center hover:bg-primary"
+          aria-label="다음 버전"
+        >
+          <Shuffle className="w-2.5 h-2.5" />
+        </button>
+      )}
+      {hasMultiple && (
+        <button
+          onClick={(e) => { e.stopPropagation(); onOpenPicker(); }}
+          className="absolute bottom-1 left-1/2 -translate-x-1/2 px-1.5 h-4 rounded-full bg-foreground/15 text-foreground/70 flex items-center justify-center hover:bg-foreground/25"
+          aria-label="버전 선택"
+        >
+          <ChevronUp className="w-2.5 h-2.5" />
+        </button>
+      )}
       {active && (
         <button
-          onClick={(e) => { e.stopPropagation(); onStop(); }}
-          className="absolute top-1 right-1 w-5 h-5 rounded-full bg-foreground/70 text-background flex items-center justify-center text-[10px] hover:bg-foreground"
+          onClick={(e) => { e.stopPropagation(); onClick(); }}
+          className="absolute top-1 right-1 w-5 h-5 rounded-full bg-foreground/70 text-background flex items-center justify-center hover:bg-foreground"
           aria-label="정지"
         >
           <Pause className="w-2.5 h-2.5" />

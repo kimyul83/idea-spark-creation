@@ -4,18 +4,12 @@ import { MonetBackground } from "@/components/MonetBackground";
 import { Moodie } from "@/components/Moodie";
 import { MUSIC_SITUATIONS } from "@/lib/modes";
 import { SITUATION_DETAILS } from "@/lib/situation-details";
-import { useTheme } from "@/contexts/ThemeContext";
-import { FOCUS_MODES } from "@/types/db";
-import { getIcon } from "@/lib/icon-map";
-import { cn } from "@/lib/utils";
 
 /**
- * Home — 심리 음악 상황 + 호흡·깨기 빠른 진입.
- * 복잡한 자연 소리는 Music 탭으로 분리.
+ * Home — 6개 핵심 상황 + 호흡·깨기 빠른 진입.
  */
 const Home = () => {
   const navigate = useNavigate();
-  const { resolvedVariant } = useTheme();
   const hour = new Date().getHours();
 
   const greeting =
@@ -24,10 +18,6 @@ const Home = () => {
     hour < 18 ? "오늘 어때요" :
     hour < 22 ? "편안한 저녁이에요" :
     "하루를 마무리해요";
-
-  const core = MUSIC_SITUATIONS.filter((s) => s.group === "core");
-  const mood = MUSIC_SITUATIONS.filter((s) => s.group === "mood");
-  const travel = MUSIC_SITUATIONS.filter((s) => s.group === "travel");
 
   return (
     <div className="px-5 pt-12 pb-6 relative flex-1 flex flex-col">
@@ -77,71 +67,15 @@ const Home = () => {
         </button>
       </div>
 
-      {/* 일상 · Core 6 */}
+      {/* 6개 상황 */}
       <section className="mt-7">
         <h2 className="text-[11px] tracking-[0.2em] uppercase text-primary/80 font-serif mb-3 px-1">
-          일상 · 심리 음악
+          힐링 사운드
         </h2>
         <div className="space-y-2">
-          {core.map((s) => (
+          {MUSIC_SITUATIONS.map((s) => (
             <SituationRow key={s.id} id={s.id} icon={s.icon} onClick={() => navigate(`/music/${s.id}`)} />
           ))}
-        </div>
-      </section>
-
-      {/* 무드 */}
-      <section className="mt-6">
-        <h2 className="text-[11px] tracking-[0.2em] uppercase text-primary/80 font-serif mb-3 px-1">
-          무드 · 라이프스타일
-        </h2>
-        <div className="space-y-2">
-          {mood.map((s) => (
-            <SituationRow key={s.id} id={s.id} icon={s.icon} onClick={() => navigate(`/music/${s.id}`)} />
-          ))}
-        </div>
-      </section>
-
-      {/* 여행 */}
-      <section className="mt-6">
-        <h2 className="text-[11px] tracking-[0.2em] uppercase text-primary/80 font-serif mb-3 px-1">
-          여행 바이브
-        </h2>
-        <div className="space-y-2">
-          {travel.map((s) => (
-            <SituationRow key={s.id} id={s.id} icon={s.icon} onClick={() => navigate(`/music/${s.id}`)} />
-          ))}
-        </div>
-      </section>
-
-      {/* 집중 */}
-      <section className="mt-6">
-        <h2 className="text-[11px] tracking-[0.2em] uppercase text-primary/80 font-serif mb-3 px-1">
-          집중 · 몰입
-        </h2>
-        <div className="space-y-2">
-          {FOCUS_MODES.map((m) => {
-            const Icon = getIcon(m.icon);
-            const route = m.id === "adhd" ? "/focus/adhd" : `/session/focus/${m.id}`;
-            return (
-              <button
-                key={m.id}
-                onClick={() => navigate(route)}
-                className="liquid-card liquid-card-hover w-full p-4 flex items-center gap-3 text-left"
-              >
-                <div className="w-11 h-11 rounded-2xl bg-primary/15 flex items-center justify-center shrink-0">
-                  <Icon className="w-5 h-5 text-primary" strokeWidth={1.6} />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-baseline gap-2">
-                    <span className="font-bold text-foreground text-[14px]">{m.title}</span>
-                    <span className="text-[10px] font-mono text-primary">{m.durationMin} min</span>
-                  </div>
-                  <div className="text-[11px] text-foreground/55 mt-0.5">{m.recommend}</div>
-                </div>
-                <ChevronRight className="w-4 h-4 text-foreground/25 shrink-0" />
-              </button>
-            );
-          })}
         </div>
       </section>
 

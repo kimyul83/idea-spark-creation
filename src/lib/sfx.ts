@@ -199,17 +199,14 @@ export function vibrate(pattern: number | number[]) {
 const CDN = "https://cdn.jsdelivr.net/gh/kimyul83/idea-spark-creation@main/public/sounds";
 const enc = (s: string) => s.split("/").map(encodeURIComponent).join("/");
 
-// 유리/얼음 깨짐 실제 녹음 (8개 랜덤 재생)
-const GLASS_FILES = [
-  "ES_Glass, Break, Bottle, Smash x3 - Epidemic Sound.mp3",
-  "ES_Glass, Break, Glassware Breaking, Big Smash - Epidemic Sound.mp3",
-  "ES_Glass, Break, Window, Large, Smash - Epidemic Sound.mp3",
-  "ES_Glass, Break, Window, Smash - Epidemic Sound.mp3",
-  "ES_Ice, Break, Crack, Crispy, Close Up 11 - Epidemic Sound.mp3",
-  "ES_Ice, Break, Cracks, Frosty, Crispy, Sharp Details - Epidemic Sound.mp3",
-  "ES_Ice, Break, Ice Cracking, Push 02 - Epidemic Sound.mp3",
-  "ES_Ice, Break, Thin Ice Cracks - Epidemic Sound.mp3",
-];
+// 유리 깨짐: 카테고리별로 하나씩 매핑 — 일관된 소리 + 깔끔한 울림
+// (이전엔 8개 random pick + 얼음/유리 섞여서 지저분했음)
+const GLASS_BY_CATEGORY: Record<string, string> = {
+  smash: "ES_Glass, Break, Window, Smash - Epidemic Sound.mp3",
+  slice: "ES_Glass, Break, Bottle, Smash x3 - Epidemic Sound.mp3",
+  asmr:  "ES_Glass, Break, Glassware Breaking, Big Smash - Epidemic Sound.mp3",
+};
+const GLASS_DEFAULT = "ES_Glass, Break, Window, Smash - Epidemic Sound.mp3";
 
 // 사람 호흡 실제 녹음 (4개)
 const BREATH_FILES = [
@@ -225,21 +222,27 @@ const audioPool: HTMLAudioElement[] = [];
 function playFromCdn(files: string[], volume = 0.7) {
   if (files.length === 0) return;
   const file = files[Math.floor(Math.random() * files.length)];
+  playOne(file, volume);
+}
+
+function playOne(file: string, volume = 0.7) {
   const url = `${CDN}/${enc(file)}`;
   const audio = new Audio(url);
   audio.volume = volume;
   audio.play().catch((err) => console.warn("SFX play failed", err));
   audioPool.push(audio);
-  if (audioPool.length > 10) {
+  // 동시 재생 잔향 누적 방지: 4개 이상이면 가장 오래된 것 즉시 중단
+  if (audioPool.length > 4) {
     const old = audioPool.shift();
     old?.pause();
   }
 }
 
-/** 실제 유리 깨짐 녹음 재생 (실패 시 합성 버전) */
+/** 실제 유리 깨짐 녹음 재생 — 카테고리별 고정 파일 (일관성). */
 export function playRealGlass(category: GlassCategory = "smash", volume = 0.6) {
   try {
-    playFromCdn(GLASS_FILES, volume);
+    const file = GLASS_BY_CATEGORY[category] ?? GLASS_DEFAULT;
+    playOne(file, volume);
   } catch {
     playGlassFx(category, volume); // 폴백
   }

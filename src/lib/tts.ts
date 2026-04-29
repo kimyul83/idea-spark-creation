@@ -9,7 +9,7 @@
  * - 사용자가 음소거 토글 가능 (localStorage에 저장)
  */
 
-const MUTE_KEY = "yunseul_tts_muted";
+const MUTE_KEY = "mintmoody_tts_muted";
 
 /**
  * 기본값: 음성 OFF (자막으로만 안내).

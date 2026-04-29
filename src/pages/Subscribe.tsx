@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Check, Crown, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { MonetBackground } from "@/components/MonetBackground";
-import { Moodie } from "@/components/Moodie";
+import { Moody } from "@/components/Moody";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { usePremium } from "@/hooks/usePremium";
@@ -25,14 +25,14 @@ const PLANS: Plan[] = [
   { id: "lifetime", label: "평생 이용권", price: "₩59,000", per: "한 번 결제", badge: "런칭 한정" },
 ];
 
-interface Row { feature: string; endel: string; moodie: string; highlight?: boolean }
+interface Row { feature: string; endel: string; moody: string; highlight?: boolean }
 const COMPARE: Row[] = [
-  { feature: "감정 카테고리", endel: "4개", moodie: "12개" },
-  { feature: "한국 감정", endel: "✗", moodie: "✓", highlight: true },
-  { feature: "호흡법 영상", endel: "✗", moodie: "✓" },
-  { feature: "ADHD 모드", endel: "부분", moodie: "전용" },
-  { feature: "유리 깨기", endel: "✗", moodie: "✓", highlight: true },
-  { feature: "월 구독", endel: "₩28,000", moodie: "₩4,900", highlight: true },
+  { feature: "감정 카테고리", endel: "4개", moody: "12개" },
+  { feature: "한국 감정", endel: "✗", moody: "✓", highlight: true },
+  { feature: "호흡법 영상", endel: "✗", moody: "✓" },
+  { feature: "ADHD 모드", endel: "부분", moody: "전용" },
+  { feature: "유리 깨기", endel: "✗", moody: "✓", highlight: true },
+  { feature: "월 구독", endel: "₩28,000", moody: "₩4,900", highlight: true },
 ];
 
 const Subscribe = () => {
@@ -72,9 +72,9 @@ const Subscribe = () => {
 
       <div className="text-center mt-4 px-5">
         <div className="flex justify-center">
-          <Moodie size="large" emotion="happy" />
+          <Moody size="large" emotion="happy" />
         </div>
-        <p className="mt-3 text-[11px] tracking-[0.3em] uppercase text-primary font-serif">Moodie+</p>
+        <p className="mt-3 text-[11px] tracking-[0.3em] uppercase text-primary font-serif">Moody+</p>
         <h1 className="text-[28px] font-bold text-foreground mt-2 leading-tight">
           프리미엄으로<br />더 깊은 힐링을
         </h1>
@@ -134,12 +134,12 @@ const Subscribe = () => {
       <div className="px-5 mt-5">
         <div className="surface rounded-3xl p-5 shadow-soft">
           <p className="text-[11px] tracking-[0.3em] uppercase text-primary font-serif">Compare</p>
-          <h2 className="font-bold text-foreground mt-1">Endel vs Moodie</h2>
+          <h2 className="font-bold text-foreground mt-1">Endel vs Moody</h2>
           <div className="mt-4">
             <div className="grid grid-cols-[1fr_auto_auto] gap-x-4 gap-y-3 text-sm">
               <div className="text-[11px] uppercase tracking-wider text-foreground/40">기능</div>
               <div className="text-[11px] uppercase tracking-wider text-foreground/40 text-right">Endel</div>
-              <div className="text-[11px] uppercase tracking-wider text-primary font-bold text-right">Moodie</div>
+              <div className="text-[11px] uppercase tracking-wider text-primary font-bold text-right">Moody</div>
               {COMPARE.map((r) => (
                 <div key={r.feature} className="contents">
                   <div className="text-foreground/80">{r.feature}</div>
@@ -150,7 +150,7 @@ const Subscribe = () => {
                       r.highlight ? "text-primary" : "text-foreground"
                     )}
                   >
-                    {r.moodie}
+                    {r.moody}
                   </div>
                 </div>
               ))}

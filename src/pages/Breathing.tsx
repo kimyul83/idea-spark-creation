@@ -2,7 +2,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { useMemo, useState } from "react";
 import { ArrowLeft, ChevronRight, Lock, Check } from "lucide-react";
 import { MonetBackground } from "@/components/MonetBackground";
-import { Moodie } from "@/components/Moodie";
+import { Moody } from "@/components/Moody";
 import {
   BREATHING_PATTERNS, BREATHING_VISUALS, CATEGORY_META,
   getStoredVisual, setStoredVisual,
@@ -150,7 +150,7 @@ const Breathing = () => {
 
           <div className="flex-1 flex items-end justify-center pt-6">
             <div className="text-center opacity-80">
-              <Moodie size={56} />
+              <Moody size={56} />
               <p className="text-[11px] text-foreground/50 mt-2 font-serif tracking-widest">
                 천천히 · 깊게 · 부드럽게
               </p>

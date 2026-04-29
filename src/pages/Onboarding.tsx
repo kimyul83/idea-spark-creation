@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { ArrowLeft, ChevronRight, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Moodie } from "@/components/Moodie";
+import { Moody } from "@/components/Moody";
 import { MonetBackground } from "@/components/MonetBackground";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable";
@@ -12,7 +12,7 @@ import { cn } from "@/lib/utils";
 
 const slides = [
   {
-    eyebrow: "Moodie",
+    eyebrow: "Moody",
     title: "당신의 감정에 맞춘\n사운드 테라피",
     desc: "기분과 상황에 꼭 맞는 소리로\n마음을 부드럽게 다독여요",
   },
@@ -38,11 +38,11 @@ const Onboarding = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (localStorage.getItem("moodie_onboarded")) navigate("/home", { replace: true });
+    if (localStorage.getItem("moody_onboarded")) navigate("/home", { replace: true });
   }, [navigate]);
 
   const finish = () => {
-    localStorage.setItem("moodie_onboarded", "1");
+    localStorage.setItem("moody_onboarded", "1");
     navigate("/home", { replace: true });
   };
 
@@ -111,7 +111,7 @@ const Onboarding = () => {
       </div>
 
       <div className="flex-1 flex flex-col items-center justify-center px-8 text-center relative">
-        <Moodie size="large" />
+        <Moody size="large" />
 
         <p key={step + "-e"} className="mt-10 text-xs tracking-[0.3em] uppercase text-primary font-medium font-serif animate-fade-up">
           {slide.eyebrow}

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
-import { Moodie } from "@/components/Moodie";
+import { Moody } from "@/components/Moody";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { LogOut, Crown, Heart, Bell, ChevronRight, FlaskConical, Palette } from "lucide-react";
@@ -32,7 +32,7 @@ const Me = () => {
 
   const handleSignOut = async () => {
     await supabase.auth.signOut();
-    localStorage.removeItem("moodie_onboarded");
+    localStorage.removeItem("moody_onboarded");
     navigate("/", { replace: true });
   };
 
@@ -45,13 +45,13 @@ const Me = () => {
         <span className="shimmer" />
         <div className="relative flex items-start justify-between">
           <div>
-            <p className="text-[11px] tracking-[0.3em] uppercase opacity-70 font-serif">Moodie+</p>
+            <p className="text-[11px] tracking-[0.3em] uppercase opacity-70 font-serif">Moody+</p>
             <h2 className="text-[22px] font-bold mt-1 leading-tight">
               {isPremium ? <>프리미엄 활성<br />감사해요 ✨</> : <>프리미엄으로<br />더 깊이 돌봐요</>}
             </h2>
             <p className="opacity-70 text-xs mt-2">전체 ASMR · 무제한 믹스 · ADHD · 수면</p>
           </div>
-          <Moodie size={80} emotion={isPremium ? "happy" : "default"} />
+          <Moody size={80} emotion={isPremium ? "happy" : "default"} />
         </div>
         <Button
           onClick={() => navigate("/subscribe")}

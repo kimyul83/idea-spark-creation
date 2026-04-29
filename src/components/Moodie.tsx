@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
+import { toCdnUrl } from "@/lib/situation-tracks";
 
 type MoodieSize = "small" | "medium" | "large";
 type MoodieFace = "default" | "happy" | "sad" | "surprised" | "calm" | "love" | "focus";
@@ -35,7 +36,7 @@ const EMOTION_TO_FACE: Record<MoodieEmotion, MoodieFace> = {
   energetic: "happy",
 };
 
-const FACE_TO_FILE: Record<MoodieFace, string> = {
+const FACE_TO_SVG: Record<MoodieFace, string> = {
   default: "/mascot/moodie-default.svg",
   happy: "/mascot/moodie-happy.svg",
   sad: "/mascot/moodie-sad.svg",
@@ -45,7 +46,25 @@ const FACE_TO_FILE: Record<MoodieFace, string> = {
   focus: "/mascot/moodie-focus.svg",
 };
 
+/**
+ * 영상 마스코트 경로.
+ * /public/mascot/videos/moodie-{face}.mp4 → 있으면 영상, 없으면 default.mp4 사용,
+ * 그것도 없으면 SVG 폴백.
+ * 단일 캐릭터 영상으로 시작할 거면 default 하나만 채워도 OK.
+ */
+const FACE_TO_VIDEO: Record<MoodieFace, string> = {
+  default:   "/mascot/videos/moodie-default.mp4",
+  happy:     "/mascot/videos/moodie-happy.mp4",
+  sad:       "/mascot/videos/moodie-sad.mp4",
+  surprised: "/mascot/videos/moodie-surprised.mp4",
+  calm:      "/mascot/videos/moodie-calm.mp4",
+  love:      "/mascot/videos/moodie-love.mp4",
+  focus:     "/mascot/videos/moodie-focus.mp4",
+};
+
 const svgCache = new Map<string, string>();
+// 영상 존재 여부 캐시 (HEAD 요청 1번 후 재사용)
+const videoStatus = new Map<string, "ok" | "missing">();
 
 interface MoodieProps {
   size?: MoodieSize | number;
@@ -55,8 +74,9 @@ interface MoodieProps {
 }
 
 /**
- * Moodie — 반짝이는 블루 젤리 슬라임 + 고양이 눈 마스코트.
- * SVG를 인라인으로 주입해서 외부 CSS(호흡/깜빡임/sparkle)가 적용되게 합니다.
+ * Moodie — 마스코트 캐릭터.
+ * 우선순위: 영상(mp4) → SVG → img 태그 폴백.
+ * 영상이 CDN에 있으면 자동으로 사용. 없으면 정적 SVG.
  */
 export const Moodie = ({
   size = "medium",
@@ -66,48 +86,120 @@ export const Moodie = ({
 }: MoodieProps) => {
   const px = typeof size === "number" ? size : SIZE_PX[size];
   const face = EMOTION_TO_FACE[emotion] ?? "default";
-  const src = FACE_TO_FILE[face];
+  const svgSrc = FACE_TO_SVG[face];
+  const videoSrc = FACE_TO_VIDEO[face];
+  const defaultVideoSrc = FACE_TO_VIDEO.default;
   const h = Math.round((px * 260) / 240);
 
-  const [svg, setSvg] = useState<string | null>(svgCache.get(src) ?? null);
+  // 영상 사용 여부 — null=확인중, true/false=확정
+  const [videoUrl, setVideoUrl] = useState<string | null>(() => {
+    const cached = videoStatus.get(face);
+    if (cached === "ok") return toCdnUrl(videoSrc);
+    if (cached === "missing") return null;
+    return null;
+  });
+  const [checking, setChecking] = useState<boolean>(!videoStatus.has(face));
 
+  const [svg, setSvg] = useState<string | null>(svgCache.get(svgSrc) ?? null);
+
+  // 영상 존재 확인 (HEAD)
   useEffect(() => {
-    if (svgCache.has(src)) {
-      setSvg(svgCache.get(src)!);
+    const cached = videoStatus.get(face);
+    if (cached !== undefined) {
+      setChecking(false);
       return;
     }
     let cancelled = false;
-    fetch(src)
+    const cdnUrl = toCdnUrl(videoSrc);
+    fetch(cdnUrl, { method: "HEAD" })
+      .then((r) => {
+        if (cancelled) return;
+        if (r.ok) {
+          videoStatus.set(face, "ok");
+          setVideoUrl(cdnUrl);
+        } else {
+          // emotion별 영상 없으면 default 영상 시도
+          if (face !== "default") {
+            return fetch(toCdnUrl(defaultVideoSrc), { method: "HEAD" }).then((r2) => {
+              if (cancelled) return;
+              if (r2.ok) {
+                videoStatus.set(face, "ok");
+                setVideoUrl(toCdnUrl(defaultVideoSrc));
+              } else {
+                videoStatus.set(face, "missing");
+                setVideoUrl(null);
+              }
+            });
+          }
+          videoStatus.set(face, "missing");
+          setVideoUrl(null);
+        }
+      })
+      .catch(() => {
+        if (cancelled) return;
+        videoStatus.set(face, "missing");
+        setVideoUrl(null);
+      })
+      .finally(() => {
+        if (!cancelled) setChecking(false);
+      });
+    return () => { cancelled = true; };
+  }, [face, videoSrc, defaultVideoSrc]);
+
+  // SVG 미리 로드 (영상 폴백 대비)
+  useEffect(() => {
+    if (svgCache.has(svgSrc)) {
+      setSvg(svgCache.get(svgSrc)!);
+      return;
+    }
+    let cancelled = false;
+    fetch(svgSrc)
       .then((r) => r.text())
       .then((text) => {
-        svgCache.set(src, text);
+        svgCache.set(svgSrc, text);
         if (!cancelled) setSvg(text);
       })
       .catch(() => {});
     return () => { cancelled = true; };
-  }, [src]);
+  }, [svgSrc]);
 
+  const wrapperClass = cn(
+    "inline-flex items-center justify-center select-none moodie",
+    float && "animate-mascot-float",
+    className,
+  );
+  const wrapperStyle = { width: px, height: h };
+  const dropShadow =
+    "drop-shadow(0 0 20px hsl(var(--primary) / 0.45)) drop-shadow(0 10px 24px hsl(var(--glow) / 0.25))";
+
+  // 영상 모드
+  if (videoUrl) {
+    return (
+      <div className={wrapperClass} style={wrapperStyle} aria-hidden>
+        <video
+          src={videoUrl}
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="w-full h-full object-contain"
+          style={{ filter: dropShadow }}
+        />
+      </div>
+    );
+  }
+
+  // 영상 확인 중인데 SVG 캐시 있으면 SVG 노출 (깜빡임 방지)
   return (
-    <div
-      className={cn(
-        "inline-flex items-center justify-center select-none moodie",
-        float && "animate-mascot-float",
-        className
-      )}
-      style={{ width: px, height: h }}
-      aria-hidden
-    >
+    <div className={wrapperClass} style={wrapperStyle} aria-hidden>
       {svg ? (
         <div
           className="w-full h-full [&>svg]:w-full [&>svg]:h-full"
-          style={{
-            filter:
-              "drop-shadow(0 0 20px hsl(var(--primary) / 0.45)) drop-shadow(0 10px 24px hsl(var(--glow) / 0.25))",
-          }}
+          style={{ filter: dropShadow }}
           dangerouslySetInnerHTML={{ __html: svg }}
         />
       ) : (
-        <img src={src} alt="" width={px} height={h} className="w-full h-full" />
+        <img src={svgSrc} alt="" width={px} height={h} className="w-full h-full" />
       )}
     </div>
   );

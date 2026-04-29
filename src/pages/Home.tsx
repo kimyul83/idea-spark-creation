@@ -23,20 +23,18 @@ const Home = () => {
     <div className="px-5 pt-12 pb-6 relative flex-1 flex flex-col">
       <MonetBackground intensity="medium" />
 
-      {/* Header */}
-      <div className="animate-fade-up flex items-start justify-between">
-        <div>
-          <p className="text-[13px] tracking-[0.3em] uppercase text-primary font-serif">
-            Home
-          </p>
-          <h1 className="text-[30px] font-bold text-foreground mt-1 leading-tight">
-            {greeting}
-          </h1>
-          <p className="text-base text-foreground/65 mt-1.5">
-            어떤 시간이 필요해요?
-          </p>
-        </div>
-        <Moodie size="small" />
+      {/* Hero — 큰 마스코트 + 인사말 (중앙 정렬) */}
+      <div className="animate-fade-up flex flex-col items-center text-center">
+        <Moodie size={180} />
+        <p className="text-[13px] tracking-[0.3em] uppercase text-primary font-serif mt-2">
+          Home
+        </p>
+        <h1 className="text-[30px] font-bold text-foreground mt-1 leading-tight">
+          {greeting}
+        </h1>
+        <p className="text-base text-foreground/65 mt-1.5">
+          어떤 시간이 필요해요?
+        </p>
       </div>
 
       {/* 호흡 · 깨기 빠른 진입 */}

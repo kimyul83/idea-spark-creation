@@ -287,7 +287,7 @@ const Music = () => {
 
       <div className="flex items-end justify-between animate-fade-up">
         <div>
-          <p className="text-[15px] tracking-[0.3em] uppercase text-primary font-bold font-serif">
+          <p className="chip-primary text-[14px] tracking-[0.3em] uppercase font-serif">
             Sound Mix
           </p>
           <h1 className="text-[28px] font-bold text-foreground mt-1 leading-tight">
@@ -303,7 +303,7 @@ const Music = () => {
       </div>
 
       <section className="mt-7">
-        <h2 className="text-[13px] tracking-[0.2em] uppercase text-primary font-serif mb-3 px-1">
+        <h2 className="section-title mb-3 px-1">
           자연
         </h2>
         <div className="grid grid-cols-3 gap-3">
@@ -321,7 +321,7 @@ const Music = () => {
       </section>
 
       <section className="mt-7">
-        <h2 className="text-[13px] tracking-[0.2em] uppercase text-primary font-serif mb-3 px-1">
+        <h2 className="section-title mb-3 px-1">
           주파수
         </h2>
         <div className="grid grid-cols-3 gap-3">

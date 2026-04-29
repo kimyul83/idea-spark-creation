@@ -183,7 +183,7 @@ const GlassBreak = () => {
           <ArrowLeft className="w-5 h-5 text-foreground" />
         </button>
         <div className="flex-1">
-          <p className="text-[15px] tracking-[0.3em] uppercase text-primary font-bold font-serif">
+          <p className="chip-primary text-[14px] tracking-[0.3em] uppercase font-serif">
             Release
           </p>
           <h1 className="text-[28px] font-bold text-foreground leading-tight">유리 깨기</h1>

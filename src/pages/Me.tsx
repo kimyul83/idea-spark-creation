@@ -133,8 +133,8 @@ const StatCard = ({ label, value }: { label: string; value: string }) => (
     <div className="droplet-particles" aria-hidden>
       <span /><span /><span /><span />
     </div>
-    <p className="relative text-[10px] text-foreground/55 tracking-widest uppercase">{label}</p>
-    <p className="relative text-[30px] font-serif text-primary mt-1 leading-none">{value}</p>
+    <p className="relative text-[12px] text-foreground/65 tracking-widest uppercase font-semibold">{label}</p>
+    <p className="relative num-display text-[28px] text-primary mt-1.5 leading-none">{value}</p>
   </div>
 );
 

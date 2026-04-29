@@ -11,6 +11,7 @@ import {
   GLASS_CLIPS,
   type GlassClip,
 } from "@/lib/glass-clips";
+import { toCdnUrl } from "@/lib/situation-tracks";
 import { supabase } from "@/integrations/supabase/client";
 import { usePremium } from "@/hooks/usePremium";
 import { toast } from "sonner";
@@ -293,10 +294,11 @@ const GlassBreak = () => {
       {/* Fullscreen player */}
       {active && (
         <div className="fixed inset-0 z-50 bg-black overflow-hidden select-none">
-          {/* Background — video w/ fallback gradient */}
+          {/* Background — video w/ fallback gradient.
+              videoSrc는 /videos/glass/.../foo.mp4 로컬 경로 → CDN URL 로 변환 (Lovable 서빙 제한 우회). */}
           <video
             ref={videoRef}
-            src={active.videoSrc}
+            src={toCdnUrl(active.videoSrc)}
             autoPlay loop muted playsInline
             className="absolute inset-0 w-full h-full object-cover opacity-80"
             onError={() => { /* missing file → fallback gradient stays */ }}

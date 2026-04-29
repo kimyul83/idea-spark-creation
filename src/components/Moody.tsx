@@ -164,18 +164,14 @@ export const Moody = ({
     );
   }
 
-  // SVG 폴백
+  // 영상 로딩 중엔 자리만 — SVG 폴백 안 보여줌 (옛 캐릭터 깜빡임 방지)
   return (
-    <div className={wrapperClass} style={wrapperStyle} aria-hidden>
-      {svg ? (
-        <div
-          className="w-full h-full [&>svg]:w-full [&>svg]:h-full"
-          style={{ filter: dropShadow }}
-          dangerouslySetInnerHTML={{ __html: svg }}
-        />
-      ) : (
-        <img src={svgSrc} alt="" width={px} height={h} className="w-full h-full" />
-      )}
-    </div>
+    <div
+      className={wrapperClass}
+      style={wrapperStyle}
+      onClick={onClick}
+      role={onClick ? "button" : undefined}
+      aria-hidden={!onClick}
+    />
   );
 };

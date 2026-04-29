@@ -52,13 +52,13 @@ const FACE_TO_SVG: Record<MoodyFace, string> = {
  * `<img>` 태그로 단순 렌더링 → stacking context / blend mode 문제 없음.
  */
 const FACE_TO_APNG: Record<MoodyFace, string> = {
-  default:   "/mascot/videos/moody-main.webp",
-  happy:     "/mascot/videos/moody-main.webp",
-  sad:       "/mascot/videos/moody-main.webp",
-  surprised: "/mascot/videos/moody-main.webp",
-  calm:      "/mascot/videos/moody-main.webp",
-  love:      "/mascot/videos/moody-main.webp",
-  focus:     "/mascot/videos/moody-main.webp",
+  default:   "/mascot/videos/moody-main.apng",
+  happy:     "/mascot/videos/moody-main.apng",
+  sad:       "/mascot/videos/moody-main.apng",
+  surprised: "/mascot/videos/moody-main.apng",
+  calm:      "/mascot/videos/moody-main.apng",
+  love:      "/mascot/videos/moody-main.apng",
+  focus:     "/mascot/videos/moody-main.apng",
 };
 
 const svgCache = new Map<string, string>();

@@ -115,8 +115,8 @@ const MusicPlay = () => {
     [tracks]
   );
 
-  // 5개 변주가 절대 같은 트랙 받지 않도록 인덱스 분배.
-  // 키워드 매칭은 보조용 — 인덱스 기반이 우선 (안정성 + 비겹침 보장).
+  // 5개 변주가 절대 같은 트랙 받지 않게 인덱스 분배.
+  // 양 끝 포함 균등 분할 → δ=0번, γ=마지막 → 최대로 떨어진 5개 트랙.
   const VARIANT_INDEX: Record<VariantId, number> = {
     delta: 0, theta: 1, alpha: 2, beta: 3, gamma: 4,
   };
@@ -125,10 +125,10 @@ const MusicPlay = () => {
     if (pool.length === 0) return undefined;
     if (pool.length === 1) return pool[0];
 
-    // 변주 인덱스 기반 확정 선택. 풀을 5개 슬롯으로 균등 분할 → 절대 겹치지 않음.
-    // 풀이 5개 미만이면 (theta·alpha 등이) 같은 트랙 공유 — 어쩔 수 없음.
-    const idx = Math.floor((VARIANT_INDEX[v] / 5) * pool.length) % pool.length;
-    return pool[idx];
+    // (i/4) * (len-1) → 양 끝 포함 균등 분배. pool 12개면 0,2,5,8,11.
+    const denom = Math.max(1, 5 - 1);
+    const idx = Math.round((VARIANT_INDEX[v] / denom) * (pool.length - 1));
+    return pool[Math.min(idx, pool.length - 1)];
   };
 
   const playVariant = (v: VariantId) => {

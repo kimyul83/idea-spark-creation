@@ -62,12 +62,37 @@ const MusicPlay = () => {
   const [playing, setPlaying] = useState(false);
   const [infoOpen, setInfoOpen] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [timerHours, setTimerHours] = useState<number | null>(null); // null = 무한 재생, 숫자 = N시간 후 자동정지
+  const [timerOpen, setTimerOpen] = useState(false);
   const howlRef = useRef<Howl | null>(null);
+  const timerRef = useRef<number | undefined>();
+
+  const TIMER_OPTIONS = [
+    { hours: null, label: "끄기 (무한 재생)" },
+    { hours: 0.5, label: "30분" },
+    { hours: 1, label: "1시간" },
+    { hours: 3, label: "3시간" },
+    { hours: 6, label: "6시간" },
+    { hours: 8, label: "8시간" },
+    { hours: 12, label: "12시간" },
+  ];
+
+  const applyTimer = (hours: number | null) => {
+    setTimerHours(hours);
+    setTimerOpen(false);
+    if (timerRef.current) window.clearTimeout(timerRef.current);
+    if (hours == null) return;
+    timerRef.current = window.setTimeout(() => {
+      howlRef.current?.stop();
+      setPlaying(false);
+    }, hours * 3600 * 1000);
+  };
 
   useEffect(() => {
     return () => {
       howlRef.current?.stop();
       howlRef.current?.unload();
+      if (timerRef.current) window.clearTimeout(timerRef.current);
       audioEngine.stopAll();
       clearMediaSession();
       releaseWakeLock();
@@ -256,10 +281,56 @@ const MusicPlay = () => {
         <button onClick={togglePlay} className="w-16 h-16 rounded-full bg-white flex items-center justify-center shadow-xl active:scale-95 transition">
           {playing ? <Pause className="w-7 h-7 text-black" /> : <Play className="w-7 h-7 text-black ml-0.5" />}
         </button>
-        <button className="w-11 h-11 rounded-full bg-white/[0.06] border border-white/10 flex items-center justify-center active:scale-95">
-          <Timer className="w-4 h-4 text-white/70" />
+        <button
+          onClick={() => setTimerOpen(true)}
+          className={cn(
+            "w-11 h-11 rounded-full flex items-center justify-center active:scale-95 relative",
+            timerHours != null
+              ? "bg-primary text-primary-foreground"
+              : "bg-white/[0.06] border border-white/10",
+          )}
+          aria-label="타이머"
+        >
+          <Timer className={cn("w-4 h-4", timerHours != null ? "" : "text-white/70")} />
+          {timerHours != null && (
+            <span className="absolute -bottom-1 -right-1 text-[9px] bg-primary text-primary-foreground rounded-full w-5 h-5 flex items-center justify-center font-bold border border-black">
+              {timerHours < 1 ? "30" : `${timerHours}h`}
+            </span>
+          )}
         </button>
       </div>
+
+      {/* 타이머 모달 */}
+      {timerOpen && (
+        <div
+          className="fixed inset-0 z-50 bg-black/70 backdrop-blur-md flex items-end sm:items-center justify-center p-5"
+          onClick={() => setTimerOpen(false)}
+        >
+          <div
+            className="liquid-card w-full max-w-sm p-5"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <p className="section-title mb-3">자동 정지 타이머</p>
+            <div className="grid gap-2">
+              {TIMER_OPTIONS.map((opt) => (
+                <button
+                  key={opt.label}
+                  onClick={() => applyTimer(opt.hours)}
+                  className={cn(
+                    "w-full px-4 py-3 rounded-2xl text-left transition flex items-center justify-between",
+                    timerHours === opt.hours
+                      ? "bg-primary text-primary-foreground"
+                      : "bg-white/[0.06] text-white/80 hover:bg-white/[0.10]",
+                  )}
+                >
+                  <span className="font-semibold">{opt.label}</span>
+                  {timerHours === opt.hours && <span className="text-xs">✓</span>}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

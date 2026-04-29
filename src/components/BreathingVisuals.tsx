@@ -151,11 +151,7 @@ const Wave = ({ phase, seconds, mini }: Omit<BreathingVisualProps, "visual">) =>
           />
         </path>
       </svg>
-      {!mini && (
-        <div className="absolute inset-x-0 top-6 text-center text-[10px] tracking-widest uppercase text-foreground/40">
-          {phase === "inhale" ? "차오르는 중" : phase === "exhale" ? "빠져나가는 중" : "잔잔히"}
-        </div>
-      )}
+      {/* (phase hint removed — was Korean only) */}
     </div>
   );
 };

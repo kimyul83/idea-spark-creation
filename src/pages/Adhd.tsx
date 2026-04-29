@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { ArrowLeft, Pause, Play, Plus, RotateCcw, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -28,6 +29,7 @@ interface Task {
 
 const Adhd = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [round, setRound] = useState(1);
   const [totalRounds, setTotalRounds] = useState(2);
   const [phase, setPhase] = useState<"focus" | "break">("focus");
@@ -257,7 +259,7 @@ const Adhd = () => {
                   value={taskInput}
                   onChange={(e) => setTaskInput(e.target.value)}
                   onKeyDown={(e) => e.key === "Enter" && addTask()}
-                  placeholder="할 일 입력"
+                  placeholder={t("adhd.todoPlaceholder")}
                   className="h-10 rounded-xl bg-white/80 border-beige text-charcoal"
                 />
                 <Button
@@ -320,7 +322,7 @@ const Adhd = () => {
             className="w-full h-16 rounded-2xl bg-charcoal hover:bg-charcoal/90 text-cream text-base font-bold shadow-card"
           >
             {running ? <Pause className="w-6 h-6 mr-2" /> : <Play className="w-6 h-6 mr-2" />}
-            {running ? "일시정지" : "집중 시작"}
+            {running ? t("adhd.pause") : t("adhd.start")}
           </Button>
         </div>
       </div>

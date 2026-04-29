@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { ArrowLeft, Check, Moon, Palette, Sun, Wand2 } from "lucide-react";
 import { MonetBackground } from "@/components/MonetBackground";
 import { useTheme } from "@/contexts/ThemeContext";
@@ -12,17 +13,17 @@ type ModeOption = {
   Icon: typeof Sun;
 };
 
-const MODES: ModeOption[] = [
-  { id: "auto", label: "자동", desc: "시간대에 맞춰 자동 전환", Icon: Wand2 },
-  { id: "light", label: "라이트", desc: "항상 밝게", Icon: Sun },
-  { id: "dark", label: "다크", desc: "항상 어둡게", Icon: Moon },
-  { id: "custom", label: "커스텀", desc: "원하는 색감으로", Icon: Palette },
-];
-
 const ThemeSettings = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const { mode, preset, customVariant, label, setMode, setPreset, setCustomVariant } =
     useTheme();
+  const MODES: ModeOption[] = [
+    { id: "auto",   label: t("themeSettings.auto"),   desc: t("themeSettings.autoDesc"),   Icon: Wand2 },
+    { id: "light",  label: t("theme.light"),          desc: t("themeSettings.lightDesc"),  Icon: Sun },
+    { id: "dark",   label: t("theme.dark"),           desc: t("themeSettings.darkDesc"),   Icon: Moon },
+    { id: "custom", label: t("themeSettings.custom"), desc: t("themeSettings.customDesc"), Icon: Palette },
+  ];
 
   return (
     <div className="app-shell relative min-h-[100dvh] pb-16">
@@ -32,7 +33,7 @@ const ThemeSettings = () => {
       <header className="px-5 pt-10 flex items-center gap-3">
         <button
           onClick={() => navigate(-1)}
-          aria-label="뒤로"
+          aria-label={t("common.back")}
           className="w-10 h-10 rounded-2xl surface flex items-center justify-center"
         >
           <ArrowLeft className="w-5 h-5 text-foreground" />
@@ -42,7 +43,7 @@ const ThemeSettings = () => {
             Settings
           </p>
           <h1 className="text-[22px] font-bold text-foreground leading-tight">
-            테마
+            {t("theme.title")}
           </h1>
         </div>
         <span className="text-[10px] tracking-widest uppercase text-primary font-medium">
@@ -53,7 +54,7 @@ const ThemeSettings = () => {
       {/* Mode list */}
       <section className="px-5 mt-6 space-y-2">
         <p className="text-[11px] uppercase tracking-widest text-foreground/40 px-1 mb-1">
-          모드
+          {t("themeSettings.mode")}
         </p>
         {MODES.map(({ id, label: l, desc, Icon }) => {
           const selected = mode === id;
@@ -94,7 +95,7 @@ const ThemeSettings = () => {
       {mode === "custom" && (
         <section className="px-5 mt-6 space-y-3 animate-fade-up">
           <p className="text-[11px] uppercase tracking-widest text-foreground/40 px-1">
-            컬러 테마
+            {t("themeSettings.colorTheme")}
           </p>
           <div className="grid grid-cols-2 gap-2.5">
             {PRESET_LIST.map((p) => (
@@ -111,7 +112,7 @@ const ThemeSettings = () => {
           {/* Light / Dark segment */}
           <div className="mt-4">
             <p className="text-[11px] uppercase tracking-widest text-foreground/40 px-1 mb-2">
-              밝기
+              {t("themeSettings.brightness")}
             </p>
             <div className="grid grid-cols-2 gap-1.5 bg-foreground/5 p-1 rounded-2xl">
               {(["light", "dark"] as ThemeVariant[]).map((v) => (
@@ -126,7 +127,7 @@ const ThemeSettings = () => {
                   )}
                 >
                   {v === "light" ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
-                  {v === "light" ? "라이트" : "다크"}
+                  {v === "light" ? t("theme.light") : t("theme.dark")}
                 </button>
               ))}
             </div>
@@ -136,8 +137,7 @@ const ThemeSettings = () => {
 
       {/* Live tip */}
       <p className="px-5 mt-8 text-[11px] text-foreground/45 leading-relaxed">
-        선택은 즉시 앱 전체에 적용돼요. 로그인 상태라면 다른 기기에서도 같은 테마로
-        이어집니다.
+        {t("themeSettings.tip")}
       </p>
     </div>
   );

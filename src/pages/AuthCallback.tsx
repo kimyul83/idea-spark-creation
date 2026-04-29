@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { Moody } from "@/components/Moody";
@@ -7,19 +8,20 @@ import { MonetBackground } from "@/components/MonetBackground";
 
 const AuthCallback = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   useEffect(() => {
     let active = true;
     supabase.auth.getSession().then(({ data, error }) => {
       if (!active) return;
       if (error) {
-        toast.error("로그인 처리 중 오류가 발생했어요");
+        toast.error(t("auth.errCallback"));
         navigate("/onboarding", { replace: true });
         return;
       }
       if (data.session) {
         localStorage.setItem("moody_onboarded", "1");
-        toast.success("환영해요 ✨");
+        toast.success(t("auth.successWelcome"));
         navigate("/home", { replace: true });
       } else {
         // OAuth flow may still be settling — give it a beat
@@ -45,7 +47,7 @@ const AuthCallback = () => {
       <div className="text-center">
         <Moody size="large" emotion="happy" />
         <p className="mt-4 text-foreground/60 text-sm font-serif tracking-widest">
-          로그인 중...
+          {t("common.loading")}...
         </p>
       </div>
     </div>

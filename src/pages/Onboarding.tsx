@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { ArrowLeft, ChevronRight, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -10,25 +11,8 @@ import { lovable } from "@/integrations/lovable";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 
-const slides = [
-  {
-    eyebrow: "Moody",
-    title: "당신의 감정에 맞춘\n사운드 테라피",
-    desc: "기분과 상황에 꼭 맞는 소리로\n마음을 부드럽게 다독여요",
-  },
-  {
-    eyebrow: "Care",
-    title: "호흡 · 자연 · 집중\n세 가지로 마음을 돌봐요",
-    desc: "과학적으로 설계된 주파수와\n자연의 소리, 깊은 호흡까지",
-  },
-  {
-    eyebrow: "Begin",
-    title: "간편하게\n시작하세요",
-    desc: "소셜 로그인으로 빠르게 시작하고\n맞춤 추천을 받아보세요",
-  },
-];
-
 const Onboarding = () => {
+  const { t } = useTranslation();
   const [step, setStep] = useState(0);
   const [showEmail, setShowEmail] = useState(false);
   const [email, setEmail] = useState("");
@@ -36,6 +20,7 @@ const Onboarding = () => {
   const [mode, setMode] = useState<"signin" | "signup">("signup");
   const [busy, setBusy] = useState(false);
   const navigate = useNavigate();
+  const slides = (t("onboarding.slides", { returnObjects: true }) as Array<{ eyebrow: string; title: string; desc: string }>) ?? [];
 
   useEffect(() => {
     if (localStorage.getItem("moody_onboarded")) navigate("/home", { replace: true });
@@ -53,21 +38,19 @@ const Onboarding = () => {
         redirect_uri: `${window.location.origin}/auth/callback`,
       });
       if (result.error) {
-        toast.error(`${provider === "google" ? "Google" : "Apple"} 로그인에 실패했어요`);
+        toast.error(t("onboarding.errOAuth", { provider: provider === "google" ? "Google" : "Apple" }));
         setBusy(false);
         return;
       }
-      // result.redirected → browser will navigate to provider; nothing else to do
-      // tokens-back path → callback page handles it
     } catch (e: any) {
-      toast.error(e?.message ?? "로그인 중 오류가 발생했어요");
+      toast.error(e?.message ?? t("onboarding.errLogin"));
       setBusy(false);
     }
   };
 
   const handleEmail = async () => {
     if (!email || !password) {
-      toast.error("이메일과 비밀번호를 입력해주세요");
+      toast.error(t("onboarding.errEmpty"));
       return;
     }
     setBusy(true);
@@ -79,15 +62,15 @@ const Onboarding = () => {
           options: { emailRedirectTo: `${window.location.origin}/auth/callback` },
         });
         if (error) throw error;
-        toast.success("가입 완료! 환영해요 ✨");
+        toast.success(t("onboarding.successSignup"));
       } else {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
-        toast.success("다시 만나서 반가워요");
+        toast.success(t("onboarding.successSignin"));
       }
       finish();
     } catch (e: any) {
-      toast.error(e.message ?? "오류가 발생했어요");
+      toast.error(e.message ?? t("onboarding.errGeneric"));
     } finally {
       setBusy(false);
     }
@@ -133,14 +116,14 @@ const Onboarding = () => {
           <div className="mt-8 w-full space-y-2.5 animate-fade-up">
             <Input
               type="email"
-              placeholder="이메일"
+              placeholder={t("onboarding.emailPlaceholder")}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="h-12 rounded-2xl bg-section/90 border-border text-foreground"
             />
             <Input
               type="password"
-              placeholder="비밀번호 (6자 이상)"
+              placeholder={t("onboarding.passwordPlaceholder")}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="h-12 rounded-2xl bg-section/90 border-border text-foreground"
@@ -150,7 +133,7 @@ const Onboarding = () => {
               onClick={() => setMode(mode === "signup" ? "signin" : "signup")}
               className="text-xs text-foreground/60 underline pt-1"
             >
-              {mode === "signup" ? "이미 계정이 있어요" : "처음이에요 (가입하기)"}
+              {mode === "signup" ? t("onboarding.haveAccount") : t("onboarding.newAccount")}
             </button>
           </div>
         )}
@@ -164,10 +147,10 @@ const Onboarding = () => {
               onClick={() => setStep(step + 1)}
               className="w-full h-14 rounded-2xl bg-primary hover:bg-primary/90 text-primary-foreground text-base font-semibold shadow-soft"
             >
-              다음 <ChevronRight className="ml-1 w-5 h-5" />
+              {t("onboarding.next")} <ChevronRight className="ml-1 w-5 h-5" />
             </Button>
             <button onClick={finish} className="w-full text-sm text-foreground/50 py-2">
-              나중에 할게요
+              {t("onboarding.later")}
             </button>
           </>
         ) : showEmail ? (
@@ -178,13 +161,13 @@ const Onboarding = () => {
               onClick={handleEmail}
               className="w-full h-14 rounded-2xl bg-primary hover:bg-primary/90 text-primary-foreground text-base font-semibold shadow-soft"
             >
-              {busy ? "처리 중..." : mode === "signup" ? "가입하고 시작하기" : "로그인"}
+              {busy ? t("onboarding.processing") : mode === "signup" ? t("onboarding.signupCta") : t("onboarding.signinCta")}
             </Button>
             <button
               onClick={() => setShowEmail(false)}
               className="w-full text-sm text-foreground/50 py-2 inline-flex items-center justify-center gap-1"
             >
-              <ArrowLeft className="w-3.5 h-3.5" /> 다른 방법으로 로그인
+              <ArrowLeft className="w-3.5 h-3.5" /> {t("onboarding.otherMethod")}
             </button>
           </>
         ) : (
@@ -196,7 +179,7 @@ const Onboarding = () => {
               className="w-full h-14 rounded-3xl bg-white text-[#1A2333] font-semibold shadow-soft flex items-center justify-center gap-3 disabled:opacity-60 transition-transform active:scale-[0.98]"
             >
               <GoogleLogo />
-              <span>Google로 계속하기</span>
+              <span>{t("onboarding.google")}</span>
             </button>
             {/* Apple */}
             <button
@@ -205,7 +188,7 @@ const Onboarding = () => {
               className="w-full h-14 rounded-3xl bg-[#000] text-white font-semibold shadow-soft flex items-center justify-center gap-3 disabled:opacity-60 transition-transform active:scale-[0.98]"
             >
               <AppleLogo />
-              <span>Apple로 계속하기</span>
+              <span>{t("onboarding.apple")}</span>
             </button>
             {/* Email */}
             <button
@@ -214,10 +197,10 @@ const Onboarding = () => {
               className="w-full h-14 rounded-3xl surface text-foreground font-semibold flex items-center justify-center gap-3 disabled:opacity-60 transition-transform active:scale-[0.98]"
             >
               <Mail className="w-5 h-5" />
-              <span>이메일로 계속하기</span>
+              <span>{t("onboarding.email")}</span>
             </button>
             <button onClick={finish} className="w-full text-sm text-foreground/50 py-2">
-              나중에 할게요
+              {t("onboarding.later")}
             </button>
           </>
         )}

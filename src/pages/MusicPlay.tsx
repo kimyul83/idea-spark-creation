@@ -295,7 +295,7 @@ const MusicPlay = () => {
               ? "bg-primary text-primary-foreground"
               : "bg-white/[0.06] border border-white/10",
           )}
-          aria-label="타이머"
+          aria-label={t("timer.title")}
         >
           <Timer className={cn("w-4 h-4", timerHours != null ? "" : "text-white/70")} />
           {timerHours != null && (

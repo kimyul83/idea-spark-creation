@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { Lock, Pause, Play, Sparkles, Waves, CloudRain, Trees, Droplets, Flame, Moon, Wind, Bird, Coffee, Mountain, Zap, type LucideIcon } from "lucide-react";
 import { Howl } from "howler";
 import { MonetBackground } from "@/components/MonetBackground";
@@ -197,6 +198,7 @@ const formatClock = (d: Date) =>
   d.toLocaleTimeString("ko-KR", { hour: "2-digit", minute: "2-digit", hour12: false });
 
 const Sleep = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { user } = useAuth();
   const { isPremium } = usePremium();
@@ -219,8 +221,8 @@ const Sleep = () => {
 
   const greeting =
     resolvedVariant === "light"
-      ? "오늘 밤 좋은 꿈 꾸세요 🌙"
-      : "푹 주무실 준비 되셨나요 🌙";
+      ? t("sleep.greetingLight")
+      : t("sleep.greetingDark");
 
   const cleanup = () => {
     howlRef.current?.stop();
@@ -292,14 +294,14 @@ const Sleep = () => {
 
     endTimer.current = window.setTimeout(() => {
       stopActive();
-      toast.success("좋은 아침이에요 ☀️");
+      toast.success(t("sleep.morningToast"));
     }, totalSec * 1000);
 
     startedAt.current = Date.now();
     setActiveId(track.id);
     setActiveVariantIdx(variantIdx);
     setEndsAt(new Date(Date.now() + totalSec * 1000));
-    toast(`${track.name} ${variantIdx + 1} · ${formatHours(hours)} 재생`);
+    toast(t("sleep.playToast", { name: track.name, n: variantIdx + 1, duration: formatHours(hours) }));
   };
 
   const handleTrackClick = (track: SleepTrack) => {
@@ -317,10 +319,10 @@ const Sleep = () => {
       <header className="flex items-start justify-between">
         <div>
           <p className="chip-primary text-[14px] tracking-[0.3em] uppercase font-serif">
-            Sleep
+            {t("sleep.label")}
           </p>
           <h1 className="text-[30px] font-bold text-foreground mt-1 leading-tight">
-            편안한 수면
+            {t("sleep.title")}
           </h1>
           <p className="text-base text-foreground/65 mt-1.5">{greeting}</p>
         </div>
@@ -329,9 +331,9 @@ const Sleep = () => {
 
       <section className="liquid-card p-5">
         <div className="flex items-baseline justify-between">
-          <p className="section-title text-[12px]">수면 시간</p>
+          <p className="section-title text-[12px]">{t("sleep.duration")}</p>
           <p className="text-[11px] text-foreground/55">
-            지금 시작 → <span className="text-primary font-semibold">{formatClock(wakeAt)}</span> 종료
+            {t("sleep.startsToEnds", { time: formatClock(wakeAt) })}
           </p>
         </div>
         <div className="mt-2 flex items-baseline gap-1.5">
@@ -339,7 +341,7 @@ const Sleep = () => {
             {Math.floor(hours)}
           </span>
           <span className="text-foreground/65 text-base font-medium">
-            {hours % 1 === 0.5 ? "시간 30분" : "시간"}
+            {hours % 1 === 0.5 ? t("sleep.hoursHalf") : t("sleep.hours")}
           </span>
         </div>
         <input
@@ -350,19 +352,19 @@ const Sleep = () => {
           value={hours}
           onChange={(e) => setHours(parseFloat(e.target.value))}
           className="w-full mt-4 accent-primary"
-          aria-label="수면 시간"
+          aria-label={t("sleep.duration")}
         />
         <div className="flex justify-between text-[10px] text-foreground/40 mt-1">
-          <span>1시간</span>
-          <span>6시간</span>
-          <span>12시간</span>
+          <span>1{t("sleep.hours")}</span>
+          <span>6{t("sleep.hours")}</span>
+          <span>12{t("sleep.hours")}</span>
         </div>
         {activeId && endsAt && (
           <div className="mt-4 flex items-center justify-between bg-primary/10 rounded-2xl px-4 py-2.5">
             <div className="flex items-center gap-2">
               <Sparkles className="w-3.5 h-3.5 text-primary" />
               <span className="text-xs text-foreground/80">
-                {formatClock(endsAt)} 자동 종료 · 20분 전부터 페이드
+                {t("sleep.autoStop", { time: formatClock(endsAt) })}
               </span>
             </div>
           </div>
@@ -370,37 +372,37 @@ const Sleep = () => {
       </section>
 
       <section className="space-y-2">
-        <h2 className="section-title mb-2 px-1">수면 사운드</h2>
+        <h2 className="section-title mb-2 px-1">{t("sleep.sounds")}</h2>
         <div className="grid gap-2">
-          {TRACKS.map((t) => {
-            const locked = t.premium && !isPremium;
-            const isActive = activeId === t.id;
+          {TRACKS.map((track) => {
+            const locked = track.premium && !isPremium;
+            const isActive = activeId === track.id;
             return (
               <div
-                key={t.id}
+                key={track.id}
                 className={cn(
                   "liquid-card w-full p-4",
                   isActive && "ring-2 ring-primary/60",
                 )}
               >
                 <button
-                  onClick={() => handleTrackClick(t)}
+                  onClick={() => handleTrackClick(track)}
                   className="w-full flex items-center gap-3 text-left"
                 >
                   <div className="w-12 h-12 rounded-2xl bg-primary/15 flex items-center justify-center shrink-0">
-                    <t.Icon className="w-6 h-6 text-primary" strokeWidth={1.7} />
+                    <track.Icon className="w-6 h-6 text-primary" strokeWidth={1.7} />
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-1.5">
                       <p className="font-semibold text-foreground text-[15px] truncate">
-                        {t.name}
+                        {t(`sleep.categories.${track.id}`, { defaultValue: track.name })}
                       </p>
                       {locked && <Lock className="w-3 h-3 text-foreground/40" />}
                     </div>
                     <p className="text-[11px] text-foreground/55 mt-0.5 truncate">
                       {isActive
-                        ? t.variants[activeVariantIdx].name
-                        : `${t.variants.length}종 · 번호로 선택`}
+                        ? track.variants[activeVariantIdx].name
+                        : t("sleep.selectVariant", { count: track.variants.length })}
                     </p>
                   </div>
                   <div
@@ -410,7 +412,7 @@ const Sleep = () => {
                         ? "bg-primary text-primary-foreground"
                         : "bg-foreground/5 text-foreground/70",
                     )}
-                    aria-label={isActive ? "정지" : "재생"}
+                    aria-label={isActive ? t("common.stop") : t("common.play")}
                   >
                     {isActive ? (
                       <Pause className="w-4 h-4" strokeWidth={2.4} />
@@ -419,16 +421,16 @@ const Sleep = () => {
                     )}
                   </div>
                 </button>
-                {!locked && t.variants.length > 1 && (
+                {!locked && track.variants.length > 1 && (
                   <div className="mt-3 flex items-center gap-1.5 flex-wrap">
-                    {t.variants.map((v, i) => {
+                    {track.variants.map((v, i) => {
                       const isCurrent = isActive && activeVariantIdx === i;
                       return (
                         <button
                           key={i}
                           onClick={(e) => {
                             e.stopPropagation();
-                            playVariant(t, i);
+                            playVariant(track, i);
                           }}
                           title={v.name}
                           className={cn(
@@ -451,7 +453,7 @@ const Sleep = () => {
       </section>
 
       <p className="text-[11px] text-foreground/45 leading-relaxed text-center px-4 pt-2">
-        화면을 꺼도 재생은 유지돼요. 알람 대신 부드러운 페이드 아웃으로 깨워드려요.
+        {t("sleep.tip")}
       </p>
     </div>
   );

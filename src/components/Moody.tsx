@@ -47,18 +47,18 @@ const FACE_TO_SVG: Record<MoodyFace, string> = {
 };
 
 /**
- * APNG (애니메이션 PNG) — 진짜 투명 알파, 모든 브라우저 네이티브 지원.
- * `<img>` 태그로 그냥 렌더링되므로 stacking context / blend mode 문제 없음.
- * 단일 main 영상으로 모든 emotion 사용 (현재).
+ * 애니메이션 WebP — 진짜 투명 알파, 모든 모던 브라우저 네이티브 지원.
+ * APNG 대비 88% 작음 + 모바일 디코딩 빠름.
+ * `<img>` 태그로 단순 렌더링 → stacking context / blend mode 문제 없음.
  */
 const FACE_TO_APNG: Record<MoodyFace, string> = {
-  default:   "/mascot/videos/moody-main.apng",
-  happy:     "/mascot/videos/moody-main.apng",
-  sad:       "/mascot/videos/moody-main.apng",
-  surprised: "/mascot/videos/moody-main.apng",
-  calm:      "/mascot/videos/moody-main.apng",
-  love:      "/mascot/videos/moody-main.apng",
-  focus:     "/mascot/videos/moody-main.apng",
+  default:   "/mascot/videos/moody-main.webp",
+  happy:     "/mascot/videos/moody-main.webp",
+  sad:       "/mascot/videos/moody-main.webp",
+  surprised: "/mascot/videos/moody-main.webp",
+  calm:      "/mascot/videos/moody-main.webp",
+  love:      "/mascot/videos/moody-main.webp",
+  focus:     "/mascot/videos/moody-main.webp",
 };
 
 const svgCache = new Map<string, string>();

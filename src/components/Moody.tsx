@@ -69,6 +69,8 @@ interface MoodyProps {
   emotion?: MoodyEmotion;
   float?: boolean;
   className?: string;
+  /** 클릭/탭 핸들러 — 있으면 hover/active 효과 추가 */
+  onClick?: () => void;
 }
 
 /**
@@ -81,12 +83,14 @@ export const Moody = ({
   emotion = "default",
   float = true,
   className,
+  onClick,
 }: MoodyProps) => {
   const px = typeof size === "number" ? size : SIZE_PX[size];
   const face = EMOTION_TO_FACE[emotion] ?? "default";
   const svgSrc = FACE_TO_SVG[face];
   const apngSrc = FACE_TO_APNG[face];
-  const h = Math.round((px * 260) / 240);
+  // APNG 활성 시 정사각형 (캐릭터 가운데 가득 보이게), SVG 폴백 시 240:260 비율
+  // h는 useState 보다 아래로 옮겨서 apngUrl 의존성에 따라 계산
 
   const [apngUrl, setApngUrl] = useState<string | null>(() => {
     const cached = apngStatus.get(apngSrc);
@@ -134,9 +138,12 @@ export const Moody = ({
     return () => { cancelled = true; };
   }, [svgSrc]);
 
+  // APNG가 있으면 2:1 비율(영상에 맞게), 폴백 SVG는 240:260 비율
+  const h = apngUrl ? Math.round(px / 2) : Math.round((px * 260) / 240);
   const wrapperClass = cn(
     "inline-flex items-center justify-center select-none moody",
     float && "animate-mascot-float",
+    onClick && "cursor-pointer transition-transform active:scale-90 hover:scale-105",
     className,
   );
   const wrapperStyle = { width: px, height: h };
@@ -146,7 +153,7 @@ export const Moody = ({
   // APNG 모드 — 진짜 투명, blend mode 불필요
   if (apngUrl) {
     return (
-      <div className={wrapperClass} style={wrapperStyle} aria-hidden>
+      <div className={wrapperClass} style={wrapperStyle} onClick={onClick} role={onClick ? "button" : undefined} aria-hidden={!onClick}>
         <img
           src={apngUrl}
           alt=""

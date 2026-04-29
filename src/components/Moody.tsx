@@ -47,25 +47,22 @@ const FACE_TO_SVG: Record<MoodyFace, string> = {
 };
 
 /**
- * 영상 마스코트 경로.
- * WebM (VP9 alpha) — 투명 배경 지원, 작은 용량 (204KB).
- * Chrome/Firefox/Safari 16+ 지원.
- * /public/mascot/videos/moody-{face}.webm 있으면 영상, 없으면 default.webm,
- * 그것도 없으면 SVG 폴백.
+ * APNG (애니메이션 PNG) — 진짜 투명 알파, 모든 브라우저 네이티브 지원.
+ * `<img>` 태그로 그냥 렌더링되므로 stacking context / blend mode 문제 없음.
+ * 단일 main 영상으로 모든 emotion 사용 (현재).
  */
-const FACE_TO_VIDEO: Record<MoodyFace, string> = {
-  default:   "/mascot/videos/moody-main.mp4",
-  happy:     "/mascot/videos/moody-happy.mp4",
-  sad:       "/mascot/videos/moody-sad.mp4",
-  surprised: "/mascot/videos/moody-surprised.mp4",
-  calm:      "/mascot/videos/moody-calm.mp4",
-  love:      "/mascot/videos/moody-love.mp4",
-  focus:     "/mascot/videos/moody-focus.mp4",
+const FACE_TO_APNG: Record<MoodyFace, string> = {
+  default:   "/mascot/videos/moody-main.apng",
+  happy:     "/mascot/videos/moody-main.apng",
+  sad:       "/mascot/videos/moody-main.apng",
+  surprised: "/mascot/videos/moody-main.apng",
+  calm:      "/mascot/videos/moody-main.apng",
+  love:      "/mascot/videos/moody-main.apng",
+  focus:     "/mascot/videos/moody-main.apng",
 };
 
 const svgCache = new Map<string, string>();
-// 영상 존재 여부 캐시 (HEAD 요청 1번 후 재사용)
-const videoStatus = new Map<string, "ok" | "missing">();
+const apngStatus = new Map<string, "ok" | "missing">();
 
 interface MoodyProps {
   size?: MoodySize | number;
@@ -75,9 +72,9 @@ interface MoodyProps {
 }
 
 /**
- * Moody — 마스코트 캐릭터.
- * 우선순위: 영상(mp4) → SVG → img 태그 폴백.
- * 영상이 CDN에 있으면 자동으로 사용. 없으면 정적 SVG.
+ * Moody 캐릭터.
+ * 우선순위: APNG (투명, 애니) → SVG (정적 폴백).
+ * APNG가 CDN에 있으면 자동 사용. 로딩 실패 시 SVG.
  */
 export const Moody = ({
   size = "medium",
@@ -88,66 +85,39 @@ export const Moody = ({
   const px = typeof size === "number" ? size : SIZE_PX[size];
   const face = EMOTION_TO_FACE[emotion] ?? "default";
   const svgSrc = FACE_TO_SVG[face];
-  const videoSrc = FACE_TO_VIDEO[face];
-  const defaultVideoSrc = FACE_TO_VIDEO.default;
+  const apngSrc = FACE_TO_APNG[face];
   const h = Math.round((px * 260) / 240);
 
-  // 영상 사용 여부 — null=확인중, true/false=확정
-  const [videoUrl, setVideoUrl] = useState<string | null>(() => {
-    const cached = videoStatus.get(face);
-    if (cached === "ok") return toCdnUrl(videoSrc);
-    if (cached === "missing") return null;
+  const [apngUrl, setApngUrl] = useState<string | null>(() => {
+    const cached = apngStatus.get(apngSrc);
+    if (cached === "ok") return toCdnUrl(apngSrc);
     return null;
   });
-  const [checking, setChecking] = useState<boolean>(!videoStatus.has(face));
-
   const [svg, setSvg] = useState<string | null>(svgCache.get(svgSrc) ?? null);
 
-  // 영상 존재 확인 (HEAD)
+  // APNG 가용 확인 (1회)
   useEffect(() => {
-    const cached = videoStatus.get(face);
-    if (cached !== undefined) {
-      setChecking(false);
-      return;
-    }
+    if (apngStatus.has(apngSrc)) return;
     let cancelled = false;
-    const cdnUrl = toCdnUrl(videoSrc);
-    fetch(cdnUrl, { method: "HEAD" })
+    const url = toCdnUrl(apngSrc);
+    fetch(url, { method: "HEAD" })
       .then((r) => {
         if (cancelled) return;
         if (r.ok) {
-          videoStatus.set(face, "ok");
-          setVideoUrl(cdnUrl);
+          apngStatus.set(apngSrc, "ok");
+          setApngUrl(url);
         } else {
-          // emotion별 영상 없으면 default 영상 시도
-          if (face !== "default") {
-            return fetch(toCdnUrl(defaultVideoSrc), { method: "HEAD" }).then((r2) => {
-              if (cancelled) return;
-              if (r2.ok) {
-                videoStatus.set(face, "ok");
-                setVideoUrl(toCdnUrl(defaultVideoSrc));
-              } else {
-                videoStatus.set(face, "missing");
-                setVideoUrl(null);
-              }
-            });
-          }
-          videoStatus.set(face, "missing");
-          setVideoUrl(null);
+          apngStatus.set(apngSrc, "missing");
         }
       })
       .catch(() => {
         if (cancelled) return;
-        videoStatus.set(face, "missing");
-        setVideoUrl(null);
-      })
-      .finally(() => {
-        if (!cancelled) setChecking(false);
+        apngStatus.set(apngSrc, "missing");
       });
     return () => { cancelled = true; };
-  }, [face, videoSrc, defaultVideoSrc]);
+  }, [apngSrc]);
 
-  // SVG 미리 로드 (영상 폴백 대비)
+  // SVG 미리 로드 (폴백)
   useEffect(() => {
     if (svgCache.has(svgSrc)) {
       setSvg(svgCache.get(svgSrc)!);
@@ -173,33 +143,21 @@ export const Moody = ({
   const dropShadow =
     "drop-shadow(0 0 20px hsl(var(--primary) / 0.45)) drop-shadow(0 10px 24px hsl(var(--glow) / 0.25))";
 
-  // 영상 모드 — Kling 영상은 검정 배경.
-  // mix-blend-mode: screen 을 wrapper에 적용 (영상에 직접 걸면 transform stacking context로 격리됨).
-  // 영상은 object-cover로 캐릭터가 wrapper 가득 차게.
-  if (videoUrl) {
+  // APNG 모드 — 진짜 투명, blend mode 불필요
+  if (apngUrl) {
     return (
-      <div
-        className={wrapperClass}
-        style={{
-          ...wrapperStyle,
-          mixBlendMode: "screen",
-        }}
-        aria-hidden
-      >
-        <video
-          src={videoUrl}
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="w-full h-full object-cover"
+      <div className={wrapperClass} style={wrapperStyle} aria-hidden>
+        <img
+          src={apngUrl}
+          alt=""
+          className="w-full h-full object-contain"
           style={{ filter: dropShadow }}
         />
       </div>
     );
   }
 
-  // 영상 확인 중인데 SVG 캐시 있으면 SVG 노출 (깜빡임 방지)
+  // SVG 폴백
   return (
     <div className={wrapperClass} style={wrapperStyle} aria-hidden>
       {svg ? (

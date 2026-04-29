@@ -73,20 +73,40 @@ class AudioEngine {
     this.tracks.set(id, { kind: "howl", howl, volume });
   }
 
-  // ─── Pure tone (sine osc) ─────────────────────────────────────────
+  // ─── Pure tone (sine osc) — 부드러운 attack + warm filter ──────────
   playTone(id: string, frequencyHz: number, volume = 0.15) {
     if (this.tracks.has(id)) return;
     const ctx = this.getCtx();
     const osc = ctx.createOscillator();
     const gain = ctx.createGain();
+    const filter = ctx.createBiquadFilter();
+
     osc.type = "sine";
     osc.frequency.value = frequencyHz;
-    gain.gain.value = volume;
-    osc.connect(gain).connect(ctx.destination);
+    // 미세한 디튠으로 살짝 따뜻한 느낌
+    osc.detune.value = -3;
+
+    // Lowpass: 고주파 거친 부분 부드럽게
+    filter.type = "lowpass";
+    filter.frequency.value = Math.max(800, frequencyHz * 4);
+    filter.Q.value = 0.6;
+
+    // 페이드 인 (3초) — 갑자기 시작 안 하게
+    const now = ctx.currentTime;
+    gain.gain.setValueAtTime(0, now);
+    gain.gain.linearRampToValueAtTime(volume, now + 3);
+
+    osc.connect(filter).connect(gain).connect(ctx.destination);
     osc.start();
     this.tracks.set(id, {
-      kind: "synth", nodes: [osc, gain], gain, volume,
-      cleanup: () => { try { osc.stop(); osc.disconnect(); } catch {} },
+      kind: "synth", nodes: [osc, filter, gain], gain, volume,
+      cleanup: () => {
+        try {
+          gain.gain.cancelScheduledValues(ctx.currentTime);
+          gain.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.5);
+          setTimeout(() => { try { osc.stop(); osc.disconnect(); filter.disconnect(); } catch {} }, 600);
+        } catch {}
+      },
     });
   }
 
@@ -126,13 +146,30 @@ class AudioEngine {
     const source = ctx.createBufferSource();
     source.buffer = this.makeNoiseBuffer(2, type);
     source.loop = true;
+
+    // 노이즈는 거친 고주파를 lowpass로 깎고 부드러운 attack
+    const filter = ctx.createBiquadFilter();
+    filter.type = "lowpass";
+    // 화이트는 더 강하게 깎음 (가장 거칠어서)
+    filter.frequency.value = type === "white" ? 6000 : type === "pink" ? 8000 : 4000;
+    filter.Q.value = 0.6;
+
     const gain = ctx.createGain();
-    gain.gain.value = volume;
-    source.connect(gain).connect(ctx.destination);
+    const now = ctx.currentTime;
+    gain.gain.setValueAtTime(0, now);
+    gain.gain.linearRampToValueAtTime(volume, now + 2.5);  // 2.5초 페이드인
+
+    source.connect(filter).connect(gain).connect(ctx.destination);
     source.start();
     this.tracks.set(id, {
-      kind: "synth", nodes: [source, gain], gain, volume,
-      cleanup: () => { try { source.stop(); source.disconnect(); } catch {} },
+      kind: "synth", nodes: [source, filter, gain], gain, volume,
+      cleanup: () => {
+        try {
+          gain.gain.cancelScheduledValues(ctx.currentTime);
+          gain.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.5);
+          setTimeout(() => { try { source.stop(); source.disconnect(); filter.disconnect(); } catch {} }, 600);
+        } catch {}
+      },
     });
   }
 

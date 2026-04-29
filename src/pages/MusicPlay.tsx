@@ -87,10 +87,23 @@ const MusicPlay = () => {
     [tracks]
   );
 
+  // 5개 변주가 가능한 한 다른 트랙을 받도록 인덱스 분배.
+  // 사운드 풀이 N개일 때:
+  //   N >= 5 → 각 변주에 균등하게 분배 (delta=0, theta=N/4, alpha=N/2 ...)
+  //   N <  5 → 일부 변주는 같은 트랙 공유 (어쩔 수 없음)
+  // variantMatches 키워드 매칭 결과가 있으면 그 안에서, 없으면 전체에서 뽑음.
+  const VARIANT_INDEX: Record<VariantId, number> = {
+    delta: 0, theta: 1, alpha: 2, beta: 3, gamma: 4,
+  };
   const pickForVariant = (v: VariantId): string | undefined => {
     const preferred = allTracks.filter((t) => variantMatches(t, v));
     const pool = preferred.length > 0 ? preferred : allTracks;
-    return pickRandom(pool);
+    if (pool.length === 0) return undefined;
+    if (pool.length === 1) return pool[0];
+
+    // 변주 인덱스 기반 확정 선택 (재생할 때마다 같은 트랙 → 일관성)
+    const idx = Math.floor((VARIANT_INDEX[v] / 5) * pool.length) % pool.length;
+    return pool[idx];
   };
 
   const playVariant = (v: VariantId) => {

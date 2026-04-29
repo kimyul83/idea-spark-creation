@@ -1,3 +1,4 @@
+import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { Wind, Sparkles, ChevronRight } from "lucide-react";
 import { MonetBackground } from "@/components/MonetBackground";
@@ -5,8 +6,12 @@ import { Moody } from "@/components/Moody";
 import { MUSIC_SITUATIONS } from "@/lib/modes";
 import { SITUATION_DETAILS } from "@/lib/situation-details";
 
+const TAP_REACTIONS = ["happy", "love", "surprised", "calm", "focus"] as const;
+const REACTION_DURATION_MS = 1800;
+
 /**
  * Home — 6개 핵심 상황 + 호흡·깨기 빠른 진입.
+ * 무디 탭하면 표정이 바뀜 (귀여운 인터랙션).
  */
 const Home = () => {
   const navigate = useNavigate();
@@ -19,20 +24,41 @@ const Home = () => {
     hour < 22 ? "편안한 저녁이에요" :
     "하루를 마무리해요";
 
+  const [moodyEmotion, setMoodyEmotion] = useState<typeof TAP_REACTIONS[number] | "default">("default");
+  const [tapHint, setTapHint] = useState(true);
+  const tapIdxRef = useRef(0);
+  const reactionTimerRef = useRef<number>();
+
+  const handleMoodyTap = () => {
+    setTapHint(false);
+    const next = TAP_REACTIONS[tapIdxRef.current % TAP_REACTIONS.length];
+    tapIdxRef.current++;
+    setMoodyEmotion(next);
+    if (reactionTimerRef.current) window.clearTimeout(reactionTimerRef.current);
+    reactionTimerRef.current = window.setTimeout(() => {
+      setMoodyEmotion("default");
+    }, REACTION_DURATION_MS);
+  };
+
   return (
-    <div className="px-5 pt-12 pb-6 relative flex-1 flex flex-col">
+    <div className="px-5 pt-6 pb-6 relative flex-1 flex flex-col">
       <MonetBackground intensity="medium" />
 
       {/* Hero — 큰 마스코트 + 인사말 (중앙 정렬) */}
       <div className="animate-fade-up flex flex-col items-center text-center">
-        <Moody size={340} />
-        <p className="text-[13px] tracking-[0.3em] uppercase text-primary font-serif mt-2">
+        <Moody size={300} emotion={moodyEmotion} onClick={handleMoodyTap} />
+        {tapHint && (
+          <p className="text-[10px] text-primary/60 tracking-widest uppercase animate-pulse">
+            ✨ Tap to greet
+          </p>
+        )}
+        <p className="text-[13px] tracking-[0.3em] uppercase text-primary font-serif mt-1">
           Home
         </p>
         <h1 className="text-[30px] font-bold text-foreground mt-1 leading-tight">
           {greeting}
         </h1>
-        <p className="text-base text-foreground/65 mt-1.5">
+        <p className="text-base text-foreground/65 mt-1">
           어떤 시간이 필요해요?
         </p>
       </div>

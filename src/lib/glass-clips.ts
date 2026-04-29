@@ -4,6 +4,7 @@
  * but are NOT yet shipped — the player gracefully falls back to a generated
  * gradient + crack overlay when the file is missing ("곧 출시" badge).
  */
+import { Scissors, Hammer, Sparkles, type LucideIcon } from "lucide-react";
 import type { GlassCategory } from "./sfx";
 
 export type GlassClip = {
@@ -26,12 +27,12 @@ export type GlassClip = {
 export const GLASS_CATEGORIES: Array<{
   id: GlassCategory;
   label: string;
-  emoji: string;
+  Icon: LucideIcon;
   tagline: string;
 }> = [
-  { id: "slice", label: "슬라이싱", emoji: "🍎", tagline: "자르기·슬라이싱 쾌감" },
-  { id: "smash", label: "파괴",     emoji: "💎", tagline: "분노 해소·폭발" },
-  { id: "asmr",  label: "ASMR",     emoji: "🫧", tagline: "터치 쾌감·ASMR" },
+  { id: "slice", label: "슬라이싱", Icon: Scissors, tagline: "자르기·슬라이싱 쾌감" },
+  { id: "smash", label: "파괴",     Icon: Hammer,   tagline: "분노 해소·폭발" },
+  { id: "asmr",  label: "ASMR",     Icon: Sparkles, tagline: "터치 쾌감·ASMR" },
 ];
 
 export const GLASS_CLIPS: GlassClip[] = [

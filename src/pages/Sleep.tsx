@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Lock, Pause, Play, Sparkles } from "lucide-react";
+import { Lock, Pause, Play, Sparkles, Waves, CloudRain, Trees, Droplets, Flame, Moon, type LucideIcon } from "lucide-react";
 import { Howl } from "howler";
 import { MonetBackground } from "@/components/MonetBackground";
 import { Moody } from "@/components/Moody";
@@ -26,7 +26,7 @@ interface Variant {
 
 interface SleepTrack {
   id: string;
-  emoji: string;
+  Icon: LucideIcon;
   name: string;
   premium: boolean;
   variants: Variant[];
@@ -35,7 +35,7 @@ interface SleepTrack {
 const TRACKS: SleepTrack[] = [
   {
     id: "deep_waves",
-    emoji: "🌊",
+    Icon: Waves,
     name: "깊은 파도",
     premium: false,
     variants: [
@@ -48,7 +48,7 @@ const TRACKS: SleepTrack[] = [
   },
   {
     id: "calm_rain",
-    emoji: "🌧️",
+    Icon: CloudRain,
     name: "잔잔한 빗소리",
     premium: false,
     variants: [
@@ -58,7 +58,7 @@ const TRACKS: SleepTrack[] = [
   },
   {
     id: "forest_night",
-    emoji: "🌲",
+    Icon: Trees,
     name: "숲의 밤",
     premium: false,
     variants: [
@@ -71,7 +71,7 @@ const TRACKS: SleepTrack[] = [
   },
   {
     id: "stream",
-    emoji: "💧",
+    Icon: Droplets,
     name: "물 흐르는 소리",
     premium: false,
     variants: [
@@ -83,7 +83,7 @@ const TRACKS: SleepTrack[] = [
   },
   {
     id: "fire_asmr",
-    emoji: "🔥",
+    Icon: Flame,
     name: "모닥불 ASMR",
     premium: true,
     variants: [
@@ -94,7 +94,7 @@ const TRACKS: SleepTrack[] = [
   },
   {
     id: "deep_ambience",
-    emoji: "🌙",
+    Icon: Moon,
     name: "깊은 밤 명상",
     premium: true,
     variants: [
@@ -313,8 +313,8 @@ const Sleep = () => {
                   onClick={() => handleTrackClick(t)}
                   className="w-full flex items-center gap-3 text-left"
                 >
-                  <div className="w-12 h-12 rounded-2xl bg-primary/15 flex items-center justify-center text-2xl shrink-0">
-                    {t.emoji}
+                  <div className="w-12 h-12 rounded-2xl bg-primary/15 flex items-center justify-center shrink-0">
+                    <t.Icon className="w-6 h-6 text-primary" strokeWidth={1.7} />
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-1.5">

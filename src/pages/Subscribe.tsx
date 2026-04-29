@@ -9,7 +9,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { usePremium } from "@/hooks/usePremium";
 import { cn } from "@/lib/utils";
 
-type PlanId = "monthly" | "yearly" | "lifetime";
+type PlanId = "monthly" | "yearly";
 
 interface Plan {
   id: PlanId;
@@ -22,7 +22,6 @@ interface Plan {
 const PLANS: Plan[] = [
   { id: "monthly", label: "월 구독", price: "₩4,900", per: "/ 월" },
   { id: "yearly",  label: "연 구독", price: "₩29,000", per: "/ 년", badge: "최대 60% 할인" },
-  { id: "lifetime", label: "평생 이용권", price: "₩59,000", per: "한 번 결제", badge: "런칭 한정" },
 ];
 
 interface Row { feature: string; endel: string; moody: string; highlight?: boolean }

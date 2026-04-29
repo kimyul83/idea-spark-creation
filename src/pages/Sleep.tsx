@@ -238,31 +238,31 @@ const Sleep = () => {
 
       <header className="flex items-start justify-between">
         <div>
-          <p className="text-[11px] tracking-[0.3em] uppercase text-foreground/55 font-serif">
+          <p className="text-[13px] tracking-[0.3em] uppercase text-primary font-serif">
             Sleep
           </p>
-          <h1 className="text-[26px] font-bold text-foreground mt-1 leading-tight">
+          <h1 className="text-[30px] font-bold text-foreground mt-1 leading-tight">
             편안한 수면
           </h1>
-          <p className="text-sm text-foreground/60 mt-1">{greeting}</p>
+          <p className="text-base text-foreground/65 mt-1.5">{greeting}</p>
         </div>
         <Moody size={140} emotion="calm" />
       </header>
 
       <section className="liquid-card p-5">
         <div className="flex items-baseline justify-between">
-          <p className="text-[10px] uppercase tracking-widest text-foreground/45">
+          <p className="text-[11px] uppercase tracking-[0.2em] text-primary/80 font-serif">
             수면 시간
           </p>
-          <p className="text-[10px] text-foreground/45">
+          <p className="text-[11px] text-foreground/55">
             지금 시작 → <span className="text-primary font-semibold">{formatClock(wakeAt)}</span> 종료
           </p>
         </div>
-        <div className="mt-3 flex items-end gap-2">
-          <span className="text-[44px] font-serif leading-none text-foreground">
+        <div className="mt-2 flex items-baseline gap-1.5">
+          <span className="text-[32px] font-bold leading-none text-foreground">
             {Math.floor(hours)}
           </span>
-          <span className="text-foreground/60 mb-1.5 text-sm">
+          <span className="text-foreground/65 text-sm">
             {hours % 1 === 0.5 ? "시간 30분" : "시간"}
           </span>
         </div>
@@ -294,8 +294,8 @@ const Sleep = () => {
       </section>
 
       <section className="space-y-2">
-        <p className="text-[10px] uppercase tracking-widest text-foreground/45 px-1">
-          수면 사운드 · 번호 클릭해서 다른 느낌으로
+        <p className="text-[11px] uppercase tracking-[0.2em] text-primary/80 font-serif mb-1 px-1">
+          수면 사운드
         </p>
         <div className="grid gap-2">
           {TRACKS.map((t) => {

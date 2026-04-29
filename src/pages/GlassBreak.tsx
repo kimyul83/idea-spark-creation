@@ -196,7 +196,7 @@ const GlassBreak = () => {
 
       {/* Moody intro */}
       <div className="px-5 mt-5 flex items-center gap-3">
-        <Moody size="small" emotion="surprised" />
+        <Moody size={120} emotion="surprised" />
         <div className="text-sm text-foreground/80">
           <p className="font-medium">오늘, 무엇을 깨부수고 싶나요?</p>
           <p className="text-xs text-muted-foreground mt-0.5">
@@ -398,7 +398,7 @@ const GlassBreak = () => {
             >
               <div className="liquid-card w-full max-w-sm p-6 text-center">
                 <div className="flex justify-center mb-3">
-                  <Moody size="medium" emotion="happy" />
+                  <Moody size={180} emotion="happy" />
                 </div>
                 <h3 className="text-lg font-bold text-foreground">시원한 기분이 들었나요?</h3>
                 <p className="text-xs text-muted-foreground mt-1">

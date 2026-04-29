@@ -246,7 +246,7 @@ const Sleep = () => {
           </h1>
           <p className="text-sm text-foreground/60 mt-1">{greeting}</p>
         </div>
-        <Moody size={64} emotion="calm" />
+        <Moody size={140} emotion="calm" />
       </header>
 
       <section className="liquid-card p-5">

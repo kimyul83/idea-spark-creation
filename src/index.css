@@ -194,6 +194,38 @@
       inset 0 1px 0 hsl(var(--glow) / 0.35);
   }
 
+  /* 섹션 타이틀 통일 — 자연/주파수/힐링사운드/수면사운드 등 */
+  .section-title {
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: hsl(var(--primary));
+    text-shadow: 0 0 12px hsl(var(--primary) / 0.4);
+  }
+
+  /* 숫자 폰트 — 마이/수면/통계 통일 (font-serif 대신 sans + bold) */
+  .num-display {
+    font-family: var(--font-sans, ui-sans-serif, system-ui);
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.02em;
+  }
+
+  /* 블루 라벨 칩 — 흐려 보이던 primary 텍스트에 흰 글래스 배경으로 하이라이트 */
+  .chip-primary {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 999px;
+    background: hsl(0 0% 100% / 0.12);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    color: hsl(var(--primary));
+    font-weight: 700;
+    text-shadow: 0 0 12px hsl(var(--primary) / 0.4);
+    border: 1px solid hsl(var(--primary) / 0.25);
+  }
+
   /* Premium hero card — vivid 다크 글래스 (라이트/다크 모두 흰 텍스트 가독) */
   .liquid-hero {
     @apply relative overflow-hidden;

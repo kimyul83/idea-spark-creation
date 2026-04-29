@@ -240,7 +240,7 @@ const BreathingSession = () => {
         </p>
         {!isCycle && (
           <div className="mt-3 flex items-baseline justify-center gap-1.5">
-            <span className="text-[72px] font-serif tabular-nums leading-none text-primary">
+            <span className="num-display text-[72px] leading-none text-primary">
               {displaySecondsLeft}
             </span>
             <span className="text-foreground/60 text-lg font-medium mb-1">초</span>

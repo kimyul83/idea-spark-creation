@@ -238,7 +238,7 @@ const Sleep = () => {
 
       <header className="flex items-start justify-between">
         <div>
-          <p className="text-[15px] tracking-[0.3em] uppercase text-primary font-bold font-serif">
+          <p className="chip-primary text-[14px] tracking-[0.3em] uppercase font-serif">
             Sleep
           </p>
           <h1 className="text-[30px] font-bold text-foreground mt-1 leading-tight">
@@ -251,18 +251,16 @@ const Sleep = () => {
 
       <section className="liquid-card p-5">
         <div className="flex items-baseline justify-between">
-          <p className="text-[11px] uppercase tracking-[0.2em] text-primary font-serif">
-            수면 시간
-          </p>
+          <p className="section-title text-[12px]">수면 시간</p>
           <p className="text-[11px] text-foreground/55">
             지금 시작 → <span className="text-primary font-semibold">{formatClock(wakeAt)}</span> 종료
           </p>
         </div>
         <div className="mt-2 flex items-baseline gap-1.5">
-          <span className="text-[32px] font-bold leading-none text-foreground">
+          <span className="num-display text-[40px] leading-none text-foreground">
             {Math.floor(hours)}
           </span>
-          <span className="text-foreground/65 text-sm">
+          <span className="text-foreground/65 text-base font-medium">
             {hours % 1 === 0.5 ? "시간 30분" : "시간"}
           </span>
         </div>
@@ -294,9 +292,7 @@ const Sleep = () => {
       </section>
 
       <section className="space-y-2">
-        <p className="text-[11px] uppercase tracking-[0.2em] text-primary font-serif mb-1 px-1">
-          수면 사운드
-        </p>
+        <h2 className="section-title mb-2 px-1">수면 사운드</h2>
         <div className="grid gap-2">
           {TRACKS.map((t) => {
             const locked = t.premium && !isPremium;

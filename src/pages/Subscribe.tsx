@@ -73,7 +73,7 @@ const Subscribe = () => {
         <div className="flex justify-center">
           <Moody size="large" emotion="happy" />
         </div>
-        <p className="mt-3 text-[13px] tracking-[0.3em] uppercase text-primary font-bold font-serif">Moody+</p>
+        <p className="mt-3 chip-primary text-[12px] tracking-[0.3em] uppercase font-serif">Moody+</p>
         <h1 className="text-[28px] font-bold text-foreground mt-2 leading-tight">
           프리미엄으로<br />더 깊은 힐링을
         </h1>
@@ -124,7 +124,7 @@ const Subscribe = () => {
               </div>
               <div className="text-[11px] opacity-70 mt-0.5">{p.per}</div>
             </div>
-            <div className="font-serif text-2xl">{p.price}</div>
+            <div className="num-display text-2xl">{p.price}</div>
           </button>
         ))}
       </div>

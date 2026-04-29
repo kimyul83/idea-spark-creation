@@ -183,13 +183,13 @@ const GlassBreak = () => {
           <ArrowLeft className="w-5 h-5 text-foreground" />
         </button>
         <div className="flex-1">
-          <p className="text-[11px] tracking-[0.3em] uppercase text-primary font-serif">
+          <p className="text-[13px] tracking-[0.3em] uppercase text-primary font-serif">
             Release
           </p>
-          <h1 className="text-[24px] font-bold text-foreground">유리 깨기</h1>
+          <h1 className="text-[28px] font-bold text-foreground leading-tight">유리 깨기</h1>
         </div>
         <div className="liquid-card px-3 py-2 text-right">
-          <div className="text-[10px] uppercase tracking-wider text-muted-foreground">Today</div>
+          <div className="text-[11px] uppercase tracking-wider text-muted-foreground">Today</div>
           <div className="text-base font-bold text-primary leading-none">{todayCount}</div>
         </div>
       </div>

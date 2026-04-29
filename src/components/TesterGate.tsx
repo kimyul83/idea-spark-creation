@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Moody } from "@/components/Moody";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -32,6 +33,7 @@ interface TesterGateProps {
 }
 
 export const TesterGate = ({ children }: TesterGateProps) => {
+  const { t } = useTranslation();
   const [unlocked, setUnlocked] = useState(false);
   const [input, setInput] = useState("");
   const [checking, setChecking] = useState(true);
@@ -55,7 +57,7 @@ export const TesterGate = ({ children }: TesterGateProps) => {
       localStorage.setItem(STORAGE_KEY, code);
       setUnlocked(true);
     } else {
-      setError("초대 코드가 맞지 않아요");
+      setError(t("tester.wrongCode"));
       setInput("");
     }
   };
@@ -66,14 +68,14 @@ export const TesterGate = ({ children }: TesterGateProps) => {
         <Moody size={320} emotion="default" />
 
         <p className="text-[11px] tracking-[0.3em] uppercase text-[#4AEBFB] font-serif mt-6">
-          MintMoody · Beta
+          {t("tester.label")}
         </p>
         <h1 className="text-3xl font-bold mt-2">
-          마음에 내리는 민트무디
+          {t("tester.title")}
         </h1>
         <p className="text-sm text-white/60 mt-3 leading-relaxed">
-          지금은 비공개 베타 기간이에요.<br />
-          초대받은 친구만 들어올 수 있어요 🫧
+          {t("tester.betaInfo")}<br />
+          {t("tester.inviteOnly")} 🫧
         </p>
 
         <form onSubmit={handleSubmit} className="w-full mt-8 space-y-3">
@@ -81,7 +83,7 @@ export const TesterGate = ({ children }: TesterGateProps) => {
             type="text"
             inputMode="text"
             autoCapitalize="characters"
-            placeholder="초대 코드 4글자"
+            placeholder={t("tester.codeInput")}
             value={input}
             onChange={(e) => { setInput(e.target.value); if (error) setError(null); }}
             maxLength={6}
@@ -102,12 +104,12 @@ export const TesterGate = ({ children }: TesterGateProps) => {
               shadow-[0_0_24px_-4px_rgba(0,217,232,0.5)]
               disabled:opacity-30 disabled:bg-white/5 disabled:bg-none disabled:shadow-none"
           >
-            들어가기
+            {t("tester.enter")}
           </Button>
         </form>
 
         <p className="text-xs text-white/40 mt-6">
-          코드를 못 받았다면 민트무디 계정 운영자에게 문의해주세요
+          {t("tester.noCode")}
         </p>
       </div>
     </div>

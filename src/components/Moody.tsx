@@ -173,23 +173,27 @@ export const Moody = ({
   const dropShadow =
     "drop-shadow(0 0 20px hsl(var(--primary) / 0.45)) drop-shadow(0 10px 24px hsl(var(--glow) / 0.25))";
 
-  // 영상 모드 — Kling 영상은 검정 배경 → mix-blend-mode: screen 으로 마스킹.
-  // 검정 픽셀이 앱 배경과 동일하게 처리되어 캐릭터만 떠 보임.
-  // (VP9 alpha가 ffmpeg 빌드에서 안 돼서 이 방식으로 전환)
+  // 영상 모드 — Kling 영상은 검정 배경.
+  // mix-blend-mode: screen 을 wrapper에 적용 (영상에 직접 걸면 transform stacking context로 격리됨).
+  // 영상은 object-cover로 캐릭터가 wrapper 가득 차게.
   if (videoUrl) {
     return (
-      <div className={wrapperClass} style={wrapperStyle} aria-hidden>
+      <div
+        className={wrapperClass}
+        style={{
+          ...wrapperStyle,
+          mixBlendMode: "screen",
+        }}
+        aria-hidden
+      >
         <video
           src={videoUrl}
           autoPlay
           loop
           muted
           playsInline
-          className="w-full h-full object-contain"
-          style={{
-            filter: dropShadow,
-            mixBlendMode: "screen",
-          }}
+          className="w-full h-full object-cover"
+          style={{ filter: dropShadow }}
         />
       </div>
     );

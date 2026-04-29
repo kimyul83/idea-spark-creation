@@ -65,7 +65,9 @@ i18n
       th: { translation: th }, tr: { translation: tr }, pl: { translation: pl },
       nl: { translation: nl }, sv: { translation: sv },
     },
-    fallbackLng: "ko",
+    // 비한국어 사용자에겐 영어로 폴백 (한국어는 한국어 그대로).
+    // 다른 언어 파일에 누락된 키는 영어로 표시 (UI 영어 = 무난한 디폴트).
+    fallbackLng: { default: ["en"], ko: ["ko"] },
     supportedLngs: SUPPORTED_LANGUAGES.map((l) => l.code),
     detection: {
       order: ["localStorage", "navigator"],

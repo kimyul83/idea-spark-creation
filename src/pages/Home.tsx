@@ -1,7 +1,7 @@
 import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { Wind, Sparkles, ChevronRight } from "lucide-react";
+import { Wind, Sparkles, ChevronRight, type LucideIcon } from "lucide-react";
 import { MonetBackground } from "@/components/MonetBackground";
 import { Moody } from "@/components/Moody";
 import { MUSIC_SITUATIONS } from "@/lib/modes";
@@ -105,7 +105,7 @@ const Home = () => {
 
 interface SituationRowProps {
   id: string;
-  icon: React.ComponentType<{ className?: string; strokeWidth?: number }>;
+  icon: LucideIcon;
   onClick: () => void;
 }
 

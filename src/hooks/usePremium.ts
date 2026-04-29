@@ -2,7 +2,7 @@ import { useEffect, useState, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 
-const DEV_KEY = "moodie_dev_premium";
+const DEV_KEY = "moody_dev_premium";
 
 /**
  * Premium status with optional dev-toggle stored in localStorage.
@@ -76,7 +76,7 @@ export const PREMIUM_BREATHING = new Set(["box", "8-2-8"]);
 
 /** ADHD daily-trial helper.
  *  프리뷰 모드에서는 항상 사용 가능하도록 dev premium ON이면 true 반환. */
-const ADHD_KEY = "moodie_adhd_last";
+const ADHD_KEY = "moody_adhd_last";
 export function adhdTrialAvailable(): boolean {
   if (typeof window !== "undefined" && localStorage.getItem(DEV_KEY) === "1") {
     return true;

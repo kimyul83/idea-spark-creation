@@ -45,11 +45,11 @@ interface ThemeContextValue {
 }
 
 const STORAGE = {
-  mode: "moodie_theme_mode",
-  preset: "moodie_theme_preset",
-  customVariant: "moodie_theme_custom_variant",
+  mode: "moody_theme_mode",
+  preset: "moody_theme_preset",
+  customVariant: "moody_theme_custom_variant",
   /** legacy key from previous version */
-  legacyPref: "moodie_theme_pref",
+  legacyPref: "moody_theme_pref",
 };
 
 const ThemeContext = createContext<ThemeContextValue | null>(null);

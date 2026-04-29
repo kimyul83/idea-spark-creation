@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { Moodie } from "@/components/Moodie";
+import { Moody } from "@/components/Moody";
 import { MonetBackground } from "@/components/MonetBackground";
 
 const AuthCallback = () => {
@@ -18,7 +18,7 @@ const AuthCallback = () => {
         return;
       }
       if (data.session) {
-        localStorage.setItem("moodie_onboarded", "1");
+        localStorage.setItem("moody_onboarded", "1");
         toast.success("환영해요 ✨");
         navigate("/home", { replace: true });
       } else {
@@ -27,7 +27,7 @@ const AuthCallback = () => {
           if (!active) return;
           supabase.auth.getSession().then(({ data: d2 }) => {
             if (d2.session) {
-              localStorage.setItem("moodie_onboarded", "1");
+              localStorage.setItem("moody_onboarded", "1");
               navigate("/home", { replace: true });
             } else {
               navigate("/onboarding", { replace: true });
@@ -43,7 +43,7 @@ const AuthCallback = () => {
     <div className="app-shell flex items-center justify-center relative min-h-[100dvh]">
       <MonetBackground intensity="strong" />
       <div className="text-center">
-        <Moodie size="large" emotion="happy" />
+        <Moody size="large" emotion="happy" />
         <p className="mt-4 text-foreground/60 text-sm font-serif tracking-widest">
           로그인 중...
         </p>

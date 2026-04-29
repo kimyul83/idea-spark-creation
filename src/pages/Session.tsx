@@ -5,7 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { EmotionRow, FOCUS_MODES, SoundRow } from "@/types/db";
 import { audioEngine } from "@/lib/audio-engine";
 import { getIcon } from "@/lib/icon-map";
-import { Moodie } from "@/components/Moodie";
+import { Moody } from "@/components/Moody";
 import { MonetBackground } from "@/components/MonetBackground";
 import { emotionNameToTint } from "@/lib/emotion-tint";
 import { Button } from "@/components/ui/button";
@@ -267,7 +267,7 @@ const Session = () => {
       {doneOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center px-6 bg-charcoal/40 backdrop-blur-sm animate-fade-up">
           <div className="surface rounded-3xl p-8 w-full max-w-sm text-center shadow-card">
-            <Moodie size="medium" />
+            <Moody size="medium" />
             <p className="text-[11px] tracking-[0.3em] uppercase text-sage-deep font-serif mt-4">
               Well done
             </p>

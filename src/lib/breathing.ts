@@ -254,7 +254,7 @@ export const BREATHING_VISUALS: BreathingVisualMeta[] = [
   { id: "bloom",    emoji: "🌸", name: "피어나는 꽃", description: "꽃잎이 활짝 열리고 닫혀요" },
 ];
 
-const VISUAL_PREF_KEY = "moodie_breathing_visual";
+const VISUAL_PREF_KEY = "moody_breathing_visual";
 export const getStoredVisual = (): BreathingVisualId => {
   if (typeof window === "undefined") return "bubble";
   const v = localStorage.getItem(VISUAL_PREF_KEY) as BreathingVisualId | null;

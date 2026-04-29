@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Heart, Lock, Share2, Sparkles, Star, X } from "lucide-react";
 import { MonetBackground } from "@/components/MonetBackground";
 import { Button } from "@/components/ui/button";
-import { Moodie } from "@/components/Moodie";
+import { Moody } from "@/components/Moody";
 import { ParticleCanvas, type ParticleHandle } from "@/components/ParticleCanvas";
 import { playGlassFx, playRealGlass, vibrate } from "@/lib/sfx";
 import {
@@ -20,7 +20,7 @@ import { cn } from "@/lib/utils";
 type Tab = "slice" | "smash" | "asmr";
 
 const COMBO_WINDOW_MS = 1000;
-const TODAY_KEY = "moodie_glass_today";
+const TODAY_KEY = "moody_glass_today";
 
 /** Read today's tap counter from localStorage. */
 function readTodayCount(): number {
@@ -194,9 +194,9 @@ const GlassBreak = () => {
         </div>
       </div>
 
-      {/* Moodie intro */}
+      {/* Moody intro */}
       <div className="px-5 mt-5 flex items-center gap-3">
-        <Moodie size="small" emotion="surprised" />
+        <Moody size="small" emotion="surprised" />
         <div className="text-sm text-foreground/80">
           <p className="font-medium">오늘, 무엇을 깨부수고 싶나요?</p>
           <p className="text-xs text-muted-foreground mt-0.5">
@@ -355,7 +355,7 @@ const GlassBreak = () => {
                 e.stopPropagation();
                 try {
                   if (navigator.share) {
-                    await navigator.share({ title: active.title, text: "유리 깨기 – Moodie" });
+                    await navigator.share({ title: active.title, text: "유리 깨기 – Moody" });
                   } else {
                     toast.info("이 기기에서는 공유를 지원하지 않아요");
                   }
@@ -398,7 +398,7 @@ const GlassBreak = () => {
             >
               <div className="liquid-card w-full max-w-sm p-6 text-center">
                 <div className="flex justify-center mb-3">
-                  <Moodie size="medium" emotion="happy" />
+                  <Moody size="medium" emotion="happy" />
                 </div>
                 <h3 className="text-lg font-bold text-foreground">시원한 기분이 들었나요?</h3>
                 <p className="text-xs text-muted-foreground mt-1">

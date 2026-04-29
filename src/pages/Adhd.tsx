@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Slider } from "@/components/ui/slider";
 import { Checkbox } from "@/components/ui/checkbox";
 import { MonetBackground } from "@/components/MonetBackground";
-import { Moodie } from "@/components/Moodie";
+import { Moody } from "@/components/Moody";
 import { audioEngine } from "@/lib/audio-engine";
 import { playDing, vibrate } from "@/lib/sfx";
 import { supabase } from "@/integrations/supabase/client";
@@ -330,7 +330,7 @@ const Adhd = () => {
         <div className="fixed inset-0 z-50 flex items-center justify-center px-6 bg-charcoal/40 backdrop-blur-sm animate-fade-up">
           <div className="surface rounded-3xl p-8 w-full max-w-sm text-center shadow-card">
             <div className="flex justify-center">
-              <Moodie size="medium" emotion="happy" />
+              <Moody size="medium" emotion="happy" />
             </div>
             <p className="text-[11px] tracking-[0.3em] uppercase text-sage-deep font-serif mt-4">
               Session done

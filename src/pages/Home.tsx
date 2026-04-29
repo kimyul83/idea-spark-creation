@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { Wind, Sparkles, ChevronRight } from "lucide-react";
 import { MonetBackground } from "@/components/MonetBackground";
-import { Moodie } from "@/components/Moodie";
+import { Moody } from "@/components/Moody";
 import { MUSIC_SITUATIONS } from "@/lib/modes";
 import { SITUATION_DETAILS } from "@/lib/situation-details";
 
@@ -25,7 +25,7 @@ const Home = () => {
 
       {/* Hero — 큰 마스코트 + 인사말 (중앙 정렬) */}
       <div className="animate-fade-up flex flex-col items-center text-center">
-        <Moodie size={180} />
+        <Moody size={180} />
         <p className="text-[13px] tracking-[0.3em] uppercase text-primary font-serif mt-2">
           Home
         </p>
@@ -80,7 +80,7 @@ const Home = () => {
       <div className="flex-1 flex items-end justify-center pt-8">
         <div className="text-center opacity-75">
           <p className="text-[12px] text-foreground/50 font-serif tracking-widest">
-            마음에 · 내리는 · 윤슬
+            마음에 · 내리는 · 민트무디
           </p>
         </div>
       </div>

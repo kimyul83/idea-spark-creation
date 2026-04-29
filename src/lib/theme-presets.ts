@@ -1,5 +1,5 @@
 /**
- * Theme presets for Moodie — "Premium Pop Aqua" rework.
+ * Theme presets for Moody — "Premium Pop Aqua" rework.
  *
  * Each preset has a `light` + `dark` palette in HSL strings (`H S% L%`)
  * applied directly to CSS variables.

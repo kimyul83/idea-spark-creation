@@ -1,0 +1,159 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 260" width="240" height="260">
+  <defs>
+    <!-- 반투명 아쿠아 젤리 (몸 안이 비침) -->
+    <linearGradient id="bodyGrad" x1="30%" y1="10%" x2="70%" y2="100%">
+      <stop offset="0%" stop-color="#A8F5FF" stop-opacity="0.55"/>
+      <stop offset="40%" stop-color="#4AEBFB" stop-opacity="0.55"/>
+      <stop offset="80%" stop-color="#00D9E8" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#0077B6" stop-opacity="0.7"/>
+    </linearGradient>
+    <!-- 투명 유리 내부 광 -->
+    <radialGradient id="glassInner" cx="50%" cy="70%" r="55%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.5"/>
+      <stop offset="60%" stop-color="#FFFFFF" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0"/>
+    </radialGradient>
+    <!-- 상단 큰 반사 하이라이트 -->
+    <radialGradient id="hiTop" cx="35%" cy="28%" r="25%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0"/>
+    </radialGradient>
+    <!-- 외곽 엣지 라이트 (유리구슬 테두리) -->
+    <linearGradient id="edgeLight" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.6"/>
+      <stop offset="50%" stop-color="#FFFFFF" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#7FE8F0" stop-opacity="0.4"/>
+    </linearGradient>
+
+    <!-- Aibo 블루 아이리스 -->
+    <radialGradient id="aiboIris" cx="50%" cy="45%" r="60%">
+      <stop offset="0%"  stop-color="#9FE0F5"/>
+      <stop offset="40%" stop-color="#4A90C4"/>
+      <stop offset="80%" stop-color="#2E5C8A"/>
+      <stop offset="100%" stop-color="#1B3A5C"/>
+    </radialGradient>
+    <!-- 아이리스 외곽 링 -->
+    <radialGradient id="aiboRing" cx="50%" cy="50%" r="50%">
+      <stop offset="80%" stop-color="#0A1525"/>
+      <stop offset="100%" stop-color="#000000"/>
+    </radialGradient>
+    <!-- 블루 글로우 (위쪽) -->
+    <radialGradient id="aiboGlow" cx="50%" cy="35%" r="55%">
+      <stop offset="0%" stop-color="#9FD8F2" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#9FD8F2" stop-opacity="0"/>
+    </radialGradient>
+
+    <filter id="bodyShadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="3" />
+    </filter>
+    <filter id="eyeBloom" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="1.5" />
+    </filter>
+  </defs>
+
+  <!-- 바닥 그림자 -->
+  <ellipse cx="120" cy="225" rx="68" ry="8" fill="#1A3F55" opacity="0.2" filter="url(#bodyShadow)"/>
+
+  <g class="moodie-body">
+    <!-- 몸체 (반투명) -->
+    <path fill="url(#bodyGrad)" d="
+      M 70 218
+      C 56 218, 44 208, 44 190
+      C 44 130, 76 80, 120 80
+      C 164 80, 196 130, 196 190
+      C 196 208, 184 218, 170 218
+      Z" />
+    <!-- 내부 밝은 영역 (투명 젤리 속살) -->
+    <path fill="url(#glassInner)" d="
+      M 70 218
+      C 56 218, 44 208, 44 190
+      C 44 130, 76 80, 120 80
+      C 164 80, 196 130, 196 190
+      C 196 208, 184 218, 170 218
+      Z" />
+    <!-- 외곽 유리 엣지 라이트 -->
+    <path fill="none" stroke="url(#edgeLight)" stroke-width="2" opacity="0.8" d="
+      M 70 218
+      C 56 218, 44 208, 44 190
+      C 44 130, 76 80, 120 80
+      C 164 80, 196 130, 196 190
+      C 196 208, 184 218, 170 218
+      Z" />
+    <!-- 상단 큰 반짝 -->
+    <ellipse cx="84" cy="115" rx="28" ry="34" fill="url(#hiTop)" />
+    <!-- 작은 하이라이트 -->
+    <ellipse cx="68" cy="140" rx="7" ry="10" fill="#FFFFFF" opacity="0.7" />
+    <!-- 우측 하단 반사 -->
+    <ellipse cx="170" cy="195" rx="10" ry="5" fill="#FFFFFF" opacity="0.55" />
+    <!-- 내부 굴절 하이라이트 (유리 두께감) -->
+    <ellipse cx="150" cy="135" rx="4" ry="8" fill="#FFFFFF" opacity="0.35" />
+
+    <!-- ===== Aibo 블루 눈 (작은 사이즈) ===== -->
+    <g class="moodie-eyes">
+      <!-- LEFT EYE -->
+      <g class="eye eye-left">
+        <!-- 외곽 검정 프레임 -->
+        <circle cx="98" cy="155" r="14" fill="url(#aiboRing)"/>
+        <!-- 블루 아이리스 -->
+        <circle cx="98" cy="155" r="12" fill="url(#aiboIris)" filter="url(#eyeBloom)"/>
+        <!-- 홍채 방사선 -->
+        <g stroke="#1B3A5C" stroke-width="0.4" opacity="0.55" stroke-linecap="round">
+          <line x1="98" y1="145" x2="98" y2="149"/>
+          <line x1="98" y1="161" x2="98" y2="165"/>
+          <line x1="88" y1="155" x2="92" y2="155"/>
+          <line x1="104" y1="155" x2="108" y2="155"/>
+          <line x1="91" y1="148" x2="94" y2="151"/>
+          <line x1="102" y1="159" x2="105" y2="162"/>
+          <line x1="102" y1="148" x2="105" y2="151"/>
+          <line x1="91" y1="162" x2="94" y2="159"/>
+        </g>
+        <!-- 블루 글로우 -->
+        <circle cx="98" cy="152" r="10" fill="url(#aiboGlow)"/>
+        <!-- 동공 -->
+        <circle cx="98" cy="155" r="5" fill="#050B18"/>
+        <!-- 메인 흰 하이라이트 -->
+        <circle cx="94" cy="151" r="3.5" fill="#FFFFFF"/>
+        <!-- 작은 보조 하이라이트 -->
+        <circle cx="101" cy="159" r="1.3" fill="#FFFFFF"/>
+      </g>
+
+      <!-- RIGHT EYE -->
+      <g class="eye eye-right">
+        <circle cx="142" cy="155" r="14" fill="url(#aiboRing)"/>
+        <circle cx="142" cy="155" r="12" fill="url(#aiboIris)" filter="url(#eyeBloom)"/>
+        <g stroke="#1B3A5C" stroke-width="0.4" opacity="0.55" stroke-linecap="round">
+          <line x1="142" y1="145" x2="142" y2="149"/>
+          <line x1="142" y1="161" x2="142" y2="165"/>
+          <line x1="132" y1="155" x2="136" y2="155"/>
+          <line x1="148" y1="155" x2="152" y2="155"/>
+          <line x1="135" y1="148" x2="138" y2="151"/>
+          <line x1="146" y1="159" x2="149" y2="162"/>
+          <line x1="146" y1="148" x2="149" y2="151"/>
+          <line x1="135" y1="162" x2="138" y2="159"/>
+        </g>
+        <circle cx="142" cy="152" r="10" fill="url(#aiboGlow)"/>
+        <circle cx="142" cy="155" r="5" fill="#050B18"/>
+        <circle cx="138" cy="151" r="3.5" fill="#FFFFFF"/>
+        <circle cx="145" cy="159" r="1.3" fill="#FFFFFF"/>
+      </g>
+    </g>
+
+    <!-- ω 입 (3 옆으로) -->
+    <path d="M 108 180 Q 114 188, 120 182 Q 126 188, 132 180"
+          stroke="#1A1A2E" stroke-width="2.4" stroke-linecap="round"
+          stroke-linejoin="round" fill="none" opacity="0.9"/>
+
+    <!-- 분홍 볼 홍조 -->
+    <ellipse cx="78" cy="178" rx="10" ry="6" fill="#FF9EBE" opacity="0.55"/>
+    <ellipse cx="162" cy="178" rx="10" ry="6" fill="#FF9EBE" opacity="0.55"/>
+  </g>
+
+  <!-- 반짝이 -->
+  <g class="moodie-sparkles">
+    <g class="sparkle sparkle-1" transform="translate(36 70)"><path d="M0 -8 L 2 -2 L 8 0 L 2 2 L 0 8 L -2 2 L -8 0 L -2 -2 Z" fill="#FFFFFF" opacity="0.9"/></g>
+    <g class="sparkle sparkle-2" transform="translate(208 110)"><path d="M0 -6 L 1.5 -1.5 L 6 0 L 1.5 1.5 L 0 6 L -1.5 1.5 L -6 0 L -1.5 -1.5 Z" fill="#7FF5FF" opacity="0.9"/></g>
+    <g class="sparkle sparkle-3" transform="translate(196 50)"><path d="M0 -5 L 1.2 -1.2 L 5 0 L 1.2 1.2 L 0 5 L -1.2 1.2 L -5 0 L -1.2 -1.2 Z" fill="#FFE89E" opacity="0.85"/></g>
+    <g class="sparkle sparkle-4" transform="translate(28 168)"><path d="M0 -5 L 1.2 -1.2 L 5 0 L 1.2 1.2 L 0 5 L -1.2 1.2 L -5 0 L -1.2 -1.2 Z" fill="#FFFFFF" opacity="0.8"/></g>
+    <g class="sparkle sparkle-5" transform="translate(214 200)"><path d="M0 -7 L 1.6 -1.6 L 7 0 L 1.6 1.6 L 0 7 L -1.6 1.6 L -7 0 L -1.6 -1.6 Z" fill="#7FF5FF" opacity="0.85"/></g>
+  </g>
+</svg>

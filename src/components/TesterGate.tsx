@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Moodie } from "@/components/Moodie";
+import { Moody } from "@/components/Moody";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
@@ -19,7 +19,7 @@ const VALID_CODES: Record<string, string> = {
   "STAR": "친구 4 (스타)",
 };
 
-const STORAGE_KEY = "moodie_tester_code";
+const STORAGE_KEY = "moody_tester_code";
 
 export const isTesterUnlocked = (): boolean => {
   if (typeof window === "undefined") return false;
@@ -63,13 +63,13 @@ export const TesterGate = ({ children }: TesterGateProps) => {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center px-6 bg-gradient-to-b from-[#050505] via-[#0A1525] to-[#0A0A0A] text-white">
       <div className="w-full max-w-sm flex flex-col items-center text-center animate-fade-up">
-        <Moodie size="large" emotion="default" />
+        <Moody size="large" emotion="default" />
 
         <p className="text-[11px] tracking-[0.3em] uppercase text-[#4AEBFB] font-serif mt-6">
-          Yunseul · Beta
+          MintMoody · Beta
         </p>
         <h1 className="text-3xl font-bold mt-2">
-          마음에 내리는 윤슬
+          마음에 내리는 민트무디
         </h1>
         <p className="text-sm text-white/60 mt-3 leading-relaxed">
           지금은 비공개 베타 기간이에요.<br />
@@ -107,7 +107,7 @@ export const TesterGate = ({ children }: TesterGateProps) => {
         </form>
 
         <p className="text-xs text-white/40 mt-6">
-          코드를 못 받았다면 윤슬 계정 운영자에게 문의해주세요
+          코드를 못 받았다면 민트무디 계정 운영자에게 문의해주세요
         </p>
       </div>
     </div>

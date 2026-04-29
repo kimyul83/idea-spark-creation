@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Lock, Pause, Play, Sparkles } from "lucide-react";
 import { Howl } from "howler";
 import { MonetBackground } from "@/components/MonetBackground";
-import { Moodie } from "@/components/Moodie";
+import { Moody } from "@/components/Moody";
 import { toCdnUrl } from "@/lib/situation-tracks";
 import {
   setMediaSession,
@@ -201,7 +201,7 @@ const Sleep = () => {
     howlRef.current = howl;
 
     setMediaSession(
-      { title: `${track.name} · ${v.name}`, artist: "Yunseul · Sleep", album: formatHours(hours) },
+      { title: `${track.name} · ${v.name}`, artist: "MintMoody · Sleep", album: formatHours(hours) },
       { onPause: () => stopActive() },
     );
 
@@ -246,7 +246,7 @@ const Sleep = () => {
           </h1>
           <p className="text-sm text-foreground/60 mt-1">{greeting}</p>
         </div>
-        <Moodie size={64} emotion="calm" />
+        <Moody size={64} emotion="calm" />
       </header>
 
       <section className="liquid-card p-5">

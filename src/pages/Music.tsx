@@ -221,7 +221,7 @@ const Music = () => {
     setActiveIds((prev) => new Set(prev).add(item.id));
 
     setMediaSession(
-      { title: `${item.label} · ${v.name}`, artist: "Yunseul · Sound Mix", album: item.tag },
+      { title: `${item.label} · ${v.name}`, artist: "MintMoody · Sound Mix", album: item.tag },
       { onPause: () => stopAll() }
     );
     setMediaSessionPlaying(true);
@@ -265,7 +265,7 @@ const Music = () => {
     }
     setActiveIds((prev) => new Set(prev).add(item.id));
     setMediaSession(
-      { title: item.label, artist: "Yunseul · Frequency", album: item.tag },
+      { title: item.label, artist: "MintMoody · Frequency", album: item.tag },
       { onPause: () => stopAll() }
     );
     setMediaSessionPlaying(true);

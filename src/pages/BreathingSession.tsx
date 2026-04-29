@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { ArrowLeft, Pause, Play, Square as Stop, Volume2, VolumeX } from "lucide-react";
 import { MonetBackground } from "@/components/MonetBackground";
-import { Moodie } from "@/components/Moodie";
+import { Moody } from "@/components/Moody";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import {
@@ -295,7 +295,7 @@ const BreathingSession = () => {
         <div className="fixed inset-0 z-50 flex items-center justify-center px-6 bg-foreground/30 backdrop-blur-sm animate-fade-up">
           <div className="liquid-card p-8 w-full max-w-sm text-center">
             <div className="flex justify-center">
-              <Moodie size={96} emotion="happy" />
+              <Moody size={96} emotion="happy" />
             </div>
             <p className="text-[11px] tracking-[0.3em] uppercase text-primary font-serif mt-4">
               Well done

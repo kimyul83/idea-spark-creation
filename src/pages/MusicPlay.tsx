@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { ArrowLeft, Play, Pause, Shuffle, Timer, Info } from "lucide-react";
 import { Howl, Howler } from "howler";
-import { Moodie } from "@/components/Moodie";
+import { Moody } from "@/components/Moody";
 import { getSituationById } from "@/lib/modes";
 import { SITUATION_TRACK_MAP, pickRandom, toCdnUrl } from "@/lib/situation-tracks";
 import { SITUATION_DETAILS } from "@/lib/situation-details";
@@ -154,7 +154,7 @@ const MusicPlay = () => {
     howlRef.current = howl;
 
     setMediaSession(
-      { title: detail.mood, artist: "Yunseul", album: detail.scene },
+      { title: detail.mood, artist: "MintMoody", album: detail.scene },
       {
         onPlay: () => howl.play(),
         onPause: () => howl.pause(),
@@ -199,7 +199,7 @@ const MusicPlay = () => {
       <div className="relative flex-1 flex items-center justify-center z-10">
         <div className="relative">
           <div className={cn("absolute inset-0 rounded-full bg-primary/30 blur-[60px] scale-125", playing && "animate-pulse")} />
-          <Moodie size="large" emotion={playing ? "happy" : "calm"} />
+          <Moody size="large" emotion={playing ? "happy" : "calm"} />
         </div>
       </div>
 

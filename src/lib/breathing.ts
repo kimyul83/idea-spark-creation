@@ -1,11 +1,11 @@
 import {
-  Anchor, Bed, Flame, Heart, Moon, Square, Waves, Wind, Zap,
+  Activity, Anchor, Bed, Brain, Flame, Heart, Leaf, Moon, Mountain, Square, Sparkles, Waves, Wind, Zap,
   type LucideIcon,
 } from "lucide-react";
 
 export type BreathingPhase = "inhale" | "hold1" | "exhale" | "hold2";
 
-export type BreathingCategory = "calm" | "emergency" | "energize" | "sleep";
+export type BreathingCategory = "calm" | "emergency" | "energize" | "health" | "sleep";
 
 /**
  * `cycle`-style patterns (Wim Hof, Kapalabhati, Bhastrika) are rendered with
@@ -206,6 +206,85 @@ export const BREATHING_PATTERNS: BreathingPattern[] = [
     premium: false,
     origin: "초보자 친화적",
   },
+
+  // ── Health (산소·뇌·면역) ─────────────────────────────
+  {
+    id: "diaphragm",
+    title: "횡경막 호흡",
+    subtitle: "들숨 5 · 참기 2 · 날숨 7",
+    description: "복식호흡 · 산소 흡수율 ↑",
+    category: "health",
+    icon: Activity,
+    phases: [
+      { phase: "inhale", seconds: 5 },
+      { phase: "hold1", seconds: 2 },
+      { phase: "exhale", seconds: 7 },
+    ],
+    premium: false,
+    origin: "심박변이도·소화·이완 신경계",
+  },
+  {
+    id: "brain-oxygen",
+    title: "뇌 산소 호흡",
+    subtitle: "들숨 4 · 참기 4 · 날숨 4 · 참기 4 (× 4세트)",
+    description: "전두엽 산소 공급·집중력 향상",
+    category: "health",
+    icon: Brain,
+    phases: [
+      { phase: "inhale", seconds: 4 },
+      { phase: "hold1", seconds: 4 },
+      { phase: "exhale", seconds: 4 },
+      { phase: "hold2", seconds: 4 },
+    ],
+    premium: false,
+    origin: "Box Breath 응용 · 뇌 활성화",
+  },
+  {
+    id: "lung-capacity",
+    title: "폐활량 강화",
+    subtitle: "들숨 6 · 참기 6 · 날숨 6 · 참기 6",
+    description: "폐 확장 · 횡경막 강화",
+    category: "health",
+    icon: Leaf,
+    phases: [
+      { phase: "inhale", seconds: 6 },
+      { phase: "hold1", seconds: 6 },
+      { phase: "exhale", seconds: 6 },
+      { phase: "hold2", seconds: 6 },
+    ],
+    premium: true,
+    origin: "운동선수·가수 폐활량 훈련",
+  },
+  {
+    id: "alpine",
+    title: "고산 적응 호흡",
+    subtitle: "들숨 7 · 날숨 11 (긴 날숨)",
+    description: "혈중 이산화탄소 균형·미주신경",
+    category: "health",
+    icon: Mountain,
+    phases: [
+      { phase: "inhale", seconds: 7 },
+      { phase: "exhale", seconds: 11 },
+    ],
+    premium: true,
+    origin: "Buteyko Method · 산소 효율",
+  },
+  {
+    id: "energy-boost",
+    title: "에너지 충전 호흡",
+    subtitle: "빠른 들숨·날숨 20회 · 참기",
+    description: "산소포화도 ↑ · 즉각 각성",
+    category: "health",
+    icon: Sparkles,
+    style: "cycle",
+    cycleReps: 20,
+    phases: [
+      { phase: "inhale", seconds: 1.2 },
+      { phase: "exhale", seconds: 1.2 },
+    ],
+    premium: true,
+    origin: "Holotropic Breathing 라이트",
+  },
 ];
 
 export const PHASE_LABEL: Record<BreathingPhase, string> = {
@@ -219,10 +298,11 @@ export const CATEGORY_META: Record<
   BreathingCategory,
   { label: string; tagline: string }
 > = {
-  calm:      { label: "진정",     tagline: "Calm Down" },
-  emergency: { label: "긴급 진정", tagline: "Emergency" },
-  energize:  { label: "활력",     tagline: "Energize" },
-  sleep:     { label: "수면",     tagline: "Sleep" },
+  calm:      { label: "진정",       tagline: "Calm Down" },
+  emergency: { label: "긴급 진정",   tagline: "Emergency" },
+  energize:  { label: "활력",       tagline: "Energize" },
+  health:    { label: "건강 호흡",   tagline: "Health" },
+  sleep:     { label: "수면",       tagline: "Sleep" },
 };
 
 export const getPatternById = (id: string) =>

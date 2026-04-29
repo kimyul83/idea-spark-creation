@@ -1,53 +1,69 @@
 {
   "app": { "name": "薄荷穆迪", "character": "穆迪" },
   "tabs": { "home": "首页", "music": "音乐", "breathing": "呼吸", "sleep": "睡眠", "release": "释放", "me": "我的" },
+  "common": {
+    "back": "返回", "close": "关闭", "play": "播放", "pause": "暂停", "stop": "停止",
+    "save": "保存", "cancel": "取消", "confirm": "确认", "next": "下一步",
+    "again": "再来一次", "more": "更多", "loading": "加载中",
+    "error": "错误", "retry": "重试", "delete": "删除",
+    "premium": "高级", "comingSoon": "敬请期待", "coming": "即将"
+  },
   "home": {
     "label": "Home",
-    "greeting": {
-      "deepNight": "夜深了",
-      "morning": "早上好",
-      "day": "今天怎么样",
-      "evening": "宁静的傍晚",
-      "lateNight": "结束这一天"
-    },
+    "greeting": { "deepNight": "夜深了", "morning": "早上好", "day": "今天怎么样", "evening": "宁静的傍晚", "lateNight": "结束这一天" },
     "subtitle": "你需要怎样的时刻?",
     "tapHint": "✨ 点击打招呼",
-    "breathing": "呼吸",
-    "breathingSub": "10种技巧",
-    "release": "释放",
-    "releaseSub": "压力舒缓",
+    "breathing": "呼吸", "breathingSub": "10种技巧",
+    "release": "释放", "releaseSub": "压力舒缓",
     "healingSounds": "疗愈声音"
   },
   "music": {
     "label": "Sound Mix", "title": "声音混音",
     "subtitle": "可同时播放·再次点击同一格切换版本",
-    "selected": "已选 {{count}}",
-    "nature": "自然", "frequencies": "频率",
-    "stopAll": "全部停止",
-    "kinds": "{{count}}种·点击切换"
+    "selected": "已选 {{count}}", "nature": "自然", "frequencies": "频率",
+    "stopAll": "全部停止", "kinds": "{{count}}种·点击切换",
+    "categories": {
+      "waterfall": "瀑布", "rain": "雨声", "ocean": "海浪", "stream": "小溪",
+      "bird": "鸟鸣", "forest": "森林", "meadow": "草地", "wind": "风",
+      "cave": "洞穴", "fire": "篝火", "night": "夜虫", "storm": "暴风雨", "cafe": "咖啡馆"
+    },
+    "freqs": { "brown": "棕色噪音", "pink": "粉色噪音", "white": "白噪音" }
+  },
+  "musicPlay": {
+    "noTrack": "没有可播放的曲目",
+    "loadError": "加载失败: {{err}}",
+    "playError": "播放失败: {{err}} — 请再次点击",
+    "noSituation": "找不到场景"
   },
   "sleep": {
     "label": "Sleep", "title": "舒适睡眠",
-    "greetingLight": "今晚做个好梦 🌙",
-    "greetingDark": "准备好深度休息了吗 🌙",
-    "duration": "睡眠时长",
-    "startsToEnds": "现在开始 → {{time}} 结束",
-    "hours": "小时", "hoursHalf": "小时30分钟",
-    "sounds": "睡眠声音",
+    "greetingLight": "今晚做个好梦 🌙", "greetingDark": "准备好深度休息了吗 🌙",
+    "duration": "睡眠时长", "startsToEnds": "现在开始 → {{time}} 结束",
+    "hours": "小时", "hoursHalf": "小时30分钟", "sounds": "睡眠声音",
     "autoStop": "{{time}} 自动停止·结束前20分钟淡出",
     "tip": "关闭屏幕也会继续播放。代替闹钟,轻柔淡出唤醒您。",
-    "selectVariant": "{{count}}种·按编号选择"
+    "selectVariant": "{{count}}种·按编号选择",
+    "playToast": "{{name}} {{n}} · 播放 {{duration}}",
+    "morningToast": "早上好 ☀️",
+    "categories": {
+      "deep_waves": "深海波浪", "calm_rain": "轻柔细雨", "forest_night": "森林之夜",
+      "stream": "流水声", "forest_day": "森林白天", "mountain": "山中自然",
+      "wind": "风之歌", "fire_asmr": "篝火ASMR", "cafe": "咖啡馆ASMR",
+      "deep_ambience": "深夜冥想", "storm": "喜马拉雅风暴"
+    }
   },
   "breathing": {
     "label": "Breathing", "title": "呼吸法",
     "selectPattern": "选择一种节奏",
-    "selectReps": "重复次数", "reps": "次重复",
-    "selectVisual": "视觉",
-    "start": "开始",
+    "selectReps": "重复次数", "reps": "次", "selectVisual": "视觉", "start": "开始",
     "phases": { "inhale": "吸气", "hold1": "屏住", "exhale": "呼气", "hold2": "屏住" },
+    "categories": { "calm": "镇静", "emergency": "紧急平息", "energize": "活力", "health": "健康呼吸", "sleep": "睡眠" },
     "session": {
-      "back": "返回", "stop": "结束", "pause": "暂停", "resume": "继续",
-      "completed": "完成!", "completedSub": "完成了{{count}}次呼吸",
+      "back": "返回", "muteOn": "语音开", "muteOff": "语音关",
+      "stop": "结束", "pause": "暂停", "resume": "继续",
+      "wellDone": "Well done", "completed": "完成!",
+      "completedSub": "完成了{{count}}次呼吸",
+      "completedHint": "愿您心情更轻松 🌿",
       "again": "再来一次", "home": "回首页", "remaining": "剩余{{count}}次"
     }
   },
@@ -56,27 +72,33 @@
     "intro": "今天想打碎什么?",
     "introSub": "指尖一碰即碎",
     "tabs": { "slice": "切片", "smash": "粉碎", "asmr": "ASMR" },
+    "tagline": { "slice": "切片快感", "smash": "怒气释放", "asmr": "触感ASMR" },
     "tapHint": "点击屏幕即碎·{{count}}次",
     "rateTitle": "感觉舒畅了吗?",
-    "again": "再来一次", "watchOther": "其他视频", "home": "回首页"
+    "rateSub": "今天{{count}}次 · 辛苦了",
+    "again": "再来一次", "watchOther": "其他视频", "home": "回首页",
+    "afterMessage": "碎片化为光回到您身边。",
+    "premiumTitle": "高级视频", "premiumSub": "订阅可解锁全部", "subscribe": "订阅",
+    "favoriteAdded": "已添加到收藏", "loginRequired": "需要登录",
+    "shareUnsupported": "此设备不支持分享"
   },
   "me": {
-    "premiumActive": "高级会员已激活\n感谢您 ✨",
+    "premium": "高级会员已激活",
+    "premiumThanks": "高级会员已激活\n感谢您 ✨",
     "premiumCta": "升级高级会员\n深度呵护自己",
     "premiumDesc": "全部ASMR·无限混音·ADHD·睡眠",
-    "manageSubscription": "管理订阅",
-    "startPremium": "开通高级",
+    "manageSubscription": "管理订阅", "startPremium": "开通高级",
     "sessions": "Sessions", "minutes": "Minutes",
     "guest": "以访客浏览",
-    "premiumSubscription": "高级订阅",
-    "themeSettings": "主题",
-    "favorites": "收藏",
-    "notifications": "通知设置",
-    "language": "语言",
-    "logout": "退出登录",
-    "comingSoon": "敬请期待"
+    "providerGoogle": "Google账户", "providerApple": "Apple账户",
+    "providerEmail": "邮箱", "providerGuest": "访客",
+    "premiumSubscription": "高级订阅", "themeSettings": "主题",
+    "favorites": "收藏", "notifications": "通知设置",
+    "language": "语言", "comingSoon": "敬请期待", "logout": "退出登录",
+    "devToggle": "开发·高级切换", "devDesc": "无需付费解锁全部功能"
   },
   "subscribe": {
+    "label": "Moody+",
     "title": "升级高级会员\n享受更深疗愈",
     "subtitle": "12种情绪·全部呼吸法·ADHD·碎玻璃",
     "active": "高级会员已激活",
@@ -84,8 +106,42 @@
     "perMonth": "/ 月", "perYear": "/ 年",
     "yearlyBadge": "免费两个月·8折优惠",
     "benefitsTitle": "包含权益",
+    "benefits": {
+      "unlimited": { "title": "12小时无限播放", "desc": "免费10分钟试听 · 高级版直到入睡" },
+      "natureMix": { "title": "无限自然声音混音", "desc": "瀑布·雨·海·森林·洞穴等60+变奏解锁" },
+      "breathing": { "title": "全部16种呼吸法", "desc": "Wim Hof · 6-6深呼吸 · 卡帕拉巴提 · 健康呼吸等" },
+      "sleep": { "title": "睡眠声音完整库", "desc": "篝火ASMR · 深夜冥想 · 咖啡馆ASMR + 12小时定时" },
+      "glass": { "title": "全部碎玻璃视频", "desc": "高级切片·粉碎·ASMR共12部" },
+      "adhd": { "title": "ADHD专注模式", "desc": "40Hz伽马波 + 专注声音 · 自动番茄钟" },
+      "noAds": { "title": "无广告·不间断", "desc": "一次开启直到入睡" }
+    },
     "cta": "开通高级",
-    "footer": "随时取消·首7日退款保证"
+    "footer": "随时取消·首7日退款保证",
+    "comingSoon": "支付系统准备中 ✨",
+    "loginRequired": "支付准备中 — 请先登录"
   },
-  "common": { "back": "返回", "close": "关闭", "play": "播放", "pause": "暂停", "stop": "停止" }
+  "timer": {
+    "title": "自动停止定时器", "off": "关闭(无限)",
+    "minutes30": "30分钟", "hour1": "1小时", "hour3": "3小时",
+    "hour6": "6小时", "hour8": "8小时", "hour12": "12小时"
+  },
+  "situations": {
+    "sleep":    { "mood": "深度入眠", "scene": "把头埋进枕头完全放下" },
+    "relax":    { "mood": "水声疗愈", "scene": "让心随流水·小溪·轻柔波浪流走" },
+    "focus":    { "mood": "深度专注", "scene": "在桌前专注一件事" },
+    "mountain": { "mood": "驻足自然", "scene": "森林鸟鸣·风·温暖篝火" },
+    "tropical": { "mood": "草地疗愈", "scene": "夏日草地的鸟鸣·叶子·温暖阳光" },
+    "reading":  { "mood": "安静读书", "scene": "细雨·清晨鸟鸣·温馨咖啡馆" }
+  },
+  "languageSettings": { "label": "Language", "title": "语言" },
+  "tester": {
+    "label": "MintMoody · Beta",
+    "title": "心中的薄荷穆迪",
+    "betaInfo": "目前为非公开测试期。",
+    "inviteOnly": "仅限受邀进入",
+    "codeInput": "4位邀请码",
+    "enter": "进入",
+    "noCode": "未收到邀请码请联系薄荷穆迪管理员",
+    "wrongCode": "邀请码错误"
+  }
 }

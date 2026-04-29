@@ -1,53 +1,70 @@
 {
   "app": { "name": "ミントムーディ", "character": "ムーディ" },
   "tabs": { "home": "ホーム", "music": "音楽", "breathing": "呼吸", "sleep": "睡眠", "release": "解放", "me": "マイ" },
+  "common": {
+    "back": "戻る", "close": "閉じる", "play": "再生", "pause": "停止", "stop": "停止",
+    "save": "保存", "cancel": "キャンセル", "confirm": "確認", "next": "次へ",
+    "again": "もう一度", "more": "もっと", "loading": "読込中",
+    "error": "エラー", "retry": "再試行", "delete": "削除",
+    "premium": "プレミアム", "comingSoon": "準備中", "coming": "近日"
+  },
   "home": {
     "label": "Home",
-    "greeting": {
-      "deepNight": "深い夜です",
-      "morning": "おはようございます",
-      "day": "今日はいかがですか",
-      "evening": "穏やかな夕方です",
-      "lateNight": "一日を締めくくります"
-    },
+    "greeting": { "deepNight": "深い夜です", "morning": "おはようございます", "day": "今日はいかがですか", "evening": "穏やかな夕方です", "lateNight": "一日を締めくくります" },
     "subtitle": "どんな時間が必要ですか?",
-    "tapHint": "✨ タップしてあいさつ",
-    "breathing": "呼吸",
-    "breathingSub": "10種の技法",
-    "release": "解放",
-    "releaseSub": "ストレス解消",
+    "tapHint": "✨ タップでご挨拶",
+    "breathing": "呼吸", "breathingSub": "10種の技法",
+    "release": "解放", "releaseSub": "ストレス解消",
     "healingSounds": "ヒーリングサウンド"
   },
   "music": {
     "label": "Sound Mix", "title": "サウンドミックス",
     "subtitle": "同時再生可・同じタイルをもう一度タップで別バージョン",
-    "selected": "{{count}}個",
-    "nature": "自然", "frequencies": "周波数",
-    "stopAll": "すべて停止",
-    "kinds": "{{count}}種・タップで切替"
+    "selected": "{{count}}個", "nature": "自然", "frequencies": "周波数",
+    "stopAll": "すべて停止", "kinds": "{{count}}種・タップで切替",
+    "categories": {
+      "waterfall": "滝", "rain": "雨音", "ocean": "海の波", "stream": "小川",
+      "bird": "鳥のさえずり", "forest": "森", "meadow": "草原", "wind": "風",
+      "cave": "洞窟", "fire": "焚き火", "night": "夜の虫", "storm": "嵐", "cafe": "カフェ"
+    },
+    "freqs": { "brown": "ブラウンノイズ", "pink": "ピンクノイズ", "white": "ホワイトノイズ" }
+  },
+  "musicPlay": {
+    "noTrack": "再生可能なトラックがありません",
+    "loadError": "読込失敗: {{err}}",
+    "playError": "再生失敗: {{err}} — もう一度タップしてください",
+    "noSituation": "シチュエーションが見つかりません"
   },
   "sleep": {
     "label": "Sleep", "title": "心地よい眠り",
-    "greetingLight": "今夜よい夢を 🌙",
-    "greetingDark": "ぐっすりお休みの準備は? 🌙",
-    "duration": "睡眠時間",
-    "startsToEnds": "今開始 → {{time}} 終了",
+    "greetingLight": "今夜よい夢を 🌙", "greetingDark": "ぐっすりお休みの準備は? 🌙",
+    "duration": "睡眠時間", "startsToEnds": "今開始 → {{time}} 終了",
     "hours": "時間", "hoursHalf": "時間30分",
     "sounds": "睡眠サウンド",
     "autoStop": "{{time}} 自動停止・20分前からフェード",
-    "tip": "画面を消しても再生は続きます。アラームの代わりに優しいフェードアウトでお目覚めです。",
-    "selectVariant": "{{count}}種・番号で選択"
+    "tip": "画面を消しても再生は続きます。アラームの代わりに優しいフェードアウト。",
+    "selectVariant": "{{count}}種・番号で選択",
+    "playToast": "{{name}} {{n}} · {{duration}} 再生",
+    "morningToast": "おはようございます ☀️",
+    "categories": {
+      "deep_waves": "深い波", "calm_rain": "穏やかな雨", "forest_night": "森の夜",
+      "stream": "流れる水", "forest_day": "森の昼", "mountain": "山の自然",
+      "wind": "風の歌", "fire_asmr": "焚き火ASMR", "cafe": "カフェASMR",
+      "deep_ambience": "深夜の瞑想", "storm": "ヒマラヤの嵐"
+    }
   },
   "breathing": {
     "label": "Breathing", "title": "呼吸法",
     "selectPattern": "パターンを選んでください",
-    "selectReps": "繰り返し回数", "reps": "回繰り返し",
-    "selectVisual": "ビジュアル",
-    "start": "始める",
+    "selectReps": "繰り返し回数", "reps": "回", "selectVisual": "ビジュアル", "start": "始める",
     "phases": { "inhale": "吸う", "hold1": "止める", "exhale": "吐く", "hold2": "止める" },
+    "categories": { "calm": "鎮静", "emergency": "緊急鎮静", "energize": "活力", "health": "健康呼吸", "sleep": "睡眠" },
     "session": {
-      "back": "戻る", "stop": "終了", "pause": "一時停止", "resume": "再開",
-      "completed": "完了しました!", "completedSub": "{{count}}回の呼吸が終わりました",
+      "back": "戻る", "muteOn": "音声オン", "muteOff": "音声オフ",
+      "stop": "終了", "pause": "一時停止", "resume": "再開",
+      "wellDone": "Well done", "completed": "完了しました!",
+      "completedSub": "{{count}}回の呼吸が終わりました",
+      "completedHint": "心が軽くなりますように 🌿",
       "again": "もう一度", "home": "ホームへ", "remaining": "残り{{count}}回"
     }
   },
@@ -56,36 +73,77 @@
     "intro": "今日、何を壊したいですか?",
     "introSub": "指先で触れると砕けます",
     "tabs": { "slice": "スライス", "smash": "破壊", "asmr": "ASMR" },
+    "tagline": { "slice": "スライスの快感", "smash": "怒り解放・爆発", "asmr": "タッチASMR" },
     "tapHint": "画面をタップで割れます・{{count}}回",
     "rateTitle": "すっきりしましたか?",
-    "again": "もう一度", "watchOther": "他の映像", "home": "ホームへ"
+    "rateSub": "今日{{count}}個 · お疲れさまでした",
+    "again": "もう一度", "watchOther": "他の映像", "home": "ホームへ",
+    "afterMessage": "破片が光となって戻ります。",
+    "premiumTitle": "プレミアム動画", "premiumSub": "購読でロック解除", "subscribe": "購読",
+    "favoriteAdded": "お気に入りに追加しました",
+    "loginRequired": "ログインが必要です",
+    "shareUnsupported": "この端末ではシェアできません"
   },
   "me": {
-    "premiumActive": "プレミアム有効\nありがとうございます ✨",
+    "premium": "プレミアム有効",
+    "premiumThanks": "プレミアム有効\nありがとうございます ✨",
     "premiumCta": "プレミアムで\nもっと深いケア",
     "premiumDesc": "全ASMR・無制限ミックス・ADHD・睡眠",
-    "manageSubscription": "サブスク管理",
-    "startPremium": "プレミアム開始",
+    "manageSubscription": "サブスク管理", "startPremium": "プレミアム開始",
     "sessions": "Sessions", "minutes": "Minutes",
-    "guest": "ゲストとして閲覧中",
-    "premiumSubscription": "プレミアム購読",
-    "themeSettings": "テーマ",
-    "favorites": "お気に入り",
-    "notifications": "通知設定",
-    "language": "言語",
-    "logout": "ログアウト",
-    "comingSoon": "準備中"
+    "guest": "ゲスト",
+    "providerGoogle": "Googleアカウント", "providerApple": "Appleアカウント",
+    "providerEmail": "メール", "providerGuest": "ゲスト",
+    "premiumSubscription": "プレミアム購読", "themeSettings": "テーマ",
+    "favorites": "お気に入り", "notifications": "通知設定",
+    "language": "言語", "comingSoon": "準備中", "logout": "ログアウト",
+    "devToggle": "開発者・プレミアム切替", "devDesc": "決済なしで全機能解除"
   },
   "subscribe": {
+    "label": "Moody+",
     "title": "プレミアムで\nより深いヒーリングを",
-    "subtitle": "12感情・全呼吸法・ADHD・ガラス割りまで",
+    "subtitle": "12感情・全呼吸法・ADHD・ガラス割り",
     "active": "プレミアム有効",
     "monthly": "月額", "yearly": "年額",
     "perMonth": "/ 月", "perYear": "/ 年",
     "yearlyBadge": "2ヶ月無料・25%オフ",
     "benefitsTitle": "含まれる特典",
+    "benefits": {
+      "unlimited": { "title": "12時間無制限再生", "desc": "無料は10分プレビュー · プレミアムは眠るまで" },
+      "natureMix": { "title": "自然サウンド無制限ミックス", "desc": "滝・雨・海・森・洞窟など60+バリエーション" },
+      "breathing": { "title": "全16呼吸法", "desc": "Wim Hof · 6-6深呼吸 · カパラバティ · 健康呼吸など" },
+      "sleep": { "title": "睡眠サウンドフルライブラリー", "desc": "焚き火ASMR · 深夜瞑想 · カフェASMR + 12時間タイマー" },
+      "glass": { "title": "ガラス割り全動画", "desc": "プレミアム動画12本すべて" },
+      "adhd": { "title": "ADHD集中モード", "desc": "40Hzガンマ波 + 集中サウンド · 自動ポモドーロ" },
+      "noAds": { "title": "広告なし・途切れない再生", "desc": "一度ONで眠るまで" }
+    },
     "cta": "プレミアム開始",
-    "footer": "いつでも解約可・初回7日間返金保証"
+    "footer": "いつでも解約可・初回7日返金",
+    "comingSoon": "決済システム準備中 ✨",
+    "loginRequired": "決済準備中 — ログインしてください"
   },
-  "common": { "back": "戻る", "close": "閉じる", "play": "再生", "pause": "停止", "stop": "停止" }
+  "timer": {
+    "title": "自動停止タイマー", "off": "オフ (無制限)",
+    "minutes30": "30分", "hour1": "1時間", "hour3": "3時間",
+    "hour6": "6時間", "hour8": "8時間", "hour12": "12時間"
+  },
+  "situations": {
+    "sleep":    { "mood": "深い眠り", "scene": "枕に頭をうずめ完全にリリース" },
+    "relax":    { "mood": "水の癒し", "scene": "流れる水・小川・穏やかな波に心を流す" },
+    "focus":    { "mood": "集中する", "scene": "机の前で一つのことに没入" },
+    "mountain": { "mood": "自然に佇む", "scene": "森の鳥・風・温かい焚き火" },
+    "tropical": { "mood": "草原で癒し", "scene": "夏の草原の鳥・葉・温かな日差し" },
+    "reading":  { "mood": "静かな読書", "scene": "弱い雨・夜明けの鳥・居心地のよいカフェ" }
+  },
+  "languageSettings": { "label": "Language", "title": "言語" },
+  "tester": {
+    "label": "MintMoody · Beta",
+    "title": "心に降るミントムーディ",
+    "betaInfo": "現在は非公開ベータ期間です。",
+    "inviteOnly": "招待のみ参加可能",
+    "codeInput": "4文字の招待コード",
+    "enter": "入る",
+    "noCode": "コードがない方はミントムーディ運営者へお問い合わせください",
+    "wrongCode": "無効なコードです"
+  }
 }

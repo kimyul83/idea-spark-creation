@@ -182,7 +182,8 @@ export const Moody = ({
   const dropShadow =
     "drop-shadow(0 0 20px hsl(var(--primary) / 0.45)) drop-shadow(0 10px 24px hsl(var(--glow) / 0.25))";
 
-  // 영상 모드
+  // 영상 모드 — mix-blend-mode: screen 으로 어두운 배경 자동 마스킹.
+  // (Kling 영상이 검정/어두운 배경이면 자동으로 캐릭터만 떠 보임)
   if (videoUrl) {
     return (
       <div className={wrapperClass} style={wrapperStyle} aria-hidden>
@@ -193,7 +194,10 @@ export const Moody = ({
           muted
           playsInline
           className="w-full h-full object-contain"
-          style={{ filter: dropShadow }}
+          style={{
+            filter: dropShadow,
+            mixBlendMode: "screen",
+          }}
         />
       </div>
     );

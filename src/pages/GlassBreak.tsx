@@ -180,7 +180,7 @@ const GlassBreak = () => {
         <button
           onClick={() => navigate(-1)}
           className="w-10 h-10 rounded-full surface flex items-center justify-center"
-          aria-label="뒤로"
+          aria-label={t("common.back")}
         >
           <ArrowLeft className="w-5 h-5 text-foreground" />
         </button>
@@ -278,7 +278,7 @@ const GlassBreak = () => {
                 <button
                   onClick={(e) => { e.stopPropagation(); toggleFav(c); }}
                   className="absolute top-2.5 right-2.5 w-8 h-8 rounded-full bg-black/40 backdrop-blur-sm flex items-center justify-center"
-                  aria-label="즐겨찾기"
+                  aria-label={t("me.favorites")}
                 >
                   <Heart className={cn("w-3.5 h-3.5", isFav ? "fill-rose-400 text-rose-400" : "text-white")} />
                 </button>
@@ -340,7 +340,7 @@ const GlassBreak = () => {
             <button
               onClick={(e) => { e.stopPropagation(); setShowRating(true); }}
               className="pointer-events-auto w-11 h-11 rounded-full bg-white/15 backdrop-blur-md flex items-center justify-center text-white"
-              aria-label="닫기"
+              aria-label={t("common.close")}
             >
               <X className="w-5 h-5" />
             </button>
@@ -348,7 +348,7 @@ const GlassBreak = () => {
             <button
               onClick={(e) => { e.stopPropagation(); toggleFav(active); }}
               className="pointer-events-auto w-11 h-11 rounded-full bg-white/15 backdrop-blur-md flex items-center justify-center text-white"
-              aria-label="즐겨찾기"
+              aria-label={t("me.favorites")}
             >
               <Heart className={cn("w-5 h-5", favorites.has(active.id) ? "fill-rose-400 text-rose-400" : "")} />
             </button>
@@ -357,14 +357,14 @@ const GlassBreak = () => {
                 e.stopPropagation();
                 try {
                   if (navigator.share) {
-                    await navigator.share({ title: active.title, text: "유리 깨기 – Moody" });
+                    await navigator.share({ title: t("glass.title"), text: t("glass.title") + " – MintMoody" });
                   } else {
                     toast.info(t("glass.shareUnsupported"));
                   }
                 } catch { /* user cancel */ }
               }}
               className="pointer-events-auto w-11 h-11 rounded-full bg-white/15 backdrop-blur-md flex items-center justify-center text-white"
-              aria-label="공유"
+              aria-label="Share"
             >
               <Share2 className="w-5 h-5" />
             </button>

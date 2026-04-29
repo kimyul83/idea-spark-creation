@@ -376,7 +376,7 @@ const Music = () => {
                 ? "bg-primary text-primary-foreground"
                 : "liquid-card text-foreground/70",
             )}
-            aria-label="타이머"
+            aria-label={t("timer.title")}
           >
             <Timer className="w-4 h-4" strokeWidth={2} />
             {timerHours != null && (

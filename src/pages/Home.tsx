@@ -25,7 +25,7 @@ const Home = () => {
 
       {/* Hero — 큰 마스코트 + 인사말 (중앙 정렬) */}
       <div className="animate-fade-up flex flex-col items-center text-center">
-        <Moody size={260} />
+        <Moody size={340} />
         <p className="text-[13px] tracking-[0.3em] uppercase text-primary font-serif mt-2">
           Home
         </p>

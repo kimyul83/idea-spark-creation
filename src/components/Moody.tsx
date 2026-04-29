@@ -1,16 +1,6 @@
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
-
-/**
- * 영상은 jsDelivr(20MB 한도) 대신 GitHub raw 사용.
- * 26MB 캐릭터 영상이 jsDelivr 한도 초과해서 403.
- */
-const toVideoCdnUrl = (localPath: string): string => {
-  if (localPath.startsWith("http")) return localPath;
-  const clean = localPath.startsWith("/") ? localPath : `/${localPath}`;
-  const encoded = clean.split("/").map((p, i) => i === 0 ? p : encodeURIComponent(p)).join("/");
-  return `https://raw.githubusercontent.com/kimyul83/idea-spark-creation/main/public${encoded}`;
-};
+import { toCdnUrl } from "@/lib/situation-tracks";
 
 type MoodySize = "small" | "medium" | "large";
 type MoodyFace = "default" | "happy" | "sad" | "surprised" | "calm" | "love" | "focus";
@@ -58,18 +48,19 @@ const FACE_TO_SVG: Record<MoodyFace, string> = {
 
 /**
  * 영상 마스코트 경로.
- * /public/mascot/videos/moody-{face}.mp4 → 있으면 영상, 없으면 default.mp4 사용,
+ * WebM (VP9 alpha) — 투명 배경 지원, 작은 용량 (204KB).
+ * Chrome/Firefox/Safari 16+ 지원.
+ * /public/mascot/videos/moody-{face}.webm 있으면 영상, 없으면 default.webm,
  * 그것도 없으면 SVG 폴백.
- * 단일 캐릭터 영상으로 시작할 거면 default 하나만 채워도 OK.
  */
 const FACE_TO_VIDEO: Record<MoodyFace, string> = {
-  default:   "/mascot/videos/moody-default.mp4",
-  happy:     "/mascot/videos/moody-happy.mp4",
-  sad:       "/mascot/videos/moody-sad.mp4",
-  surprised: "/mascot/videos/moody-surprised.mp4",
-  calm:      "/mascot/videos/moody-calm.mp4",
-  love:      "/mascot/videos/moody-love.mp4",
-  focus:     "/mascot/videos/moody-focus.mp4",
+  default:   "/mascot/videos/moody-default.webm",
+  happy:     "/mascot/videos/moody-happy.webm",
+  sad:       "/mascot/videos/moody-sad.webm",
+  surprised: "/mascot/videos/moody-surprised.webm",
+  calm:      "/mascot/videos/moody-calm.webm",
+  love:      "/mascot/videos/moody-love.webm",
+  focus:     "/mascot/videos/moody-focus.webm",
 };
 
 const svgCache = new Map<string, string>();
@@ -104,7 +95,7 @@ export const Moody = ({
   // 영상 사용 여부 — null=확인중, true/false=확정
   const [videoUrl, setVideoUrl] = useState<string | null>(() => {
     const cached = videoStatus.get(face);
-    if (cached === "ok") return toVideoCdnUrl(videoSrc);
+    if (cached === "ok") return toCdnUrl(videoSrc);
     if (cached === "missing") return null;
     return null;
   });
@@ -120,7 +111,7 @@ export const Moody = ({
       return;
     }
     let cancelled = false;
-    const cdnUrl = toVideoCdnUrl(videoSrc);
+    const cdnUrl = toCdnUrl(videoSrc);
     fetch(cdnUrl, { method: "HEAD" })
       .then((r) => {
         if (cancelled) return;
@@ -130,11 +121,11 @@ export const Moody = ({
         } else {
           // emotion별 영상 없으면 default 영상 시도
           if (face !== "default") {
-            return fetch(toVideoCdnUrl(defaultVideoSrc), { method: "HEAD" }).then((r2) => {
+            return fetch(toCdnUrl(defaultVideoSrc), { method: "HEAD" }).then((r2) => {
               if (cancelled) return;
               if (r2.ok) {
                 videoStatus.set(face, "ok");
-                setVideoUrl(toVideoCdnUrl(defaultVideoSrc));
+                setVideoUrl(toCdnUrl(defaultVideoSrc));
               } else {
                 videoStatus.set(face, "missing");
                 setVideoUrl(null);
@@ -182,8 +173,7 @@ export const Moody = ({
   const dropShadow =
     "drop-shadow(0 0 20px hsl(var(--primary) / 0.45)) drop-shadow(0 10px 24px hsl(var(--glow) / 0.25))";
 
-  // 영상 모드 — mix-blend-mode: screen 으로 어두운 배경 자동 마스킹.
-  // (Kling 영상이 검정/어두운 배경이면 자동으로 캐릭터만 떠 보임)
+  // 영상 모드 — WebM with VP9 alpha. 배경이 진짜 투명이라 blend mode 불필요.
   if (videoUrl) {
     return (
       <div className={wrapperClass} style={wrapperStyle} aria-hidden>
@@ -194,10 +184,7 @@ export const Moody = ({
           muted
           playsInline
           className="w-full h-full object-contain"
-          style={{
-            filter: dropShadow,
-            mixBlendMode: "screen",
-          }}
+          style={{ filter: dropShadow }}
         />
       </div>
     );

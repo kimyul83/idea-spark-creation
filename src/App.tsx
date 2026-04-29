@@ -18,6 +18,7 @@ import GlassBreak from "./pages/GlassBreak";
 import Subscribe from "./pages/Subscribe";
 import AuthCallback from "./pages/AuthCallback";
 import ThemeSettings from "./pages/ThemeSettings";
+import LanguageSettings from "./pages/LanguageSettings";
 import { AppShell } from "./components/AppShell";
 
 const queryClient = new QueryClient();
@@ -37,6 +38,7 @@ const App = () => (
           <Route path="/music/:id" element={<div className="app-shell"><MusicPlay /></div>} />
           <Route path="/subscribe" element={<div className="app-shell"><Subscribe /></div>} />
           <Route path="/settings/theme" element={<ThemeSettings />} />
+          <Route path="/settings/language" element={<div className="app-shell"><LanguageSettings /></div>} />
           <Route element={<AppShell />}>
             <Route path="/home" element={<Home />} />
             <Route path="/music" element={<Music />} />

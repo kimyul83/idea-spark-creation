@@ -1,0 +1,94 @@
+{
+  "app": { "name": "MintMoody", "character": "Moody" },
+  "tabs": {
+    "home": "Home", "music": "Music", "breathing": "Breathe",
+    "sleep": "Sleep", "release": "Release", "me": "Me"
+  },
+  "home": {
+    "label": "Home",
+    "greeting": {
+      "deepNight": "Deep into the night",
+      "morning": "Good morning",
+      "day": "How's your day?",
+      "evening": "A peaceful evening",
+      "lateNight": "Wrapping up the day"
+    },
+    "subtitle": "What kind of moment do you need?",
+    "tapHint": "✨ Tap to greet",
+    "breathing": "Breathing",
+    "breathingSub": "10 techniques",
+    "release": "Release",
+    "releaseSub": "Stress relief",
+    "healingSounds": "Healing Sounds"
+  },
+  "music": {
+    "label": "Sound Mix", "title": "Sound Mix",
+    "subtitle": "Mix freely · Tap a tile again for another version",
+    "selected": "{{count}} selected",
+    "nature": "Nature", "frequencies": "Frequencies",
+    "stopAll": "Stop All",
+    "kinds": "{{count}} variants · tap to switch"
+  },
+  "sleep": {
+    "label": "Sleep", "title": "Restful Sleep",
+    "greetingLight": "Sweet dreams tonight 🌙",
+    "greetingDark": "Ready for deep rest? 🌙",
+    "duration": "Sleep Duration",
+    "startsToEnds": "Now → ends at {{time}}",
+    "hours": "hours", "hoursHalf": "h 30m",
+    "sounds": "Sleep Sounds",
+    "autoStop": "Auto stop at {{time}} · fade 20m before",
+    "tip": "Keep playing even when screen is off. Gentle fade-out instead of an alarm.",
+    "selectVariant": "{{count}} variants · pick by number"
+  },
+  "breathing": {
+    "label": "Breathing", "title": "Breathing",
+    "selectPattern": "Pick a pattern",
+    "selectReps": "Repetitions", "reps": "reps",
+    "selectVisual": "Visual",
+    "start": "Start",
+    "phases": { "inhale": "Inhale", "hold1": "Hold", "exhale": "Exhale", "hold2": "Hold" },
+    "session": {
+      "back": "Back", "stop": "End", "pause": "Pause", "resume": "Resume",
+      "completed": "Done!", "completedSub": "{{count}} cycles completed",
+      "again": "Once more", "home": "Home", "remaining": "{{count}} left"
+    }
+  },
+  "glass": {
+    "label": "Release", "title": "Glass Break", "today": "Today",
+    "intro": "What do you want to break today?",
+    "introSub": "Touch to shatter",
+    "tabs": { "slice": "Slice", "smash": "Smash", "asmr": "ASMR" },
+    "tapHint": "Tap the screen · {{count}} taps",
+    "rateTitle": "Feel any lighter?",
+    "again": "Once more", "watchOther": "Other clips", "home": "Home"
+  },
+  "me": {
+    "premiumActive": "Premium active\nThank you ✨",
+    "premiumCta": "Go Premium\nfor deeper care",
+    "premiumDesc": "All ASMR · unlimited mix · ADHD · Sleep",
+    "manageSubscription": "Manage Subscription",
+    "startPremium": "Start Premium",
+    "sessions": "Sessions", "minutes": "Minutes",
+    "guest": "Browsing as guest",
+    "premiumSubscription": "Premium Subscription",
+    "themeSettings": "Theme",
+    "favorites": "Favorites",
+    "notifications": "Notifications",
+    "language": "Language",
+    "logout": "Sign out",
+    "comingSoon": "Coming soon"
+  },
+  "subscribe": {
+    "title": "Go Premium\nfor deeper healing",
+    "subtitle": "12 moods · all breathwork · ADHD · Glass Break",
+    "active": "Premium active",
+    "monthly": "Monthly", "yearly": "Yearly",
+    "perMonth": "/ mo", "perYear": "/ yr",
+    "yearlyBadge": "2 months free · 25% off",
+    "benefitsTitle": "What's Included",
+    "cta": "Start Premium",
+    "footer": "Cancel anytime · 7-day refund"
+  },
+  "common": { "back": "Back", "close": "Close", "play": "Play", "pause": "Pause", "stop": "Stop" }
+}

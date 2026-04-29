@@ -1,0 +1,74 @@
+{
+  "app": { "name": "MintMoody", "character": "Moody" },
+  "tabs": { "home": "Ana Sayfa", "music": "Müzik", "breathing": "Nefes", "sleep": "Uyku", "release": "Serbest", "me": "Ben" },
+  "home": {
+    "label": "Home",
+    "greeting": { "deepNight": "Derin gece", "morning": "Günaydın", "day": "Gün nasıl?", "evening": "Sakin akşam", "lateNight": "Günü bitiriyoruz" },
+    "subtitle": "Nasıl bir an istersiniz?",
+    "tapHint": "✨ Selamlamak için dokunun",
+    "breathing": "Nefes", "breathingSub": "10 teknik",
+    "release": "Serbest", "releaseSub": "Stres atımı",
+    "healingSounds": "İyileştirici sesler"
+  },
+  "music": {
+    "label": "Sound Mix", "title": "Ses Karışımı",
+    "subtitle": "Özgürce karıştır · başka sürüm için tekrar dokun",
+    "selected": "{{count}} seçili",
+    "nature": "Doğa", "frequencies": "Frekanslar", "stopAll": "Hepsini durdur",
+    "kinds": "{{count}} varyant · dokun"
+  },
+  "sleep": {
+    "label": "Sleep", "title": "Huzurlu Uyku",
+    "greetingLight": "Tatlı rüyalar 🌙", "greetingDark": "Derin dinlenmeye hazır mısın? 🌙",
+    "duration": "Uyku süresi",
+    "startsToEnds": "Şimdi → biter {{time}}",
+    "hours": "saat", "hoursHalf": "s 30dk",
+    "sounds": "Uyku sesleri",
+    "autoStop": "{{time}} dur · 20dk önce fade",
+    "tip": "Ekran kapalıyken bile çalmaya devam eder. Alarm yerine yumuşak fade.",
+    "selectVariant": "{{count}} varyant · numarayla seç"
+  },
+  "breathing": {
+    "label": "Breathing", "title": "Nefes",
+    "selectPattern": "Bir desen seç",
+    "selectReps": "Tekrar", "reps": "tekrar",
+    "selectVisual": "Görsel", "start": "Başla",
+    "phases": { "inhale": "Nefes al", "hold1": "Tut", "exhale": "Nefes ver", "hold2": "Tut" },
+    "session": {
+      "back": "Geri", "stop": "Bitir", "pause": "Duraklat", "resume": "Devam",
+      "completed": "Bitti!", "completedSub": "{{count}} döngü tamamlandı",
+      "again": "Bir kez daha", "home": "Ana sayfa", "remaining": "{{count}} kaldı"
+    }
+  },
+  "glass": {
+    "label": "Release", "title": "Cam Kırma", "today": "Today",
+    "intro": "Bugün neyi kırmak istersin?",
+    "introSub": "Kırmak için dokun",
+    "tabs": { "slice": "Kes", "smash": "Kır", "asmr": "ASMR" },
+    "tapHint": "Ekrana dokun · {{count}}x",
+    "rateTitle": "Daha iyi hissediyor musun?",
+    "again": "Tekrar", "watchOther": "Diğer klipler", "home": "Ana sayfa"
+  },
+  "me": {
+    "premiumActive": "Premium aktif\nTeşekkürler ✨",
+    "premiumCta": "Premium ol\ndaha derin bakım",
+    "premiumDesc": "Tüm ASMR · sınırsız mix · ADHD · Uyku",
+    "manageSubscription": "Abonelik yönet", "startPremium": "Premium başlat",
+    "sessions": "Oturumlar", "minutes": "Dakika",
+    "guest": "Misafir olarak",
+    "premiumSubscription": "Premium abonelik", "themeSettings": "Tema",
+    "favorites": "Favoriler", "notifications": "Bildirimler",
+    "language": "Dil", "logout": "Çıkış", "comingSoon": "Yakında"
+  },
+  "subscribe": {
+    "title": "Premium\ndaha derin iyileşme",
+    "subtitle": "12 ruh hali · tüm nefes · ADHD · Cam",
+    "active": "Premium aktif",
+    "monthly": "Aylık", "yearly": "Yıllık",
+    "perMonth": "/ ay", "perYear": "/ yıl",
+    "yearlyBadge": "2 ay ücretsiz · %25 indirim",
+    "benefitsTitle": "Dahil olanlar", "cta": "Premium başlat",
+    "footer": "İstediğin zaman iptal · 7 gün iade"
+  },
+  "common": { "back": "Geri", "close": "Kapat", "play": "Oynat", "pause": "Duraklat", "stop": "Durdur" }
+}

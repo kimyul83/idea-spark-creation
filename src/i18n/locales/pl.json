@@ -1,0 +1,74 @@
+{
+  "app": { "name": "MintMoody", "character": "Moody" },
+  "tabs": { "home": "Główna", "music": "Muzyka", "breathing": "Oddech", "sleep": "Sen", "release": "Uwolnij", "me": "Ja" },
+  "home": {
+    "label": "Home",
+    "greeting": { "deepNight": "Głęboka noc", "morning": "Dzień dobry", "day": "Jak dzień?", "evening": "Spokojny wieczór", "lateNight": "Kończymy dzień" },
+    "subtitle": "Jakiej chwili potrzebujesz?",
+    "tapHint": "✨ Dotknij, aby przywitać",
+    "breathing": "Oddech", "breathingSub": "10 technik",
+    "release": "Uwolnij", "releaseSub": "Redukcja stresu",
+    "healingSounds": "Dźwięki kojące"
+  },
+  "music": {
+    "label": "Sound Mix", "title": "Mieszanka dźwięków",
+    "subtitle": "Mieszaj · dotknij ponownie dla innej wersji",
+    "selected": "Wybrano {{count}}",
+    "nature": "Natura", "frequencies": "Częstotliwości", "stopAll": "Zatrzymaj wszystko",
+    "kinds": "{{count}} wariantów · dotknij"
+  },
+  "sleep": {
+    "label": "Sleep", "title": "Spokojny sen",
+    "greetingLight": "Słodkich snów 🌙", "greetingDark": "Gotów na odpoczynek? 🌙",
+    "duration": "Czas snu",
+    "startsToEnds": "Teraz → koniec {{time}}",
+    "hours": "godz.", "hoursHalf": "g 30m",
+    "sounds": "Dźwięki na sen",
+    "autoStop": "Stop {{time}} · fade 20m wcześniej",
+    "tip": "Gra dalej z wyłączonym ekranem. Delikatne wyciszenie zamiast alarmu.",
+    "selectVariant": "{{count}} wariantów · wybierz numer"
+  },
+  "breathing": {
+    "label": "Breathing", "title": "Oddech",
+    "selectPattern": "Wybierz wzór",
+    "selectReps": "Powtórzenia", "reps": "powt.",
+    "selectVisual": "Wizualizacja", "start": "Start",
+    "phases": { "inhale": "Wdech", "hold1": "Wstrzymaj", "exhale": "Wydech", "hold2": "Wstrzymaj" },
+    "session": {
+      "back": "Wstecz", "stop": "Koniec", "pause": "Pauza", "resume": "Kontynuuj",
+      "completed": "Gotowe!", "completedSub": "{{count}} cykli zakończonych",
+      "again": "Jeszcze raz", "home": "Główna", "remaining": "Zostało {{count}}"
+    }
+  },
+  "glass": {
+    "label": "Release", "title": "Tłuczenie szkła", "today": "Today",
+    "intro": "Co chcesz dziś rozbić?",
+    "introSub": "Dotknij, aby rozbić",
+    "tabs": { "slice": "Tnij", "smash": "Rozbij", "asmr": "ASMR" },
+    "tapHint": "Dotknij ekranu · {{count}}x",
+    "rateTitle": "Czujesz się lepiej?",
+    "again": "Jeszcze raz", "watchOther": "Inne klipy", "home": "Główna"
+  },
+  "me": {
+    "premiumActive": "Premium aktywny\nDziękujemy ✨",
+    "premiumCta": "Premium\ndla głębszej opieki",
+    "premiumDesc": "Wszystkie ASMR · nielimitowany mix · ADHD · Sen",
+    "manageSubscription": "Zarządzaj subskrypcją", "startPremium": "Rozpocznij Premium",
+    "sessions": "Sesje", "minutes": "Minuty",
+    "guest": "Przeglądasz jako gość",
+    "premiumSubscription": "Subskrypcja Premium", "themeSettings": "Motyw",
+    "favorites": "Ulubione", "notifications": "Powiadomienia",
+    "language": "Język", "logout": "Wyloguj", "comingSoon": "Wkrótce"
+  },
+  "subscribe": {
+    "title": "Premium\ngłębsze uzdrowienie",
+    "subtitle": "12 nastrojów · cały oddech · ADHD · Szkło",
+    "active": "Premium aktywny",
+    "monthly": "Miesięczny", "yearly": "Roczny",
+    "perMonth": "/ mies.", "perYear": "/ rok",
+    "yearlyBadge": "2 miesiące gratis · -25%",
+    "benefitsTitle": "Co zawiera", "cta": "Rozpocznij Premium",
+    "footer": "Anuluj w każdej chwili · 7 dni zwrot"
+  },
+  "common": { "back": "Wstecz", "close": "Zamknij", "play": "Odtwórz", "pause": "Pauza", "stop": "Stop" }
+}

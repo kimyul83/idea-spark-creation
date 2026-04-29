@@ -1,22 +1,20 @@
 import { NavLink } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { Home, Music, Wind, Moon, Sparkles, User } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-/**
- * 하단 탭바 — 6개.
- * 홈/음악/호흡/수면/깨기/마이.
- * 수면: 타이머 설정 + 자장가 사운드 장시간 재생.
- */
-const tabs = [
-  { to: "/home", label: "홈", Icon: Home },
-  { to: "/music", label: "음악", Icon: Music },
-  { to: "/breathing", label: "호흡", Icon: Wind },
-  { to: "/sleep", label: "수면", Icon: Moon },
-  { to: "/release/glass", label: "깨기", Icon: Sparkles },
-  { to: "/me", label: "마이", Icon: User },
-];
+const TAB_DEFS = [
+  { to: "/home",         key: "home",      Icon: Home },
+  { to: "/music",        key: "music",     Icon: Music },
+  { to: "/breathing",    key: "breathing", Icon: Wind },
+  { to: "/sleep",        key: "sleep",     Icon: Moon },
+  { to: "/release/glass",key: "release",   Icon: Sparkles },
+  { to: "/me",           key: "me",        Icon: User },
+] as const;
 
 export const TabBar = () => {
+  const { t } = useTranslation();
+  const tabs = TAB_DEFS.map((tab) => ({ ...tab, label: t(`tabs.${tab.key}`) }));
   return (
     <nav className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[500px] z-40">
       <div

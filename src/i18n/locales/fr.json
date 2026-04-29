@@ -1,0 +1,74 @@
+{
+  "app": { "name": "MintMoody", "character": "Moody" },
+  "tabs": { "home": "Accueil", "music": "Musique", "breathing": "Respirer", "sleep": "Sommeil", "release": "Libérer", "me": "Moi" },
+  "home": {
+    "label": "Home",
+    "greeting": { "deepNight": "Nuit profonde", "morning": "Bonjour", "day": "Comment ça va?", "evening": "Soirée paisible", "lateNight": "Fin de journée" },
+    "subtitle": "Quel moment cherchez-vous?",
+    "tapHint": "✨ Touchez pour saluer",
+    "breathing": "Respiration", "breathingSub": "10 techniques",
+    "release": "Libérer", "releaseSub": "Anti-stress",
+    "healingSounds": "Sons apaisants"
+  },
+  "music": {
+    "label": "Sound Mix", "title": "Mixage sonore",
+    "subtitle": "Mélangez · re-touchez pour autre version",
+    "selected": "{{count}} sélectionnés",
+    "nature": "Nature", "frequencies": "Fréquences", "stopAll": "Tout arrêter",
+    "kinds": "{{count}} variantes · touchez"
+  },
+  "sleep": {
+    "label": "Sleep", "title": "Sommeil paisible",
+    "greetingLight": "Bonne nuit 🌙", "greetingDark": "Prêt à dormir? 🌙",
+    "duration": "Durée du sommeil",
+    "startsToEnds": "Maintenant → fin {{time}}",
+    "hours": "heures", "hoursHalf": "h 30m",
+    "sounds": "Sons pour dormir",
+    "autoStop": "Arrêt {{time}} · fondu 20m avant",
+    "tip": "Continue avec l'écran éteint. Fondu doux au lieu d'une alarme.",
+    "selectVariant": "{{count}} variantes · choisissez par numéro"
+  },
+  "breathing": {
+    "label": "Breathing", "title": "Respiration",
+    "selectPattern": "Choisissez un rythme",
+    "selectReps": "Répétitions", "reps": "rép.",
+    "selectVisual": "Visuel", "start": "Commencer",
+    "phases": { "inhale": "Inspirez", "hold1": "Retenez", "exhale": "Expirez", "hold2": "Retenez" },
+    "session": {
+      "back": "Retour", "stop": "Terminer", "pause": "Pause", "resume": "Continuer",
+      "completed": "Terminé!", "completedSub": "{{count}} cycles complétés",
+      "again": "Encore", "home": "Accueil", "remaining": "{{count}} restants"
+    }
+  },
+  "glass": {
+    "label": "Release", "title": "Casser le verre", "today": "Today",
+    "intro": "Que voulez-vous briser aujourd'hui?",
+    "introSub": "Touchez pour briser",
+    "tabs": { "slice": "Trancher", "smash": "Briser", "asmr": "ASMR" },
+    "tapHint": "Touchez l'écran · {{count}} fois",
+    "rateTitle": "Vous sentez-vous mieux?",
+    "again": "Encore", "watchOther": "Autres vidéos", "home": "Accueil"
+  },
+  "me": {
+    "premiumActive": "Premium actif\nMerci ✨",
+    "premiumCta": "Passez Premium\nsoin plus profond",
+    "premiumDesc": "Tout ASMR · mix illimité · ADHD · Sommeil",
+    "manageSubscription": "Gérer l'abonnement", "startPremium": "Démarrer Premium",
+    "sessions": "Sessions", "minutes": "Minutes",
+    "guest": "Navigation invité",
+    "premiumSubscription": "Abonnement Premium", "themeSettings": "Thème",
+    "favorites": "Favoris", "notifications": "Notifications",
+    "language": "Langue", "logout": "Déconnexion", "comingSoon": "Bientôt"
+  },
+  "subscribe": {
+    "title": "Premium\npour une guérison plus profonde",
+    "subtitle": "12 émotions · toute respiration · ADHD · Verre",
+    "active": "Premium actif",
+    "monthly": "Mensuel", "yearly": "Annuel",
+    "perMonth": "/ mois", "perYear": "/ an",
+    "yearlyBadge": "2 mois offerts · -25%",
+    "benefitsTitle": "Inclus", "cta": "Démarrer Premium",
+    "footer": "Annulez à tout moment · 7 jours remboursés"
+  },
+  "common": { "back": "Retour", "close": "Fermer", "play": "Lire", "pause": "Pause", "stop": "Arrêter" }
+}

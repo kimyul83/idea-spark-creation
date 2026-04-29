@@ -1,0 +1,74 @@
+{
+  "app": { "name": "MintMoody", "character": "Moody" },
+  "tabs": { "home": "Beranda", "music": "Musik", "breathing": "Napas", "sleep": "Tidur", "release": "Lepas", "me": "Saya" },
+  "home": {
+    "label": "Home",
+    "greeting": { "deepNight": "Malam yang dalam", "morning": "Selamat pagi", "day": "Bagaimana harimu?", "evening": "Sore tenang", "lateNight": "Mengakhiri hari" },
+    "subtitle": "Momen seperti apa yang kamu butuhkan?",
+    "tapHint": "✨ Ketuk untuk menyapa",
+    "breathing": "Napas", "breathingSub": "10 teknik",
+    "release": "Lepas", "releaseSub": "Hilangkan stres",
+    "healingSounds": "Suara penyembuh"
+  },
+  "music": {
+    "label": "Sound Mix", "title": "Campuran Suara",
+    "subtitle": "Mix bebas · ketuk lagi untuk versi lain",
+    "selected": "{{count}} dipilih",
+    "nature": "Alam", "frequencies": "Frekuensi", "stopAll": "Hentikan semua",
+    "kinds": "{{count}} varian · ketuk"
+  },
+  "sleep": {
+    "label": "Sleep", "title": "Tidur Tenang",
+    "greetingLight": "Mimpi indah 🌙", "greetingDark": "Siap istirahat? 🌙",
+    "duration": "Durasi tidur",
+    "startsToEnds": "Sekarang → berakhir {{time}}",
+    "hours": "jam", "hoursHalf": "j 30m",
+    "sounds": "Suara tidur",
+    "autoStop": "Berhenti {{time}} · fade 20m sebelumnya",
+    "tip": "Terus diputar meski layar mati. Fade lembut bukan alarm.",
+    "selectVariant": "{{count}} varian · pilih dengan nomor"
+  },
+  "breathing": {
+    "label": "Breathing", "title": "Pernapasan",
+    "selectPattern": "Pilih pola",
+    "selectReps": "Pengulangan", "reps": "kali",
+    "selectVisual": "Visual", "start": "Mulai",
+    "phases": { "inhale": "Tarik napas", "hold1": "Tahan", "exhale": "Buang napas", "hold2": "Tahan" },
+    "session": {
+      "back": "Kembali", "stop": "Selesai", "pause": "Jeda", "resume": "Lanjut",
+      "completed": "Selesai!", "completedSub": "{{count}} siklus selesai",
+      "again": "Sekali lagi", "home": "Beranda", "remaining": "Sisa {{count}}"
+    }
+  },
+  "glass": {
+    "label": "Release", "title": "Pecahkan Kaca", "today": "Today",
+    "intro": "Apa yang ingin kamu pecahkan hari ini?",
+    "introSub": "Sentuh untuk memecahkan",
+    "tabs": { "slice": "Potong", "smash": "Hancurkan", "asmr": "ASMR" },
+    "tapHint": "Ketuk layar · {{count}}x",
+    "rateTitle": "Merasa lebih baik?",
+    "again": "Sekali lagi", "watchOther": "Klip lain", "home": "Beranda"
+  },
+  "me": {
+    "premiumActive": "Premium aktif\nTerima kasih ✨",
+    "premiumCta": "Jadi Premium\nuntuk perawatan lebih dalam",
+    "premiumDesc": "Semua ASMR · mix tak terbatas · ADHD · Tidur",
+    "manageSubscription": "Kelola langganan", "startPremium": "Mulai Premium",
+    "sessions": "Sesi", "minutes": "Menit",
+    "guest": "Menjelajah sebagai tamu",
+    "premiumSubscription": "Langganan Premium", "themeSettings": "Tema",
+    "favorites": "Favorit", "notifications": "Notifikasi",
+    "language": "Bahasa", "logout": "Keluar", "comingSoon": "Segera"
+  },
+  "subscribe": {
+    "title": "Premium\nuntuk penyembuhan lebih dalam",
+    "subtitle": "12 mood · semua napas · ADHD · Pecahkan Kaca",
+    "active": "Premium aktif",
+    "monthly": "Bulanan", "yearly": "Tahunan",
+    "perMonth": "/ bln", "perYear": "/ thn",
+    "yearlyBadge": "2 bulan gratis · diskon 25%",
+    "benefitsTitle": "Yang termasuk", "cta": "Mulai Premium",
+    "footer": "Batal kapan saja · pengembalian 7 hari"
+  },
+  "common": { "back": "Kembali", "close": "Tutup", "play": "Putar", "pause": "Jeda", "stop": "Hentikan" }
+}

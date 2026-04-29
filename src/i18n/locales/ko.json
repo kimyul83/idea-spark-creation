@@ -1,0 +1,135 @@
+{
+  "app": {
+    "name": "민트무디",
+    "character": "무디"
+  },
+  "tabs": {
+    "home": "홈",
+    "music": "음악",
+    "breathing": "호흡",
+    "sleep": "수면",
+    "release": "깨기",
+    "me": "마이"
+  },
+  "home": {
+    "label": "Home",
+    "greeting": {
+      "deepNight": "깊은 밤이에요",
+      "morning": "좋은 아침이에요",
+      "day": "오늘 어때요",
+      "evening": "편안한 저녁이에요",
+      "lateNight": "하루를 마무리해요"
+    },
+    "subtitle": "어떤 시간이 필요해요?",
+    "tapHint": "✨ 탭해서 인사",
+    "breathing": "호흡",
+    "breathingSub": "10가지 기법",
+    "release": "깨기",
+    "releaseSub": "스트레스 해소",
+    "healingSounds": "힐링 사운드"
+  },
+  "music": {
+    "label": "Sound Mix",
+    "title": "사운드 믹스",
+    "subtitle": "동시 재생 가능 · 같은 타일 다시 누르면 다른 버전",
+    "selected": "{{count}}개",
+    "nature": "자연",
+    "frequencies": "주파수",
+    "stopAll": "전체 정지",
+    "kinds": "{{count}}종 · 탭으로 변경"
+  },
+  "sleep": {
+    "label": "Sleep",
+    "title": "편안한 수면",
+    "greetingLight": "오늘 밤 좋은 꿈 꾸세요 🌙",
+    "greetingDark": "푹 주무실 준비 되셨나요 🌙",
+    "duration": "수면 시간",
+    "startsToEnds": "지금 시작 → {{time}} 종료",
+    "hours": "시간",
+    "hoursHalf": "시간 30분",
+    "sounds": "수면 사운드",
+    "autoStop": "{{time}} 자동 종료 · 20분 전부터 페이드",
+    "tip": "화면을 꺼도 재생은 유지돼요. 알람 대신 부드러운 페이드 아웃으로 깨워드려요.",
+    "selectVariant": "{{count}}종 · 번호로 선택"
+  },
+  "breathing": {
+    "label": "Breathing",
+    "title": "호흡법",
+    "selectPattern": "패턴을 골라보세요",
+    "selectReps": "반복 횟수",
+    "reps": "회 반복",
+    "selectVisual": "비주얼",
+    "start": "시작하기",
+    "phases": {
+      "inhale": "들이마시기",
+      "hold1": "참기",
+      "exhale": "내쉬기",
+      "hold2": "참기"
+    },
+    "session": {
+      "back": "뒤로",
+      "stop": "종료",
+      "pause": "일시정지",
+      "resume": "이어하기",
+      "completed": "완료했어요!",
+      "completedSub": "{{count}}회 호흡을 마쳤어요",
+      "again": "한 번 더",
+      "home": "홈으로",
+      "remaining": "{{count}}회 남음"
+    }
+  },
+  "glass": {
+    "label": "Release",
+    "title": "유리 깨기",
+    "today": "Today",
+    "intro": "오늘, 무엇을 깨부수고 싶나요?",
+    "introSub": "손끝으로 만지면 깨져요",
+    "tabs": {
+      "slice": "슬라이싱",
+      "smash": "파괴",
+      "asmr": "ASMR"
+    },
+    "tapHint": "화면을 탭하면 깨집니다 · {{count}}회",
+    "rateTitle": "시원한 기분이 들었나요?",
+    "again": "한 번 더",
+    "watchOther": "다른 영상",
+    "home": "홈으로"
+  },
+  "me": {
+    "premiumActive": "프리미엄 활성\n감사해요 ✨",
+    "premiumCta": "프리미엄으로\n더 깊이 돌봐요",
+    "premiumDesc": "전체 ASMR · 무제한 믹스 · ADHD · 수면",
+    "manageSubscription": "구독 관리",
+    "startPremium": "프리미엄 시작",
+    "sessions": "Sessions",
+    "minutes": "Minutes",
+    "guest": "게스트로 둘러보는 중",
+    "premiumSubscription": "프리미엄 구독",
+    "themeSettings": "테마 설정",
+    "favorites": "즐겨찾기",
+    "notifications": "알림 설정",
+    "language": "언어",
+    "logout": "로그아웃",
+    "comingSoon": "준비 중"
+  },
+  "subscribe": {
+    "title": "프리미엄으로\n더 깊은 힐링을",
+    "subtitle": "12가지 감정 · 모든 호흡법 · ADHD · 유리 깨기까지",
+    "active": "프리미엄 활성",
+    "monthly": "월 구독",
+    "yearly": "연 구독",
+    "perMonth": "/ 월",
+    "perYear": "/ 년",
+    "yearlyBadge": "두 달 무료 · 25% 할인",
+    "benefitsTitle": "포함된 혜택",
+    "cta": "프리미엄 시작하기",
+    "footer": "언제든 해지 가능 · 첫 7일 환불 보장"
+  },
+  "common": {
+    "back": "뒤로",
+    "close": "닫기",
+    "play": "재생",
+    "pause": "정지",
+    "stop": "정지"
+  }
+}

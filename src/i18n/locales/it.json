@@ -1,0 +1,74 @@
+{
+  "app": { "name": "MintMoody", "character": "Moody" },
+  "tabs": { "home": "Home", "music": "Musica", "breathing": "Respira", "sleep": "Sonno", "release": "Rilascia", "me": "Io" },
+  "home": {
+    "label": "Home",
+    "greeting": { "deepNight": "Notte profonda", "morning": "Buongiorno", "day": "Come va?", "evening": "Sera tranquilla", "lateNight": "Fine giornata" },
+    "subtitle": "Che momento ti serve?",
+    "tapHint": "✨ Tocca per salutare",
+    "breathing": "Respiro", "breathingSub": "10 tecniche",
+    "release": "Rilascia", "releaseSub": "Anti-stress",
+    "healingSounds": "Suoni rilassanti"
+  },
+  "music": {
+    "label": "Sound Mix", "title": "Mix sonoro",
+    "subtitle": "Mixa · tocca di nuovo per altra versione",
+    "selected": "{{count}} selezionati",
+    "nature": "Natura", "frequencies": "Frequenze", "stopAll": "Ferma tutto",
+    "kinds": "{{count}} varianti · tocca"
+  },
+  "sleep": {
+    "label": "Sleep", "title": "Sonno sereno",
+    "greetingLight": "Sogni d'oro 🌙", "greetingDark": "Pronto per riposare? 🌙",
+    "duration": "Durata del sonno",
+    "startsToEnds": "Ora → fine {{time}}",
+    "hours": "ore", "hoursHalf": "h 30m",
+    "sounds": "Suoni per dormire",
+    "autoStop": "Stop {{time}} · fade 20m prima",
+    "tip": "Continua con schermo spento. Fade dolce invece della sveglia.",
+    "selectVariant": "{{count}} varianti · scegli per numero"
+  },
+  "breathing": {
+    "label": "Breathing", "title": "Respirazione",
+    "selectPattern": "Scegli uno schema",
+    "selectReps": "Ripetizioni", "reps": "rip.",
+    "selectVisual": "Visivo", "start": "Inizia",
+    "phases": { "inhale": "Inspira", "hold1": "Trattieni", "exhale": "Espira", "hold2": "Trattieni" },
+    "session": {
+      "back": "Indietro", "stop": "Fine", "pause": "Pausa", "resume": "Riprendi",
+      "completed": "Completato!", "completedSub": "{{count}} cicli completati",
+      "again": "Ancora", "home": "Home", "remaining": "{{count}} rimasti"
+    }
+  },
+  "glass": {
+    "label": "Release", "title": "Rompi vetro", "today": "Today",
+    "intro": "Cosa vuoi rompere oggi?",
+    "introSub": "Tocca per rompere",
+    "tabs": { "slice": "Taglia", "smash": "Rompi", "asmr": "ASMR" },
+    "tapHint": "Tocca lo schermo · {{count}}x",
+    "rateTitle": "Ti senti meglio?",
+    "again": "Ancora", "watchOther": "Altri clip", "home": "Home"
+  },
+  "me": {
+    "premiumActive": "Premium attivo\nGrazie ✨",
+    "premiumCta": "Diventa Premium\nper cura profonda",
+    "premiumDesc": "Tutto ASMR · mix illimitato · ADHD · Sonno",
+    "manageSubscription": "Gestisci abbonamento", "startPremium": "Inizia Premium",
+    "sessions": "Sessioni", "minutes": "Minuti",
+    "guest": "Visita come ospite",
+    "premiumSubscription": "Abbonamento Premium", "themeSettings": "Tema",
+    "favorites": "Preferiti", "notifications": "Notifiche",
+    "language": "Lingua", "logout": "Esci", "comingSoon": "Prossimamente"
+  },
+  "subscribe": {
+    "title": "Premium\nper guarigione profonda",
+    "subtitle": "12 emozioni · tutto respiro · ADHD · Vetro",
+    "active": "Premium attivo",
+    "monthly": "Mensile", "yearly": "Annuale",
+    "perMonth": "/ mese", "perYear": "/ anno",
+    "yearlyBadge": "2 mesi gratis · -25%",
+    "benefitsTitle": "Cosa include", "cta": "Inizia Premium",
+    "footer": "Annulla in qualsiasi momento · 7 giorni rimborso"
+  },
+  "common": { "back": "Indietro", "close": "Chiudi", "play": "Play", "pause": "Pausa", "stop": "Stop" }
+}

@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
   CloudRain, Waves, Trees, Mountain, Wind, Bird, Flame, Moon,
   Droplets, Sun, Music2, Heart, Brain,
@@ -224,6 +225,7 @@ const TIMER_OPTIONS = [
 ];
 
 const Music = () => {
+  const { t } = useTranslation();
   const [activeIds, setActiveIds] = useState<Set<string>>(new Set());
   const [versionIdx, setVersionIdx] = useState<Record<string, number>>({});
   const [timerHours, setTimerHours] = useState<number | null>(null);
@@ -356,13 +358,13 @@ const Music = () => {
       <div className="flex items-end justify-between animate-fade-up">
         <div>
           <p className="chip-primary text-[14px] tracking-[0.3em] uppercase font-serif">
-            Sound Mix
+            {t("music.label")}
           </p>
           <h1 className="text-[28px] font-bold text-foreground mt-1 leading-tight">
-            사운드 믹스
+            {t("music.title")}
           </h1>
           <p className="text-[15px] text-foreground/65 mt-1.5">
-            동시 재생 가능 · 같은 타일 다시 누르면 다른 버전
+            {t("music.subtitle")}
           </p>
         </div>
         <div className="flex items-center gap-2">
@@ -384,14 +386,14 @@ const Music = () => {
             )}
           </button>
           <span className="text-sm text-foreground/55 font-medium">
-            {activeIds.size}개
+            {t("music.selected", { count: activeIds.size })}
           </span>
         </div>
       </div>
 
       <section className="mt-7">
         <h2 className="section-title mb-3 px-1">
-          자연
+          {t("music.nature")}
         </h2>
         <div className="grid grid-cols-3 gap-3">
           {NATURE.map((item) => (
@@ -409,7 +411,7 @@ const Music = () => {
 
       <section className="mt-7">
         <h2 className="section-title mb-3 px-1">
-          주파수
+          {t("music.frequencies")}
         </h2>
         <div className="grid grid-cols-3 gap-3">
           {FREQUENCIES.map((item) => (
@@ -428,7 +430,7 @@ const Music = () => {
           onClick={stopAll}
           className="mt-7 liquid-card w-full py-3.5 text-base font-semibold text-primary"
         >
-          전체 정지
+          {t("music.stopAll")}
         </button>
       )}
 
@@ -441,7 +443,7 @@ const Music = () => {
             className="liquid-card w-full max-w-sm p-5"
             onClick={(e) => e.stopPropagation()}
           >
-            <p className="section-title mb-3">자동 정지 타이머</p>
+            <p className="section-title mb-3">{t("timer.title")}</p>
             <div className="grid gap-2">
               {TIMER_OPTIONS.map((opt) => (
                 <button

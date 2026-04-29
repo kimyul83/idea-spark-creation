@@ -63,7 +63,7 @@ export const TesterGate = ({ children }: TesterGateProps) => {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center px-6 bg-gradient-to-b from-[#050505] via-[#0A1525] to-[#0A0A0A] text-white">
       <div className="w-full max-w-sm flex flex-col items-center text-center animate-fade-up">
-        <Moody size="large" emotion="default" />
+        <Moody size={320} emotion="default" />
 
         <p className="text-[11px] tracking-[0.3em] uppercase text-[#4AEBFB] font-serif mt-6">
           MintMoody · Beta

@@ -13,7 +13,7 @@ const Index = () => {
   return (
     <div className="app-shell flex items-center justify-center relative min-h-[100dvh]">
       <MonetBackground intensity="strong" />
-      <Moody size="large" />
+      <Moody size={320} />
     </div>
   );
 };

@@ -91,7 +91,7 @@ const Me = () => {
         <MenuRow
           Icon={Palette}
           label="테마 설정"
-          right={<span className="text-[11px] text-primary/80 font-medium truncate max-w-[140px]">{themeLabel}</span>}
+          right={<span className="text-[11px] text-primary font-medium truncate max-w-[140px]">{themeLabel}</span>}
           onClick={() => navigate("/settings/theme")}
         />
         <MenuRow Icon={Heart} label="즐겨찾기" tag="준비 중" />

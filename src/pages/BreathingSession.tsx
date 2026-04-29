@@ -297,7 +297,7 @@ const BreathingSession = () => {
             <div className="flex justify-center">
               <Moody size={180} emotion="happy" />
             </div>
-            <p className="text-[11px] tracking-[0.3em] uppercase text-primary font-serif mt-4">
+            <p className="text-[13px] tracking-[0.3em] uppercase text-primary font-bold font-serif mt-4">
               Well done
             </p>
             <h2 className="text-2xl font-bold text-foreground mt-2">완료했어요!</h2>

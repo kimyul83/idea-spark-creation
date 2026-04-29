@@ -238,7 +238,7 @@ const Sleep = () => {
 
       <header className="flex items-start justify-between">
         <div>
-          <p className="text-[13px] tracking-[0.3em] uppercase text-primary font-serif">
+          <p className="text-[15px] tracking-[0.3em] uppercase text-primary font-bold font-serif">
             Sleep
           </p>
           <h1 className="text-[30px] font-bold text-foreground mt-1 leading-tight">
@@ -251,7 +251,7 @@ const Sleep = () => {
 
       <section className="liquid-card p-5">
         <div className="flex items-baseline justify-between">
-          <p className="text-[11px] uppercase tracking-[0.2em] text-primary/80 font-serif">
+          <p className="text-[11px] uppercase tracking-[0.2em] text-primary font-serif">
             수면 시간
           </p>
           <p className="text-[11px] text-foreground/55">
@@ -294,7 +294,7 @@ const Sleep = () => {
       </section>
 
       <section className="space-y-2">
-        <p className="text-[11px] uppercase tracking-[0.2em] text-primary/80 font-serif mb-1 px-1">
+        <p className="text-[11px] uppercase tracking-[0.2em] text-primary font-serif mb-1 px-1">
           수면 사운드
         </p>
         <div className="grid gap-2">

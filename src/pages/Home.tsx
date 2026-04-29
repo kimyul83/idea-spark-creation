@@ -52,7 +52,7 @@ const Home = () => {
             ✨ Tap to greet
           </p>
         )}
-        <p className="text-[13px] tracking-[0.3em] uppercase text-primary font-serif mt-1">
+        <p className="text-[15px] tracking-[0.3em] uppercase text-primary font-bold font-serif mt-1">
           Home
         </p>
         <h1 className="text-[30px] font-bold text-foreground mt-1 leading-tight">
@@ -93,7 +93,7 @@ const Home = () => {
 
       {/* 6개 상황 */}
       <section className="mt-7">
-        <h2 className="text-[13px] tracking-[0.2em] uppercase text-primary/80 font-serif mb-3 px-1">
+        <h2 className="text-[13px] tracking-[0.2em] uppercase text-primary font-serif mb-3 px-1">
           힐링 사운드
         </h2>
         <div className="space-y-2.5">

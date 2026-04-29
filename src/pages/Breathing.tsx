@@ -78,7 +78,7 @@ const Breathing = () => {
           </button>
         )}
         <div className="flex-1">
-          <p className="text-[11px] tracking-[0.3em] uppercase text-primary font-serif">Breathing</p>
+          <p className="text-[13px] tracking-[0.3em] uppercase text-primary font-bold font-serif">Breathing</p>
           <h1 className="text-[26px] font-bold text-foreground mt-1 leading-tight">
             {step === "pick"   && "호흡 가이드"}
             {step === "reps"   && picked?.title}

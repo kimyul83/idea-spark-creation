@@ -287,7 +287,7 @@ const Music = () => {
 
       <div className="flex items-end justify-between animate-fade-up">
         <div>
-          <p className="text-[13px] tracking-[0.3em] uppercase text-primary font-serif">
+          <p className="text-[15px] tracking-[0.3em] uppercase text-primary font-bold font-serif">
             Sound Mix
           </p>
           <h1 className="text-[28px] font-bold text-foreground mt-1 leading-tight">
@@ -303,7 +303,7 @@ const Music = () => {
       </div>
 
       <section className="mt-7">
-        <h2 className="text-[13px] tracking-[0.2em] uppercase text-primary/80 font-serif mb-3 px-1">
+        <h2 className="text-[13px] tracking-[0.2em] uppercase text-primary font-serif mb-3 px-1">
           자연
         </h2>
         <div className="grid grid-cols-3 gap-3">
@@ -321,7 +321,7 @@ const Music = () => {
       </section>
 
       <section className="mt-7">
-        <h2 className="text-[13px] tracking-[0.2em] uppercase text-primary/80 font-serif mb-3 px-1">
+        <h2 className="text-[13px] tracking-[0.2em] uppercase text-primary font-serif mb-3 px-1">
           주파수
         </h2>
         <div className="grid grid-cols-3 gap-3">
@@ -378,7 +378,7 @@ const NatureTile = ({ item, active, versionIdx, onClick, onStop }: NatureTilePro
         <span className="text-[14px] font-bold text-foreground text-center leading-tight">
           {item.label}
         </span>
-        <span className="text-[10.5px] text-primary/70 tracking-wide text-center leading-tight line-clamp-1">
+        <span className="text-[12px] text-primary font-semibold tracking-wide text-center leading-tight line-clamp-1">
           {item.tag}
         </span>
         {hasMultiple && (
@@ -425,7 +425,7 @@ const FreqTile = ({ item, active, onClick }: FreqTileProps) => {
       <span className="text-[14px] font-bold text-foreground text-center leading-tight">
         {item.label}
       </span>
-      <span className="text-[10.5px] text-primary/70 tracking-wide text-center leading-tight">
+      <span className="text-[12px] text-primary font-semibold tracking-wide text-center leading-tight">
         {item.tag}
       </span>
     </button>

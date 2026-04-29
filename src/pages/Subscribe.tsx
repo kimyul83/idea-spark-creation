@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { ArrowLeft, Check, Crown, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { MonetBackground } from "@/components/MonetBackground";
@@ -19,33 +20,26 @@ interface Plan {
   badge?: string;
 }
 
-const PLANS: Plan[] = [
-  { id: "monthly", label: "월 구독", price: "₩5,500", per: "/ 월" },
-  { id: "yearly",  label: "연 구독", price: "₩49,000", per: "/ 년", badge: "두 달 무료 · 25% 할인" },
-];
-
-const BENEFITS = [
-  { title: "12시간 무제한 재생", desc: "무료는 10분 미리듣기 · 프리미엄은 잠들 때까지" },
-  { title: "12가지 자연 사운드 · 무제한 믹스", desc: "폭포·빗소리·바다·숲·동굴 등 변주 50종 이상 잠금 해제" },
-  { title: "모든 호흡법 10가지", desc: "Wim Hof · 6-6 깊은 호흡 · 카팔라바티 등 프리미엄 패턴" },
-  { title: "수면 사운드 풀 라이브러리", desc: "모닥불 ASMR · 깊은 밤 명상 등 6개 트랙 22변주 + 최대 12시간 타이머" },
-  { title: "유리 깨기 모든 영상", desc: "프리미엄 슬라이싱·파괴·ASMR 영상 12개 전부" },
-  { title: "ADHD 집중 모드", desc: "40Hz 감마파 + 집중 사운드 · 뽀모도로 자동" },
-  { title: "광고 없음 · 끊김 없는 재생", desc: "잠들 때까지 한 번 켜면 끝" },
-];
+const BENEFIT_KEYS = ["unlimited", "natureMix", "breathing", "sleep", "glass", "adhd", "noAds"] as const;
 
 const Subscribe = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const { user } = useAuth();
   const { refresh, isPremium } = usePremium();
   const [picked, setPicked] = useState<PlanId>("yearly");
 
+  const PLANS: Plan[] = [
+    { id: "monthly", label: t("subscribe.monthly"), price: "₩5,500", per: t("subscribe.perMonth") },
+    { id: "yearly",  label: t("subscribe.yearly"),  price: "₩49,000", per: t("subscribe.perYear"), badge: t("subscribe.yearlyBadge") },
+  ];
+
   const handleSubscribe = async () => {
     if (!user) {
-      alert("결제 시스템 준비 중 — 로그인 후 이용 가능해요");
+      alert(t("subscribe.loginRequired"));
       return;
     }
-    alert("결제 시스템 준비 중이에요 ✨\n곧 만나보실 수 있어요!");
+    alert(t("subscribe.comingSoon"));
     await supabase.from("profiles").update({ subscription_type: picked }).eq("id", user.id);
     refresh();
   };
@@ -73,16 +67,16 @@ const Subscribe = () => {
         <div className="flex justify-center">
           <Moody size="large" emotion="happy" />
         </div>
-        <p className="mt-3 chip-primary text-[12px] tracking-[0.3em] uppercase font-serif">Moody+</p>
-        <h1 className="text-[28px] font-bold text-foreground mt-2 leading-tight">
-          프리미엄으로<br />더 깊은 힐링을
+        <p className="mt-3 chip-primary text-[12px] tracking-[0.3em] uppercase font-serif">{t("subscribe.label")}</p>
+        <h1 className="text-[28px] font-bold text-foreground mt-2 leading-tight whitespace-pre-line">
+          {t("subscribe.title")}
         </h1>
         <p className="text-sm text-foreground/60 mt-2">
-          12가지 감정 · 모든 호흡법 · ADHD · 유리 깨기까지
+          {t("subscribe.subtitle")}
         </p>
         {isPremium && (
           <p className="mt-3 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-primary text-primary-foreground text-xs font-semibold">
-            <Crown className="w-3.5 h-3.5" /> 프리미엄 활성
+            <Crown className="w-3.5 h-3.5" /> {t("subscribe.active")}
           </p>
         )}
       </div>
@@ -131,18 +125,22 @@ const Subscribe = () => {
 
       {/* benefits */}
       <div className="px-5 mt-6">
-        <p className="text-[15px] tracking-[0.3em] uppercase text-primary font-bold font-serif mb-3 px-1">
-          포함된 혜택
+        <p className="section-title mb-3 px-1">
+          {t("subscribe.benefitsTitle")}
         </p>
         <div className="space-y-2">
-          {BENEFITS.map((b) => (
-            <div key={b.title} className="liquid-card p-4 flex items-start gap-3">
+          {BENEFIT_KEYS.map((key) => (
+            <div key={key} className="liquid-card p-4 flex items-start gap-3">
               <div className="w-9 h-9 rounded-full bg-primary/15 flex items-center justify-center shrink-0 mt-0.5">
                 <Check className="w-5 h-5 text-primary" strokeWidth={2.4} />
               </div>
               <div className="flex-1">
-                <p className="font-bold text-foreground text-[15px] leading-snug">{b.title}</p>
-                <p className="text-[12px] text-foreground/65 mt-0.5 leading-snug">{b.desc}</p>
+                <p className="font-bold text-foreground text-[15px] leading-snug">
+                  {t(`subscribe.benefits.${key}.title`)}
+                </p>
+                <p className="text-[12px] text-foreground/65 mt-0.5 leading-snug">
+                  {t(`subscribe.benefits.${key}.desc`)}
+                </p>
               </div>
             </div>
           ))}
@@ -155,10 +153,10 @@ const Subscribe = () => {
           onClick={handleSubscribe}
           className="w-full h-16 rounded-2xl bg-primary hover:bg-primary/90 text-primary-foreground text-base font-bold shadow-card"
         >
-          <Crown className="w-5 h-5 mr-2" /> 프리미엄 시작하기
+          <Crown className="w-5 h-5 mr-2" /> {t("subscribe.cta")}
         </Button>
         <p className="text-center text-[11px] text-foreground/40 mt-3">
-          언제든 해지 가능 · 첫 7일 환불 보장
+          {t("subscribe.footer")}
         </p>
       </div>
     </div>

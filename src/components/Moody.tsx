@@ -1,6 +1,16 @@
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
-import { toCdnUrl } from "@/lib/situation-tracks";
+
+/**
+ * 영상은 jsDelivr(20MB 한도) 대신 GitHub raw 사용.
+ * 26MB 캐릭터 영상이 jsDelivr 한도 초과해서 403.
+ */
+const toVideoCdnUrl = (localPath: string): string => {
+  if (localPath.startsWith("http")) return localPath;
+  const clean = localPath.startsWith("/") ? localPath : `/${localPath}`;
+  const encoded = clean.split("/").map((p, i) => i === 0 ? p : encodeURIComponent(p)).join("/");
+  return `https://raw.githubusercontent.com/kimyul83/idea-spark-creation/main/public${encoded}`;
+};
 
 type MoodySize = "small" | "medium" | "large";
 type MoodyFace = "default" | "happy" | "sad" | "surprised" | "calm" | "love" | "focus";
@@ -94,7 +104,7 @@ export const Moody = ({
   // 영상 사용 여부 — null=확인중, true/false=확정
   const [videoUrl, setVideoUrl] = useState<string | null>(() => {
     const cached = videoStatus.get(face);
-    if (cached === "ok") return toCdnUrl(videoSrc);
+    if (cached === "ok") return toVideoCdnUrl(videoSrc);
     if (cached === "missing") return null;
     return null;
   });
@@ -110,7 +120,7 @@ export const Moody = ({
       return;
     }
     let cancelled = false;
-    const cdnUrl = toCdnUrl(videoSrc);
+    const cdnUrl = toVideoCdnUrl(videoSrc);
     fetch(cdnUrl, { method: "HEAD" })
       .then((r) => {
         if (cancelled) return;
@@ -120,11 +130,11 @@ export const Moody = ({
         } else {
           // emotion별 영상 없으면 default 영상 시도
           if (face !== "default") {
-            return fetch(toCdnUrl(defaultVideoSrc), { method: "HEAD" }).then((r2) => {
+            return fetch(toVideoCdnUrl(defaultVideoSrc), { method: "HEAD" }).then((r2) => {
               if (cancelled) return;
               if (r2.ok) {
                 videoStatus.set(face, "ok");
-                setVideoUrl(toCdnUrl(defaultVideoSrc));
+                setVideoUrl(toVideoCdnUrl(defaultVideoSrc));
               } else {
                 videoStatus.set(face, "missing");
                 setVideoUrl(null);

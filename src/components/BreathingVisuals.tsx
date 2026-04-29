@@ -54,8 +54,10 @@ const phaseFullness = (phase: BreathingPhase) => {
 
 const Bubble = ({ phase, seconds, mini }: Omit<BreathingVisualProps, "visual">) => {
   const full = phaseFullness(phase);
-  const scale = 0.55 + full * 0.55; // 0.55 → 1.10
-  const lift  = (full - 0.5) * (mini ? 6 : 24); // gentle up/down
+  // 더 다이내믹: 들숨에 크게 부풀고 (0.45 → 1.35), 날숨에 살짝 작아짐
+  const scale = 0.45 + full * 0.90;
+  const lift  = (full - 0.5) * (mini ? 12 : 60); // 위로 더 떠오름
+  const glow  = 0.3 + full * 0.7;                // 빛도 같이 커짐
   const dur   = `${seconds}s`;
 
   return (
@@ -65,35 +67,67 @@ const Bubble = ({ phase, seconds, mini }: Omit<BreathingVisualProps, "visual">) 
       )}
       aria-hidden
     >
+      {/* 외곽 글로우 헤일로 — 들숨에 폭발적으로 펴짐 */}
+      <div
+        className="absolute rounded-full"
+        style={{
+          width: mini ? 80 : 320,
+          height: mini ? 80 : 320,
+          background:
+            "radial-gradient(circle, hsl(var(--primary) / 0.5) 0%, hsl(var(--accent) / 0.25) 40%, transparent 70%)",
+          filter: "blur(20px)",
+          transform: `scale(${0.6 + full * 0.7})`,
+          opacity: glow * 0.8,
+          transition: `transform ${dur} cubic-bezier(0.4,0,0.2,1), opacity ${dur} ease`,
+        }}
+      />
+      {/* 메인 버블 */}
       <div
         className="absolute rounded-full"
         style={{
           width: mini ? 64 : 260,
           height: mini ? 64 : 260,
           background:
-            "radial-gradient(circle at 35% 30%, hsl(0 0% 100% / 0.85) 0%, hsl(var(--primary) / 0.55) 55%, hsl(var(--accent) / 0.4) 100%)",
+            "radial-gradient(circle at 35% 30%, hsl(0 0% 100% / 0.95) 0%, hsl(var(--primary) / 0.65) 55%, hsl(var(--accent) / 0.5) 100%)",
           boxShadow:
-            "inset 0 6px 18px hsl(0 0% 100% / 0.45), 0 20px 50px -15px hsl(var(--primary) / 0.45)",
+            "inset 0 8px 24px hsl(0 0% 100% / 0.5), 0 25px 60px -15px hsl(var(--primary) / 0.6), 0 0 80px hsl(var(--glow) / 0.4)",
           transform: `translateY(${-lift}px) scale(${scale})`,
           opacity: 0.4 + full * 0.6,
-          transition: `transform ${dur} cubic-bezier(0.4,0,0.2,1), opacity ${dur} ease`,
+          transition: `transform ${dur} cubic-bezier(0.4,0,0.2,1), opacity ${dur} ease, box-shadow ${dur} ease`,
         }}
       />
-      {/* highlight droplet */}
+      {/* highlight droplet — 들숨에 미끄러져 올라가는 광택 */}
       <div
         className="absolute rounded-full"
         style={{
-          width: mini ? 10 : 40,
-          height: mini ? 10 : 40,
-          top: mini ? "22%" : "26%",
-          left: mini ? "30%" : "34%",
+          width: mini ? 14 : 56,
+          height: mini ? 14 : 56,
+          top: mini ? "20%" : "22%",
+          left: mini ? "28%" : "32%",
           background:
-            "radial-gradient(circle, hsl(0 0% 100% / 0.85) 0%, transparent 70%)",
+            "radial-gradient(circle, hsl(0 0% 100% / 0.95) 0%, transparent 70%)",
           filter: "blur(2px)",
-          transform: `scale(${0.6 + full * 0.6})`,
-          transition: `transform ${dur} ease`,
+          transform: `translateY(${-lift * 0.6}px) scale(${0.5 + full * 0.8})`,
+          opacity: 0.6 + full * 0.4,
+          transition: `transform ${dur} cubic-bezier(0.4,0,0.2,1), opacity ${dur} ease`,
         }}
       />
+      {/* 작은 sparkle 입자 — 들숨에 위로 흩날림 */}
+      {!mini && full > 0.3 && Array.from({ length: 5 }).map((_, i) => (
+        <span
+          key={i}
+          className="absolute rounded-full bg-white"
+          style={{
+            width: 4, height: 4,
+            left: `${30 + i * 10}%`,
+            top: "60%",
+            opacity: full * 0.7,
+            transform: `translateY(-${full * (60 + i * 20)}px) scale(${0.5 + full})`,
+            transition: `transform ${dur} cubic-bezier(0.4,0,0.2,1), opacity ${dur} ease`,
+            boxShadow: "0 0 8px hsl(var(--glow))",
+          }}
+        />
+      ))}
     </div>
   );
 };

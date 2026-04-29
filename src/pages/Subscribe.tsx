@@ -20,8 +20,8 @@ interface Plan {
 }
 
 const PLANS: Plan[] = [
-  { id: "monthly", label: "월 구독", price: "₩4,900", per: "/ 월" },
-  { id: "yearly",  label: "연 구독", price: "₩29,000", per: "/ 년", badge: "최대 60% 할인" },
+  { id: "monthly", label: "월 구독", price: "₩5,500", per: "/ 월" },
+  { id: "yearly",  label: "연 구독", price: "₩49,000", per: "/ 년", badge: "두 달 무료 · 25% 할인" },
 ];
 
 interface Row { feature: string; endel: string; moody: string; highlight?: boolean }
@@ -31,7 +31,7 @@ const COMPARE: Row[] = [
   { feature: "호흡법 영상", endel: "✗", moody: "✓" },
   { feature: "ADHD 모드", endel: "부분", moody: "전용" },
   { feature: "유리 깨기", endel: "✗", moody: "✓", highlight: true },
-  { feature: "월 구독", endel: "₩28,000", moody: "₩4,900", highlight: true },
+  { feature: "월 구독", endel: "₩10,900", moody: "₩5,500", highlight: true },
 ];
 
 const Subscribe = () => {

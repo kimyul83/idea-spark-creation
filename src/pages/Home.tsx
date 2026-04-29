@@ -1,5 +1,6 @@
 import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { Wind, Sparkles, ChevronRight } from "lucide-react";
 import { MonetBackground } from "@/components/MonetBackground";
 import { Moody } from "@/components/Moody";
@@ -9,20 +10,18 @@ import { SITUATION_DETAILS } from "@/lib/situation-details";
 const TAP_REACTIONS = ["happy", "love", "surprised", "calm", "focus"] as const;
 const REACTION_DURATION_MS = 1800;
 
-/**
- * Home — 6개 핵심 상황 + 호흡·깨기 빠른 진입.
- * 무디 탭하면 표정이 바뀜 (귀여운 인터랙션).
- */
 const Home = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const hour = new Date().getHours();
 
-  const greeting =
-    hour < 6 ? "깊은 밤이에요" :
-    hour < 11 ? "좋은 아침이에요" :
-    hour < 18 ? "오늘 어때요" :
-    hour < 22 ? "편안한 저녁이에요" :
-    "하루를 마무리해요";
+  const greetingKey =
+    hour < 6 ? "deepNight" :
+    hour < 11 ? "morning" :
+    hour < 18 ? "day" :
+    hour < 22 ? "evening" :
+    "lateNight";
+  const greeting = t(`home.greeting.${greetingKey}`);
 
   const [moodyEmotion, setMoodyEmotion] = useState<typeof TAP_REACTIONS[number] | "default">("default");
   const [tapHint, setTapHint] = useState(true);
@@ -49,17 +48,17 @@ const Home = () => {
         <Moody size={300} emotion={moodyEmotion} onClick={handleMoodyTap} />
         {tapHint && (
           <p className="text-[10px] text-primary/60 tracking-widest uppercase animate-pulse">
-            ✨ Tap to greet
+            {t("home.tapHint")}
           </p>
         )}
-        <p className="text-[15px] tracking-[0.3em] uppercase text-primary font-bold font-serif mt-1">
-          Home
+        <p className="chip-primary text-[12px] tracking-[0.3em] uppercase font-serif mt-1">
+          {t("home.label")}
         </p>
-        <h1 className="text-[30px] font-bold text-foreground mt-1 leading-tight">
+        <h1 className="text-[30px] font-bold text-foreground mt-2 leading-tight">
           {greeting}
         </h1>
         <p className="text-base text-foreground/65 mt-1">
-          어떤 시간이 필요해요?
+          {t("home.subtitle")}
         </p>
       </div>
 
@@ -73,8 +72,8 @@ const Home = () => {
             <Wind className="w-6 h-6 text-primary" strokeWidth={1.6} />
           </div>
           <div className="flex-1 min-w-0">
-            <p className="font-bold text-foreground text-[16px]">호흡</p>
-            <p className="text-[12px] text-foreground/60 mt-0.5">10 Techniques</p>
+            <p className="font-bold text-foreground text-[16px]">{t("home.breathing")}</p>
+            <p className="text-[12px] text-foreground/60 mt-0.5">{t("home.breathingSub")}</p>
           </div>
         </button>
         <button
@@ -85,15 +84,15 @@ const Home = () => {
             <Sparkles className="w-6 h-6 text-primary" strokeWidth={1.6} />
           </div>
           <div className="flex-1 min-w-0">
-            <p className="font-bold text-foreground text-[16px]">깨기</p>
-            <p className="text-[12px] text-foreground/60 mt-0.5">스트레스 해소</p>
+            <p className="font-bold text-foreground text-[16px]">{t("home.release")}</p>
+            <p className="text-[12px] text-foreground/60 mt-0.5">{t("home.releaseSub")}</p>
           </div>
         </button>
       </div>
 
       {/* 6개 상황 */}
       <section className="mt-7">
-        <h2 className="section-title mb-3 px-1">힐링 사운드</h2>
+        <h2 className="section-title mb-3 px-1">{t("home.healingSounds")}</h2>
         <div className="space-y-2.5">
           {MUSIC_SITUATIONS.map((s) => (
             <SituationRow key={s.id} id={s.id} icon={s.icon} onClick={() => navigate(`/music/${s.id}`)} />

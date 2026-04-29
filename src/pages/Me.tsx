@@ -5,7 +5,9 @@ import { useAuth } from "@/hooks/useAuth";
 import { Moody } from "@/components/Moody";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
-import { LogOut, Crown, Heart, Bell, ChevronRight, FlaskConical, Palette } from "lucide-react";
+import { LogOut, Crown, Heart, Bell, ChevronRight, FlaskConical, Palette, Languages } from "lucide-react";
+import { useTranslation } from "react-i18next";
+import { SUPPORTED_LANGUAGES } from "@/i18n/config";
 import { MonetBackground } from "@/components/MonetBackground";
 import { usePremium } from "@/hooks/usePremium";
 import { useTheme } from "@/contexts/ThemeContext";
@@ -16,6 +18,10 @@ const Me = () => {
   const navigate = useNavigate();
   const { isPremium, devPremium, setDev } = usePremium();
   const { label: themeLabel } = useTheme();
+  const { t, i18n } = useTranslation();
+  const currentLangLabel = SUPPORTED_LANGUAGES.find(
+    (l) => l.code === (i18n.resolvedLanguage ?? i18n.language)
+  )?.name ?? "한국어";
 
   useEffect(() => {
     if (!user) return;
@@ -85,17 +91,23 @@ const Me = () => {
       <div className="grid gap-2">
         <MenuRow
           Icon={Crown}
-          label="프리미엄 구독"
+          label={t("me.premiumSubscription")}
           onClick={() => navigate("/subscribe")}
         />
         <MenuRow
           Icon={Palette}
-          label="테마 설정"
+          label={t("me.themeSettings")}
           right={<span className="text-[11px] text-primary font-medium truncate max-w-[140px]">{themeLabel}</span>}
           onClick={() => navigate("/settings/theme")}
         />
-        <MenuRow Icon={Heart} label="즐겨찾기" tag="준비 중" />
-        <MenuRow Icon={Bell}  label="알림 설정" tag="준비 중" />
+        <MenuRow
+          Icon={Languages}
+          label={t("me.language")}
+          right={<span className="text-[11px] text-primary font-medium truncate max-w-[140px]">{currentLangLabel}</span>}
+          onClick={() => navigate("/settings/language")}
+        />
+        <MenuRow Icon={Heart} label={t("me.favorites")} tag={t("me.comingSoon")} />
+        <MenuRow Icon={Bell}  label={t("me.notifications")} tag={t("me.comingSoon")} />
       </div>
 
       {/* DEV toggle — extra subtle */}

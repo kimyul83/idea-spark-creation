@@ -1,0 +1,74 @@
+{
+  "app": { "name": "MintMoody", "character": "Moody" },
+  "tabs": { "home": "الرئيسية", "music": "موسيقى", "breathing": "التنفس", "sleep": "النوم", "release": "تحرر", "me": "أنا" },
+  "home": {
+    "label": "Home",
+    "greeting": { "deepNight": "ليلة عميقة", "morning": "صباح الخير", "day": "كيف يومك؟", "evening": "مساء هادئ", "lateNight": "نختم اليوم" },
+    "subtitle": "أي لحظة تحتاج؟",
+    "tapHint": "✨ المس للتحية",
+    "breathing": "التنفس", "breathingSub": "10 تقنيات",
+    "release": "تحرر", "releaseSub": "تخفيف التوتر",
+    "healingSounds": "أصوات شفائية"
+  },
+  "music": {
+    "label": "Sound Mix", "title": "مزج الأصوات",
+    "subtitle": "امزج بحرية · المس مرة أخرى لنسخة أخرى",
+    "selected": "محدد {{count}}",
+    "nature": "الطبيعة", "frequencies": "الترددات", "stopAll": "إيقاف الكل",
+    "kinds": "{{count}} أنواع · المس للتبديل"
+  },
+  "sleep": {
+    "label": "Sleep", "title": "نوم هادئ",
+    "greetingLight": "أحلام سعيدة 🌙", "greetingDark": "جاهز للراحة العميقة؟ 🌙",
+    "duration": "مدة النوم",
+    "startsToEnds": "الآن → ينتهي {{time}}",
+    "hours": "ساعات", "hoursHalf": "س 30د",
+    "sounds": "أصوات النوم",
+    "autoStop": "يتوقف {{time}} · تلاشي قبل 20د",
+    "tip": "يستمر التشغيل حتى بإغلاق الشاشة. تلاشي ناعم بدلاً من المنبه.",
+    "selectVariant": "{{count}} أنواع · اختر بالرقم"
+  },
+  "breathing": {
+    "label": "Breathing", "title": "التنفس",
+    "selectPattern": "اختر نمطًا",
+    "selectReps": "التكرارات", "reps": "تكرار",
+    "selectVisual": "البصري", "start": "ابدأ",
+    "phases": { "inhale": "شهيق", "hold1": "احبس", "exhale": "زفير", "hold2": "احبس" },
+    "session": {
+      "back": "رجوع", "stop": "إنهاء", "pause": "إيقاف مؤقت", "resume": "استئناف",
+      "completed": "تم!", "completedSub": "{{count}} دورات مكتملة",
+      "again": "مرة أخرى", "home": "الرئيسية", "remaining": "متبقي {{count}}"
+    }
+  },
+  "glass": {
+    "label": "Release", "title": "كسر الزجاج", "today": "Today",
+    "intro": "ماذا تريد أن تكسر اليوم؟",
+    "introSub": "المس للكسر",
+    "tabs": { "slice": "قطع", "smash": "تحطيم", "asmr": "ASMR" },
+    "tapHint": "المس الشاشة · {{count}}x",
+    "rateTitle": "هل تشعر بتحسن؟",
+    "again": "مرة أخرى", "watchOther": "مقاطع أخرى", "home": "الرئيسية"
+  },
+  "me": {
+    "premiumActive": "Premium نشط\nشكرًا لك ✨",
+    "premiumCta": "Premium\nلرعاية أعمق",
+    "premiumDesc": "كل ASMR · مزج لا محدود · ADHD · النوم",
+    "manageSubscription": "إدارة الاشتراك", "startPremium": "بدء Premium",
+    "sessions": "جلسات", "minutes": "دقائق",
+    "guest": "تصفح كضيف",
+    "premiumSubscription": "اشتراك Premium", "themeSettings": "السمة",
+    "favorites": "المفضلة", "notifications": "الإشعارات",
+    "language": "اللغة", "logout": "تسجيل الخروج", "comingSoon": "قريبًا"
+  },
+  "subscribe": {
+    "title": "Premium\nلشفاء أعمق",
+    "subtitle": "12 مزاج · كل التنفس · ADHD · الزجاج",
+    "active": "Premium نشط",
+    "monthly": "شهري", "yearly": "سنوي",
+    "perMonth": "/ شهر", "perYear": "/ سنة",
+    "yearlyBadge": "شهران مجانًا · خصم 25%",
+    "benefitsTitle": "ما يشمله", "cta": "بدء Premium",
+    "footer": "إلغاء في أي وقت · استرداد 7 أيام"
+  },
+  "common": { "back": "رجوع", "close": "إغلاق", "play": "تشغيل", "pause": "إيقاف", "stop": "إيقاف" }
+}

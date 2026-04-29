@@ -1,0 +1,74 @@
+{
+  "app": { "name": "MintMoody", "character": "Moody" },
+  "tabs": { "home": "Trang chủ", "music": "Nhạc", "breathing": "Thở", "sleep": "Giấc ngủ", "release": "Giải tỏa", "me": "Tôi" },
+  "home": {
+    "label": "Home",
+    "greeting": { "deepNight": "Đêm sâu", "morning": "Chào buổi sáng", "day": "Hôm nay thế nào?", "evening": "Buổi tối bình yên", "lateNight": "Kết thúc ngày" },
+    "subtitle": "Bạn cần khoảnh khắc nào?",
+    "tapHint": "✨ Chạm để chào",
+    "breathing": "Thở", "breathingSub": "10 kỹ thuật",
+    "release": "Giải tỏa", "releaseSub": "Giảm căng thẳng",
+    "healingSounds": "Âm thanh chữa lành"
+  },
+  "music": {
+    "label": "Sound Mix", "title": "Trộn Âm Thanh",
+    "subtitle": "Trộn tự do · chạm lại để đổi phiên bản",
+    "selected": "Đã chọn {{count}}",
+    "nature": "Thiên nhiên", "frequencies": "Tần số", "stopAll": "Dừng tất cả",
+    "kinds": "{{count}} biến thể · chạm"
+  },
+  "sleep": {
+    "label": "Sleep", "title": "Giấc ngủ êm",
+    "greetingLight": "Chúc ngủ ngon 🌙", "greetingDark": "Sẵn sàng nghỉ ngơi? 🌙",
+    "duration": "Thời gian ngủ",
+    "startsToEnds": "Bây giờ → kết thúc {{time}}",
+    "hours": "giờ", "hoursHalf": "g 30p",
+    "sounds": "Âm thanh ngủ",
+    "autoStop": "Dừng {{time}} · fade 20p trước",
+    "tip": "Tiếp tục phát khi tắt màn hình. Fade nhẹ thay vì báo thức.",
+    "selectVariant": "{{count}} biến thể · chọn theo số"
+  },
+  "breathing": {
+    "label": "Breathing", "title": "Thở",
+    "selectPattern": "Chọn nhịp",
+    "selectReps": "Số lần", "reps": "lần",
+    "selectVisual": "Hình ảnh", "start": "Bắt đầu",
+    "phases": { "inhale": "Hít vào", "hold1": "Giữ", "exhale": "Thở ra", "hold2": "Giữ" },
+    "session": {
+      "back": "Quay lại", "stop": "Kết thúc", "pause": "Tạm dừng", "resume": "Tiếp tục",
+      "completed": "Hoàn thành!", "completedSub": "{{count}} chu kỳ hoàn tất",
+      "again": "Một lần nữa", "home": "Trang chủ", "remaining": "Còn {{count}}"
+    }
+  },
+  "glass": {
+    "label": "Release", "title": "Đập kính", "today": "Today",
+    "intro": "Hôm nay bạn muốn đập gì?",
+    "introSub": "Chạm để vỡ",
+    "tabs": { "slice": "Cắt", "smash": "Đập", "asmr": "ASMR" },
+    "tapHint": "Chạm màn hình · {{count}}x",
+    "rateTitle": "Thấy nhẹ nhõm hơn?",
+    "again": "Lại", "watchOther": "Clip khác", "home": "Trang chủ"
+  },
+  "me": {
+    "premiumActive": "Premium đang hoạt động\nCảm ơn ✨",
+    "premiumCta": "Nâng cấp Premium\nchăm sóc sâu hơn",
+    "premiumDesc": "Toàn ASMR · trộn không giới hạn · ADHD · Ngủ",
+    "manageSubscription": "Quản lý đăng ký", "startPremium": "Bắt đầu Premium",
+    "sessions": "Phiên", "minutes": "Phút",
+    "guest": "Khách",
+    "premiumSubscription": "Đăng ký Premium", "themeSettings": "Chủ đề",
+    "favorites": "Yêu thích", "notifications": "Thông báo",
+    "language": "Ngôn ngữ", "logout": "Đăng xuất", "comingSoon": "Sắp có"
+  },
+  "subscribe": {
+    "title": "Premium\nchữa lành sâu hơn",
+    "subtitle": "12 cảm xúc · toàn bộ thở · ADHD · Đập kính",
+    "active": "Premium đang hoạt động",
+    "monthly": "Hàng tháng", "yearly": "Hàng năm",
+    "perMonth": "/ tháng", "perYear": "/ năm",
+    "yearlyBadge": "2 tháng miễn phí · giảm 25%",
+    "benefitsTitle": "Bao gồm", "cta": "Bắt đầu Premium",
+    "footer": "Hủy bất cứ lúc nào · hoàn tiền 7 ngày"
+  },
+  "common": { "back": "Quay lại", "close": "Đóng", "play": "Phát", "pause": "Tạm dừng", "stop": "Dừng" }
+}

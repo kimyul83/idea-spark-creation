@@ -1,0 +1,74 @@
+{
+  "app": { "name": "MintMoody", "character": "Moody" },
+  "tabs": { "home": "หน้าแรก", "music": "เพลง", "breathing": "หายใจ", "sleep": "นอน", "release": "ปล่อย", "me": "ฉัน" },
+  "home": {
+    "label": "Home",
+    "greeting": { "deepNight": "คืนลึก", "morning": "อรุณสวัสดิ์", "day": "วันนี้เป็นไง?", "evening": "เย็นที่สงบ", "lateNight": "จบวัน" },
+    "subtitle": "ต้องการช่วงเวลาแบบไหน?",
+    "tapHint": "✨ แตะเพื่อทักทาย",
+    "breathing": "หายใจ", "breathingSub": "10 เทคนิค",
+    "release": "ปล่อย", "releaseSub": "คลายเครียด",
+    "healingSounds": "เสียงเยียวยา"
+  },
+  "music": {
+    "label": "Sound Mix", "title": "ผสมเสียง",
+    "subtitle": "ผสมได้อิสระ · แตะอีกครั้งเพื่อเปลี่ยนเวอร์ชัน",
+    "selected": "เลือก {{count}}",
+    "nature": "ธรรมชาติ", "frequencies": "ความถี่", "stopAll": "หยุดทั้งหมด",
+    "kinds": "{{count}} แบบ · แตะ"
+  },
+  "sleep": {
+    "label": "Sleep", "title": "นอนสบาย",
+    "greetingLight": "ฝันดี 🌙", "greetingDark": "พร้อมพักผ่อน? 🌙",
+    "duration": "ระยะเวลานอน",
+    "startsToEnds": "ตอนนี้ → จบ {{time}}",
+    "hours": "ชั่วโมง", "hoursHalf": "ชม 30น",
+    "sounds": "เสียงนอน",
+    "autoStop": "หยุด {{time}} · fade 20น ก่อน",
+    "tip": "เล่นต่อเนื่องแม้ปิดจอ. fade นุ่มแทนนาฬิกาปลุก.",
+    "selectVariant": "{{count}} แบบ · เลือกตามเลข"
+  },
+  "breathing": {
+    "label": "Breathing", "title": "การหายใจ",
+    "selectPattern": "เลือกรูปแบบ",
+    "selectReps": "จำนวนรอบ", "reps": "ครั้ง",
+    "selectVisual": "ภาพ", "start": "เริ่ม",
+    "phases": { "inhale": "หายใจเข้า", "hold1": "กลั้น", "exhale": "หายใจออก", "hold2": "กลั้น" },
+    "session": {
+      "back": "ย้อนกลับ", "stop": "จบ", "pause": "พัก", "resume": "ต่อ",
+      "completed": "เสร็จ!", "completedSub": "{{count}} รอบเสร็จ",
+      "again": "อีกครั้ง", "home": "หน้าแรก", "remaining": "เหลือ {{count}}"
+    }
+  },
+  "glass": {
+    "label": "Release", "title": "ทุบกระจก", "today": "Today",
+    "intro": "วันนี้อยากทุบอะไร?",
+    "introSub": "แตะเพื่อแตก",
+    "tabs": { "slice": "หั่น", "smash": "ทุบ", "asmr": "ASMR" },
+    "tapHint": "แตะหน้าจอ · {{count}}x",
+    "rateTitle": "รู้สึกดีขึ้นไหม?",
+    "again": "อีกครั้ง", "watchOther": "คลิปอื่น", "home": "หน้าแรก"
+  },
+  "me": {
+    "premiumActive": "Premium ใช้งาน\nขอบคุณ ✨",
+    "premiumCta": "อัป Premium\nดูแลลึกขึ้น",
+    "premiumDesc": "ASMR ทั้งหมด · มิกซ์ไม่จำกัด · ADHD · นอน",
+    "manageSubscription": "จัดการสมาชิก", "startPremium": "เริ่ม Premium",
+    "sessions": "เซสชัน", "minutes": "นาที",
+    "guest": "เยี่ยมชมแบบ guest",
+    "premiumSubscription": "สมาชิก Premium", "themeSettings": "ธีม",
+    "favorites": "รายการโปรด", "notifications": "การแจ้งเตือน",
+    "language": "ภาษา", "logout": "ออกจากระบบ", "comingSoon": "เร็วๆ นี้"
+  },
+  "subscribe": {
+    "title": "Premium\nเยียวยาลึกขึ้น",
+    "subtitle": "12 อารมณ์ · ทุกการหายใจ · ADHD · ทุบกระจก",
+    "active": "Premium ใช้งาน",
+    "monthly": "รายเดือน", "yearly": "รายปี",
+    "perMonth": "/ เดือน", "perYear": "/ ปี",
+    "yearlyBadge": "ฟรี 2 เดือน · ลด 25%",
+    "benefitsTitle": "ที่รวมอยู่", "cta": "เริ่ม Premium",
+    "footer": "ยกเลิกได้ตลอด · คืนเงิน 7 วัน"
+  },
+  "common": { "back": "ย้อนกลับ", "close": "ปิด", "play": "เล่น", "pause": "พัก", "stop": "หยุด" }
+}

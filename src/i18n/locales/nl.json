@@ -1,0 +1,74 @@
+{
+  "app": { "name": "MintMoody", "character": "Moody" },
+  "tabs": { "home": "Home", "music": "Muziek", "breathing": "Adem", "sleep": "Slaap", "release": "Loslaten", "me": "Ik" },
+  "home": {
+    "label": "Home",
+    "greeting": { "deepNight": "Diep in de nacht", "morning": "Goedemorgen", "day": "Hoe gaat je dag?", "evening": "Rustige avond", "lateNight": "Dag afsluiten" },
+    "subtitle": "Welk moment heb je nodig?",
+    "tapHint": "✨ Tik om te begroeten",
+    "breathing": "Adem", "breathingSub": "10 technieken",
+    "release": "Loslaten", "releaseSub": "Stressverlichting",
+    "healingSounds": "Helende geluiden"
+  },
+  "music": {
+    "label": "Sound Mix", "title": "Geluidsmix",
+    "subtitle": "Vrij mixen · tik opnieuw voor andere versie",
+    "selected": "{{count}} geselecteerd",
+    "nature": "Natuur", "frequencies": "Frequenties", "stopAll": "Alles stoppen",
+    "kinds": "{{count}} varianten · tik"
+  },
+  "sleep": {
+    "label": "Sleep", "title": "Rustige slaap",
+    "greetingLight": "Welterusten 🌙", "greetingDark": "Klaar voor diepe rust? 🌙",
+    "duration": "Slaapduur",
+    "startsToEnds": "Nu → eindigt {{time}}",
+    "hours": "uur", "hoursHalf": "u 30m",
+    "sounds": "Slaapgeluiden",
+    "autoStop": "Stop {{time}} · fade 20m vooraf",
+    "tip": "Speelt door bij uitgeschakeld scherm. Zachte fade in plaats van alarm.",
+    "selectVariant": "{{count}} varianten · kies op nummer"
+  },
+  "breathing": {
+    "label": "Breathing", "title": "Ademhaling",
+    "selectPattern": "Kies een patroon",
+    "selectReps": "Herhalingen", "reps": "reps",
+    "selectVisual": "Visueel", "start": "Begin",
+    "phases": { "inhale": "Inademen", "hold1": "Vasthouden", "exhale": "Uitademen", "hold2": "Vasthouden" },
+    "session": {
+      "back": "Terug", "stop": "Eindigen", "pause": "Pauze", "resume": "Hervatten",
+      "completed": "Klaar!", "completedSub": "{{count}} cycli voltooid",
+      "again": "Nogmaals", "home": "Home", "remaining": "Nog {{count}}"
+    }
+  },
+  "glass": {
+    "label": "Release", "title": "Glas Breken", "today": "Today",
+    "intro": "Wat wil je vandaag breken?",
+    "introSub": "Tik om te breken",
+    "tabs": { "slice": "Snijden", "smash": "Breken", "asmr": "ASMR" },
+    "tapHint": "Tik op scherm · {{count}}x",
+    "rateTitle": "Voel je je lichter?",
+    "again": "Nogmaals", "watchOther": "Andere clips", "home": "Home"
+  },
+  "me": {
+    "premiumActive": "Premium actief\nBedankt ✨",
+    "premiumCta": "Word Premium\nvoor diepere zorg",
+    "premiumDesc": "Alle ASMR · onbeperkt mix · ADHD · Slaap",
+    "manageSubscription": "Abonnement beheren", "startPremium": "Premium starten",
+    "sessions": "Sessies", "minutes": "Minuten",
+    "guest": "Browsen als gast",
+    "premiumSubscription": "Premium-abonnement", "themeSettings": "Thema",
+    "favorites": "Favorieten", "notifications": "Meldingen",
+    "language": "Taal", "logout": "Uitloggen", "comingSoon": "Binnenkort"
+  },
+  "subscribe": {
+    "title": "Premium\nvoor diepere genezing",
+    "subtitle": "12 stemmingen · alle ademhaling · ADHD · Glas",
+    "active": "Premium actief",
+    "monthly": "Maandelijks", "yearly": "Jaarlijks",
+    "perMonth": "/ mnd", "perYear": "/ jr",
+    "yearlyBadge": "2 maanden gratis · -25%",
+    "benefitsTitle": "Inbegrepen", "cta": "Premium starten",
+    "footer": "Op elk moment opzegbaar · 7 dagen retourneren"
+  },
+  "common": { "back": "Terug", "close": "Sluiten", "play": "Afspelen", "pause": "Pauze", "stop": "Stop" }
+}

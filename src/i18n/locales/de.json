@@ -1,0 +1,74 @@
+{
+  "app": { "name": "MintMoody", "character": "Moody" },
+  "tabs": { "home": "Start", "music": "Musik", "breathing": "Atmen", "sleep": "Schlaf", "release": "Lösen", "me": "Ich" },
+  "home": {
+    "label": "Home",
+    "greeting": { "deepNight": "Tiefe Nacht", "morning": "Guten Morgen", "day": "Wie ist dein Tag?", "evening": "Ruhiger Abend", "lateNight": "Tag beenden" },
+    "subtitle": "Welchen Moment brauchst du?",
+    "tapHint": "✨ Antippen zum Grüßen",
+    "breathing": "Atmen", "breathingSub": "10 Techniken",
+    "release": "Lösen", "releaseSub": "Stressabbau",
+    "healingSounds": "Heilende Klänge"
+  },
+  "music": {
+    "label": "Sound Mix", "title": "Sound-Mix",
+    "subtitle": "Frei mischen · erneut tippen für andere Version",
+    "selected": "{{count}} ausgewählt",
+    "nature": "Natur", "frequencies": "Frequenzen", "stopAll": "Alles stoppen",
+    "kinds": "{{count}} Varianten · tippen"
+  },
+  "sleep": {
+    "label": "Sleep", "title": "Erholsamer Schlaf",
+    "greetingLight": "Süße Träume 🌙", "greetingDark": "Bereit für tiefe Ruhe? 🌙",
+    "duration": "Schlafdauer",
+    "startsToEnds": "Jetzt → Ende {{time}}",
+    "hours": "Stunden", "hoursHalf": "Std 30m",
+    "sounds": "Schlafklänge",
+    "autoStop": "Stopp {{time}} · Fade 20m vorher",
+    "tip": "Spielt weiter bei ausgeschaltetem Bildschirm. Sanftes Ausblenden statt Wecker.",
+    "selectVariant": "{{count}} Varianten · Nummer wählen"
+  },
+  "breathing": {
+    "label": "Breathing", "title": "Atemübung",
+    "selectPattern": "Muster wählen",
+    "selectReps": "Wiederholungen", "reps": "Wdh.",
+    "selectVisual": "Visual", "start": "Starten",
+    "phases": { "inhale": "Einatmen", "hold1": "Halten", "exhale": "Ausatmen", "hold2": "Halten" },
+    "session": {
+      "back": "Zurück", "stop": "Beenden", "pause": "Pause", "resume": "Fortsetzen",
+      "completed": "Geschafft!", "completedSub": "{{count}} Zyklen abgeschlossen",
+      "again": "Nochmal", "home": "Start", "remaining": "Noch {{count}}"
+    }
+  },
+  "glass": {
+    "label": "Release", "title": "Glas zerbrechen", "today": "Today",
+    "intro": "Was willst du heute zerbrechen?",
+    "introSub": "Berühren zum Zerbrechen",
+    "tabs": { "slice": "Schneiden", "smash": "Zerschlagen", "asmr": "ASMR" },
+    "tapHint": "Bildschirm tippen · {{count}}x",
+    "rateTitle": "Fühlst du dich besser?",
+    "again": "Nochmal", "watchOther": "Andere Clips", "home": "Start"
+  },
+  "me": {
+    "premiumActive": "Premium aktiv\nDanke ✨",
+    "premiumCta": "Premium holen\nfür tiefere Pflege",
+    "premiumDesc": "Alle ASMR · unbegr. Mix · ADHD · Schlaf",
+    "manageSubscription": "Abo verwalten", "startPremium": "Premium starten",
+    "sessions": "Sessions", "minutes": "Minuten",
+    "guest": "Als Gast",
+    "premiumSubscription": "Premium-Abo", "themeSettings": "Thema",
+    "favorites": "Favoriten", "notifications": "Benachrichtigungen",
+    "language": "Sprache", "logout": "Abmelden", "comingSoon": "Bald"
+  },
+  "subscribe": {
+    "title": "Premium\nfür tiefere Heilung",
+    "subtitle": "12 Stimmungen · alle Atemübungen · ADHD · Glas",
+    "active": "Premium aktiv",
+    "monthly": "Monatlich", "yearly": "Jährlich",
+    "perMonth": "/ Mo.", "perYear": "/ Jahr",
+    "yearlyBadge": "2 Monate gratis · 25% Rabatt",
+    "benefitsTitle": "Enthalten", "cta": "Premium starten",
+    "footer": "Jederzeit kündbar · 7 Tage Rückgabe"
+  },
+  "common": { "back": "Zurück", "close": "Schließen", "play": "Play", "pause": "Pause", "stop": "Stopp" }
+}

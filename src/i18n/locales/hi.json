@@ -1,0 +1,74 @@
+{
+  "app": { "name": "MintMoody", "character": "Moody" },
+  "tabs": { "home": "होम", "music": "संगीत", "breathing": "श्वास", "sleep": "नींद", "release": "रिलीज़", "me": "मैं" },
+  "home": {
+    "label": "Home",
+    "greeting": { "deepNight": "गहरी रात", "morning": "सुप्रभात", "day": "कैसा दिन?", "evening": "शांत शाम", "lateNight": "दिन समाप्त" },
+    "subtitle": "किस तरह का पल चाहिए?",
+    "tapHint": "✨ अभिवादन के लिए टैप करें",
+    "breathing": "श्वास", "breathingSub": "10 तकनीकें",
+    "release": "रिलीज़", "releaseSub": "तनाव मुक्ति",
+    "healingSounds": "उपचार ध्वनियाँ"
+  },
+  "music": {
+    "label": "Sound Mix", "title": "साउंड मिक्स",
+    "subtitle": "मिक्स करें · दूसरा संस्करण के लिए फिर टैप करें",
+    "selected": "{{count}} चयनित",
+    "nature": "प्रकृति", "frequencies": "आवृत्तियाँ", "stopAll": "सब रोकें",
+    "kinds": "{{count}} प्रकार · टैप करें"
+  },
+  "sleep": {
+    "label": "Sleep", "title": "आरामदायक नींद",
+    "greetingLight": "मीठे सपने 🌙", "greetingDark": "विश्राम के लिए तैयार? 🌙",
+    "duration": "नींद की अवधि",
+    "startsToEnds": "अभी → समाप्त {{time}}",
+    "hours": "घंटे", "hoursHalf": "घं 30मि",
+    "sounds": "नींद की ध्वनियाँ",
+    "autoStop": "रुकें {{time}} · 20मि पहले फेड",
+    "tip": "स्क्रीन बंद होने पर भी चलता रहता है। अलार्म के बजाय कोमल फेड।",
+    "selectVariant": "{{count}} प्रकार · संख्या से चुनें"
+  },
+  "breathing": {
+    "label": "Breathing", "title": "श्वास",
+    "selectPattern": "एक पैटर्न चुनें",
+    "selectReps": "पुनरावृत्ति", "reps": "बार",
+    "selectVisual": "विज़ुअल", "start": "शुरू",
+    "phases": { "inhale": "श्वास लें", "hold1": "रोकें", "exhale": "श्वास छोड़ें", "hold2": "रोकें" },
+    "session": {
+      "back": "वापस", "stop": "समाप्त", "pause": "रोकें", "resume": "जारी रखें",
+      "completed": "हो गया!", "completedSub": "{{count}} चक्र पूरे",
+      "again": "फिर से", "home": "होम", "remaining": "{{count}} शेष"
+    }
+  },
+  "glass": {
+    "label": "Release", "title": "कांच तोड़ें", "today": "Today",
+    "intro": "आज क्या तोड़ना चाहते हैं?",
+    "introSub": "तोड़ने के लिए स्पर्श करें",
+    "tabs": { "slice": "काटें", "smash": "तोड़ें", "asmr": "ASMR" },
+    "tapHint": "स्क्रीन टैप करें · {{count}}x",
+    "rateTitle": "बेहतर महसूस हो रहा है?",
+    "again": "फिर से", "watchOther": "अन्य क्लिप", "home": "होम"
+  },
+  "me": {
+    "premiumActive": "Premium सक्रिय\nधन्यवाद ✨",
+    "premiumCta": "Premium लें\nगहरी देखभाल के लिए",
+    "premiumDesc": "सभी ASMR · असीमित मिक्स · ADHD · नींद",
+    "manageSubscription": "सदस्यता प्रबंधित करें", "startPremium": "Premium शुरू",
+    "sessions": "सत्र", "minutes": "मिनट",
+    "guest": "अतिथि के रूप में",
+    "premiumSubscription": "Premium सदस्यता", "themeSettings": "थीम",
+    "favorites": "पसंदीदा", "notifications": "सूचनाएँ",
+    "language": "भाषा", "logout": "लॉग आउट", "comingSoon": "जल्द आ रहा है"
+  },
+  "subscribe": {
+    "title": "Premium\nगहरे उपचार के लिए",
+    "subtitle": "12 भाव · सभी श्वास · ADHD · कांच",
+    "active": "Premium सक्रिय",
+    "monthly": "मासिक", "yearly": "वार्षिक",
+    "perMonth": "/ माह", "perYear": "/ वर्ष",
+    "yearlyBadge": "2 महीने मुफ्त · 25% छूट",
+    "benefitsTitle": "क्या शामिल है", "cta": "Premium शुरू",
+    "footer": "कभी भी रद्द करें · 7 दिन वापसी"
+  },
+  "common": { "back": "वापस", "close": "बंद", "play": "चलाएँ", "pause": "रोकें", "stop": "रोकें" }
+}

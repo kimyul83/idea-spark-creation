@@ -1,0 +1,74 @@
+{
+  "app": { "name": "MintMoody", "character": "Moody" },
+  "tabs": { "home": "Главная", "music": "Музыка", "breathing": "Дыхание", "sleep": "Сон", "release": "Сброс", "me": "Я" },
+  "home": {
+    "label": "Home",
+    "greeting": { "deepNight": "Глубокая ночь", "morning": "Доброе утро", "day": "Как день?", "evening": "Тихий вечер", "lateNight": "Завершаем день" },
+    "subtitle": "Какой момент вам нужен?",
+    "tapHint": "✨ Нажмите, чтобы поздороваться",
+    "breathing": "Дыхание", "breathingSub": "10 техник",
+    "release": "Сброс", "releaseSub": "Снятие стресса",
+    "healingSounds": "Целебные звуки"
+  },
+  "music": {
+    "label": "Sound Mix", "title": "Звуковой микс",
+    "subtitle": "Микс свободно · нажмите ещё раз для другой версии",
+    "selected": "Выбрано {{count}}",
+    "nature": "Природа", "frequencies": "Частоты", "stopAll": "Остановить всё",
+    "kinds": "{{count}} вариантов · нажмите"
+  },
+  "sleep": {
+    "label": "Sleep", "title": "Спокойный сон",
+    "greetingLight": "Сладких снов 🌙", "greetingDark": "Готовы к отдыху? 🌙",
+    "duration": "Длительность сна",
+    "startsToEnds": "Сейчас → конец {{time}}",
+    "hours": "часов", "hoursHalf": "ч 30м",
+    "sounds": "Звуки для сна",
+    "autoStop": "Стоп {{time}} · затухание за 20м",
+    "tip": "Продолжается даже с выключенным экраном. Плавное затухание вместо будильника.",
+    "selectVariant": "{{count}} вариантов · выберите по номеру"
+  },
+  "breathing": {
+    "label": "Breathing", "title": "Дыхание",
+    "selectPattern": "Выберите паттерн",
+    "selectReps": "Повторения", "reps": "повт.",
+    "selectVisual": "Визуал", "start": "Начать",
+    "phases": { "inhale": "Вдох", "hold1": "Задержка", "exhale": "Выдох", "hold2": "Задержка" },
+    "session": {
+      "back": "Назад", "stop": "Завершить", "pause": "Пауза", "resume": "Продолжить",
+      "completed": "Готово!", "completedSub": "{{count}} циклов выполнено",
+      "again": "Ещё раз", "home": "Главная", "remaining": "Осталось {{count}}"
+    }
+  },
+  "glass": {
+    "label": "Release", "title": "Бить стекло", "today": "Today",
+    "intro": "Что хотите разбить сегодня?",
+    "introSub": "Касайтесь, чтобы разбить",
+    "tabs": { "slice": "Резать", "smash": "Разбивать", "asmr": "ASMR" },
+    "tapHint": "Касайтесь экрана · {{count}}x",
+    "rateTitle": "Стало легче?",
+    "again": "Ещё раз", "watchOther": "Другие клипы", "home": "Главная"
+  },
+  "me": {
+    "premiumActive": "Premium активен\nСпасибо ✨",
+    "premiumCta": "Premium\nдля глубокой заботы",
+    "premiumDesc": "Весь ASMR · безлимит · ADHD · Сон",
+    "manageSubscription": "Управление подпиской", "startPremium": "Начать Premium",
+    "sessions": "Сессии", "minutes": "Минуты",
+    "guest": "Гость",
+    "premiumSubscription": "Premium подписка", "themeSettings": "Тема",
+    "favorites": "Избранное", "notifications": "Уведомления",
+    "language": "Язык", "logout": "Выйти", "comingSoon": "Скоро"
+  },
+  "subscribe": {
+    "title": "Premium\nдля глубокого исцеления",
+    "subtitle": "12 эмоций · все дыхание · ADHD · Стекло",
+    "active": "Premium активен",
+    "monthly": "Ежемесячно", "yearly": "Ежегодно",
+    "perMonth": "/ мес", "perYear": "/ год",
+    "yearlyBadge": "2 месяца бесплатно · -25%",
+    "benefitsTitle": "Что включено", "cta": "Начать Premium",
+    "footer": "Отмена в любой момент · возврат 7 дней"
+  },
+  "common": { "back": "Назад", "close": "Закрыть", "play": "Играть", "pause": "Пауза", "stop": "Стоп" }
+}

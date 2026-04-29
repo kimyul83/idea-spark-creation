@@ -1,0 +1,74 @@
+{
+  "app": { "name": "MintMoody", "character": "Moody" },
+  "tabs": { "home": "Hem", "music": "Musik", "breathing": "Andas", "sleep": "Sömn", "release": "Släpp", "me": "Jag" },
+  "home": {
+    "label": "Home",
+    "greeting": { "deepNight": "Djup natt", "morning": "God morgon", "day": "Hur går dagen?", "evening": "Lugn kväll", "lateNight": "Avslutar dagen" },
+    "subtitle": "Vilken stund behöver du?",
+    "tapHint": "✨ Tryck för att hälsa",
+    "breathing": "Andning", "breathingSub": "10 tekniker",
+    "release": "Släpp", "releaseSub": "Stresslindring",
+    "healingSounds": "Läkande ljud"
+  },
+  "music": {
+    "label": "Sound Mix", "title": "Ljudmix",
+    "subtitle": "Mixa fritt · tryck igen för annan version",
+    "selected": "{{count}} valda",
+    "nature": "Natur", "frequencies": "Frekvenser", "stopAll": "Stoppa allt",
+    "kinds": "{{count}} varianter · tryck"
+  },
+  "sleep": {
+    "label": "Sleep", "title": "Lugn sömn",
+    "greetingLight": "Sov gott 🌙", "greetingDark": "Redo för djup vila? 🌙",
+    "duration": "Sömnlängd",
+    "startsToEnds": "Nu → slutar {{time}}",
+    "hours": "tim", "hoursHalf": "tim 30m",
+    "sounds": "Sömnljud",
+    "autoStop": "Stopp {{time}} · fade 20m innan",
+    "tip": "Spelar vidare med skärmen släckt. Mjuk fade istället för larm.",
+    "selectVariant": "{{count}} varianter · välj med nummer"
+  },
+  "breathing": {
+    "label": "Breathing", "title": "Andning",
+    "selectPattern": "Välj ett mönster",
+    "selectReps": "Repetitioner", "reps": "rep.",
+    "selectVisual": "Visuell", "start": "Börja",
+    "phases": { "inhale": "Andas in", "hold1": "Håll", "exhale": "Andas ut", "hold2": "Håll" },
+    "session": {
+      "back": "Tillbaka", "stop": "Avsluta", "pause": "Pausa", "resume": "Fortsätt",
+      "completed": "Klart!", "completedSub": "{{count}} cykler slutförda",
+      "again": "Igen", "home": "Hem", "remaining": "{{count}} kvar"
+    }
+  },
+  "glass": {
+    "label": "Release", "title": "Krossa glas", "today": "Today",
+    "intro": "Vad vill du krossa idag?",
+    "introSub": "Tryck för att krossa",
+    "tabs": { "slice": "Skär", "smash": "Krossa", "asmr": "ASMR" },
+    "tapHint": "Tryck på skärmen · {{count}}x",
+    "rateTitle": "Känns det lättare?",
+    "again": "Igen", "watchOther": "Andra klipp", "home": "Hem"
+  },
+  "me": {
+    "premiumActive": "Premium aktiv\nTack ✨",
+    "premiumCta": "Bli Premium\nför djupare vård",
+    "premiumDesc": "All ASMR · obegränsad mix · ADHD · Sömn",
+    "manageSubscription": "Hantera prenumeration", "startPremium": "Starta Premium",
+    "sessions": "Sessioner", "minutes": "Minuter",
+    "guest": "Bläddrar som gäst",
+    "premiumSubscription": "Premium-prenumeration", "themeSettings": "Tema",
+    "favorites": "Favoriter", "notifications": "Aviseringar",
+    "language": "Språk", "logout": "Logga ut", "comingSoon": "Snart"
+  },
+  "subscribe": {
+    "title": "Premium\nför djupare läkning",
+    "subtitle": "12 sinnesstämningar · all andning · ADHD · Glas",
+    "active": "Premium aktiv",
+    "monthly": "Månad", "yearly": "År",
+    "perMonth": "/ mån", "perYear": "/ år",
+    "yearlyBadge": "2 mån gratis · -25%",
+    "benefitsTitle": "Vad ingår", "cta": "Starta Premium",
+    "footer": "Säg upp när som helst · 7 dagars återbetalning"
+  },
+  "common": { "back": "Tillbaka", "close": "Stäng", "play": "Spela", "pause": "Pausa", "stop": "Stoppa" }
+}

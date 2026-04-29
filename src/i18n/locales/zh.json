@@ -1,0 +1,91 @@
+{
+  "app": { "name": "薄荷穆迪", "character": "穆迪" },
+  "tabs": { "home": "首页", "music": "音乐", "breathing": "呼吸", "sleep": "睡眠", "release": "释放", "me": "我的" },
+  "home": {
+    "label": "Home",
+    "greeting": {
+      "deepNight": "夜深了",
+      "morning": "早上好",
+      "day": "今天怎么样",
+      "evening": "宁静的傍晚",
+      "lateNight": "结束这一天"
+    },
+    "subtitle": "你需要怎样的时刻?",
+    "tapHint": "✨ 点击打招呼",
+    "breathing": "呼吸",
+    "breathingSub": "10种技巧",
+    "release": "释放",
+    "releaseSub": "压力舒缓",
+    "healingSounds": "疗愈声音"
+  },
+  "music": {
+    "label": "Sound Mix", "title": "声音混音",
+    "subtitle": "可同时播放·再次点击同一格切换版本",
+    "selected": "已选 {{count}}",
+    "nature": "自然", "frequencies": "频率",
+    "stopAll": "全部停止",
+    "kinds": "{{count}}种·点击切换"
+  },
+  "sleep": {
+    "label": "Sleep", "title": "舒适睡眠",
+    "greetingLight": "今晚做个好梦 🌙",
+    "greetingDark": "准备好深度休息了吗 🌙",
+    "duration": "睡眠时长",
+    "startsToEnds": "现在开始 → {{time}} 结束",
+    "hours": "小时", "hoursHalf": "小时30分钟",
+    "sounds": "睡眠声音",
+    "autoStop": "{{time}} 自动停止·结束前20分钟淡出",
+    "tip": "关闭屏幕也会继续播放。代替闹钟,轻柔淡出唤醒您。",
+    "selectVariant": "{{count}}种·按编号选择"
+  },
+  "breathing": {
+    "label": "Breathing", "title": "呼吸法",
+    "selectPattern": "选择一种节奏",
+    "selectReps": "重复次数", "reps": "次重复",
+    "selectVisual": "视觉",
+    "start": "开始",
+    "phases": { "inhale": "吸气", "hold1": "屏住", "exhale": "呼气", "hold2": "屏住" },
+    "session": {
+      "back": "返回", "stop": "结束", "pause": "暂停", "resume": "继续",
+      "completed": "完成!", "completedSub": "完成了{{count}}次呼吸",
+      "again": "再来一次", "home": "回首页", "remaining": "剩余{{count}}次"
+    }
+  },
+  "glass": {
+    "label": "Release", "title": "碎玻璃", "today": "Today",
+    "intro": "今天想打碎什么?",
+    "introSub": "指尖一碰即碎",
+    "tabs": { "slice": "切片", "smash": "粉碎", "asmr": "ASMR" },
+    "tapHint": "点击屏幕即碎·{{count}}次",
+    "rateTitle": "感觉舒畅了吗?",
+    "again": "再来一次", "watchOther": "其他视频", "home": "回首页"
+  },
+  "me": {
+    "premiumActive": "高级会员已激活\n感谢您 ✨",
+    "premiumCta": "升级高级会员\n深度呵护自己",
+    "premiumDesc": "全部ASMR·无限混音·ADHD·睡眠",
+    "manageSubscription": "管理订阅",
+    "startPremium": "开通高级",
+    "sessions": "Sessions", "minutes": "Minutes",
+    "guest": "以访客浏览",
+    "premiumSubscription": "高级订阅",
+    "themeSettings": "主题",
+    "favorites": "收藏",
+    "notifications": "通知设置",
+    "language": "语言",
+    "logout": "退出登录",
+    "comingSoon": "敬请期待"
+  },
+  "subscribe": {
+    "title": "升级高级会员\n享受更深疗愈",
+    "subtitle": "12种情绪·全部呼吸法·ADHD·碎玻璃",
+    "active": "高级会员已激活",
+    "monthly": "月度", "yearly": "年度",
+    "perMonth": "/ 月", "perYear": "/ 年",
+    "yearlyBadge": "免费两个月·8折优惠",
+    "benefitsTitle": "包含权益",
+    "cta": "开通高级",
+    "footer": "随时取消·首7日退款保证"
+  },
+  "common": { "back": "返回", "close": "关闭", "play": "播放", "pause": "暂停", "stop": "停止" }
+}

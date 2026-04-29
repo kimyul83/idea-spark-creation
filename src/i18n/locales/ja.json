@@ -1,0 +1,91 @@
+{
+  "app": { "name": "ミントムーディ", "character": "ムーディ" },
+  "tabs": { "home": "ホーム", "music": "音楽", "breathing": "呼吸", "sleep": "睡眠", "release": "解放", "me": "マイ" },
+  "home": {
+    "label": "Home",
+    "greeting": {
+      "deepNight": "深い夜です",
+      "morning": "おはようございます",
+      "day": "今日はいかがですか",
+      "evening": "穏やかな夕方です",
+      "lateNight": "一日を締めくくります"
+    },
+    "subtitle": "どんな時間が必要ですか?",
+    "tapHint": "✨ タップしてあいさつ",
+    "breathing": "呼吸",
+    "breathingSub": "10種の技法",
+    "release": "解放",
+    "releaseSub": "ストレス解消",
+    "healingSounds": "ヒーリングサウンド"
+  },
+  "music": {
+    "label": "Sound Mix", "title": "サウンドミックス",
+    "subtitle": "同時再生可・同じタイルをもう一度タップで別バージョン",
+    "selected": "{{count}}個",
+    "nature": "自然", "frequencies": "周波数",
+    "stopAll": "すべて停止",
+    "kinds": "{{count}}種・タップで切替"
+  },
+  "sleep": {
+    "label": "Sleep", "title": "心地よい眠り",
+    "greetingLight": "今夜よい夢を 🌙",
+    "greetingDark": "ぐっすりお休みの準備は? 🌙",
+    "duration": "睡眠時間",
+    "startsToEnds": "今開始 → {{time}} 終了",
+    "hours": "時間", "hoursHalf": "時間30分",
+    "sounds": "睡眠サウンド",
+    "autoStop": "{{time}} 自動停止・20分前からフェード",
+    "tip": "画面を消しても再生は続きます。アラームの代わりに優しいフェードアウトでお目覚めです。",
+    "selectVariant": "{{count}}種・番号で選択"
+  },
+  "breathing": {
+    "label": "Breathing", "title": "呼吸法",
+    "selectPattern": "パターンを選んでください",
+    "selectReps": "繰り返し回数", "reps": "回繰り返し",
+    "selectVisual": "ビジュアル",
+    "start": "始める",
+    "phases": { "inhale": "吸う", "hold1": "止める", "exhale": "吐く", "hold2": "止める" },
+    "session": {
+      "back": "戻る", "stop": "終了", "pause": "一時停止", "resume": "再開",
+      "completed": "完了しました!", "completedSub": "{{count}}回の呼吸が終わりました",
+      "again": "もう一度", "home": "ホームへ", "remaining": "残り{{count}}回"
+    }
+  },
+  "glass": {
+    "label": "Release", "title": "ガラス割り", "today": "Today",
+    "intro": "今日、何を壊したいですか?",
+    "introSub": "指先で触れると砕けます",
+    "tabs": { "slice": "スライス", "smash": "破壊", "asmr": "ASMR" },
+    "tapHint": "画面をタップで割れます・{{count}}回",
+    "rateTitle": "すっきりしましたか?",
+    "again": "もう一度", "watchOther": "他の映像", "home": "ホームへ"
+  },
+  "me": {
+    "premiumActive": "プレミアム有効\nありがとうございます ✨",
+    "premiumCta": "プレミアムで\nもっと深いケア",
+    "premiumDesc": "全ASMR・無制限ミックス・ADHD・睡眠",
+    "manageSubscription": "サブスク管理",
+    "startPremium": "プレミアム開始",
+    "sessions": "Sessions", "minutes": "Minutes",
+    "guest": "ゲストとして閲覧中",
+    "premiumSubscription": "プレミアム購読",
+    "themeSettings": "テーマ",
+    "favorites": "お気に入り",
+    "notifications": "通知設定",
+    "language": "言語",
+    "logout": "ログアウト",
+    "comingSoon": "準備中"
+  },
+  "subscribe": {
+    "title": "プレミアムで\nより深いヒーリングを",
+    "subtitle": "12感情・全呼吸法・ADHD・ガラス割りまで",
+    "active": "プレミアム有効",
+    "monthly": "月額", "yearly": "年額",
+    "perMonth": "/ 月", "perYear": "/ 年",
+    "yearlyBadge": "2ヶ月無料・25%オフ",
+    "benefitsTitle": "含まれる特典",
+    "cta": "プレミアム開始",
+    "footer": "いつでも解約可・初回7日間返金保証"
+  },
+  "common": { "back": "戻る", "close": "閉じる", "play": "再生", "pause": "停止", "stop": "停止" }
+}

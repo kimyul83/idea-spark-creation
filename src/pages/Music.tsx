@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import {
   CloudRain, Waves, Trees, Mountain, Wind, Bird, Flame, Moon,
   Droplets, Sun, Music2, Heart, Brain,
-  Coffee, Pause, Zap, Timer,
+  Coffee, Pause, Zap, Timer, type LucideIcon,
 } from "lucide-react";
 import { Howl } from "howler";
 import { MonetBackground } from "@/components/MonetBackground";
@@ -33,7 +33,7 @@ interface NatureItem {
   id: string;
   label: string;
   tag: string;
-  icon: React.ComponentType<{ className?: string; strokeWidth?: number }>;
+  icon: LucideIcon;
   variants: Variant[];
 }
 
@@ -199,7 +199,7 @@ interface FreqItem {
   id: string;
   label: string;
   tag: string;
-  icon: React.ComponentType<{ className?: string; strokeWidth?: number }>;
+  icon: LucideIcon;
   hz: number;
   type: "tone" | "noise";
   noiseType?: "brown" | "pink" | "white";

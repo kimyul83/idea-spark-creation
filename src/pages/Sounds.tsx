@@ -106,7 +106,7 @@ const Sounds = () => {
       <MonetBackground intensity="medium" />
 
       <div className="animate-fade-up">
-        <p className="text-[11px] tracking-[0.3em] uppercase text-primary font-serif">Library</p>
+        <p className="text-[13px] tracking-[0.3em] uppercase text-primary font-bold font-serif">Library</p>
         <h1 className="text-[28px] font-bold text-foreground mt-1">사운드 라이브러리</h1>
         <p className="text-sm text-foreground/60 mt-1">여러 소리를 동시에 재생할 수 있어요</p>
       </div>

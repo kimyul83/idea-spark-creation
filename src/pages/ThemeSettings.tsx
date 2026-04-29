@@ -45,7 +45,7 @@ const ThemeSettings = () => {
             테마
           </h1>
         </div>
-        <span className="text-[10px] tracking-widest uppercase text-primary/80 font-medium">
+        <span className="text-[10px] tracking-widest uppercase text-primary font-medium">
           {label}
         </span>
       </header>

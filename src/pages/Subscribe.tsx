@@ -24,14 +24,14 @@ const PLANS: Plan[] = [
   { id: "yearly",  label: "연 구독", price: "₩49,000", per: "/ 년", badge: "두 달 무료 · 25% 할인" },
 ];
 
-interface Row { feature: string; endel: string; moody: string; highlight?: boolean }
-const COMPARE: Row[] = [
-  { feature: "감정 카테고리", endel: "4개", moody: "12개" },
-  { feature: "한국 감정", endel: "✗", moody: "✓", highlight: true },
-  { feature: "호흡법 영상", endel: "✗", moody: "✓" },
-  { feature: "ADHD 모드", endel: "부분", moody: "전용" },
-  { feature: "유리 깨기", endel: "✗", moody: "✓", highlight: true },
-  { feature: "월 구독", endel: "₩10,900", moody: "₩5,500", highlight: true },
+const BENEFITS = [
+  { title: "12시간 무제한 재생", desc: "무료는 10분 미리듣기 · 프리미엄은 잠들 때까지" },
+  { title: "12가지 자연 사운드 · 무제한 믹스", desc: "폭포·빗소리·바다·숲·동굴 등 변주 50종 이상 잠금 해제" },
+  { title: "모든 호흡법 10가지", desc: "Wim Hof · 6-6 깊은 호흡 · 카팔라바티 등 프리미엄 패턴" },
+  { title: "수면 사운드 풀 라이브러리", desc: "모닥불 ASMR · 깊은 밤 명상 등 6개 트랙 22변주 + 최대 12시간 타이머" },
+  { title: "유리 깨기 모든 영상", desc: "프리미엄 슬라이싱·파괴·ASMR 영상 12개 전부" },
+  { title: "ADHD 집중 모드", desc: "40Hz 감마파 + 집중 사운드 · 뽀모도로 자동" },
+  { title: "광고 없음 · 끊김 없는 재생", desc: "잠들 때까지 한 번 켜면 끝" },
 ];
 
 const Subscribe = () => {
@@ -73,7 +73,7 @@ const Subscribe = () => {
         <div className="flex justify-center">
           <Moody size="large" emotion="happy" />
         </div>
-        <p className="mt-3 text-[11px] tracking-[0.3em] uppercase text-primary font-serif">Moody+</p>
+        <p className="mt-3 text-[13px] tracking-[0.3em] uppercase text-primary font-bold font-serif">Moody+</p>
         <h1 className="text-[28px] font-bold text-foreground mt-2 leading-tight">
           프리미엄으로<br />더 깊은 힐링을
         </h1>
@@ -129,32 +129,23 @@ const Subscribe = () => {
         ))}
       </div>
 
-      {/* compare */}
-      <div className="px-5 mt-5">
-        <div className="surface rounded-3xl p-5 shadow-soft">
-          <p className="text-[11px] tracking-[0.3em] uppercase text-primary font-serif">Compare</p>
-          <h2 className="font-bold text-foreground mt-1">Endel vs Moody</h2>
-          <div className="mt-4">
-            <div className="grid grid-cols-[1fr_auto_auto] gap-x-4 gap-y-3 text-sm">
-              <div className="text-[11px] uppercase tracking-wider text-foreground/40">기능</div>
-              <div className="text-[11px] uppercase tracking-wider text-foreground/40 text-right">Endel</div>
-              <div className="text-[11px] uppercase tracking-wider text-primary font-bold text-right">Moody</div>
-              {COMPARE.map((r) => (
-                <div key={r.feature} className="contents">
-                  <div className="text-foreground/80">{r.feature}</div>
-                  <div className="text-foreground/50 text-right tabular-nums">{r.endel}</div>
-                  <div
-                    className={cn(
-                      "text-right tabular-nums font-semibold",
-                      r.highlight ? "text-primary" : "text-foreground"
-                    )}
-                  >
-                    {r.moody}
-                  </div>
-                </div>
-              ))}
+      {/* benefits */}
+      <div className="px-5 mt-6">
+        <p className="text-[15px] tracking-[0.3em] uppercase text-primary font-bold font-serif mb-3 px-1">
+          포함된 혜택
+        </p>
+        <div className="space-y-2">
+          {BENEFITS.map((b) => (
+            <div key={b.title} className="liquid-card p-4 flex items-start gap-3">
+              <div className="w-9 h-9 rounded-full bg-primary/15 flex items-center justify-center shrink-0 mt-0.5">
+                <Check className="w-5 h-5 text-primary" strokeWidth={2.4} />
+              </div>
+              <div className="flex-1">
+                <p className="font-bold text-foreground text-[15px] leading-snug">{b.title}</p>
+                <p className="text-[12px] text-foreground/65 mt-0.5 leading-snug">{b.desc}</p>
+              </div>
             </div>
-          </div>
+          ))}
         </div>
       </div>
 

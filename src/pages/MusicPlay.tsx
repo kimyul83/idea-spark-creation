@@ -17,7 +17,7 @@ import {
 import { cn } from "@/lib/utils";
 
 /**
- * Endel 스타일 재생 화면.
+ * 미니멀 풀스크린 재생 화면.
  * 트랙 제목·번호 X. 뇌파 주파수 기반 variant switcher.
  */
 

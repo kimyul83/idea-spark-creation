@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { ArrowLeft, Pause, Play, Square as Stop, Volume2, VolumeX } from "lucide-react";
 import { MonetBackground } from "@/components/MonetBackground";
 import { Moody } from "@/components/Moody";
@@ -23,6 +24,7 @@ const BreathingSession = () => {
   const { id } = useParams<{ id: string }>();
   const [params] = useSearchParams();
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const totalReps = Math.max(1, Number(params.get("reps") ?? 5));
   const emotionName = params.get("emotion");
   const visual = (params.get("visual") as BreathingVisualId) || "bubble";
@@ -204,23 +206,23 @@ const BreathingSession = () => {
         <button
           onClick={() => navigate("/breathing")}
           className="w-10 h-10 rounded-full liquid-card flex items-center justify-center"
-          aria-label="뒤로"
+          aria-label={t("breathing.session.back")}
         >
           <ArrowLeft className="w-5 h-5 text-foreground" />
         </button>
         <div className="text-center">
           <p className="text-[10px] tracking-[0.2em] uppercase text-primary font-serif">
-            {pattern.title}
+            {t(`breathing.patterns.${pattern.id}.title`, { defaultValue: pattern.title })}
           </p>
           <p className="text-xs text-foreground/60 mt-0.5">
-            {rep} / {totalReps}회
+            {rep} / {totalReps}
             {isCycle && ` · ${microRep}/${cycleReps}`}
           </p>
         </div>
         <button
           onClick={toggleMute}
           className="w-10 h-10 rounded-full liquid-card flex items-center justify-center"
-          aria-label={muted ? "음성 안내 켜기" : "음성 안내 끄기"}
+          aria-label={muted ? t("breathing.session.muteOn") : t("breathing.session.muteOff")}
         >
           {muted ? (
             <VolumeX className="w-5 h-5 text-foreground/60" />
@@ -236,7 +238,7 @@ const BreathingSession = () => {
           key={`${rep}-${phaseIdx}-${microRep}`}
           className="text-[32px] md:text-[36px] font-bold text-foreground animate-fade-up tracking-tight leading-tight"
         >
-          {PHASE_LABEL[currentPhase.phase]}
+          {t(`breathing.phases.${currentPhase.phase}`, { defaultValue: PHASE_LABEL[currentPhase.phase] })}
         </p>
         {!isCycle && (
           <div className="mt-3 flex items-baseline justify-center gap-1.5">
@@ -269,7 +271,7 @@ const BreathingSession = () => {
         <div>
           <Progress value={progress} className="h-1.5 bg-foreground/10" />
           <p className="text-[10px] text-foreground/45 text-center mt-1.5 tracking-widest uppercase">
-            {Math.round(progress)}% · {totalReps - rep + 1}회 남음
+            {Math.round(progress)}% · {t("breathing.session.remaining", { count: totalReps - rep + 1 })}
           </p>
         </div>
         <div className="flex items-center justify-center gap-3">
@@ -278,14 +280,14 @@ const BreathingSession = () => {
             onClick={stop}
             className="h-14 px-6 rounded-2xl liquid-card text-foreground"
           >
-            <Stop className="w-5 h-5 mr-2" /> 종료
+            <Stop className="w-5 h-5 mr-2" /> {t("breathing.session.stop")}
           </Button>
           <Button
             onClick={() => setRunning((r) => !r)}
             className="h-16 px-8 rounded-2xl bg-primary hover:bg-primary/90 text-primary-foreground font-semibold flex-1 max-w-[200px]"
           >
             {running ? <Pause className="w-6 h-6 mr-2" /> : <Play className="w-6 h-6 mr-2" />}
-            {running ? "일시정지" : "이어하기"}
+            {running ? t("breathing.session.pause") : t("breathing.session.resume")}
           </Button>
         </div>
       </div>
@@ -297,13 +299,13 @@ const BreathingSession = () => {
             <div className="flex justify-center">
               <Moody size={180} emotion="happy" />
             </div>
-            <p className="text-[13px] tracking-[0.3em] uppercase text-primary font-bold font-serif mt-4">
-              Well done
+            <p className="chip-primary text-[12px] tracking-[0.3em] uppercase font-serif mt-4">
+              {t("breathing.session.wellDone")}
             </p>
-            <h2 className="text-2xl font-bold text-foreground mt-2">완료했어요!</h2>
+            <h2 className="text-2xl font-bold text-foreground mt-2">{t("breathing.session.completed")}</h2>
             <p className="text-sm text-foreground/60 mt-2">
-              {totalReps}회 호흡을 마쳤어요.<br />
-              마음이 한결 가벼워졌길 바라요 🌿
+              {t("breathing.session.completedSub", { count: totalReps })}<br />
+              {t("breathing.session.completedHint")}
             </p>
             <div className="grid grid-cols-2 gap-2 mt-6">
               <Button
@@ -311,13 +313,13 @@ const BreathingSession = () => {
                 onClick={restart}
                 className="h-12 rounded-2xl liquid-card text-foreground"
               >
-                한 번 더
+                {t("breathing.session.again")}
               </Button>
               <Button
                 onClick={() => navigate("/home")}
                 className={cn("h-12 rounded-2xl bg-primary hover:bg-primary/90 text-primary-foreground")}
               >
-                홈으로
+                {t("breathing.session.home")}
               </Button>
             </div>
           </div>

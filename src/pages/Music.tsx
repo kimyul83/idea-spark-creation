@@ -214,14 +214,14 @@ const FREQUENCIES: FreqItem[] = [
   { id: "40",     label: "40Hz",          tag: "Gamma · MIT 임상",         icon: Brain,  hz: 40,  type: "tone" },
 ];
 
-const TIMER_OPTIONS = [
-  { hours: null as number | null, label: "끄기 (무한 재생)" },
-  { hours: 0.5, label: "30분" },
-  { hours: 1, label: "1시간" },
-  { hours: 3, label: "3시간" },
-  { hours: 6, label: "6시간" },
-  { hours: 8, label: "8시간" },
-  { hours: 12, label: "12시간" },
+const TIMER_OPTIONS: Array<{ hours: number | null; key: string }> = [
+  { hours: null, key: "off" },
+  { hours: 0.5, key: "minutes30" },
+  { hours: 1,   key: "hour1" },
+  { hours: 3,   key: "hour3" },
+  { hours: 6,   key: "hour6" },
+  { hours: 8,   key: "hour8" },
+  { hours: 12,  key: "hour12" },
 ];
 
 const Music = () => {
@@ -447,7 +447,7 @@ const Music = () => {
             <div className="grid gap-2">
               {TIMER_OPTIONS.map((opt) => (
                 <button
-                  key={opt.label}
+                  key={opt.key}
                   onClick={() => applyTimer(opt.hours)}
                   className={cn(
                     "w-full px-4 py-3 rounded-2xl text-left transition flex items-center justify-between",
@@ -456,7 +456,7 @@ const Music = () => {
                       : "bg-foreground/5 text-foreground/85 hover:bg-foreground/10",
                   )}
                 >
-                  <span className="font-semibold">{opt.label}</span>
+                  <span className="font-semibold">{t(`timer.${opt.key}`)}</span>
                   {timerHours === opt.hours && <span className="text-xs">✓</span>}
                 </button>
               ))}
@@ -477,6 +477,7 @@ interface NatureTileProps {
 }
 
 const NatureTile = ({ item, active, versionIdx, onClick, onStop }: NatureTileProps) => {
+  const { t } = useTranslation();
   const Icon = item.icon;
   const hasMultiple = item.variants.length > 1;
   const currentName = item.variants[versionIdx]?.name;
@@ -496,14 +497,14 @@ const NatureTile = ({ item, active, versionIdx, onClick, onStop }: NatureTilePro
           <Icon className="w-5 h-5" strokeWidth={active ? 1.9 : 1.7} />
         </div>
         <span className="text-[14px] font-bold text-foreground text-center leading-tight">
-          {item.label}
+          {t(`music.categories.${item.id}`, { defaultValue: item.label })}
         </span>
         <span className="text-[12px] text-primary font-semibold tracking-wide text-center leading-tight line-clamp-1">
           {item.tag}
         </span>
         {hasMultiple && (
           <span className="text-[10px] text-foreground/60 line-clamp-1 max-w-full px-1">
-            {active ? `${versionIdx + 1}/${item.variants.length} · ${currentName}` : `${item.variants.length}종 · 탭으로 변경`}
+            {active ? `${versionIdx + 1}/${item.variants.length} · ${currentName}` : t("music.kinds", { count: item.variants.length })}
           </span>
         )}
       </button>
@@ -511,7 +512,7 @@ const NatureTile = ({ item, active, versionIdx, onClick, onStop }: NatureTilePro
         <button
           onClick={(e) => { e.stopPropagation(); onStop(); }}
           className="absolute top-1.5 right-1.5 w-6 h-6 rounded-full bg-foreground/75 text-background flex items-center justify-center hover:bg-foreground"
-          aria-label="정지"
+          aria-label={t("common.stop")}
         >
           <Pause className="w-3 h-3" />
         </button>
@@ -527,7 +528,12 @@ interface FreqTileProps {
 }
 
 const FreqTile = ({ item, active, onClick }: FreqTileProps) => {
+  const { t } = useTranslation();
   const Icon = item.icon;
+  // 노이즈 종류는 번역, 톤 (432Hz 등)은 그대로
+  const labelKey = item.id === "brown" || item.id === "pink" || item.id === "white"
+    ? `music.freqs.${item.id}` : "";
+  const label = labelKey ? t(labelKey, { defaultValue: item.label }) : item.label;
   return (
     <button
       onClick={onClick}
@@ -543,7 +549,7 @@ const FreqTile = ({ item, active, onClick }: FreqTileProps) => {
         {active ? <Pause className="w-5 h-5" /> : <Icon className="w-5 h-5" strokeWidth={1.7} />}
       </div>
       <span className="text-[14px] font-bold text-foreground text-center leading-tight">
-        {item.label}
+        {label}
       </span>
       <span className="text-[12px] text-primary font-semibold tracking-wide text-center leading-tight">
         {item.tag}

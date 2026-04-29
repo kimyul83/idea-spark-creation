@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { ArrowLeft, Play, Pause, Shuffle, Timer, Info } from "lucide-react";
 import { Howl, Howler } from "howler";
 import { Moody } from "@/components/Moody";
@@ -45,6 +46,7 @@ const variantMatches = (url: string, v: VariantId): boolean => {
 const MusicPlay = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const situation = id ? getSituationById(id) : undefined;
   const tracks = id ? SITUATION_TRACK_MAP[id] : undefined;
   const detail = id ? SITUATION_DETAILS[id] : undefined;
@@ -68,13 +70,13 @@ const MusicPlay = () => {
   const timerRef = useRef<number | undefined>();
 
   const TIMER_OPTIONS = [
-    { hours: null, label: "끄기 (무한 재생)" },
-    { hours: 0.5, label: "30분" },
-    { hours: 1, label: "1시간" },
-    { hours: 3, label: "3시간" },
-    { hours: 6, label: "6시간" },
-    { hours: 8, label: "8시간" },
-    { hours: 12, label: "12시간" },
+    { hours: null as number | null, label: t("timer.off") },
+    { hours: 0.5, label: t("timer.minutes30") },
+    { hours: 1, label: t("timer.hour1") },
+    { hours: 3, label: t("timer.hour3") },
+    { hours: 6, label: t("timer.hour6") },
+    { hours: 8, label: t("timer.hour8") },
+    { hours: 12, label: t("timer.hour12") },
   ];
 
   const applyTimer = (hours: number | null) => {
@@ -102,7 +104,7 @@ const MusicPlay = () => {
   if (!situation || !tracks || !detail) {
     return (
       <div className="min-h-[100dvh] flex items-center justify-center bg-black">
-        <p className="text-white/60">상황을 찾을 수 없어요</p>
+        <p className="text-white/60">{t("musicPlay.noSituation")}</p>
       </div>
     );
   }
@@ -132,7 +134,7 @@ const MusicPlay = () => {
     setVariant(v);
     const url = pickForVariant(v);
     if (!url) {
-      setErrorMsg("재생 가능한 트랙이 없어요");
+      setErrorMsg(t("musicPlay.noTrack"));
       return;
     }
     setErrorMsg(null);
@@ -175,12 +177,12 @@ const MusicPlay = () => {
       onload: () => console.log("[MusicPlay] Loaded"),
       onloaderror: (id, err) => {
         console.error("[MusicPlay] Load error:", err, cdnUrl);
-        setErrorMsg(`로딩 실패: ${err}`);
+        setErrorMsg(t("musicPlay.loadError", { err: String(err) }));
         setPlaying(false);
       },
       onplayerror: (id, err) => {
         console.error("[MusicPlay] Play error:", err);
-        setErrorMsg(`재생 실패: ${err} — 화면을 다시 탭해주세요`);
+        setErrorMsg(t("musicPlay.playError", { err: String(err) }));
         // iOS 자동 재시도
         howl.once("unlock", () => howl.play());
       },
@@ -189,7 +191,11 @@ const MusicPlay = () => {
     howlRef.current = howl;
 
     setMediaSession(
-      { title: detail.mood, artist: "MintMoody", album: detail.scene },
+      {
+        title: t(`situations.${id}.mood`, { defaultValue: detail.mood }),
+        artist: "MintMoody",
+        album: t(`situations.${id}.scene`, { defaultValue: detail.scene }),
+      },
       {
         onPlay: () => howl.play(),
         onPause: () => howl.pause(),
@@ -224,10 +230,10 @@ const MusicPlay = () => {
 
       <div className="relative px-5 mt-10 text-center z-10">
         <h1 className="text-[48px] font-serif font-bold text-white leading-none tracking-tight">
-          {detail.mood}
+          {t(`situations.${id}.mood`, { defaultValue: detail.mood })}
         </h1>
         <p className="mt-3 text-sm text-white/60 tracking-wider">
-          {detail.scene}
+          {t(`situations.${id}.scene`, { defaultValue: detail.scene })}
         </p>
       </div>
 
@@ -310,7 +316,7 @@ const MusicPlay = () => {
             className="liquid-card w-full max-w-sm p-5"
             onClick={(e) => e.stopPropagation()}
           >
-            <p className="section-title mb-3">자동 정지 타이머</p>
+            <p className="section-title mb-3">{t("timer.title")}</p>
             <div className="grid gap-2">
               {TIMER_OPTIONS.map((opt) => (
                 <button

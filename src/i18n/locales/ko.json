@@ -114,6 +114,31 @@
       "health": "건강 호흡",
       "sleep": "수면"
     },
+    "patterns": {
+      "4-7-8":         { "title": "4-7-8 호흡",       "description": "수면·불안 완화 (숙련자용)" },
+      "4-7-8-easy":    { "title": "4-4-6 호흡 (초보)", "description": "수면·불안 완화 (부담 없이)" },
+      "box":           { "title": "박스 호흡",         "description": "집중·안정" },
+      "5-5":           { "title": "5-5 코히어런트",   "description": "심박변이도 개선" },
+      "6-6":           { "title": "6-6 깊은 호흡",    "description": "이완·명상" },
+      "8-2-8":         { "title": "6-2-6 진정 호흡",  "description": "공황·과각성 (현실적)" },
+      "3-3-3":         { "title": "3-3-3 그라운딩",   "description": "즉각 안정" },
+      "wim-hof":       { "title": "Wim Hof",          "description": "면역력·에너지" },
+      "kapalabhati":   { "title": "카팔라바티",        "description": "각성·집중력" },
+      "bhastrika":     { "title": "바스트리카",        "description": "에너지 폭발" },
+      "4-8":           { "title": "4-8 수면 호흡",    "description": "깊은 이완" },
+      "diaphragm":     { "title": "횡경막 호흡",       "description": "복식호흡 · 산소 흡수율 ↑" },
+      "brain-oxygen":  { "title": "뇌 산소 호흡",      "description": "전두엽 산소 공급·집중력 향상" },
+      "lung-capacity": { "title": "폐활량 강화",       "description": "폐 확장 · 횡경막 강화" },
+      "alpine":        { "title": "고산 적응 호흡",    "description": "혈중 이산화탄소 균형·미주신경" },
+      "energy-boost":  { "title": "에너지 충전 호흡",  "description": "산소포화도 ↑ · 즉각 각성" }
+    },
+    "visuals": {
+      "bubble":   { "name": "버블",         "description": "유기적인 물방울이 부드럽게 호흡해요" },
+      "wave":     { "name": "웨이브",       "description": "잔잔한 파도가 차오르고 빠져요" },
+      "moonrise": { "name": "떠오르는 달",  "description": "달이 뜨고 지며 별이 깜빡여요" },
+      "orbit":    { "name": "흐르는 광륜",  "description": "빛이 궤도를 돌며 명상을 도와요" },
+      "bloom":    { "name": "피어나는 꽃",  "description": "꽃잎이 활짝 열리고 닫혀요" }
+    },
     "session": {
       "back": "뒤로",
       "muteOn": "음성 안내 켜기",
@@ -127,7 +152,8 @@
       "completedHint": "마음이 한결 가벼워졌길 바라요 🌿",
       "again": "한 번 더",
       "home": "홈으로",
-      "remaining": "{{count}}회 남음"
+      "remaining": "{{count}}회 남음",
+      "phaseProgress": "{{current}} / {{total}} 단계"
     }
   },
   "glass": {

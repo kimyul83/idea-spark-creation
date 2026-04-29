@@ -54,13 +54,13 @@ const FACE_TO_SVG: Record<MoodyFace, string> = {
  * 그것도 없으면 SVG 폴백.
  */
 const FACE_TO_VIDEO: Record<MoodyFace, string> = {
-  default:   "/mascot/videos/moody-default.webm",
-  happy:     "/mascot/videos/moody-happy.webm",
-  sad:       "/mascot/videos/moody-sad.webm",
-  surprised: "/mascot/videos/moody-surprised.webm",
-  calm:      "/mascot/videos/moody-calm.webm",
-  love:      "/mascot/videos/moody-love.webm",
-  focus:     "/mascot/videos/moody-focus.webm",
+  default:   "/mascot/videos/moody-default.mp4",
+  happy:     "/mascot/videos/moody-happy.mp4",
+  sad:       "/mascot/videos/moody-sad.mp4",
+  surprised: "/mascot/videos/moody-surprised.mp4",
+  calm:      "/mascot/videos/moody-calm.mp4",
+  love:      "/mascot/videos/moody-love.mp4",
+  focus:     "/mascot/videos/moody-focus.mp4",
 };
 
 const svgCache = new Map<string, string>();
@@ -173,7 +173,9 @@ export const Moody = ({
   const dropShadow =
     "drop-shadow(0 0 20px hsl(var(--primary) / 0.45)) drop-shadow(0 10px 24px hsl(var(--glow) / 0.25))";
 
-  // 영상 모드 — WebM with VP9 alpha. 배경이 진짜 투명이라 blend mode 불필요.
+  // 영상 모드 — Kling 영상은 검정 배경 → mix-blend-mode: screen 으로 마스킹.
+  // 검정 픽셀이 앱 배경과 동일하게 처리되어 캐릭터만 떠 보임.
+  // (VP9 alpha가 ffmpeg 빌드에서 안 돼서 이 방식으로 전환)
   if (videoUrl) {
     return (
       <div className={wrapperClass} style={wrapperStyle} aria-hidden>
@@ -184,7 +186,10 @@ export const Moody = ({
           muted
           playsInline
           className="w-full h-full object-contain"
-          style={{ filter: dropShadow }}
+          style={{
+            filter: dropShadow,
+            mixBlendMode: "screen",
+          }}
         />
       </div>
     );

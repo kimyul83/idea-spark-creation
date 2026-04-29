@@ -51,7 +51,7 @@ const Me = () => {
             </h2>
             <p className="opacity-70 text-xs mt-2">전체 ASMR · 무제한 믹스 · ADHD · 수면</p>
           </div>
-          <Moody size={80} emotion={isPremium ? "happy" : "default"} />
+          <Moody size={160} emotion={isPremium ? "happy" : "default"} />
         </div>
         <Button
           onClick={() => navigate("/subscribe")}

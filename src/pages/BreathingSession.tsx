@@ -295,7 +295,7 @@ const BreathingSession = () => {
         <div className="fixed inset-0 z-50 flex items-center justify-center px-6 bg-foreground/30 backdrop-blur-sm animate-fade-up">
           <div className="liquid-card p-8 w-full max-w-sm text-center">
             <div className="flex justify-center">
-              <Moody size={96} emotion="happy" />
+              <Moody size={180} emotion="happy" />
             </div>
             <p className="text-[11px] tracking-[0.3em] uppercase text-primary font-serif mt-4">
               Well done

@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { ArrowLeft, Heart, Lock, Share2, Sparkles, Star, X } from "lucide-react";
 import { MonetBackground } from "@/components/MonetBackground";
 import { Button } from "@/components/ui/button";
@@ -41,6 +42,7 @@ function writeTodayCount(n: number) {
 
 const GlassBreak = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const { isPremium } = usePremium();
   const [tab, setTab] = useState<Tab>("slice");
   const [active, setActive] = useState<GlassClip | null>(null);
@@ -80,9 +82,9 @@ const GlassBreak = () => {
 
   const open = (c: GlassClip) => {
     if (c.premium && !isPremium) {
-      toast.info("프리미엄 영상이에요", {
-        description: "구독하면 모든 영상을 만날 수 있어요.",
-        action: { label: "구독", onClick: () => navigate("/subscribe") },
+      toast.info(t("glass.premiumTitle"), {
+        description: t("glass.premiumSub"),
+        action: { label: t("glass.subscribe"), onClick: () => navigate("/subscribe") },
       });
       return;
     }
@@ -149,7 +151,7 @@ const GlassBreak = () => {
   const toggleFav = async (clip: GlassClip) => {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) {
-      toast.error("로그인이 필요해요");
+      toast.error(t("glass.loginRequired"));
       return;
     }
     const next = new Set(favorites);
@@ -164,7 +166,7 @@ const GlassBreak = () => {
         user_id: user.id, content_type: "glass_clip", content_id: clip.id,
       });
       next.add(clip.id);
-      toast.success("즐겨찾기에 담았어요");
+      toast.success(t("glass.favoriteAdded"));
     }
     setFavorites(next);
   };
@@ -189,7 +191,7 @@ const GlassBreak = () => {
           <h1 className="text-[28px] font-bold text-foreground leading-tight">유리 깨기</h1>
         </div>
         <div className="liquid-card px-3 py-2 text-right">
-          <div className="text-[11px] uppercase tracking-wider text-muted-foreground">Today</div>
+          <div className="text-[11px] uppercase tracking-wider text-muted-foreground">{t("glass.today")}</div>
           <div className="text-base font-bold text-primary leading-none">{todayCount}</div>
         </div>
       </div>
@@ -198,9 +200,9 @@ const GlassBreak = () => {
       <div className="px-5 mt-5 flex items-center gap-3">
         <Moody size={120} emotion="surprised" />
         <div className="text-sm text-foreground/80">
-          <p className="font-medium">오늘, 무엇을 깨부수고 싶나요?</p>
+          <p className="font-medium">{t("glass.intro")}</p>
           <p className="text-xs text-muted-foreground mt-0.5">
-            손끝으로 만지면 깨져요 · 나를 누르던 감정을 작은 조각들로
+            {t("glass.introSub")}
           </p>
         </div>
       </div>
@@ -219,12 +221,12 @@ const GlassBreak = () => {
                   : "text-foreground/70 hover:text-foreground",
               )}
             >
-              <c.Icon className="w-4 h-4" strokeWidth={1.8} />{c.label}
+              <c.Icon className="w-4 h-4" strokeWidth={1.8} />{t(`glass.tabs.${c.id}`, { defaultValue: c.label })}
             </button>
           ))}
         </div>
         <p className="text-[11px] text-muted-foreground mt-2 px-1">
-          {GLASS_CATEGORIES.find((c) => c.id === tab)?.tagline}
+          {t(`glass.tagline.${tab}`, { defaultValue: GLASS_CATEGORIES.find((c) => c.id === tab)?.tagline })}
         </p>
       </div>
 
@@ -263,7 +265,7 @@ const GlassBreak = () => {
                   </span>
                 )}
                 <span className="px-2 py-0.5 rounded-full text-[9px] bg-white/20 backdrop-blur-sm text-white tracking-wider">
-                  곧 출시
+                  {t("common.coming")}
                 </span>
               </div>
 
@@ -357,7 +359,7 @@ const GlassBreak = () => {
                   if (navigator.share) {
                     await navigator.share({ title: active.title, text: "유리 깨기 – Moody" });
                   } else {
-                    toast.info("이 기기에서는 공유를 지원하지 않아요");
+                    toast.info(t("glass.shareUnsupported"));
                   }
                 } catch { /* user cancel */ }
               }}
@@ -387,7 +389,7 @@ const GlassBreak = () => {
           <div className="absolute bottom-8 left-0 right-0 z-20 text-center pointer-events-none">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-md text-white/90 text-sm">
               <Sparkles className="w-4 h-4" />
-              <span>화면을 탭하면 깨집니다 · {taps}회</span>
+              <span>{t("glass.tapHint", { count: taps })}</span>
             </div>
           </div>
 
@@ -400,9 +402,9 @@ const GlassBreak = () => {
                 <div className="flex justify-center mb-3">
                   <Moody size={180} emotion="happy" />
                 </div>
-                <h3 className="text-lg font-bold text-foreground">시원한 기분이 들었나요?</h3>
+                <h3 className="text-lg font-bold text-foreground">{t("glass.rateTitle")}</h3>
                 <p className="text-xs text-muted-foreground mt-1">
-                  오늘 {taps}번 깨부셨어요 · 수고했어요
+                  {t("glass.rateSub", { count: taps })}
                 </p>
 
                 <div className="flex items-center justify-center gap-1.5 mt-5">
@@ -429,25 +431,25 @@ const GlassBreak = () => {
                     variant="ghost"
                     className="w-full h-12 rounded-2xl"
                   >
-                    한 번 더
+                    {t("glass.again")}
                   </Button>
                   <Button
                     onClick={() => { finishWithRating(rating || null); }}
                     className="w-full h-12 rounded-2xl btn-primary text-primary-foreground font-semibold"
                   >
-                    다른 영상 보기
+                    {t("glass.watchOther")}
                   </Button>
                   <Button
                     onClick={() => { finishWithRating(rating || null); navigate("/home"); }}
                     variant="ghost"
                     className="w-full h-12 rounded-2xl text-muted-foreground"
                   >
-                    홈으로
+                    {t("glass.home")}
                   </Button>
                 </div>
 
                 <p className="text-[11px] text-muted-foreground mt-4 leading-relaxed">
-                  파편이 빛이 되어 당신에게 돌아가요.
+                  {t("glass.afterMessage")}
                 </p>
               </div>
             </div>

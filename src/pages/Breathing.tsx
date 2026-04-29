@@ -1,5 +1,6 @@
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { ArrowLeft, ChevronRight, Lock, Check } from "lucide-react";
 import { MonetBackground } from "@/components/MonetBackground";
 import { Moody } from "@/components/Moody";
@@ -14,13 +15,14 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 const REPS = [3, 5, 10, 15];
-const CATEGORIES: BreathingCategory[] = ["calm", "emergency", "energize", "sleep"];
+const CATEGORIES: BreathingCategory[] = ["calm", "emergency", "energize", "health", "sleep"];
 
 type Step = "pick" | "reps" | "visual";
 
 const Breathing = () => {
   const navigate = useNavigate();
   const [params] = useSearchParams();
+  const { t } = useTranslation();
   const { isPremium } = usePremium();
   const presetEmotion = params.get("emotion");
 
@@ -72,22 +74,22 @@ const Breathing = () => {
           <button
             onClick={goBack}
             className="w-9 h-9 rounded-full liquid-card flex items-center justify-center mt-1"
-            aria-label="뒤로"
+            aria-label={t("common.back")}
           >
             <ArrowLeft className="w-4 h-4 text-foreground/70" />
           </button>
         )}
         <div className="flex-1">
-          <p className="chip-primary text-[12px] tracking-[0.3em] uppercase font-serif">Breathing</p>
+          <p className="chip-primary text-[12px] tracking-[0.3em] uppercase font-serif">{t("breathing.label")}</p>
           <h1 className="text-[26px] font-bold text-foreground mt-1 leading-tight">
-            {step === "pick"   && "호흡 가이드"}
-            {step === "reps"   && picked?.title}
-            {step === "visual" && "애니메이션 선택"}
+            {step === "pick"   && t("breathing.title")}
+            {step === "reps"   && picked && t(`breathing.patterns.${picked.id}.title`, { defaultValue: picked.title })}
+            {step === "visual" && t("breathing.selectVisual")}
           </h1>
           <p className="text-sm text-foreground/60 mt-1">
-            {step === "pick"   && "지금 필요한 호흡을 골라요"}
-            {step === "reps"   && "몇 번 반복할까요?"}
-            {step === "visual" && "몰입할 시각 스타일을 골라요"}
+            {step === "pick"   && t("breathing.selectPattern")}
+            {step === "reps"   && t("breathing.selectReps")}
+            {step === "visual" && t("breathing.selectVisual")}
           </p>
         </div>
       </div>
@@ -108,7 +110,7 @@ const Breathing = () => {
                     : "text-foreground/60 hover:text-foreground",
                 )}
               >
-                {CATEGORY_META[c].label}
+                {t(`breathing.categories.${c}`, { defaultValue: CATEGORY_META[c].label })}
               </button>
             ))}
           </div>
@@ -133,10 +135,10 @@ const Breathing = () => {
                     <Icon className="w-6 h-6 text-primary" strokeWidth={1.6} />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <div className="font-bold text-foreground text-[15px]">{p.title}</div>
+                    <div className="font-bold text-foreground text-[15px]">{t(`breathing.patterns.${p.id}.title`, { defaultValue: p.title })}</div>
                     <div className="text-[11px] text-foreground/60 mt-0.5">{p.subtitle}</div>
                     <div className="flex items-center gap-1.5 mt-1">
-                      <span className="text-[10px] text-primary font-medium">{p.description}</span>
+                      <span className="text-[10px] text-primary font-medium">{t(`breathing.patterns.${p.id}.description`, { defaultValue: p.description })}</span>
                       {p.origin && (
                         <span className="text-[10px] text-foreground/40">· {p.origin}</span>
                       )}
@@ -162,8 +164,8 @@ const Breathing = () => {
               <picked.icon className="w-6 h-6 text-primary" strokeWidth={1.6} />
             </div>
             <div className="flex-1">
-              <p className="text-[10px] uppercase tracking-widest text-foreground/50">선택된 호흡법</p>
-              <p className="font-bold text-foreground">{picked.title}</p>
+              <p className="text-[10px] uppercase tracking-widest text-foreground/50">{t("breathing.label")}</p>
+              <p className="font-bold text-foreground">{t(`breathing.patterns.${picked.id}.title`, { defaultValue: picked.title })}</p>
               <p className="text-[11px] text-foreground/60 mt-0.5">{picked.subtitle}</p>
             </div>
           </div>
@@ -179,7 +181,7 @@ const Breathing = () => {
                 )}
               >
                 <span className="num-display text-2xl text-primary">{r}</span>
-                <span className="text-[11px] text-foreground/60 mt-0.5">회 반복</span>
+                <span className="text-[11px] text-foreground/60 mt-0.5">{t("breathing.reps")}</span>
               </button>
             ))}
           </div>
@@ -208,11 +210,11 @@ const Breathing = () => {
                   <div className="flex-1 min-w-0 flex flex-col justify-center">
                     <div className="flex items-center gap-1.5">
                       <span>{v.emoji}</span>
-                      <p className="font-bold text-foreground text-[14px]">{v.name}</p>
+                      <p className="font-bold text-foreground text-[14px]">{t(`breathing.visuals.${v.id}.name`, { defaultValue: v.name })}</p>
                       {selected && <Check className="w-3.5 h-3.5 text-primary ml-auto" />}
                     </div>
                     <p className="text-[11px] text-foreground/55 mt-1 leading-snug">
-                      {v.description}
+                      {t(`breathing.visuals.${v.id}.description`, { defaultValue: v.description })}
                     </p>
                   </div>
                 </button>
@@ -225,7 +227,7 @@ const Breathing = () => {
               onClick={start}
               className="w-full h-14 rounded-2xl bg-primary hover:bg-primary/90 text-primary-foreground text-base font-semibold"
             >
-              시작하기 · {reps}회
+              {t("breathing.start")} · {reps}
             </Button>
           </div>
         </div>

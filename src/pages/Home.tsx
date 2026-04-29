@@ -110,6 +110,7 @@ interface SituationRowProps {
 }
 
 const SituationRow = ({ id, icon: Icon, onClick }: SituationRowProps) => {
+  const { t } = useTranslation();
   const d = SITUATION_DETAILS[id];
   if (!d) return null;
   return (
@@ -122,10 +123,10 @@ const SituationRow = ({ id, icon: Icon, onClick }: SituationRowProps) => {
       </div>
       <div className="flex-1 min-w-0">
         <div className="flex items-baseline gap-2 flex-wrap">
-          <span className="font-bold text-foreground text-[16px]">{d.mood}</span>
+          <span className="font-bold text-foreground text-[16px]">{t(`situations.${id}.mood`, { defaultValue: d.mood })}</span>
           <span className="text-[12px] font-mono text-primary tracking-wide">{d.frequencyLabel}</span>
         </div>
-        <div className="text-[13px] text-foreground/65 mt-0.5">{d.scene}</div>
+        <div className="text-[13px] text-foreground/65 mt-0.5">{t(`situations.${id}.scene`, { defaultValue: d.scene })}</div>
       </div>
       <ChevronRight className="w-5 h-5 text-foreground/30 shrink-0" />
     </button>

@@ -51,11 +51,11 @@ const Me = () => {
         <span className="shimmer" />
         <div className="relative flex items-start justify-between">
           <div>
-            <p className="text-[11px] tracking-[0.3em] uppercase opacity-70 font-serif">Moody+</p>
-            <h2 className="text-[22px] font-bold mt-1 leading-tight">
-              {isPremium ? <>프리미엄 활성<br />감사해요 ✨</> : <>프리미엄으로<br />더 깊이 돌봐요</>}
+            <p className="text-[11px] tracking-[0.3em] uppercase opacity-70 font-serif">{t("subscribe.label")}</p>
+            <h2 className="text-[22px] font-bold mt-1 leading-tight whitespace-pre-line">
+              {isPremium ? t("me.premiumThanks") : t("me.premiumCta")}
             </h2>
-            <p className="opacity-70 text-xs mt-2">전체 ASMR · 무제한 믹스 · ADHD · 수면</p>
+            <p className="opacity-70 text-xs mt-2">{t("me.premiumDesc")}</p>
           </div>
           <Moody size={160} emotion={isPremium ? "happy" : "default"} />
         </div>
@@ -64,14 +64,14 @@ const Me = () => {
           className="relative w-full mt-5 h-11 rounded-2xl bg-white/95 text-[#0A1525] hover:bg-white font-semibold"
         >
           <Crown className="w-4 h-4 mr-2" />
-          {isPremium ? "구독 관리" : "프리미엄 시작"}
+          {isPremium ? t("me.manageSubscription") : t("me.startPremium")}
         </Button>
       </div>
 
       {/* stats — droplet particles inside */}
       <div className="grid grid-cols-2 gap-3">
-        <StatCard label="Sessions" value={`${stats.total}회`} />
-        <StatCard label="Minutes" value={`${stats.minutes}분`} />
+        <StatCard label={t("me.sessions")} value={`${stats.total}`} />
+        <StatCard label={t("me.minutes")} value={`${stats.minutes}`} />
       </div>
 
       {/* user info */}
@@ -83,7 +83,7 @@ const Me = () => {
           <p className="text-[10px] text-foreground/50 tracking-widest uppercase flex items-center gap-1.5">
             <ProviderBadge provider={(user?.app_metadata?.provider as string) ?? "guest"} />
           </p>
-          <p className="font-semibold text-foreground truncate">{user?.email ?? "게스트로 둘러보는 중"}</p>
+          <p className="font-semibold text-foreground truncate">{user?.email ?? t("me.guest")}</p>
         </div>
       </div>
 
@@ -120,8 +120,8 @@ const Me = () => {
             <FlaskConical className="w-5 h-5 text-accent-foreground" strokeWidth={1.8} />
           </div>
           <div className="flex-1">
-            <p className="font-semibold text-foreground text-sm">개발용 · 프리미엄 토글</p>
-            <p className="text-[11px] text-foreground/50 mt-0.5">결제 없이 모든 기능 잠금 해제</p>
+            <p className="font-semibold text-foreground text-sm">{t("me.devToggle")}</p>
+            <p className="text-[11px] text-foreground/50 mt-0.5">{t("me.devDesc")}</p>
           </div>
           <Switch checked={devPremium} onCheckedChange={setDev} />
         </div>
@@ -133,7 +133,7 @@ const Me = () => {
           onClick={handleSignOut}
           className="w-full mt-2 text-foreground/60 hover:text-foreground"
         >
-          <LogOut className="w-4 h-4 mr-2" /> 로그아웃
+          <LogOut className="w-4 h-4 mr-2" /> {t("me.logout")}
         </Button>
       )}
     </div>
@@ -173,9 +173,10 @@ const MenuRow = ({
 
 
 const ProviderBadge = ({ provider }: { provider: string }) => {
+  const { t } = useTranslation();
   const map: Record<string, { label: string; logo: JSX.Element | null }> = {
     google: {
-      label: "Google 계정",
+      label: t("me.providerGoogle"),
       logo: (
         <svg width="11" height="11" viewBox="0 0 48 48" aria-hidden>
           <path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.1 29.2 35 24 35c-6.1 0-11-4.9-11-11s4.9-11 11-11c2.8 0 5.3 1 7.3 2.7l5.7-5.7C33.5 6.7 29 5 24 5 13.5 5 5 13.5 5 24s8.5 19 19 19 19-8.5 19-19c0-1.2-.1-2.4-.4-3.5z"/>
@@ -186,15 +187,15 @@ const ProviderBadge = ({ provider }: { provider: string }) => {
       ),
     },
     apple: {
-      label: "Apple 계정",
+      label: t("me.providerApple"),
       logo: (
         <svg width="10" height="11" viewBox="0 0 384 512" fill="currentColor" aria-hidden>
           <path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zM256 84.5c19.4-23 17.6-43.9 17-51.5-17.1 1-36.9 11.7-48.2 24.8-12.4 14-19.7 31.4-18.1 50.7 18.5 1.4 35.4-8.1 49.3-24z"/>
         </svg>
       ),
     },
-    email: { label: "이메일", logo: null },
-    guest: { label: "Guest", logo: null },
+    email: { label: t("me.providerEmail"), logo: null },
+    guest: { label: t("me.providerGuest"), logo: null },
   };
   const info = map[provider] ?? map.email;
   return (

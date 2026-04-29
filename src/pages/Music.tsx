@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import {
   CloudRain, Waves, Trees, Mountain, Wind, Bird, Flame, Moon,
   Droplets, Sun, Music2, Heart, Brain,
-  Coffee, Pause, Zap,
+  Coffee, Pause, Zap, Timer,
 } from "lucide-react";
 import { Howl } from "howler";
 import { MonetBackground } from "@/components/MonetBackground";
@@ -213,10 +213,23 @@ const FREQUENCIES: FreqItem[] = [
   { id: "40",     label: "40Hz",          tag: "Gamma · MIT 임상",         icon: Brain,  hz: 40,  type: "tone" },
 ];
 
+const TIMER_OPTIONS = [
+  { hours: null as number | null, label: "끄기 (무한 재생)" },
+  { hours: 0.5, label: "30분" },
+  { hours: 1, label: "1시간" },
+  { hours: 3, label: "3시간" },
+  { hours: 6, label: "6시간" },
+  { hours: 8, label: "8시간" },
+  { hours: 12, label: "12시간" },
+];
+
 const Music = () => {
   const [activeIds, setActiveIds] = useState<Set<string>>(new Set());
   const [versionIdx, setVersionIdx] = useState<Record<string, number>>({});
+  const [timerHours, setTimerHours] = useState<number | null>(null);
+  const [timerOpen, setTimerOpen] = useState(false);
   const howlsRef = useRef<Map<string, Howl>>(new Map());
+  const timerRef = useRef<number | undefined>();
 
   useEffect(() => {
     return () => {
@@ -225,8 +238,17 @@ const Music = () => {
       audioEngine.stopAll();
       clearMediaSession();
       releaseWakeLock();
+      if (timerRef.current) window.clearTimeout(timerRef.current);
     };
   }, []);
+
+  const applyTimer = (hours: number | null) => {
+    setTimerHours(hours);
+    setTimerOpen(false);
+    if (timerRef.current) window.clearTimeout(timerRef.current);
+    if (hours == null) return;
+    timerRef.current = window.setTimeout(() => stopAll(), hours * 3600 * 1000);
+  };
 
   /** 탭 동작:
    *  - 비활성 → 1번 변주 재생
@@ -343,9 +365,28 @@ const Music = () => {
             동시 재생 가능 · 같은 타일 다시 누르면 다른 버전
           </p>
         </div>
-        <span className="text-sm text-foreground/55 font-medium">
-          {activeIds.size}개
-        </span>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => setTimerOpen(true)}
+            className={cn(
+              "w-10 h-10 rounded-full flex items-center justify-center transition relative",
+              timerHours != null
+                ? "bg-primary text-primary-foreground"
+                : "liquid-card text-foreground/70",
+            )}
+            aria-label="타이머"
+          >
+            <Timer className="w-4 h-4" strokeWidth={2} />
+            {timerHours != null && (
+              <span className="absolute -bottom-1 -right-1 text-[9px] bg-primary text-primary-foreground rounded-full min-w-[20px] h-5 px-1 flex items-center justify-center font-bold border border-background">
+                {timerHours < 1 ? "30" : `${timerHours}h`}
+              </span>
+            )}
+          </button>
+          <span className="text-sm text-foreground/55 font-medium">
+            {activeIds.size}개
+          </span>
+        </div>
       </div>
 
       <section className="mt-7">
@@ -389,6 +430,37 @@ const Music = () => {
         >
           전체 정지
         </button>
+      )}
+
+      {timerOpen && (
+        <div
+          className="fixed inset-0 z-50 bg-black/70 backdrop-blur-md flex items-end sm:items-center justify-center p-5"
+          onClick={() => setTimerOpen(false)}
+        >
+          <div
+            className="liquid-card w-full max-w-sm p-5"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <p className="section-title mb-3">자동 정지 타이머</p>
+            <div className="grid gap-2">
+              {TIMER_OPTIONS.map((opt) => (
+                <button
+                  key={opt.label}
+                  onClick={() => applyTimer(opt.hours)}
+                  className={cn(
+                    "w-full px-4 py-3 rounded-2xl text-left transition flex items-center justify-between",
+                    timerHours === opt.hours
+                      ? "bg-primary text-primary-foreground"
+                      : "bg-foreground/5 text-foreground/85 hover:bg-foreground/10",
+                  )}
+                >
+                  <span className="font-semibold">{opt.label}</span>
+                  {timerHours === opt.hours && <span className="text-xs">✓</span>}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

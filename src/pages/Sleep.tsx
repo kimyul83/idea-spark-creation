@@ -184,7 +184,7 @@ const TRACKS: SleepTrack[] = [
 ];
 
 const MIN_HOURS = 1;
-const MAX_HOURS = 10;
+const MAX_HOURS = 12;
 const STEP_HOURS = 0.5;
 const FADE_BEFORE_END_SECONDS = 20 * 60;
 const FADE_DURATION_SECONDS = 5 * 60;
@@ -354,8 +354,8 @@ const Sleep = () => {
         />
         <div className="flex justify-between text-[10px] text-foreground/40 mt-1">
           <span>1시간</span>
-          <span>5시간</span>
-          <span>10시간</span>
+          <span>6시간</span>
+          <span>12시간</span>
         </div>
         {activeId && endsAt && (
           <div className="mt-4 flex items-center justify-between bg-primary/10 rounded-2xl px-4 py-2.5">

@@ -213,13 +213,13 @@ const GlassBreak = () => {
               key={c.id}
               onClick={() => setTab(c.id)}
               className={cn(
-                "py-2.5 rounded-2xl text-sm font-semibold transition-all",
+                "py-2.5 rounded-2xl text-sm font-semibold transition-all flex items-center justify-center gap-1.5",
                 tab === c.id
                   ? "bg-primary text-primary-foreground shadow-[0_0_18px_-4px_hsl(var(--glow)/0.6)]"
                   : "text-foreground/70 hover:text-foreground",
               )}
             >
-              <span className="mr-1">{c.emoji}</span>{c.label}
+              <c.Icon className="w-4 h-4" strokeWidth={1.8} />{c.label}
             </button>
           ))}
         </div>

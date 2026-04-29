@@ -54,7 +54,7 @@ const FACE_TO_SVG: Record<MoodyFace, string> = {
  * 그것도 없으면 SVG 폴백.
  */
 const FACE_TO_VIDEO: Record<MoodyFace, string> = {
-  default:   "/mascot/videos/moody-default.mp4",
+  default:   "/mascot/videos/moody-main.mp4",
   happy:     "/mascot/videos/moody-happy.mp4",
   sad:       "/mascot/videos/moody-sad.mp4",
   surprised: "/mascot/videos/moody-surprised.mp4",

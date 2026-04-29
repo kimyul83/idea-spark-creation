@@ -227,6 +227,7 @@ const TIMER_OPTIONS: Array<{ hours: number | null; key: string }> = [
 const Music = () => {
   const { t } = useTranslation();
   const [activeIds, setActiveIds] = useState<Set<string>>(new Set());
+  const [loadingIds, setLoadingIds] = useState<Set<string>>(new Set());
   const [versionIdx, setVersionIdx] = useState<Record<string, number>>({});
   const [timerHours, setTimerHours] = useState<number | null>(null);
   const [timerOpen, setTimerOpen] = useState(false);
@@ -279,16 +280,30 @@ const Music = () => {
     }
     const v = item.variants[idx];
     const url = toCdnUrl(v.file);
+    // 즉시 active + loading 상태 — 사용자 피드백 빠르게
+    setVersionIdx((prev) => ({ ...prev, [item.id]: idx }));
+    setActiveIds((prev) => new Set(prev).add(item.id));
+    setLoadingIds((prev) => new Set(prev).add(item.id));
+
+    const clearLoading = () => setLoadingIds((prev) => {
+      const next = new Set(prev);
+      next.delete(item.id);
+      return next;
+    });
+
     const howl = new Howl({
       src: [url],
       html5: true,
       loop: true,
       volume: 0.55,
+      preload: true,
+      onplay: clearLoading,
+      onload: clearLoading,
+      onloaderror: clearLoading,
+      onplayerror: clearLoading,
     });
     howl.play();
     howlsRef.current.set(item.id, howl);
-    setVersionIdx((prev) => ({ ...prev, [item.id]: idx }));
-    setActiveIds((prev) => new Set(prev).add(item.id));
 
     setMediaSession(
       { title: `${item.label} · ${v.name}`, artist: "MintMoody · Sound Mix", album: item.tag },
@@ -401,6 +416,7 @@ const Music = () => {
               key={item.id}
               item={item}
               active={activeIds.has(item.id)}
+              loading={loadingIds.has(item.id)}
               versionIdx={versionIdx[item.id] ?? 0}
               onClick={() => handleNatureClick(item)}
               onStop={() => stopFile(item.id)}
@@ -471,12 +487,13 @@ const Music = () => {
 interface NatureTileProps {
   item: NatureItem;
   active: boolean;
+  loading?: boolean;
   versionIdx: number;
   onClick: () => void;
   onStop: () => void;
 }
 
-const NatureTile = ({ item, active, versionIdx, onClick, onStop }: NatureTileProps) => {
+const NatureTile = ({ item, active, loading, versionIdx, onClick, onStop }: NatureTileProps) => {
   const { t } = useTranslation();
   const Icon = item.icon;
   const hasMultiple = item.variants.length > 1;
@@ -487,14 +504,18 @@ const NatureTile = ({ item, active, versionIdx, onClick, onStop }: NatureTilePro
         onClick={onClick}
         className={cn(
           "liquid-card w-full aspect-[0.95] p-3 flex flex-col items-center justify-center gap-1.5 transition-all active:scale-95",
-          active && "ring-2 ring-primary shadow-[0_0_24px_-4px_hsl(var(--primary)/0.55)]"
+          active && "ring-2 ring-primary shadow-[0_0_24px_-4px_hsl(var(--primary)/0.55)]",
+          loading && "animate-pulse"
         )}
       >
         <div className={cn(
-          "w-10 h-10 rounded-2xl flex items-center justify-center",
+          "w-10 h-10 rounded-2xl flex items-center justify-center relative",
           active ? "bg-primary text-primary-foreground" : "text-primary"
         )}>
           <Icon className="w-5 h-5" strokeWidth={active ? 1.9 : 1.7} />
+          {loading && (
+            <span className="absolute inset-0 rounded-2xl border-2 border-primary border-t-transparent animate-spin" />
+          )}
         </div>
         <span className="text-[14px] font-bold text-foreground text-center leading-tight">
           {t(`music.categories.${item.id}`, { defaultValue: item.label })}

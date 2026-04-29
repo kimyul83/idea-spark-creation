@@ -270,6 +270,7 @@ const Sleep = () => {
       html5: true,
       loop: true,
       volume: TRACK_VOLUME,
+      preload: true,
       onplay: () => {
         setMediaSessionPlaying(true);
         requestWakeLock();

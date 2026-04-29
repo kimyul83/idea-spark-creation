@@ -62,6 +62,7 @@ const MusicPlay = () => {
   })();
   const [variant, setVariant] = useState<VariantId>(defaultVariant);
   const [playing, setPlaying] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [infoOpen, setInfoOpen] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [timerHours, setTimerHours] = useState<number | null>(null); // null = 무한 재생, 숫자 = N시간 후 자동정지
@@ -154,15 +155,17 @@ const MusicPlay = () => {
     // CDN URL 변환 (jsDelivr — GitHub public repo 서빙)
     const cdnUrl = toCdnUrl(url);
     console.log("[MusicPlay] Loading:", cdnUrl);
+    setLoading(true);
 
     const howl = new Howl({
       src: [cdnUrl],
       html5: true,
       loop: true,
       volume: 0.75,
+      preload: true,
       onplay: () => {
         console.log("[MusicPlay] Playing OK");
-        setPlaying(true); setErrorMsg(null);
+        setPlaying(true); setErrorMsg(null); setLoading(false);
         setMediaSessionPlaying(true);
         requestWakeLock();
       },
@@ -174,11 +177,14 @@ const MusicPlay = () => {
         setPlaying(false);
         setMediaSessionPlaying(false);
       },
-      onload: () => console.log("[MusicPlay] Loaded"),
+      onload: () => {
+        console.log("[MusicPlay] Loaded");
+        setLoading(false);
+      },
       onloaderror: (id, err) => {
         console.error("[MusicPlay] Load error:", err, cdnUrl);
         setErrorMsg(t("musicPlay.loadError", { err: String(err) }));
-        setPlaying(false);
+        setPlaying(false); setLoading(false);
       },
       onplayerror: (id, err) => {
         console.error("[MusicPlay] Play error:", err);
@@ -284,8 +290,14 @@ const MusicPlay = () => {
         <button onClick={() => playVariant(variant)} className="w-11 h-11 rounded-full bg-white/[0.06] border border-white/10 flex items-center justify-center active:scale-95">
           <Shuffle className="w-4 h-4 text-white/70" />
         </button>
-        <button onClick={togglePlay} className="w-16 h-16 rounded-full bg-white flex items-center justify-center shadow-xl active:scale-95 transition">
-          {playing ? <Pause className="w-7 h-7 text-black" /> : <Play className="w-7 h-7 text-black ml-0.5" />}
+        <button onClick={togglePlay} className="w-16 h-16 rounded-full bg-white flex items-center justify-center shadow-xl active:scale-95 transition relative">
+          {loading ? (
+            <span className="w-6 h-6 rounded-full border-2 border-black border-t-transparent animate-spin" />
+          ) : playing ? (
+            <Pause className="w-7 h-7 text-black" />
+          ) : (
+            <Play className="w-7 h-7 text-black ml-0.5" />
+          )}
         </button>
         <button
           onClick={() => setTimerOpen(true)}

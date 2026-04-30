@@ -8,23 +8,33 @@ import { Moody } from "@/components/Moody";
 import { MonetBackground } from "@/components/MonetBackground";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable";
+import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 
 const Onboarding = () => {
   const { t } = useTranslation();
-  const [step, setStep] = useState(0);
+  // 이전에 온보딩 봤던 사용자(로그아웃 후 재로그인 시도 등)는 슬라이드 건너뛰고 바로 로그인 화면으로.
+  const [step, setStep] = useState(() =>
+    typeof window !== "undefined" && localStorage.getItem("moody_onboarded") ? 2 : 0
+  );
   const [showEmail, setShowEmail] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [mode, setMode] = useState<"signin" | "signup">("signup");
   const [busy, setBusy] = useState(false);
   const navigate = useNavigate();
+  const { user, loading: authLoading } = useAuth();
   const slides = (t("onboarding.slides", { returnObjects: true }) as Array<{ eyebrow: string; title: string; desc: string }>) ?? [];
 
   useEffect(() => {
-    if (localStorage.getItem("moody_onboarded")) navigate("/home", { replace: true });
-  }, [navigate]);
+    // 온보딩 자동 스킵은 *실제로 로그인된 사용자*에게만.
+    // 로그아웃/게스트 상태로 다시 로그인하려는 경우엔 화면에 머물러서 로그인 UI 가 보이게.
+    if (authLoading) return;
+    if (user && localStorage.getItem("moody_onboarded")) {
+      navigate("/home", { replace: true });
+    }
+  }, [navigate, user, authLoading]);
 
   const finish = () => {
     localStorage.setItem("moody_onboarded", "1");

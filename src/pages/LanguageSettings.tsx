@@ -11,8 +11,12 @@ const LanguageSettings = () => {
 
   const change = (code: string) => {
     i18n.changeLanguage(code);
-    // 명시적 선택을 localStorage 에 저장 → 다음 방문 시에도 유지.
-    try { localStorage.setItem("moody_lang", code); } catch {}
+    // 명시적 선택 → localStorage 에 저장 + explicit 마커.
+    // 마커가 있으면 detectInitialLang 이 한국 타임존 자동 ko 강제를 건너뛰고 사용자 선택 존중.
+    try {
+      localStorage.setItem("moody_lang", code);
+      localStorage.setItem("moody_lang_explicit", "1");
+    } catch {}
     // 즉시 페이지 새로고침으로 텍스트 갱신 (i18next는 보통 즉시 반영되지만 안전장치)
     setTimeout(() => navigate("/me"), 250);
   };

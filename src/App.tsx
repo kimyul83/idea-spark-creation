@@ -21,13 +21,22 @@ import ThemeSettings from "./pages/ThemeSettings";
 import LanguageSettings from "./pages/LanguageSettings";
 import Admin from "./pages/Admin";
 import { AppShell } from "./components/AppShell";
+import { useEffect } from "react";
+import { trackVisit } from "@/lib/track-visit";
 
 const queryClient = new QueryClient();
+
+/** 방문 추적 트리거 — 앱 마운트 시 1회. */
+const VisitTracker = () => {
+  useEffect(() => { trackVisit(); }, []);
+  return null;
+};
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <Sonner position="top-center" />
+      <VisitTracker />
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />

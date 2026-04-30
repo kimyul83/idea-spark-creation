@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
   ChevronLeft, Search, Users, Clock, Crown, ShieldCheck, RefreshCw,
-  Star, TrendingUp, Wallet, Percent, AlertTriangle,
+  Star, TrendingUp, Wallet, Percent, AlertTriangle, Eye, MousePointerClick,
 } from "lucide-react";
 import { toast } from "sonner";
 import { MonetBackground } from "@/components/MonetBackground";
@@ -62,6 +62,15 @@ const Admin = () => {
   const [busy, setBusy] = useState<string | null>(null);
   const [errMsg, setErrMsg] = useState<string | null>(null);
   const [tab, setTab] = useState<FilterTab>("all");
+  const [visits, setVisits] = useState<{
+    unique_visitors: number;
+    today_visitors: number;
+    week_visitors: number;
+    month_visitors: number;
+    converted_visitors: number;
+    total_pageviews: number;
+    today_pageviews: number;
+  } | null>(null);
 
   // 비관리자 차단
   useEffect(() => {
@@ -149,6 +158,16 @@ const Admin = () => {
     });
 
     setRows(merged);
+
+    // 방문 통계 (admin_visit_stats 뷰)
+    const visitsRes = await supabase.from("admin_visit_stats" as any).select("*").maybeSingle();
+    if (!visitsRes.error && visitsRes.data) {
+      setVisits(visitsRes.data as any);
+    } else {
+      console.warn("[Admin] visits 통계 조회 실패:", visitsRes.error);
+      setVisits(null);
+    }
+
     setLoading(false);
   };
 
@@ -247,6 +266,15 @@ const Admin = () => {
               </p>
             </div>
           </div>
+        </div>
+      )}
+
+      {/* KPI 카드 — 방문자 (익명 + 가입자) */}
+      {visits && (
+        <div className="grid grid-cols-3 gap-2.5">
+          <KPI Icon={Eye}                label="총 방문자"   value={`${visits.unique_visitors ?? 0}`}  sub={`오늘 ${visits.today_visitors ?? 0}`} small />
+          <KPI Icon={MousePointerClick}  label="이번주"      value={`${visits.week_visitors ?? 0}`}    sub={`30일 ${visits.month_visitors ?? 0}`} small />
+          <KPI Icon={Users}              label="가입 전환"   value={`${visits.unique_visitors ? ((visits.converted_visitors / visits.unique_visitors) * 100).toFixed(1) : 0}%`} sub={`가입 ${visits.converted_visitors ?? 0}`} small />
         </div>
       )}
 

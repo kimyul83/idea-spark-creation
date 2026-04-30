@@ -15,7 +15,28 @@
     "subtitle": "可同時播放·再次點擊切換版本",
     "selected": "已選 {{count}}",
     "nature": "自然", "frequencies": "頻率", "stopAll": "全部停止",
-    "kinds": "{{count}}種·點擊切換"
+    "kinds": "{{count}}種·點擊切換",
+    "tags": {
+      "waterfall": "粉噪 · 多巴胺 ↑",
+      "rain":      "粉噪 · 褪黑激素 · 睡眠",
+      "ocean":     "0.5Hz · 催產素 · HRV ↑",
+      "stream":    "α波 · 血清素 · 放鬆",
+      "bird":      "植物殺菌素 · 皮質醇 −50%",
+      "forest":    "森林浴 · GABA · 皮質醇 −15%",
+      "meadow":    "血清素 ↑ · α波 · 陽光",
+      "wind":      "粉噪 · GABA · 遮蔽",
+      "cave":      "δ波 · ASMR · 水滴",
+      "fire":      "60Hz · 催產素 · 血清素",
+      "night":     "δ波 · 褪黑激素 · 睡眠",
+      "storm":     "粉噪 · θ波 · 深眠",
+      "cafe":      "棕噪 · 多巴胺 · 專注",
+      "brown":     "δ波 · 褪黑激素 · 睡眠",
+      "pink":      "θ波 · 皮質醇 ↓ · 臨床",
+      "white":     "β波 · 多巴胺 · 專注",
+      "432":       "432Hz · HRV ↑ · 療癒",
+      "528":       "528Hz · 催產素 · 愛",
+      "40":        "γ波 · 專注 · MIT 臨床"
+    }
   },
   "sleep": {
     "label": "Sleep", "title": "舒適睡眠",

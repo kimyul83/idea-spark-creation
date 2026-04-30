@@ -35,7 +35,28 @@
       "meadow": "Meadow", "wind": "Wind", "cave": "Cave",
       "fire": "Fire", "night": "Night Insects", "storm": "Storm", "cafe": "Cafe"
     },
-    "freqs": { "brown": "Brown Noise", "pink": "Pink Noise", "white": "White Noise" }
+    "freqs": { "brown": "Brown Noise", "pink": "Pink Noise", "white": "White Noise" },
+    "tags": {
+      "waterfall": "Pink Noise · Dopamine ↑",
+      "rain":      "Pink Noise · Melatonin · Sleep",
+      "ocean":     "0.5Hz · Oxytocin · HRV ↑",
+      "stream":    "Alpha · Serotonin · Relax",
+      "bird":      "Phytoncide · Cortisol −50%",
+      "forest":    "Forest Bathing · GABA · Cortisol −15%",
+      "meadow":    "Serotonin ↑ · Alpha · Sunlight",
+      "wind":      "Pink Noise · GABA · Masking",
+      "cave":      "Delta · ASMR · Water Drops",
+      "fire":      "60Hz · Oxytocin · Serotonin",
+      "night":     "Delta · Melatonin · Sleep",
+      "storm":     "Pink Noise · Theta · Deep Sleep",
+      "cafe":      "Brown Noise · Dopamine · Focus",
+      "brown":     "Delta · Melatonin · Sleep",
+      "pink":      "Theta · Cortisol ↓ · Clinical",
+      "white":     "Beta · Dopamine · Focus",
+      "432":       "432Hz · HRV ↑ · Healing",
+      "528":       "528Hz · Oxytocin · Love",
+      "40":        "Gamma · Focus · MIT Clinical"
+    }
   },
   "musicPlay": {
     "noTrack": "No track available",

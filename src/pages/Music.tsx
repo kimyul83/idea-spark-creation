@@ -525,7 +525,7 @@ const NatureTile = ({ item, active, loading, versionIdx, onClick, onStop }: Natu
           {t(`music.categories.${item.id}`, { defaultValue: item.label })}
         </span>
         <span className="text-[12px] text-primary font-semibold tracking-wide text-center leading-tight line-clamp-1">
-          {item.tag}
+          {t(`music.tags.${item.id}`, { defaultValue: item.tag })}
         </span>
         {hasMultiple && (
           <span className="text-[10px] text-foreground/60 line-clamp-1 max-w-full px-1">
@@ -577,7 +577,7 @@ const FreqTile = ({ item, active, onClick }: FreqTileProps) => {
         {label}
       </span>
       <span className="text-[12px] text-primary font-semibold tracking-wide text-center leading-tight">
-        {item.tag}
+        {t(`music.tags.${item.id}`, { defaultValue: item.tag })}
       </span>
     </button>
   );

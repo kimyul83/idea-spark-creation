@@ -18,7 +18,28 @@
     "nature": "Naturaleza", "frequencies": "Frecuencias", "stopAll": "Detener todo",
     "kinds": "{{count}} variantes · toca para cambiar",
     "categories": { "waterfall": "Cascada", "rain": "Lluvia", "ocean": "Olas del mar", "stream": "Arroyo", "bird": "Pájaros", "forest": "Bosque", "meadow": "Pradera", "wind": "Viento", "cave": "Cueva", "fire": "Fogata", "night": "Insectos nocturnos", "storm": "Tormenta", "cafe": "Café" },
-    "freqs": { "brown": "Ruido marrón", "pink": "Ruido rosa", "white": "Ruido blanco" }
+    "freqs": { "brown": "Ruido marrón", "pink": "Ruido rosa", "white": "Ruido blanco" },
+    "tags": {
+      "waterfall": "Ruido Rosa · Dopamina ↑",
+      "rain":      "Ruido Rosa · Melatonina · Sueño",
+      "ocean":     "0.5Hz · Oxitocina · HRV ↑",
+      "stream":    "Alfa · Serotonina · Relax",
+      "bird":      "Fitoncida · Cortisol −50%",
+      "forest":    "Baño Forestal · GABA · Cortisol −15%",
+      "meadow":    "Serotonina ↑ · Alfa · Sol",
+      "wind":      "Ruido Rosa · GABA · Enmascaramiento",
+      "cave":      "Delta · ASMR · Gotas",
+      "fire":      "60Hz · Oxitocina · Serotonina",
+      "night":     "Delta · Melatonina · Sueño",
+      "storm":     "Ruido Rosa · Theta · Sueño profundo",
+      "cafe":      "Ruido Marrón · Dopamina · Foco",
+      "brown":     "Delta · Melatonina · Sueño",
+      "pink":      "Theta · Cortisol ↓ · Clínico",
+      "white":     "Beta · Dopamina · Foco",
+      "432":       "432Hz · HRV ↑ · Sanación",
+      "528":       "528Hz · Oxitocina · Amor",
+      "40":        "Gamma · Foco · MIT Clínico"
+    }
   },
   "musicPlay": {
     "noTrack": "Sin pistas disponibles",

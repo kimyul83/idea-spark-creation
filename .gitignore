@@ -12,6 +12,33 @@ dist
 dist-ssr
 *.local
 
+# 🔐 secret 환경변수 — service_role / OAuth client_secret / 결제 키 등 절대 커밋 금지
+# (현재 .env 의 VITE_SUPABASE_* 는 anon 키라 공개 OK 라서 허용)
+.env.local
+.env.*.local
+.env.development.local
+.env.production.local
+.env.staging.local
+*.secret
+*.private
+
+# Capacitor / iOS / Android 빌드 아티팩트 + 서명 파일
+ios/App/Pods/
+ios/App/build/
+ios/App/output/
+ios/DerivedData/
+ios/App/App.xcworkspace/xcuserdata/
+android/app/build/
+android/build/
+android/.gradle/
+android/local.properties
+*.keystore
+*.jks
+*.mobileprovision
+*.cer
+*.p12
+*.p8
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

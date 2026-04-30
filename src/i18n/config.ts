@@ -52,49 +52,37 @@ export const SUPPORTED_LANGUAGES = [
 export type LangCode = typeof SUPPORTED_LANGUAGES[number]["code"];
 
 /**
- * 초기 언어 결정.
- * 우선순위:
- *  0) 한국 타임존 + 사용자 명시 선택 마커 없음 → 무조건 한국어 (이전 자동감지 캐시 무시)
- *  1) localStorage 명시 선택 (moody_lang_explicit=1 플래그 있을 때만 신뢰)
- *  2) localStorage moody_lang (명시 마커 없어도)
- *  3) 브라우저 언어가 한국어면 한국어
- *  4) 시간대가 Asia/Seoul 이면 한국어
- *  5) 브라우저 언어 매칭
- *  6) 디폴트: 한국어 (Korean-first app)
+ * 초기 언어 결정 — 우선순위:
+ *  1) localStorage (사용자가 명시적으로 선택한 언어)
+ *  2) 브라우저 언어가 한국어면 한국어
+ *  3) 시간대가 Asia/Seoul 이면 한국어 (영어 브라우저로 한국에서 접속한 경우 — Lovable 프리뷰 iframe 등)
+ *  4) 브라우저 언어 (지원 목록 내에서)
+ *  5) 기본 한국어 (Korean-first app)
  */
 function detectInitialLang(): string {
   if (typeof window === "undefined") return "ko";
   const supported = SUPPORTED_LANGUAGES.map((l) => l.code) as string[];
 
-  let tz = "";
-  try { tz = Intl.DateTimeFormat().resolvedOptions().timeZone; } catch {}
-  const isKorea = tz === "Asia/Seoul";
-
+  // 1) 사용자 명시 선택
   const stored = localStorage.getItem("moody_lang");
-  const explicitV2 = localStorage.getItem("moody_lang_explicit") === "1";
-
-  // 0) 한국 타임존 + 명시 선택 안 한 사용자 → 무조건 ko (이전 LanguageDetector 가 박아둔 영어 캐시 무시)
-  if (isKorea && !explicitV2) {
-    localStorage.setItem("moody_lang", "ko");
-    return "ko";
-  }
-
-  // 1, 2) localStorage 값 사용
   if (stored && supported.includes(stored)) return stored;
 
-  // 3) 브라우저 한국어
+  // 2) 브라우저 언어가 한국어
   const navLang = (navigator.language ?? "").toLowerCase();
   if (navLang.startsWith("ko")) return "ko";
 
-  // 4) 한국 타임존 (위에서 이미 처리됐지만 isKorea 가 false 일 때 한 번 더)
-  if (isKorea) return "ko";
+  // 3) 시간대가 Asia/Seoul → 한국 사용자
+  try {
+    const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    if (tz === "Asia/Seoul") return "ko";
+  } catch {}
 
-  // 5) 브라우저 언어 매칭
+  // 4) 브라우저 언어 코드 매칭 (zh-TW 같은 케이스 우선 매칭)
   if (supported.includes(navLang)) return navLang;
   const base = navLang.split("-")[0];
   if (supported.includes(base)) return base;
 
-  // 6) 디폴트: 한국어
+  // 5) 디폴트: 한국어
   return "ko";
 }
 

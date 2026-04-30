@@ -18,28 +18,7 @@
     "nature": "Nature", "frequencies": "Fréquences", "stopAll": "Tout arrêter",
     "kinds": "{{count}} variantes · touchez pour changer",
     "categories": { "waterfall": "Cascade", "rain": "Pluie", "ocean": "Vagues", "stream": "Ruisseau", "bird": "Oiseaux", "forest": "Forêt", "meadow": "Prairie", "wind": "Vent", "cave": "Grotte", "fire": "Feu de camp", "night": "Insectes nuit", "storm": "Orage", "cafe": "Café" },
-    "freqs": { "brown": "Bruit brun", "pink": "Bruit rose", "white": "Bruit blanc" },
-    "tags": {
-      "waterfall": "Bruit Rose · Dopamine ↑",
-      "rain":      "Bruit Rose · Mélatonine · Sommeil",
-      "ocean":     "0.5Hz · Ocytocine · HRV ↑",
-      "stream":    "Alpha · Sérotonine · Détente",
-      "bird":      "Phytoncide · Cortisol −50%",
-      "forest":    "Bain de forêt · GABA · Cortisol −15%",
-      "meadow":    "Sérotonine ↑ · Alpha · Soleil",
-      "wind":      "Bruit Rose · GABA · Masquage",
-      "cave":      "Delta · ASMR · Gouttes",
-      "fire":      "60Hz · Ocytocine · Sérotonine",
-      "night":     "Delta · Mélatonine · Sommeil",
-      "storm":     "Bruit Rose · Thêta · Sommeil profond",
-      "cafe":      "Bruit Brun · Dopamine · Concentration",
-      "brown":     "Delta · Mélatonine · Sommeil",
-      "pink":      "Thêta · Cortisol ↓ · Clinique",
-      "white":     "Bêta · Dopamine · Concentration",
-      "432":       "432Hz · HRV ↑ · Guérison",
-      "528":       "528Hz · Ocytocine · Amour",
-      "40":        "Gamma · Concentration · MIT Clinique"
-    }
+    "freqs": { "brown": "Bruit brun", "pink": "Bruit rose", "white": "Bruit blanc" }
   },
   "musicPlay": {
     "noTrack": "Aucune piste disponible",

@@ -1,3 +1,5 @@
+import { useEffect, useMemo, useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 
 /**
@@ -15,9 +17,40 @@ const ADMIN_EMAILS = new Set([
 
 export function useIsAdmin() {
   const { user, loading } = useAuth();
-  const email = (user?.email ?? "").toLowerCase();
-  const isAdmin = !!user && ADMIN_EMAILS.has(email);
-  return { isAdmin, loading };
+  const email = useMemo(() => (user?.email ?? "").toLowerCase(), [user?.email]);
+  const emailAllowed = !!user && ADMIN_EMAILS.has(email);
+  const [dbAllowed, setDbAllowed] = useState(false);
+  const [roleLoading, setRoleLoading] = useState(true);
+
+  useEffect(() => {
+    let cancelled = false;
+    if (loading) return;
+    if (!user) {
+      setDbAllowed(false);
+      setRoleLoading(false);
+      return;
+    }
+
+    setRoleLoading(true);
+    supabase
+      .from("user_roles" as any)
+      .select("role")
+      .eq("user_id", user.id)
+      .eq("role", "admin")
+      .maybeSingle()
+      .then(({ data, error }) => {
+        if (cancelled) return;
+        setDbAllowed(!error && !!data);
+        setRoleLoading(false);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [loading, user]);
+
+  const isAdmin = emailAllowed || dbAllowed;
+  return { isAdmin, loading: loading || roleLoading };
 }
 
 export const ADMIN_EMAIL = "kimyul83@icloud.com";

@@ -41,14 +41,14 @@ const Onboarding = () => {
     navigate("/home", { replace: true });
   };
 
-  const handleOAuth = async (provider: "google" | "apple") => {
+  const handleOAuth = async (provider: "google") => {
     setBusy(true);
     try {
       const result = await lovable.auth.signInWithOAuth(provider, {
         redirect_uri: `${window.location.origin}/auth/callback`,
       });
       if (result.error) {
-        toast.error(t("onboarding.errOAuth", { provider: provider === "google" ? "Google" : "Apple" }));
+        toast.error(t("onboarding.errOAuth", { provider: "Google" }));
         setBusy(false);
         return;
       }
@@ -191,15 +191,6 @@ const Onboarding = () => {
               <GoogleLogo />
               <span>{t("onboarding.google")}</span>
             </button>
-            {/* Apple */}
-            <button
-              disabled={busy}
-              onClick={() => handleOAuth("apple")}
-              className="w-full h-14 rounded-3xl bg-[#000] text-white font-semibold shadow-soft flex items-center justify-center gap-3 disabled:opacity-60 transition-transform active:scale-[0.98]"
-            >
-              <AppleLogo />
-              <span>{t("onboarding.apple")}</span>
-            </button>
             {/* Email */}
             <button
               disabled={busy}
@@ -228,10 +219,5 @@ const GoogleLogo = () => (
   </svg>
 );
 
-const AppleLogo = () => (
-  <svg width="18" height="20" viewBox="0 0 384 512" fill="currentColor" aria-hidden>
-    <path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zM256 84.5c19.4-23 17.6-43.9 17-51.5-17.1 1-36.9 11.7-48.2 24.8-12.4 14-19.7 31.4-18.1 50.7 18.5 1.4 35.4-8.1 49.3-24z"/>
-  </svg>
-);
 
 export default Onboarding;

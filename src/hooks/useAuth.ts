@@ -17,6 +17,13 @@ export function useAuth() {
     supabase.auth.getSession().then(({ data: { session: s } }) => {
       setSession(s);
       setUser(s?.user ?? null);
+      if (s?.user) {
+        supabase
+          .from("profiles")
+          .update({ last_seen_at: new Date().toISOString() } as any)
+          .eq("id", s.user.id)
+          .then(() => undefined);
+      }
       setLoading(false);
     });
 

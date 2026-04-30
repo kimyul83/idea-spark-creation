@@ -346,6 +346,17 @@
     "tip": "선택은 즉시 앱 전체에 적용돼요. 로그인 상태라면 다른 기기에서도 같은 테마로 이어집니다."
   },
   "common2": { },
+  "installPrompt": {
+    "title": "홈 화면에 추가하기",
+    "subtitle": "앱처럼 빠르게 · 오프라인에서도",
+    "install": "추가",
+    "iosTitle": "홈 화면에 추가",
+    "iosSubtitle": "Safari에서 3초면 설치돼요",
+    "step1": "아래 공유 버튼을 누르세요",
+    "step2": "‘홈 화면에 추가’를 선택",
+    "step3": "오른쪽 위 ‘추가’ 버튼 누르면 끝!",
+    "gotIt": "알겠어요"
+  },
   "tester": {
     "label": "MintMoody · Beta",
     "title": "마음에 내리는 민트무디",

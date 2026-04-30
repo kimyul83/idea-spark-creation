@@ -192,6 +192,17 @@
     "reading":  { "mood": "Quiet Reading",     "scene": "Light rain · dawn birds · cozy cafe" }
   },
   "languageSettings": { "label": "Language", "title": "Language" },
+  "installPrompt": {
+    "title": "Add to Home Screen",
+    "subtitle": "Fast like an app · works offline",
+    "install": "Install",
+    "iosTitle": "Add to Home Screen",
+    "iosSubtitle": "3 seconds in Safari",
+    "step1": "Tap the Share button below",
+    "step2": "Select ‘Add to Home Screen’",
+    "step3": "Tap ‘Add’ at the top right",
+    "gotIt": "Got it"
+  },
   "tester": {
     "label": "MintMoody · Beta",
     "title": "MintMoody on your heart",

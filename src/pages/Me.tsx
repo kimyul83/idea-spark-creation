@@ -13,10 +13,26 @@ import { MonetBackground } from "@/components/MonetBackground";
 import { usePremium } from "@/hooks/usePremium";
 import { useTheme } from "@/contexts/ThemeContext";
 
+/**
+ * useAuth 가 hydrate 되기 전이라도 localStorage 에 Supabase 토큰이 있으면
+ * "로그인된 것으로 간주" — 로그인했는데 로그아웃 버튼이 안 보이는 race 방지.
+ */
+const hasStoredSession = (): boolean => {
+  if (typeof window === "undefined") return false;
+  try {
+    return Object.keys(localStorage).some(
+      (k) => k.startsWith("sb-") && k.endsWith("-auth-token")
+    );
+  } catch {
+    return false;
+  }
+};
+
 const Me = () => {
   const { user } = useAuth();
   const { isAdmin } = useIsAdmin();
   const [stats, setStats] = useState({ total: 0, minutes: 0 });
+  const [tokenSeen] = useState(hasStoredSession);
   const navigate = useNavigate();
   const { isPremium, devPremium, setDev } = usePremium();
   const { label: themeLabel } = useTheme();
@@ -71,7 +87,7 @@ const Me = () => {
       </div>
 
       {/* stats — 로그인 사용자만 노출 (게스트한테 0/0 보여줘봤자 의미없음) */}
-      {user && (
+      {(user || tokenSeen) && (
         <div className="grid grid-cols-2 gap-3">
           <StatCard label={t("me.statSessions")} value={`${stats.total}`} unit={t("me.statSessionsUnit")} />
           <StatCard label={t("me.statTime")} value={`${stats.minutes}`} unit={t("me.statTimeUnit")} />
@@ -89,6 +105,17 @@ const Me = () => {
               <ProviderBadge provider={(user.app_metadata?.provider as string) ?? "guest"} />
             </p>
             <p className="font-semibold text-foreground truncate">{user.email ?? t("me.guest")}</p>
+          </div>
+        </div>
+      ) : tokenSeen ? (
+        // useAuth 가 아직 hydrate 안 됐지만 토큰은 있음 — 로그인 정보 자리에 표시.
+        <div className="liquid-card p-5 flex items-center gap-3">
+          <div className="w-12 h-12 rounded-2xl bg-primary/15 flex items-center justify-center text-primary font-bold shrink-0">
+            ⋯
+          </div>
+          <div className="flex-1 min-w-0">
+            <p className="text-[10px] text-foreground/50 tracking-widest uppercase">Apple ID</p>
+            <p className="font-semibold text-foreground/70 truncate">{t("common.loading")}</p>
           </div>
         </div>
       ) : (
@@ -152,8 +179,9 @@ const Me = () => {
         </div>
       </div>
 
-      {/* logout — 눈에 잘 띄게: 빨간 톤 + 카드형 */}
-      {user && (
+      {/* logout — 눈에 잘 띄게: 빨간 톤 + 카드형. */}
+      {/* useAuth 가 아직 안 떠도 토큰만 있으면 노출 → race 로 사라지는 버그 방지. */}
+      {(user || tokenSeen) && (
         <button
           onClick={handleSignOut}
           className="liquid-card liquid-card-hover w-full flex items-center gap-3 px-4 py-4 text-left mt-1"

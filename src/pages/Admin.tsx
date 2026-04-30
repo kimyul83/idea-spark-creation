@@ -55,18 +55,77 @@ const Admin = () => {
     }
   }, [authLoading, user, isAdmin, navigate]);
 
+  const [errMsg, setErrMsg] = useState<string | null>(null);
+
   const load = async () => {
     setLoading(true);
-    const { data, error } = await supabase
+    setErrMsg(null);
+
+    // Plan A: admin_user_stats 뷰 (마이그레이션 적용된 경우)
+    const viewRes = await supabase
       .from("admin_user_stats" as any)
       .select("*")
       .order("joined_at", { ascending: false });
-    if (error) {
-      toast.error(`불러오기 실패: ${error.message}`);
+
+    if (!viewRes.error && viewRes.data) {
+      setRows((viewRes.data ?? []) as Row[]);
       setLoading(false);
       return;
     }
-    setRows((data ?? []) as Row[]);
+
+    console.warn("[Admin] view failed, trying fallback:", viewRes.error);
+
+    // Plan B: profiles + sessions 직접 조인 (뷰 미적용/RLS 이슈 시)
+    const [profilesRes, sessionsRes, focusRes] = await Promise.all([
+      supabase.from("profiles").select("id,email,is_premium,subscription_type,subscription_started_at,created_at").order("created_at", { ascending: false }),
+      supabase.from("sessions").select("user_id,duration_seconds,created_at"),
+      supabase.from("focus_sessions").select("user_id,actual_duration,planned_duration"),
+    ]);
+
+    if (profilesRes.error) {
+      const msg = `${profilesRes.error.message} (code: ${profilesRes.error.code ?? "?"})`;
+      console.error("[Admin] profiles fetch failed:", profilesRes.error);
+      setErrMsg(msg);
+      toast.error(`불러오기 실패: ${msg}`);
+      setLoading(false);
+      return;
+    }
+
+    const sessionsByUser = new Map<string, { count: number; total: number; last: string | null }>();
+    (sessionsRes.data ?? []).forEach((s: any) => {
+      const cur = sessionsByUser.get(s.user_id) ?? { count: 0, total: 0, last: null };
+      cur.count += 1;
+      cur.total += s.duration_seconds ?? 0;
+      if (!cur.last || s.created_at > cur.last) cur.last = s.created_at;
+      sessionsByUser.set(s.user_id, cur);
+    });
+    const focusByUser = new Map<string, { count: number; seconds: number }>();
+    (focusRes.data ?? []).forEach((f: any) => {
+      const cur = focusByUser.get(f.user_id) ?? { count: 0, seconds: 0 };
+      cur.count += 1;
+      cur.seconds += f.actual_duration ?? f.planned_duration ?? 0;
+      focusByUser.set(f.user_id, cur);
+    });
+
+    const merged: Row[] = (profilesRes.data ?? []).map((p: any) => {
+      const s = sessionsByUser.get(p.id);
+      const f = focusByUser.get(p.id);
+      return {
+        id: p.id,
+        email: p.email,
+        is_premium: p.is_premium,
+        subscription_type: p.subscription_type,
+        subscription_started_at: p.subscription_started_at,
+        joined_at: p.created_at,
+        session_count: s?.count ?? 0,
+        total_seconds: s?.total ?? 0,
+        focus_count: f?.count ?? 0,
+        focus_seconds: f?.seconds ?? 0,
+        last_session_at: s?.last ?? null,
+      };
+    });
+
+    setRows(merged);
     setLoading(false);
   };
 
@@ -166,9 +225,22 @@ const Admin = () => {
         />
       </div>
 
+      {/* error display */}
+      {errMsg && (
+        <div className="liquid-card p-4 border border-destructive/30 bg-destructive/5">
+          <p className="text-xs text-destructive font-semibold mb-1">불러오기 실패</p>
+          <p className="text-[11px] text-foreground/60 break-words">{errMsg}</p>
+          <p className="text-[10px] text-foreground/40 mt-2">
+            Supabase 대시보드 → SQL Editor 에 마이그레이션 두 개 적용 필요:<br />
+            1. <code>20260429000000_admin_dashboard.sql</code> (뷰 + RLS)<br />
+            2. <code>20260430010000_admin_exact_email.sql</code> (관리자 이메일 화이트리스트)
+          </p>
+        </div>
+      )}
+
       {/* user list */}
       <div className="flex flex-col gap-2">
-        {filtered.length === 0 && !loading && (
+        {filtered.length === 0 && !loading && !errMsg && (
           <div className="liquid-card p-6 text-center text-foreground/50 text-sm">
             {q ? "검색 결과가 없어요" : "아직 가입자가 없어요"}
           </div>

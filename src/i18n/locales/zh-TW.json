@@ -55,6 +55,8 @@
     "premiumDesc": "全部ASMR·無限混音·ADHD·睡眠",
     "manageSubscription": "管理訂閱", "startPremium": "開通高級",
     "sessions": "Sessions", "minutes": "Minutes",
+    "statSessions": "會話", "statSessionsUnit": "次", "statTime": "總時長", "statTimeUnit": "分",
+    "signIn": "登入 · 註冊", "adminDashboard": "管理員",
     "guest": "以訪客瀏覽",
     "premiumSubscription": "高級訂閱", "themeSettings": "主題",
     "favorites": "收藏", "notifications": "通知設定",

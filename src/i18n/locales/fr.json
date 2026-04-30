@@ -104,6 +104,8 @@
     "premiumDesc": "Tout ASMR · mix illimité · ADHD · Sommeil",
     "manageSubscription": "Gérer l'abonnement", "startPremium": "Démarrer Premium",
     "sessions": "Sessions", "minutes": "Minutes",
+    "statSessions": "Sessions", "statSessionsUnit": "", "statTime": "Temps total", "statTimeUnit": "min",
+    "signIn": "Se connecter · S'inscrire", "adminDashboard": "Admin",
     "guest": "Invité",
     "providerGoogle": "Compte Google", "providerApple": "Compte Apple",
     "providerEmail": "Email", "providerGuest": "Invité",

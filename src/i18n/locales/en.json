@@ -116,6 +116,8 @@
     "manageSubscription": "Manage Subscription",
     "startPremium": "Start Premium",
     "sessions": "Sessions", "minutes": "Minutes",
+    "statSessions": "Sessions", "statSessionsUnit": "", "statTime": "Total time", "statTimeUnit": "m",
+    "signIn": "Sign in · Create account", "adminDashboard": "Admin",
     "guest": "Browsing as guest",
     "providerGoogle": "Google account",
     "providerApple": "Apple account",

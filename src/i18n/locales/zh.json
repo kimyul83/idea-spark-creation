@@ -89,6 +89,8 @@
     "premiumDesc": "全部ASMR·无限混音·ADHD·睡眠",
     "manageSubscription": "管理订阅", "startPremium": "开通高级",
     "sessions": "Sessions", "minutes": "Minutes",
+    "statSessions": "会话", "statSessionsUnit": "次", "statTime": "总时长", "statTimeUnit": "分",
+    "signIn": "登录 · 注册", "adminDashboard": "管理员",
     "guest": "以访客浏览",
     "providerGoogle": "Google账户", "providerApple": "Apple账户",
     "providerEmail": "邮箱", "providerGuest": "访客",

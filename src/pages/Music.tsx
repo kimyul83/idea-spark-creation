@@ -345,10 +345,12 @@ const Music = () => {
       });
       return;
     }
+    // 주파수/노이즈는 자연 사운드(0.55)와 같이 재생될 때 소리가 너무 커서 더 작게.
+    // 브로드밴드 노이즈는 전 주파수에 걸쳐 있어 같은 진폭이라도 더 크게 들림.
     if (item.type === "noise" && item.noiseType) {
-      audioEngine.playNoise(item.id, item.noiseType, 0.15);
+      audioEngine.playNoise(item.id, item.noiseType, 0.08);
     } else {
-      audioEngine.playTone(item.id, item.hz, 0.12);
+      audioEngine.playTone(item.id, item.hz, 0.07);
     }
     setActiveIds((prev) => new Set(prev).add(item.id));
     setMediaSession(

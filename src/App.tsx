@@ -19,6 +19,7 @@ import Subscribe from "./pages/Subscribe";
 import AuthCallback from "./pages/AuthCallback";
 import ThemeSettings from "./pages/ThemeSettings";
 import LanguageSettings from "./pages/LanguageSettings";
+import Admin from "./pages/Admin";
 import { AppShell } from "./components/AppShell";
 
 const queryClient = new QueryClient();
@@ -39,6 +40,7 @@ const App = () => (
           <Route path="/subscribe" element={<div className="app-shell"><Subscribe /></div>} />
           <Route path="/settings/theme" element={<ThemeSettings />} />
           <Route path="/settings/language" element={<div className="app-shell"><LanguageSettings /></div>} />
+          <Route path="/admin" element={<div className="app-shell"><Admin /></div>} />
           <Route element={<AppShell />}>
             <Route path="/home" element={<Home />} />
             <Route path="/music" element={<Music />} />

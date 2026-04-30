@@ -2,10 +2,11 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
+import { useIsAdmin } from "@/hooks/useIsAdmin";
 import { Moody } from "@/components/Moody";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
-import { LogOut, Crown, Heart, Bell, ChevronRight, FlaskConical, Palette, Languages } from "lucide-react";
+import { LogOut, Crown, Heart, Bell, ChevronRight, FlaskConical, Palette, Languages, ShieldCheck, LogIn } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { SUPPORTED_LANGUAGES } from "@/i18n/config";
 import { MonetBackground } from "@/components/MonetBackground";
@@ -14,6 +15,7 @@ import { useTheme } from "@/contexts/ThemeContext";
 
 const Me = () => {
   const { user } = useAuth();
+  const { isAdmin } = useIsAdmin();
   const [stats, setStats] = useState({ total: 0, minutes: 0 });
   const navigate = useNavigate();
   const { isPremium, devPremium, setDev } = usePremium();
@@ -68,27 +70,50 @@ const Me = () => {
         </Button>
       </div>
 
-      {/* stats — droplet particles inside */}
-      <div className="grid grid-cols-2 gap-3">
-        <StatCard label={t("me.sessions")} value={`${stats.total}`} />
-        <StatCard label={t("me.minutes")} value={`${stats.minutes}`} />
-      </div>
+      {/* stats — 로그인 사용자만 노출 (게스트한테 0/0 보여줘봤자 의미없음) */}
+      {user && (
+        <div className="grid grid-cols-2 gap-3">
+          <StatCard label={t("me.statSessions")} value={`${stats.total}`} unit={t("me.statSessionsUnit")} />
+          <StatCard label={t("me.statTime")} value={`${stats.minutes}`} unit={t("me.statTimeUnit")} />
+        </div>
+      )}
 
-      {/* user info */}
-      <div className="liquid-card p-5 flex items-center gap-3">
-        <div className="w-12 h-12 rounded-2xl bg-primary/15 flex items-center justify-center text-primary font-bold shrink-0">
-          {(user?.email ?? "G")[0].toUpperCase()}
+      {/* user info — 로그인 사용자만. 게스트는 로그인 CTA 로 대체. */}
+      {user ? (
+        <div className="liquid-card p-5 flex items-center gap-3">
+          <div className="w-12 h-12 rounded-2xl bg-primary/15 flex items-center justify-center text-primary font-bold shrink-0">
+            {(user.email ?? "G")[0].toUpperCase()}
+          </div>
+          <div className="flex-1 min-w-0">
+            <p className="text-[10px] text-foreground/50 tracking-widest uppercase flex items-center gap-1.5">
+              <ProviderBadge provider={(user.app_metadata?.provider as string) ?? "guest"} />
+            </p>
+            <p className="font-semibold text-foreground truncate">{user.email ?? t("me.guest")}</p>
+          </div>
         </div>
-        <div className="flex-1 min-w-0">
-          <p className="text-[10px] text-foreground/50 tracking-widest uppercase flex items-center gap-1.5">
-            <ProviderBadge provider={(user?.app_metadata?.provider as string) ?? "guest"} />
-          </p>
-          <p className="font-semibold text-foreground truncate">{user?.email ?? t("me.guest")}</p>
-        </div>
-      </div>
+      ) : (
+        <button
+          onClick={() => navigate("/onboarding")}
+          className="liquid-card liquid-card-hover w-full flex items-center gap-3 px-4 py-4 text-left"
+        >
+          <div className="w-10 h-10 rounded-xl bg-primary/15 flex items-center justify-center shrink-0">
+            <LogIn className="w-5 h-5 text-primary" strokeWidth={1.8} />
+          </div>
+          <span className="flex-1 text-foreground font-medium">{t("me.signIn")}</span>
+          <ChevronRight className="w-4 h-4 text-foreground/30" />
+        </button>
+      )}
 
       {/* menu — each item is its own droplet */}
       <div className="grid gap-2">
+        {isAdmin && (
+          <MenuRow
+            Icon={ShieldCheck}
+            label={t("me.adminDashboard")}
+            right={<span className="text-[11px] text-primary font-medium">Admin</span>}
+            onClick={() => navigate("/admin")}
+          />
+        )}
         <MenuRow
           Icon={Crown}
           label={t("me.premiumSubscription")}
@@ -127,26 +152,33 @@ const Me = () => {
         </div>
       </div>
 
+      {/* logout — 눈에 잘 띄게: 빨간 톤 + 카드형 */}
       {user && (
-        <Button
-          variant="ghost"
+        <button
           onClick={handleSignOut}
-          className="w-full mt-2 text-foreground/60 hover:text-foreground"
+          className="liquid-card liquid-card-hover w-full flex items-center gap-3 px-4 py-4 text-left mt-1"
         >
-          <LogOut className="w-4 h-4 mr-2" /> {t("me.logout")}
-        </Button>
+          <div className="w-10 h-10 rounded-xl bg-destructive/15 flex items-center justify-center shrink-0">
+            <LogOut className="w-5 h-5 text-destructive" strokeWidth={1.8} />
+          </div>
+          <span className="flex-1 text-destructive font-semibold">{t("me.logout")}</span>
+          <ChevronRight className="w-4 h-4 text-destructive/40" />
+        </button>
       )}
     </div>
   );
 };
 
-const StatCard = ({ label, value }: { label: string; value: string }) => (
+const StatCard = ({ label, value, unit }: { label: string; value: string; unit?: string }) => (
   <div className="liquid-card p-5 overflow-hidden">
     <div className="droplet-particles" aria-hidden>
       <span /><span /><span /><span />
     </div>
     <p className="relative text-[12px] text-foreground/65 tracking-widest uppercase font-semibold">{label}</p>
-    <p className="relative num-display text-[28px] text-primary mt-1.5 leading-none">{value}</p>
+    <p className="relative num-display text-[28px] text-primary mt-1.5 leading-none">
+      {value}
+      {unit && <span className="text-[14px] font-normal opacity-70 ml-0.5">{unit}</span>}
+    </p>
   </div>
 );
 

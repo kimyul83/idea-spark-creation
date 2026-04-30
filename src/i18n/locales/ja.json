@@ -91,6 +91,8 @@
     "premiumDesc": "全ASMR・無制限ミックス・ADHD・睡眠",
     "manageSubscription": "サブスク管理", "startPremium": "プレミアム開始",
     "sessions": "Sessions", "minutes": "Minutes",
+    "statSessions": "セッション", "statSessionsUnit": "回", "statTime": "総時間", "statTimeUnit": "分",
+    "signIn": "ログイン・登録", "adminDashboard": "管理者",
     "guest": "ゲスト",
     "providerGoogle": "Googleアカウント", "providerApple": "Appleアカウント",
     "providerEmail": "メール", "providerGuest": "ゲスト",

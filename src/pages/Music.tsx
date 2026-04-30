@@ -291,9 +291,11 @@ const Music = () => {
       return next;
     });
 
+    // html5: false → Web Audio (단일 AudioContext) → 화면 꺼도 여러 트랙 동시 재생 유지.
+    // (html5: true는 트랙마다 <audio> 별도 → iOS가 1개만 살림)
     const howl = new Howl({
       src: [url],
-      html5: true,
+      html5: false,
       loop: true,
       volume: 0.55,
       preload: true,

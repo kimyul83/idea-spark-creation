@@ -189,6 +189,46 @@ const Admin = () => {
     patchProfile(row, { is_friend: !row.is_friend }, !row.is_friend ? "친구로 표시했어요" : "친구 표시를 해제했어요");
   };
 
+  const applyToFriends = async (plan: Plan) => {
+    const friendIds = rows.filter((r) => r.is_friend).map((r) => r.id);
+    if (friendIds.length === 0) {
+      toast.error("별표 표시된 친구가 없어요");
+      return;
+    }
+    setBusy("friends");
+    const isPremium = plan !== "free";
+    const { error } = await supabase
+      .from("profiles")
+      .update({
+        is_premium: isPremium,
+        subscription_type: plan,
+        subscription_started_at: isPremium ? new Date().toISOString() : null,
+        manual_access_granted: isPremium,
+        estimated_paid_amount: isPremium ? PLAN_PRICES[plan] : 0,
+      } as any)
+      .in("id", friendIds);
+    setBusy(null);
+    if (error) {
+      toast.error(`일괄 적용 실패: ${error.message}`);
+      return;
+    }
+    setRows((prev) =>
+      prev.map((r) =>
+        r.is_friend
+          ? {
+              ...r,
+              is_premium: isPremium,
+              subscription_type: plan,
+              subscription_started_at: isPremium ? new Date().toISOString() : null,
+              manual_access_granted: isPremium,
+              estimated_paid_amount: isPremium ? PLAN_PRICES[plan] : 0,
+            }
+          : r
+      )
+    );
+    toast.success(`친구 ${friendIds.length}명 권한을 ${plan}로 변경했어요`);
+  };
+
   if (authLoading || adminLoading || (!isAdmin && !user)) {
     return (
       <div className="px-5 pt-10 pb-6 flex-1 flex items-center justify-center">
@@ -246,6 +286,15 @@ const Admin = () => {
           <div className="grid grid-cols-2 gap-3">
             <KPI Icon={Star} label="친구" value={`${totals.friends}`} sub="별표 표시" />
             <KPI Icon={BadgeCheck} label="수동 권한" value={`${rows.filter((r) => r.manual_access_granted).length}`} sub="관리자 부여" />
+          </div>
+          <div className="liquid-card p-4 space-y-3">
+            <p className="text-[12px] font-semibold text-foreground/70 flex items-center gap-2">
+              <Sparkles className="w-4 h-4 text-primary" /> 친구 일괄 권한
+            </p>
+            <div className="grid grid-cols-2 gap-2">
+              <Button disabled={busy === "friends"} onClick={() => applyToFriends("lifetime")} className="h-9 text-[12px]">친구 평생권 부여</Button>
+              <Button disabled={busy === "friends"} variant="outline" onClick={() => applyToFriends("free")} className="h-9 text-[12px]">친구 권한 취소</Button>
+            </div>
           </div>
           <div className="flex flex-col gap-2">
             {filtered.map((row) => (

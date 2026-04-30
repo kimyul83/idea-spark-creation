@@ -11,6 +11,8 @@ const LanguageSettings = () => {
 
   const change = (code: string) => {
     i18n.changeLanguage(code);
+    // 명시적 선택을 localStorage 에 저장 → 다음 방문 시에도 유지.
+    try { localStorage.setItem("moody_lang", code); } catch {}
     // 즉시 페이지 새로고침으로 텍스트 갱신 (i18next는 보통 즉시 반영되지만 안전장치)
     setTimeout(() => navigate("/me"), 250);
   };

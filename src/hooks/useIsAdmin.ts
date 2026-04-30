@@ -1,41 +1,23 @@
 import { useAuth } from "@/hooks/useAuth";
 
-const ADMIN_EMAIL = "kimyul83@icloud.com";
-// Apple "내 이메일 숨기기" 시 발급된 릴레이 이메일 prefix.
-// vm5j8xxxxx@privaterelay.appleid.com 형태 — 36^5 = 약 6천만 분의 1 충돌 확률이라 사실상 본인만 매칭.
-const ADMIN_APPLE_RELAY_PREFIX = "vm5j8";
-
 /**
- * 관리자 1명만 모든 사용자 통계/플랜 부여 페이지에 접근 가능.
- * 보안: UI 게이트일 뿐 — 진짜 권한은 Supabase RLS 의 is_admin() 함수.
+ * 관리자 인증 — 정확한 이메일만 매칭. 그 외엔 누구도 관리자 안 됨.
+ *  - kimyul83@icloud.com (Apple 이메일 공유 시)
+ *  - vm5j8rn27t@privaterelay.appleid.com (Apple Hide My Email 시 발급된 본인 릴레이)
  *
- * 매칭 조건 (DB의 is_admin() 함수와 동일):
- *   1) user.email = kimyul83@icloud.com
- *   2) user.email = vm5j8xxx@privaterelay.appleid.com (Apple Hide My Email 릴레이)
- *   3) user.user_metadata.email = kimyul83@icloud.com (Apple 메타데이터)
- *   4) user.app_metadata.email = kimyul83@icloud.com
+ * 보안: UI 게이트일 뿐 — 진짜 권한은 Supabase RLS 의 is_admin() 함수.
+ * DB 함수와 정확히 동일한 화이트리스트를 유지.
  */
+const ADMIN_EMAILS = new Set([
+  "kimyul83@icloud.com",
+  "vm5j8rn27t@privaterelay.appleid.com",
+]);
+
 export function useIsAdmin() {
   const { user, loading } = useAuth();
-
-  const matches = (() => {
-    if (!user) return false;
-    const email = (user.email ?? "").toLowerCase();
-    if (email === ADMIN_EMAIL) return true;
-    if (
-      email.startsWith(ADMIN_APPLE_RELAY_PREFIX) &&
-      email.endsWith("@privaterelay.appleid.com")
-    ) {
-      return true;
-    }
-    const metaEmail = (user.user_metadata?.email ?? "").toString().toLowerCase();
-    if (metaEmail === ADMIN_EMAIL) return true;
-    const appEmail = (user.app_metadata?.email ?? "").toString().toLowerCase();
-    if (appEmail === ADMIN_EMAIL) return true;
-    return false;
-  })();
-
-  return { isAdmin: matches, loading };
+  const email = (user?.email ?? "").toLowerCase();
+  const isAdmin = !!user && ADMIN_EMAILS.has(email);
+  return { isAdmin, loading };
 }
 
-export { ADMIN_EMAIL };
+export const ADMIN_EMAIL = "kimyul83@icloud.com";

@@ -118,30 +118,45 @@ export type Database = {
       }
       profiles: {
         Row: {
+          access_note: string | null
           created_at: string
           email: string | null
+          estimated_paid_amount: number
           id: string
+          is_friend: boolean
           is_premium: boolean
+          last_seen_at: string | null
+          manual_access_granted: boolean
           subscription_started_at: string | null
           subscription_type: string
           updated_at: string
           user_preferences: Json
         }
         Insert: {
+          access_note?: string | null
           created_at?: string
           email?: string | null
+          estimated_paid_amount?: number
           id: string
+          is_friend?: boolean
           is_premium?: boolean
+          last_seen_at?: string | null
+          manual_access_granted?: boolean
           subscription_started_at?: string | null
           subscription_type?: string
           updated_at?: string
           user_preferences?: Json
         }
         Update: {
+          access_note?: string | null
           created_at?: string
           email?: string | null
+          estimated_paid_amount?: number
           id?: string
+          is_friend?: boolean
           is_premium?: boolean
+          last_seen_at?: string | null
+          manual_access_granted?: boolean
           subscription_started_at?: string | null
           subscription_type?: string
           updated_at?: string
@@ -250,15 +265,63 @@ export type Database = {
         }
         Relationships: []
       }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
-      [_ in never]: never
+      admin_user_stats: {
+        Row: {
+          access_note: string | null
+          email: string | null
+          estimated_paid_amount: number | null
+          focus_count: number | null
+          focus_seconds: number | null
+          id: string | null
+          is_friend: boolean | null
+          is_premium: boolean | null
+          joined_at: string | null
+          last_seen_at: string | null
+          last_session_at: string | null
+          manual_access_granted: boolean | null
+          session_count: number | null
+          subscription_started_at: string | null
+          subscription_type: string | null
+          total_seconds: number | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
+      is_admin: { Args: never; Returns: boolean }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "moderator" | "user"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -385,6 +448,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "moderator", "user"],
+    },
   },
 } as const

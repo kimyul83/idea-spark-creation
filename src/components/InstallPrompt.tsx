@@ -91,21 +91,21 @@ export const InstallPrompt = () => {
 
   return (
     <>
-      {/* 하단 배너 — 탭바 위에 floating */}
+      {/* 상단 배너 — 상태바 아래 floating, 슬림한 노티 스타일 */}
       <div
         className={cn(
           "fixed left-1/2 -translate-x-1/2 z-30",
-          "w-[calc(100%-24px)] max-w-[480px]",
-          "bottom-[calc(96px+env(safe-area-inset-bottom,0px))]",
-          "animate-fade-up",
+          "w-[calc(100%-16px)] max-w-[480px]",
+          "top-[calc(env(safe-area-inset-top,0px)+8px)]",
+          "animate-fade-down",
         )}
       >
-        <div className="liquid-card flex items-center gap-3 p-3 pl-4 pr-2 backdrop-blur-2xl bg-primary/10 border-primary/30">
-          <div className="w-9 h-9 rounded-xl bg-primary/20 flex items-center justify-center shrink-0">
+        <div className="liquid-card flex items-center gap-2.5 py-2.5 pl-3 pr-2 backdrop-blur-2xl bg-primary/12 border-primary/25 shadow-lg">
+          <div className="w-8 h-8 rounded-xl bg-primary/20 flex items-center justify-center shrink-0">
             <Smartphone className="w-4 h-4 text-primary" strokeWidth={1.9} />
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-[12px] font-bold text-foreground leading-tight">
+            <p className="text-[12px] font-bold text-foreground leading-tight truncate">
               {t("installPrompt.title")}
             </p>
             <p className="text-[10px] text-foreground/60 mt-0.5 leading-tight line-clamp-1">
@@ -114,16 +114,16 @@ export const InstallPrompt = () => {
           </div>
           <button
             onClick={handleInstall}
-            className="px-3 py-2 rounded-xl bg-primary text-primary-foreground text-[11px] font-bold shrink-0 active:scale-95 transition-transform"
+            className="px-3 h-8 rounded-lg bg-primary text-primary-foreground text-[11px] font-bold shrink-0 active:scale-95 transition-transform"
           >
             {t("installPrompt.install")}
           </button>
           <button
             onClick={dismiss}
-            className="w-8 h-8 rounded-full flex items-center justify-center text-foreground/40 hover:text-foreground/70 shrink-0"
+            className="w-7 h-7 rounded-full flex items-center justify-center text-foreground/45 hover:text-foreground/80 shrink-0"
             aria-label={t("common.close")}
           >
-            <X className="w-3.5 h-3.5" />
+            <X className="w-4 h-4" />
           </button>
         </div>
       </div>

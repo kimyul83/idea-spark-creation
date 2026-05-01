@@ -14,6 +14,8 @@ export type BreathingCategory = "calm" | "emergency" | "energize" | "health" | "
  */
 export type BreathingStyle = "phase" | "cycle";
 
+export type BreathingVia = "nose" | "mouth";
+
 export interface BreathingPattern {
   /** Stable string id used in URLs / DB. */
   id: string;
@@ -30,6 +32,9 @@ export interface BreathingPattern {
   cycleReps?: number;
   /** Short origin / credit blurb. */
   origin?: string;
+  /** 들숨/날숨 호흡 경로 — 코 또는 입. 기법마다 권장이 다름. */
+  inhaleVia?: BreathingVia;
+  exhaleVia?: BreathingVia;
 }
 
 export const BREATHING_PATTERNS: BreathingPattern[] = [
@@ -48,6 +53,8 @@ export const BREATHING_PATTERNS: BreathingPattern[] = [
     ],
     premium: false,
     origin: "웨일 박사 (간편 버전)",
+    inhaleVia: "nose",
+    exhaleVia: "mouth", // "쉬-" 소리 내며 길게
   },
   {
     id: "4-7-8-easy",
@@ -63,6 +70,8 @@ export const BREATHING_PATTERNS: BreathingPattern[] = [
     ],
     premium: false,
     origin: "초보자 버전",
+    inhaleVia: "nose",
+    exhaleVia: "mouth",
   },
   {
     id: "box",
@@ -79,6 +88,8 @@ export const BREATHING_PATTERNS: BreathingPattern[] = [
     ],
     premium: false,
     origin: "Navy SEALs",
+    inhaleVia: "nose",
+    exhaleVia: "nose",
   },
   {
     id: "5-5",
@@ -93,6 +104,8 @@ export const BREATHING_PATTERNS: BreathingPattern[] = [
     ],
     premium: false,
     origin: "분당 7-8회",
+    inhaleVia: "nose",
+    exhaleVia: "nose",
   },
   {
     id: "6-6",
@@ -107,6 +120,8 @@ export const BREATHING_PATTERNS: BreathingPattern[] = [
     ],
     premium: true,
     origin: "부교감신경 활성화",
+    inhaleVia: "nose",
+    exhaleVia: "nose",
   },
 
   // ── Emergency ────────────────────────────────────────
@@ -124,6 +139,8 @@ export const BREATHING_PATTERNS: BreathingPattern[] = [
     ],
     premium: false,
     origin: "급성 스트레스 대응",
+    inhaleVia: "nose",
+    exhaleVia: "mouth",
   },
   {
     id: "3-3-3",
@@ -139,6 +156,8 @@ export const BREATHING_PATTERNS: BreathingPattern[] = [
     ],
     premium: true,
     origin: "과호흡 대응",
+    inhaleVia: "nose",
+    exhaleVia: "nose",
   },
 
   // ── Energize ─────────────────────────────────────────
@@ -157,6 +176,8 @@ export const BREATHING_PATTERNS: BreathingPattern[] = [
     ],
     premium: true,
     origin: "Wim Hof Method",
+    inhaleVia: "mouth",
+    exhaleVia: "mouth",
   },
   {
     id: "kapalabhati",
@@ -173,6 +194,8 @@ export const BREATHING_PATTERNS: BreathingPattern[] = [
     ],
     premium: true,
     origin: "요가 프라나야마",
+    inhaleVia: "nose",
+    exhaleVia: "nose", // 강한 복부 수축으로 빠른 날숨
   },
   {
     id: "bhastrika",
@@ -189,6 +212,8 @@ export const BREATHING_PATTERNS: BreathingPattern[] = [
     ],
     premium: true,
     origin: "요가 풀무 호흡",
+    inhaleVia: "nose",
+    exhaleVia: "nose",
   },
 
   // ── Sleep ────────────────────────────────────────────
@@ -205,6 +230,8 @@ export const BREATHING_PATTERNS: BreathingPattern[] = [
     ],
     premium: false,
     origin: "초보자 친화적",
+    inhaleVia: "nose",
+    exhaleVia: "mouth", // 긴 날숨, 부교감 활성화
   },
 
   // ── Health (산소·뇌·면역) ─────────────────────────────
@@ -222,6 +249,8 @@ export const BREATHING_PATTERNS: BreathingPattern[] = [
     ],
     premium: false,
     origin: "심박변이도·소화·이완",
+    inhaleVia: "nose",
+    exhaleVia: "mouth",
   },
   {
     id: "brain-oxygen",
@@ -238,6 +267,8 @@ export const BREATHING_PATTERNS: BreathingPattern[] = [
     ],
     premium: false,
     origin: "뇌 활성화",
+    inhaleVia: "nose",
+    exhaleVia: "nose",
   },
   {
     id: "lung-capacity",
@@ -254,6 +285,8 @@ export const BREATHING_PATTERNS: BreathingPattern[] = [
     ],
     premium: true,
     origin: "폐활량 훈련",
+    inhaleVia: "nose",
+    exhaleVia: "mouth", // 폐 확장 후 천천히 입으로
   },
   {
     id: "alpine",
@@ -268,6 +301,8 @@ export const BREATHING_PATTERNS: BreathingPattern[] = [
     ],
     premium: true,
     origin: "Buteyko Method",
+    inhaleVia: "nose",
+    exhaleVia: "nose", // 부테이코는 코 호흡 절대 원칙
   },
   {
     id: "energy-boost",
@@ -284,6 +319,8 @@ export const BREATHING_PATTERNS: BreathingPattern[] = [
     ],
     premium: true,
     origin: "Holotropic Breathing 라이트",
+    inhaleVia: "nose",
+    exhaleVia: "mouth",
   },
 ];
 
@@ -292,6 +329,25 @@ export const PHASE_LABEL: Record<BreathingPhase, string> = {
   hold1: "참기",
   exhale: "내쉬기",
   hold2: "참기",
+};
+
+export const VIA_LABEL: Record<BreathingVia, string> = {
+  nose: "코로",
+  mouth: "입으로",
+};
+
+/** 호흡 단계와 경로를 결합한 짧은 안내. ex: "코로 들이마시기" */
+export const phaseGuide = (
+  phase: BreathingPhase,
+  pattern: BreathingPattern,
+): string => {
+  if (phase === "inhale" && pattern.inhaleVia) {
+    return `${VIA_LABEL[pattern.inhaleVia]} ${PHASE_LABEL.inhale}`;
+  }
+  if (phase === "exhale" && pattern.exhaleVia) {
+    return `${VIA_LABEL[pattern.exhaleVia]} ${PHASE_LABEL.exhale}`;
+  }
+  return PHASE_LABEL[phase];
 };
 
 export const CATEGORY_META: Record<

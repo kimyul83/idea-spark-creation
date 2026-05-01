@@ -3,8 +3,9 @@ import { useTranslation } from "react-i18next";
 import {
   CloudRain, Waves, Trees, Mountain, Wind, Bird, Flame, Moon,
   Droplets, Sun, Music2, Heart, Brain,
-  Coffee, Pause, Zap, Timer, type LucideIcon,
+  Coffee, Pause, Zap, Timer, HelpCircle, Volume2, type LucideIcon,
 } from "lucide-react";
+import { MusicGuideSheet } from "@/components/MusicGuideSheet";
 import { Howl } from "howler";
 import { MonetBackground } from "@/components/MonetBackground";
 import { audioEngine } from "@/lib/audio-engine";
@@ -231,6 +232,10 @@ const Music = () => {
   const [versionIdx, setVersionIdx] = useState<Record<string, number>>({});
   const [timerHours, setTimerHours] = useState<number | null>(null);
   const [timerOpen, setTimerOpen] = useState(false);
+  const [guideOpen, setGuideOpen] = useState(false);
+  // 타일별 볼륨 (0~1). 미설정 시 기본값(자연 0.45 / 노이즈 0.13 / 톤 0.09) 적용.
+  const [volumes, setVolumes] = useState<Record<string, number>>({});
+  const [editingVolume, setEditingVolume] = useState<string | null>(null);
   const howlsRef = useRef<Map<string, Howl>>(new Map());
   const timerRef = useRef<number | undefined>();
 
@@ -297,9 +302,8 @@ const Music = () => {
       src: [url],
       html5: false,
       loop: true,
-      // 자연 0.45 — 노이즈/톤이 같이 켜졌을 때 묻히지 않도록 살짝 ↓ (이전 0.55).
-      // 단독 재생 시에도 충분한 볼륨, 믹스 시엔 underlying frequency 가 들리는 균형점.
-      volume: 0.45,
+      // 자연 기본 0.45 — 사용자가 슬라이더로 변경 가능 (volumes[item.id])
+      volume: volumes[item.id] ?? 0.45,
       preload: true,
       onplay: clearLoading,
       onload: clearLoading,
@@ -347,15 +351,11 @@ const Music = () => {
       });
       return;
     }
-    // 자연(0.45) vs 노이즈(0.13) vs 톤(0.09) — Fletcher-Munson 곡선 + 마스킹 균형.
-    // 어제 0.08/0.07 로 너무 깎으니 물소리 메인, 노이즈 거의 안 들리는 문제 → 보정.
-    // 노이즈는 브로드밴드라 같은 진폭이어도 더 크게 들리지만, 저주파(brown)는 청감
-    // 둔감해서 충분히 들리려면 ~0.13 필요. 물 0.45 + 노이즈 0.13 = 약 30% 비율 →
-    // 물 메인 + 노이즈가 underlying texture 로 자연스럽게 느껴짐.
+    // 노이즈/톤 기본 — Fletcher-Munson 보정. 사용자 슬라이더 우선.
     if (item.type === "noise" && item.noiseType) {
-      audioEngine.playNoise(item.id, item.noiseType, 0.13);
+      audioEngine.playNoise(item.id, item.noiseType, volumes[item.id] ?? 0.13);
     } else {
-      audioEngine.playTone(item.id, item.hz, 0.09);
+      audioEngine.playTone(item.id, item.hz, volumes[item.id] ?? 0.09);
     }
     setActiveIds((prev) => new Set(prev).add(item.id));
     setMediaSession(
@@ -364,6 +364,19 @@ const Music = () => {
     );
     setMediaSessionPlaying(true);
     requestWakeLock();
+  };
+
+  /** 활성 트랙 볼륨 변경 — 자연(Howl) / 노이즈·톤(audioEngine) 분기. */
+  const updateVolume = (id: string, vol: number) => {
+    const v = Math.max(0, Math.min(1, vol));
+    setVolumes((prev) => ({ ...prev, [id]: v }));
+    const howl = howlsRef.current.get(id);
+    if (howl) {
+      howl.volume(v);
+    } else {
+      // audioEngine.setVolume — 노이즈/톤 GainNode 직접 조절
+      audioEngine.setVolume(id, v);
+    }
   };
 
   const stopAll = () => {
@@ -380,10 +393,20 @@ const Music = () => {
       <MonetBackground intensity="medium" />
 
       <div className="flex items-end justify-between animate-fade-up">
-        <div>
-          <p className="chip-primary text-[14px] tracking-[0.3em] uppercase font-serif">
-            {t("music.label")}
-          </p>
+        <div className="flex-1">
+          <div className="flex items-center gap-2">
+            <p className="chip-primary text-[14px] tracking-[0.3em] uppercase font-serif">
+              {t("music.label")}
+            </p>
+            {/* 가이드 버튼 — 어떤 조합이 어떤 효과인지 */}
+            <button
+              onClick={() => setGuideOpen(true)}
+              className="w-7 h-7 rounded-full bg-primary/10 hover:bg-primary/20 flex items-center justify-center transition-colors"
+              aria-label="사운드 믹스 가이드"
+            >
+              <HelpCircle className="w-3.5 h-3.5 text-primary" strokeWidth={2} />
+            </button>
+          </div>
           <h1 className="text-[28px] font-bold text-foreground mt-1 leading-tight">
             {t("music.title")}
           </h1>
@@ -427,8 +450,12 @@ const Music = () => {
               active={activeIds.has(item.id)}
               loading={loadingIds.has(item.id)}
               versionIdx={versionIdx[item.id] ?? 0}
+              volume={volumes[item.id] ?? 0.45}
+              showVolume={editingVolume === item.id}
               onClick={() => handleNatureClick(item)}
               onStop={() => stopFile(item.id)}
+              onToggleVolume={() => setEditingVolume(editingVolume === item.id ? null : item.id)}
+              onVolumeChange={(v) => updateVolume(item.id, v)}
             />
           ))}
         </div>
@@ -439,14 +466,21 @@ const Music = () => {
           {t("music.frequencies")}
         </h2>
         <div className="grid grid-cols-3 gap-3">
-          {FREQUENCIES.map((item) => (
-            <FreqTile
-              key={item.id}
-              item={item}
-              active={activeIds.has(item.id)}
-              onClick={() => toggleFreq(item)}
-            />
-          ))}
+          {FREQUENCIES.map((item) => {
+            const def = item.type === "noise" ? 0.13 : 0.09;
+            return (
+              <FreqTile
+                key={item.id}
+                item={item}
+                active={activeIds.has(item.id)}
+                volume={volumes[item.id] ?? def}
+                showVolume={editingVolume === item.id}
+                onClick={() => toggleFreq(item)}
+                onToggleVolume={() => setEditingVolume(editingVolume === item.id ? null : item.id)}
+                onVolumeChange={(v) => updateVolume(item.id, v)}
+              />
+            );
+          })}
         </div>
       </section>
 
@@ -458,6 +492,8 @@ const Music = () => {
           {t("music.stopAll")}
         </button>
       )}
+
+      {guideOpen && <MusicGuideSheet onClose={() => setGuideOpen(false)} />}
 
       {timerOpen && (
         <div
@@ -498,11 +534,15 @@ interface NatureTileProps {
   active: boolean;
   loading?: boolean;
   versionIdx: number;
+  volume: number;
+  showVolume: boolean;
   onClick: () => void;
   onStop: () => void;
+  onToggleVolume: () => void;
+  onVolumeChange: (v: number) => void;
 }
 
-const NatureTile = ({ item, active, loading, versionIdx, onClick, onStop }: NatureTileProps) => {
+const NatureTile = ({ item, active, loading, versionIdx, volume, showVolume, onClick, onStop, onToggleVolume, onVolumeChange }: NatureTileProps) => {
   const { t } = useTranslation();
   const Icon = item.icon;
   const hasMultiple = item.variants.length > 1;
@@ -539,25 +579,66 @@ const NatureTile = ({ item, active, loading, versionIdx, onClick, onStop }: Natu
         )}
       </button>
       {active && (
-        <button
-          onClick={(e) => { e.stopPropagation(); onStop(); }}
-          className="absolute top-1.5 right-1.5 w-6 h-6 rounded-full bg-foreground/75 text-background flex items-center justify-center hover:bg-foreground"
-          aria-label={t("common.stop")}
-        >
-          <Pause className="w-3 h-3" />
-        </button>
+        <>
+          <button
+            onClick={(e) => { e.stopPropagation(); onStop(); }}
+            className="absolute top-1.5 right-1.5 w-6 h-6 rounded-full bg-foreground/75 text-background flex items-center justify-center hover:bg-foreground"
+            aria-label={t("common.stop")}
+          >
+            <Pause className="w-3 h-3" />
+          </button>
+          <button
+            onClick={(e) => { e.stopPropagation(); onToggleVolume(); }}
+            className={cn(
+              "absolute top-1.5 left-1.5 w-6 h-6 rounded-full flex items-center justify-center",
+              showVolume ? "bg-primary text-primary-foreground" : "bg-foreground/30 text-background hover:bg-foreground/60",
+            )}
+            aria-label="볼륨"
+          >
+            <Volume2 className="w-3 h-3" />
+          </button>
+          {showVolume && (
+            <VolumeSlider value={volume} onChange={onVolumeChange} />
+          )}
+        </>
       )}
     </div>
   );
 };
 
+const VolumeSlider = ({ value, onChange }: { value: number; onChange: (v: number) => void }) => (
+  <div
+    className="absolute -bottom-2 left-1.5 right-1.5 z-10"
+    onClick={(e) => e.stopPropagation()}
+  >
+    <div className="liquid-card p-2 flex items-center gap-2">
+      <Volume2 className="w-3 h-3 text-foreground/55 shrink-0" />
+      <input
+        type="range"
+        min={0}
+        max={100}
+        value={Math.round(value * 100)}
+        onChange={(e) => onChange(Number(e.target.value) / 100)}
+        className="w-full h-1 accent-primary cursor-pointer"
+      />
+      <span className="text-[9px] text-foreground/55 font-mono w-7 text-right shrink-0">
+        {Math.round(value * 100)}
+      </span>
+    </div>
+  </div>
+);
+
 interface FreqTileProps {
   item: FreqItem;
   active: boolean;
+  volume: number;
+  showVolume: boolean;
   onClick: () => void;
+  onToggleVolume: () => void;
+  onVolumeChange: (v: number) => void;
 }
 
-const FreqTile = ({ item, active, onClick }: FreqTileProps) => {
+const FreqTile = ({ item, active, volume, showVolume, onClick, onToggleVolume, onVolumeChange }: FreqTileProps) => {
   const { t } = useTranslation();
   const Icon = item.icon;
   // 노이즈 종류는 번역, 톤 (432Hz 등)은 그대로
@@ -565,10 +646,11 @@ const FreqTile = ({ item, active, onClick }: FreqTileProps) => {
     ? `music.freqs.${item.id}` : "";
   const label = labelKey ? t(labelKey, { defaultValue: item.label }) : item.label;
   return (
+    <div className="relative">
     <button
       onClick={onClick}
       className={cn(
-        "liquid-card aspect-[0.95] p-3 flex flex-col items-center justify-center gap-1.5 transition-all active:scale-95",
+        "liquid-card w-full aspect-[0.95] p-3 flex flex-col items-center justify-center gap-1.5 transition-all active:scale-95",
         active && "ring-2 ring-primary shadow-[0_0_24px_-4px_hsl(var(--primary)/0.55)]"
       )}
     >
@@ -585,6 +667,22 @@ const FreqTile = ({ item, active, onClick }: FreqTileProps) => {
         {t(`music.tags.${item.id}`, { defaultValue: item.tag })}
       </span>
     </button>
+    {active && (
+      <>
+        <button
+          onClick={(e) => { e.stopPropagation(); onToggleVolume(); }}
+          className={cn(
+            "absolute top-1.5 left-1.5 w-6 h-6 rounded-full flex items-center justify-center",
+            showVolume ? "bg-primary text-primary-foreground" : "bg-foreground/30 text-background hover:bg-foreground/60",
+          )}
+          aria-label="볼륨"
+        >
+          <Volume2 className="w-3 h-3" />
+        </button>
+        {showVolume && <VolumeSlider value={volume} onChange={onVolumeChange} />}
+      </>
+    )}
+    </div>
   );
 };
 

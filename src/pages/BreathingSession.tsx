@@ -7,7 +7,7 @@ import { Moody } from "@/components/Moody";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import {
-  getPatternById, PHASE_LABEL,
+  getPatternById, PHASE_LABEL, VIA_LABEL,
   type BreathingVisualId,
 } from "@/lib/breathing";
 import { BreathingVisual } from "@/components/BreathingVisuals";
@@ -234,6 +234,17 @@ const BreathingSession = () => {
 
       {/* phase label — 크고 선명한 자막 */}
       <div className="text-center mt-6 relative z-10 px-6">
+        {/* 코/입 안내 — 들숨/날숨 단계에서만 표시. 참기 단계엔 의미 없음. */}
+        {(currentPhase.phase === "inhale" && pattern.inhaleVia) && (
+          <p key={`via-${phaseIdx}-${rep}`} className="text-[12px] text-primary font-semibold tracking-widest uppercase mb-1.5 animate-fade-up">
+            {VIA_LABEL[pattern.inhaleVia]}
+          </p>
+        )}
+        {(currentPhase.phase === "exhale" && pattern.exhaleVia) && (
+          <p key={`via-${phaseIdx}-${rep}`} className="text-[12px] text-primary font-semibold tracking-widest uppercase mb-1.5 animate-fade-up">
+            {VIA_LABEL[pattern.exhaleVia]}
+          </p>
+        )}
         <p
           key={`${rep}-${phaseIdx}-${microRep}`}
           className="text-[32px] md:text-[36px] font-bold text-foreground animate-fade-up tracking-tight leading-tight"

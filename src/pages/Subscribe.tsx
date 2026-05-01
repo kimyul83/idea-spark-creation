@@ -1,14 +1,15 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { ArrowLeft, Check, Crown, X } from "lucide-react";
+import { ArrowLeft, Check, Crown, X, RotateCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { MonetBackground } from "@/components/MonetBackground";
 import { Moody } from "@/components/Moody";
-import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { usePremium } from "@/hooks/usePremium";
 import { cn } from "@/lib/utils";
+import { toast } from "sonner";
+import { getOfferings, purchasePackage, restorePurchases, isRevenueCatActive } from "@/lib/revenuecat";
 
 type PlanId = "monthly" | "yearly";
 
@@ -28,20 +29,74 @@ const Subscribe = () => {
   const { user } = useAuth();
   const { refresh, isPremium } = usePremium();
   const [picked, setPicked] = useState<PlanId>("yearly");
+  const [busy, setBusy] = useState(false);
+  const [offerings, setOfferings] = useState<{ monthly?: any; annual?: any } | null>(null);
+
+  // 네이티브 + RevenueCat 활성화 시 실제 가격 가져옴 (지역화된 가격 표시)
+  useEffect(() => {
+    if (!isRevenueCatActive()) return;
+    getOfferings().then((o) => setOfferings(o));
+  }, []);
 
   const PLANS: Plan[] = [
-    { id: "monthly", label: t("subscribe.monthly"), price: "₩5,500", per: t("subscribe.perMonth") },
-    { id: "yearly",  label: t("subscribe.yearly"),  price: "₩49,000", per: t("subscribe.perYear"), badge: t("subscribe.yearlyBadge") },
+    {
+      id: "monthly",
+      label: t("subscribe.monthly"),
+      price: offerings?.monthly?.product?.priceString ?? "₩5,500",
+      per: t("subscribe.perMonth"),
+    },
+    {
+      id: "yearly",
+      label: t("subscribe.yearly"),
+      price: offerings?.annual?.product?.priceString ?? "₩49,000",
+      per: t("subscribe.perYear"),
+      badge: t("subscribe.yearlyBadge"),
+    },
   ];
 
   const handleSubscribe = async () => {
     if (!user) {
-      alert(t("subscribe.loginRequired"));
+      toast.error(t("subscribe.loginRequired"));
       return;
     }
-    alert(t("subscribe.comingSoon"));
-    await supabase.from("profiles").update({ subscription_type: picked }).eq("id", user.id);
-    refresh();
+
+    // 네이티브 환경 + RevenueCat 활성 → 실제 결제
+    if (isRevenueCatActive() && offerings) {
+      const pkg = picked === "monthly" ? offerings.monthly : offerings.annual;
+      if (!pkg) {
+        toast.error("이 플랜은 현재 구매할 수 없어요");
+        return;
+      }
+      setBusy(true);
+      const result = await purchasePackage(pkg);
+      setBusy(false);
+      if (result.success) {
+        toast.success("프리미엄 활성화됐어요 ✨");
+        refresh();
+        setTimeout(() => navigate("/me"), 800);
+      } else if (result.cancelled) {
+        // 사용자가 취소 — 토스트 안 띄움
+      } else {
+        toast.error(result.error ?? "결제 실패");
+      }
+      return;
+    }
+
+    // 웹 + RevenueCat 비활성 → 안내
+    toast.info("앱에서 결제 가능해요. 홈 화면에 추가하거나 App Store 에서 다운받아주세요.");
+  };
+
+  const handleRestore = async () => {
+    if (!isRevenueCatActive()) return;
+    setBusy(true);
+    const ok = await restorePurchases();
+    setBusy(false);
+    if (ok) {
+      toast.success("구매 복원됐어요");
+      refresh();
+    } else {
+      toast.info("복원할 구매 내역이 없어요");
+    }
   };
 
   return (
@@ -151,10 +206,21 @@ const Subscribe = () => {
       <div className="px-5 mt-6">
         <Button
           onClick={handleSubscribe}
+          disabled={busy}
           className="w-full h-16 rounded-2xl bg-primary hover:bg-primary/90 text-primary-foreground text-base font-bold shadow-card"
         >
-          <Crown className="w-5 h-5 mr-2" /> {t("subscribe.cta")}
+          <Crown className="w-5 h-5 mr-2" /> {busy ? "처리 중..." : t("subscribe.cta")}
         </Button>
+        {/* 구매 복원 — 네이티브 + RevenueCat 활성 시에만 노출 */}
+        {isRevenueCatActive() && (
+          <button
+            onClick={handleRestore}
+            disabled={busy}
+            className="w-full mt-2 h-10 text-[12px] text-foreground/55 hover:text-foreground inline-flex items-center justify-center gap-1.5"
+          >
+            <RotateCcw className="w-3 h-3" /> 구매 복원
+          </button>
+        )}
         <p className="text-center text-[11px] text-foreground/40 mt-3">
           {t("subscribe.footer")}
         </p>

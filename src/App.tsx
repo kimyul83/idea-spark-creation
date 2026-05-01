@@ -24,6 +24,8 @@ import { AppShell } from "./components/AppShell";
 import { InstallPrompt } from "./components/InstallPrompt";
 import { useEffect } from "react";
 import { trackVisit } from "@/lib/track-visit";
+import { initRevenueCat, setRevenueCatUser } from "@/lib/revenuecat";
+import { supabase } from "@/integrations/supabase/client";
 
 const queryClient = new QueryClient();
 
@@ -33,11 +35,32 @@ const VisitTracker = () => {
   return null;
 };
 
+/** RevenueCat 초기화 — 네이티브 환경 + API 키 있을 때만. 웹에선 no-op. */
+const RevenueCatInitializer = () => {
+  useEffect(() => {
+    let mounted = true;
+    (async () => {
+      const { data } = await supabase.auth.getSession();
+      const userId = data.session?.user.id ?? null;
+      if (!mounted) return;
+      const ok = await initRevenueCat(userId);
+      if (!ok) return;
+      // 로그인 상태 변경 시 RevenueCat 사용자 동기화
+      supabase.auth.onAuthStateChange((_e, sess) => {
+        setRevenueCatUser(sess?.user.id ?? null);
+      });
+    })();
+    return () => { mounted = false; };
+  }, []);
+  return null;
+};
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <Sonner position="top-center" />
       <VisitTracker />
+      <RevenueCatInitializer />
       <InstallPrompt />
       <BrowserRouter>
         <Routes>

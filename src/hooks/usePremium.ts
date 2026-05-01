@@ -1,6 +1,7 @@
 import { useEffect, useState, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
+import { checkPremium, isRevenueCatActive } from "@/lib/revenuecat";
 
 const DEV_KEY = "moody_dev_premium";
 
@@ -34,6 +35,20 @@ export function usePremium() {
       setLoading(false);
       return;
     }
+
+    // 1) RevenueCat (네이티브 + API 키 있을 때) — 진짜 결제 검증
+    if (isRevenueCatActive()) {
+      try {
+        const isRcPremium = await checkPremium();
+        if (isRcPremium) {
+          setServerPremium(true);
+          setLoading(false);
+          return;
+        }
+      } catch {/* fall through to Supabase */}
+    }
+
+    // 2) Supabase profiles.is_premium (관리자가 부여한 프리미엄 — 친구·이벤트 등)
     const { data } = await supabase
       .from("profiles")
       .select("is_premium")

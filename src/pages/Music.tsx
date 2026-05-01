@@ -297,7 +297,9 @@ const Music = () => {
       src: [url],
       html5: false,
       loop: true,
-      volume: 0.55,
+      // 자연 0.45 — 노이즈/톤이 같이 켜졌을 때 묻히지 않도록 살짝 ↓ (이전 0.55).
+      // 단독 재생 시에도 충분한 볼륨, 믹스 시엔 underlying frequency 가 들리는 균형점.
+      volume: 0.45,
       preload: true,
       onplay: clearLoading,
       onload: clearLoading,
@@ -345,12 +347,15 @@ const Music = () => {
       });
       return;
     }
-    // 주파수/노이즈는 자연 사운드(0.55)와 같이 재생될 때 소리가 너무 커서 더 작게.
-    // 브로드밴드 노이즈는 전 주파수에 걸쳐 있어 같은 진폭이라도 더 크게 들림.
+    // 자연(0.45) vs 노이즈(0.13) vs 톤(0.09) — Fletcher-Munson 곡선 + 마스킹 균형.
+    // 어제 0.08/0.07 로 너무 깎으니 물소리 메인, 노이즈 거의 안 들리는 문제 → 보정.
+    // 노이즈는 브로드밴드라 같은 진폭이어도 더 크게 들리지만, 저주파(brown)는 청감
+    // 둔감해서 충분히 들리려면 ~0.13 필요. 물 0.45 + 노이즈 0.13 = 약 30% 비율 →
+    // 물 메인 + 노이즈가 underlying texture 로 자연스럽게 느껴짐.
     if (item.type === "noise" && item.noiseType) {
-      audioEngine.playNoise(item.id, item.noiseType, 0.08);
+      audioEngine.playNoise(item.id, item.noiseType, 0.13);
     } else {
-      audioEngine.playTone(item.id, item.hz, 0.07);
+      audioEngine.playTone(item.id, item.hz, 0.09);
     }
     setActiveIds((prev) => new Set(prev).add(item.id));
     setMediaSession(

@@ -1,5 +1,5 @@
 {
-  "app": { "name": "MintMoody", "character": "Moody" },
+  "app": { "name": "Mint Wave", "character": "Moody" },
   "tabs": { "home": "Accueil", "music": "Musique", "breathing": "Respirer", "sleep": "Sommeil", "release": "Libérer", "me": "Moi" },
   "common": { "back": "Retour", "close": "Fermer", "play": "Lire", "pause": "Pause", "stop": "Arrêter", "save": "Enregistrer", "cancel": "Annuler", "confirm": "Confirmer", "next": "Suivant", "again": "Encore", "more": "Plus", "loading": "Chargement", "error": "Erreur", "retry": "Réessayer", "delete": "Supprimer", "premium": "Premium", "comingSoon": "Bientôt", "coming": "Bientôt" },
   "home": {
@@ -169,13 +169,13 @@
   },
   "languageSettings": { "label": "Language", "title": "Langue" },
   "tester": {
-    "label": "MintMoody · Beta",
-    "title": "MintMoody dans le cœur",
+    "label": "Mint Wave · Beta",
+    "title": "Mint Wave dans le cœur",
     "betaInfo": "Actuellement en beta privée.",
     "inviteOnly": "Sur invitation uniquement",
     "codeInput": "Code d'invitation 4 lettres",
     "enter": "Entrer",
-    "noCode": "Contactez l'admin MintMoody si vous n'avez pas de code",
+    "noCode": "Contactez l'admin Mint Wave si vous n'avez pas de code",
     "wrongCode": "Code invalide"
   },
   "onboarding": {

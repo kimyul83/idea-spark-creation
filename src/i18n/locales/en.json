@@ -1,5 +1,5 @@
 {
-  "app": { "name": "MintMoody", "character": "Moody" },
+  "app": { "name": "Mint Wave", "character": "Moody" },
   "tabs": { "home": "Home", "music": "Music", "breathing": "Breathe", "sleep": "Sleep", "release": "Release", "me": "Me" },
   "common": {
     "back": "Back", "close": "Close", "play": "Play", "pause": "Pause", "stop": "Stop",
@@ -204,13 +204,13 @@
     "gotIt": "Got it"
   },
   "tester": {
-    "label": "MintMoody · Beta",
-    "title": "MintMoody on your heart",
+    "label": "Mint Wave · Beta",
+    "title": "Mint Wave on your heart",
     "betaInfo": "Currently in private beta.",
     "inviteOnly": "Invitation only",
     "codeInput": "4-letter invite code",
     "enter": "Enter",
-    "noCode": "Contact MintMoody admin if you don't have a code",
+    "noCode": "Contact Mint Wave admin if you don't have a code",
     "wrongCode": "Invalid code"
   }
 }

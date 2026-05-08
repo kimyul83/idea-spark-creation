@@ -1,5 +1,5 @@
 {
-  "app": { "name": "민트무디", "character": "무디" },
+  "app": { "name": "민트웨이브", "character": "무디" },
   "tabs": {
     "home": "홈", "music": "음악", "breathing": "호흡",
     "sleep": "수면", "release": "깨기", "me": "마이"
@@ -358,13 +358,13 @@
     "gotIt": "알겠어요"
   },
   "tester": {
-    "label": "MintMoody · Beta",
-    "title": "마음에 내리는 민트무디",
+    "label": "Mint Wave · Beta",
+    "title": "마음에 내리는 민트웨이브",
     "betaInfo": "지금은 비공개 베타 기간이에요.",
     "inviteOnly": "초대받은 친구만 들어올 수 있어요",
     "codeInput": "초대 코드 4글자",
     "enter": "들어가기",
-    "noCode": "코드를 못 받았다면 민트무디 계정 운영자에게 문의해주세요",
+    "noCode": "코드를 못 받았다면 민트웨이브 계정 운영자에게 문의해주세요",
     "wrongCode": "잘못된 코드예요"
   }
 }

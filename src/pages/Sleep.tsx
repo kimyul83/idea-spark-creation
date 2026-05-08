@@ -282,7 +282,7 @@ const Sleep = () => {
     howlRef.current = howl;
 
     setMediaSession(
-      { title: `${track.name} · ${v.name}`, artist: "MintMoody · Sleep", album: formatHours(hours) },
+      { title: `${track.name} · ${v.name}`, artist: "Mint Wave · Sleep", album: formatHours(hours) },
       { onPause: () => stopActive() },
     );
 

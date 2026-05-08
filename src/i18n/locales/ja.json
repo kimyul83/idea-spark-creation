@@ -1,5 +1,5 @@
 {
-  "app": { "name": "ミントムーディ", "character": "ムーディ" },
+  "app": { "name": "Mint Wave", "character": "ムーディ" },
   "tabs": { "home": "ホーム", "music": "音楽", "breathing": "呼吸", "sleep": "睡眠", "release": "解放", "me": "マイ" },
   "common": {
     "back": "戻る", "close": "閉じる", "play": "再生", "pause": "停止", "stop": "停止",
@@ -160,13 +160,13 @@
   },
   "languageSettings": { "label": "Language", "title": "言語" },
   "tester": {
-    "label": "MintMoody · Beta",
-    "title": "心に降るミントムーディ",
+    "label": "Mint Wave · Beta",
+    "title": "心に降るMint Wave",
     "betaInfo": "現在は非公開ベータ期間です。",
     "inviteOnly": "招待のみ参加可能",
     "codeInput": "4文字の招待コード",
     "enter": "入る",
-    "noCode": "コードがない方はミントムーディ運営者へお問い合わせください",
+    "noCode": "コードがない方はMint Wave運営者へお問い合わせください",
     "wrongCode": "無効なコードです"
   }
 }

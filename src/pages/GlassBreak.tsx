@@ -357,7 +357,7 @@ const GlassBreak = () => {
                 e.stopPropagation();
                 try {
                   if (navigator.share) {
-                    await navigator.share({ title: t("glass.title"), text: t("glass.title") + " – MintMoody" });
+                    await navigator.share({ title: t("glass.title"), text: t("glass.title") + " – Mint Wave" });
                   } else {
                     toast.info(t("glass.shareUnsupported"));
                   }

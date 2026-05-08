@@ -1,5 +1,5 @@
 {
-  "app": { "name": "MintMoody", "character": "Moody" },
+  "app": { "name": "Mint Wave", "character": "Moody" },
   "tabs": { "home": "Hem", "music": "Musik", "breathing": "Andas", "sleep": "Sömn", "release": "Släpp", "me": "Jag" },
   "home": {
     "label": "Home",

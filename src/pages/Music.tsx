@@ -314,7 +314,7 @@ const Music = () => {
     howlsRef.current.set(item.id, howl);
 
     setMediaSession(
-      { title: `${item.label} · ${v.name}`, artist: "MintMoody · Sound Mix", album: item.tag },
+      { title: `${item.label} · ${v.name}`, artist: "Mint Wave · Sound Mix", album: item.tag },
       { onPause: () => stopAll() }
     );
     setMediaSessionPlaying(true);
@@ -359,7 +359,7 @@ const Music = () => {
     }
     setActiveIds((prev) => new Set(prev).add(item.id));
     setMediaSession(
-      { title: item.label, artist: "MintMoody · Frequency", album: item.tag },
+      { title: item.label, artist: "Mint Wave · Frequency", album: item.tag },
       { onPause: () => stopAll() }
     );
     setMediaSessionPlaying(true);

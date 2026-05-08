@@ -1,5 +1,5 @@
 {
-  "app": { "name": "MintMoody", "character": "Moody" },
+  "app": { "name": "Mint Wave", "character": "Moody" },
   "tabs": { "home": "Trang chủ", "music": "Nhạc", "breathing": "Thở", "sleep": "Giấc ngủ", "release": "Giải tỏa", "me": "Tôi" },
   "home": {
     "label": "Home",

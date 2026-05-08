@@ -199,7 +199,7 @@ const MusicPlay = () => {
     setMediaSession(
       {
         title: t(`situations.${id}.mood`, { defaultValue: detail.mood }),
-        artist: "MintMoody",
+        artist: "Mint Wave",
         album: t(`situations.${id}.scene`, { defaultValue: detail.scene }),
       },
       {

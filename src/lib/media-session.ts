@@ -30,7 +30,7 @@ export const setMediaSession = (
 
   navigator.mediaSession.metadata = new MediaMetadata({
     title: meta.title,
-    artist: meta.artist ?? "MintMoody",
+    artist: meta.artist ?? "Mint Wave",
     album: meta.album ?? "Therapeutic Soundscape",
     artwork: meta.artwork
       ? [{ src: meta.artwork, sizes: "512x512", type: "image/png" }]

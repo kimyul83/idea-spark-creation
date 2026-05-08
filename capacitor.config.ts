@@ -1,8 +1,8 @@
 import type { CapacitorConfig } from "@capacitor/cli";
 
 const config: CapacitorConfig = {
-  appId: "com.mintmoody.app",
-  appName: "MintMoody",
+  appId: "com.mintwave.app",
+  appName: "Mint Wave",
   webDir: "dist",
   // 빌드 후 정적 파일 서빙 — 인터넷 없이도 앱 실행
   server: {

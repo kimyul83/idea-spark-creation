@@ -1,5 +1,5 @@
 {
-  "app": { "name": "薄荷穆迪", "character": "穆迪" },
+  "app": { "name": "Mint Wave", "character": "穆迪" },
   "tabs": { "home": "首页", "music": "音乐", "breathing": "呼吸", "sleep": "睡眠", "release": "释放", "me": "我的" },
   "common": {
     "back": "返回", "close": "关闭", "play": "播放", "pause": "暂停", "stop": "停止",
@@ -158,13 +158,13 @@
   },
   "languageSettings": { "label": "Language", "title": "语言" },
   "tester": {
-    "label": "MintMoody · Beta",
-    "title": "心中的薄荷穆迪",
+    "label": "Mint Wave · Beta",
+    "title": "心中的Mint Wave",
     "betaInfo": "目前为非公开测试期。",
     "inviteOnly": "仅限受邀进入",
     "codeInput": "4位邀请码",
     "enter": "进入",
-    "noCode": "未收到邀请码请联系薄荷穆迪管理员",
+    "noCode": "未收到邀请码请联系Mint Wave管理员",
     "wrongCode": "邀请码错误"
   }
 }

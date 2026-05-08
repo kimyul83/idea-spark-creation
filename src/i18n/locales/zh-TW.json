@@ -1,5 +1,5 @@
 {
-  "app": { "name": "薄荷穆迪", "character": "穆迪" },
+  "app": { "name": "Mint Wave", "character": "穆迪" },
   "tabs": { "home": "首頁", "music": "音樂", "breathing": "呼吸", "sleep": "睡眠", "release": "釋放", "me": "我的" },
   "home": {
     "label": "Home",

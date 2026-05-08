@@ -36,11 +36,11 @@ public class NowPlayingPlugin: CAPPlugin, CAPBridgedPlugin {
             info[MPMediaItemPropertyAlbumTitle] = album
         }
         info[MPNowPlayingInfoPropertyPlaybackRate] = 1.0
-        // 사용자 설정 재생 시간 (12시간 기본 / 수면 사용자가 고른 값)
-        let durationSec = call.getDouble("durationSeconds") ?? (12 * 60 * 60)
-        let elapsedSec = call.getDouble("elapsedSeconds") ?? 0
-        info[MPMediaItemPropertyPlaybackDuration] = durationSec
-        info[MPNowPlayingInfoPropertyElapsedPlaybackTime] = elapsedSec
+        // IsLiveStream = true → 잠금화면 진행 막대 숨김.
+        // 이유: iOS WKWebView 의 HTMLAudioElement 가 파일 실제 길이(1~3분)로 자동 덮어써서
+        // 우리가 12시간 설정해도 즉시 무시됨. 진행 막대 안 보이는 게 더 깔끔.
+        // 시간 정보는 title/artist/album 에 텍스트로 직접 박음 (앱 측에서).
+        info[MPNowPlayingInfoPropertyIsLiveStream] = true
 
         MPNowPlayingInfoCenter.default().nowPlayingInfo = info
 

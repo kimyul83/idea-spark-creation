@@ -50,20 +50,34 @@ export const setMediaSession = (
     currentDuration = meta.durationSeconds ?? 12 * 60 * 60;
     currentMeta = meta;
 
+    // 시간 정보를 title 에 텍스트로 박음 ("깊은 파도 · 7:55 남음").
+    // 이유: iOS 잠금화면 진행 막대는 IsLiveStream=true 라 안 보이지만 텍스트는 보임.
+    const formatRemaining = (sec: number): string => {
+      const total = Math.max(0, currentDuration - sec);
+      const h = Math.floor(total / 3600);
+      const m = Math.floor((total % 3600) / 60);
+      if (h > 0) return `${h}시간 ${m}분 남음`;
+      if (m > 0) return `${m}분 남음`;
+      return "곧 종료";
+    };
+
+    const baseTitle = meta.title;
     const push = () => {
       const elapsed = Math.min(currentDuration, (Date.now() - sessionStart) / 1000);
+      const remainingText = formatRemaining(elapsed);
       native.setInfo({
-        title: meta.title,
-        artist: meta.artist ?? "Mint Wave",
+        title: baseTitle,
+        // album 자리에 시간 정보 — 잠금화면 카드 두 번째 줄로 표시
+        artist: `${meta.artist ?? "Mint Wave"} · ${remainingText}`,
         album: meta.album ?? "Therapeutic Soundscape",
         durationSeconds: currentDuration,
         elapsedSeconds: elapsed,
       }).catch(() => {});
     };
     push();
-    // 5초마다 재설정 → iOS 가 HTMLAudioElement 파일 길이로 덮어쓰기 시도해도 즉시 우리 값으로 복원
+    // 30초마다 재설정 → 시간 정보 갱신 (분 단위라 충분)
     if (durationRepeatTimer) window.clearInterval(durationRepeatTimer);
-    durationRepeatTimer = window.setInterval(push, 5000);
+    durationRepeatTimer = window.setInterval(push, 30000);
 
     // 잠금화면 ▶/⏸ 버튼 → JS handlers 실행
     nativeHandlers.onPlay = handlers.onPlay;

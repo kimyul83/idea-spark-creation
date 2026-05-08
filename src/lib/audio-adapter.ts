@@ -25,48 +25,62 @@ interface NativeAudioPlugin {
   isPlaying(opts: { id: string }): Promise<{ playing: boolean }>;
 }
 
-// Capacitor 8 플러그인 등록 — 네이티브 클래스(NativeAudioPlugin.swift) 와 jsName: "NativeAudio" 매칭
-const NativeAudio = registerPlugin<NativeAudioPlugin>("NativeAudio");
-
+// Capacitor 8 플러그인 등록 — 네이티브 클래스 안 잡혔을 때 throw 안 하도록 try/catch
+let native: NativeAudioPlugin | null = null;
+try {
+  if (Capacitor.isNativePlatform()) {
+    native = registerPlugin<NativeAudioPlugin>("NativeAudio");
+  }
+} catch {
+  native = null;
+}
 const isNative = Capacitor.isNativePlatform();
-const native: NativeAudioPlugin | null = isNative ? NativeAudio : null;
 
 // 웹 폴백용 Howl 인스턴스
 const howls = new Map<string, Howl>();
 
+// Howler 폴백 (native 실패 또는 웹)
+const playWithHowler = (opts: PlayOpts) => {
+  const existing = howls.get(opts.id);
+  if (existing) {
+    existing.stop();
+    existing.unload();
+  }
+  const howl = new Howl({
+    src: [opts.url],
+    html5: true,
+    loop: opts.loop ?? true,
+    volume: opts.volume ?? 0.5,
+    preload: true,
+    onend: function () { if (!this.playing()) this.play(); },
+  });
+  howl.play();
+  howls.set(opts.id, howl);
+};
+
 export const audioAdapter = {
   async play(opts: PlayOpts): Promise<void> {
+    // 네이티브 시도 → 실패하면 즉시 Howler 폴백 (음악은 무조건 재생되게)
     if (native) {
-      await native.play({
-        id: opts.id,
-        url: opts.url,
-        volume: opts.volume ?? 0.5,
-        loop: opts.loop ?? true,
-      });
-      return;
+      try {
+        await native.play({
+          id: opts.id,
+          url: opts.url,
+          volume: opts.volume ?? 0.5,
+          loop: opts.loop ?? true,
+        });
+        return;
+      } catch (err) {
+        console.warn("[audio] native 실패 → Howler 폴백:", err);
+        // fall through
+      }
     }
-    // 웹 폴백
-    const existing = howls.get(opts.id);
-    if (existing) {
-      existing.stop();
-      existing.unload();
-    }
-    const howl = new Howl({
-      src: [opts.url],
-      html5: true,
-      loop: opts.loop ?? true,
-      volume: opts.volume ?? 0.5,
-      preload: true,
-      onend: function () { if (!this.playing()) this.play(); },
-    });
-    howl.play();
-    howls.set(opts.id, howl);
+    playWithHowler(opts);
   },
 
   async stop(id: string): Promise<void> {
     if (native) {
-      await native.stop({ id });
-      return;
+      try { await native.stop({ id }); } catch {}
     }
     const h = howls.get(id);
     if (h) {
@@ -78,8 +92,7 @@ export const audioAdapter = {
 
   async stopAll(): Promise<void> {
     if (native) {
-      await native.stopAll();
-      return;
+      try { await native.stopAll(); } catch {}
     }
     howls.forEach((h) => { h.stop(); h.unload(); });
     howls.clear();
@@ -87,8 +100,7 @@ export const audioAdapter = {
 
   async setVolume(id: string, volume: number): Promise<void> {
     if (native) {
-      await native.setVolume({ id, volume });
-      return;
+      try { await native.setVolume({ id, volume }); } catch {}
     }
     howls.get(id)?.volume(volume);
   },

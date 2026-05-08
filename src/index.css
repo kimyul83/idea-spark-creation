@@ -123,23 +123,25 @@
   }
 
   * { @apply border-border; }
-  /* iOS rubber-band overscroll 시 흰 화면 안 보이게 — html/body 배경을 페이지 배경에 맞춤 */
-  html { @apply h-full; height: 100%; background: hsl(var(--background)); }
+  /* 전체 스케일 다운 — root rem = 14px (기본 16px) → 모든 Tailwind spacing/font 88% 로 컴팩트해짐 */
+  html {
+    @apply h-full;
+    height: 100%;
+    background: hsl(var(--background));
+    font-size: 14px;
+  }
   body {
     @apply text-foreground antialiased;
-    /* iOS WebView 흰 배경 노출 차단 — body 도 같은 청록 cream 배경 */
     background: hsl(var(--background));
     min-height: 100%;
     overflow-x: hidden;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
-    /* overscroll 으로 rubber-band 영역에 흰 색 안 보이게 */
     overscroll-behavior-y: contain;
-    /* AppleEmojiOverride 가 unicode-range 로 이모지 영역만 가져감 → Pretendard tofu 차단 */
     font-family: 'AppleEmojiOverride', 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
-    /* 14px 기본 — 한 화면에 더 많이 보이게 (이전 16px 너무 큼) */
-    font-size: 14.5px;
-    line-height: 1.55;
+    /* body 자체 글자는 13px (살짝 더 작게) */
+    font-size: 13px;
+    line-height: 1.5;
     background:
       radial-gradient(ellipse at top, hsl(var(--background)) 0%, hsl(var(--background-end)) 100%);
     background-attachment: fixed;

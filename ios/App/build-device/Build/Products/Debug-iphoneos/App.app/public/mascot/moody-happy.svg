@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 260" width="240" height="260">
+  <defs>
+    <linearGradient id="bodyGrad" x1="30%" y1="10%" x2="70%" y2="100%">
+      <stop offset="0%" stop-color="#A8F5FF" stop-opacity="0.55"/>
+      <stop offset="40%" stop-color="#4AEBFB" stop-opacity="0.55"/>
+      <stop offset="80%" stop-color="#00D9E8" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#0077B6" stop-opacity="0.7"/>
+    </linearGradient>
+    <radialGradient id="glassInner" cx="50%" cy="70%" r="55%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.55"/>
+      <stop offset="60%" stop-color="#FFFFFF" stop-opacity="0.18"/>
+      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="hiTop" cx="35%" cy="28%" r="25%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.95"/>
+      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="edgeLight" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.7"/>
+      <stop offset="50%" stop-color="#FFFFFF" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#7FE8F0" stop-opacity="0.5"/>
+    </linearGradient>
+    <filter id="bodyShadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="3" />
+    </filter>
+  </defs>
+
+  <ellipse cx="120" cy="225" rx="68" ry="8" fill="#1A3F55" opacity="0.2" filter="url(#bodyShadow)"/>
+
+  <g class="moodie-body">
+    <path fill="url(#bodyGrad)" d="
+      M 70 218 C 56 218, 44 208, 44 190
+      C 44 130, 76 80, 120 80
+      C 164 80, 196 130, 196 190
+      C 196 208, 184 218, 170 218 Z" />
+    <path fill="url(#glassInner)" d="
+      M 70 218 C 56 218, 44 208, 44 190
+      C 44 130, 76 80, 120 80
+      C 164 80, 196 130, 196 190
+      C 196 208, 184 218, 170 218 Z" />
+    <path fill="none" stroke="url(#edgeLight)" stroke-width="2" opacity="0.85" d="
+      M 70 218 C 56 218, 44 208, 44 190
+      C 44 130, 76 80, 120 80
+      C 164 80, 196 130, 196 190
+      C 196 208, 184 218, 170 218 Z" />
+    <ellipse cx="84" cy="115" rx="28" ry="34" fill="url(#hiTop)" />
+    <ellipse cx="68" cy="140" rx="7" ry="10" fill="#FFFFFF" opacity="0.7" />
+    <ellipse cx="170" cy="195" rx="10" ry="5" fill="#FFFFFF" opacity="0.55" />
+    <ellipse cx="150" cy="135" rx="4" ry="8" fill="#FFFFFF" opacity="0.35" />
+
+    <!-- Happy 눈: 반달 ^^ -->
+    <g class="moodie-eyes">
+      <path d="M 86 158 Q 98 142, 110 158" stroke="#1A1A2E" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+      <path d="M 130 158 Q 142 142, 154 158" stroke="#1A1A2E" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+      <!-- 반달 눈 안에 작은 블루 광 (Aibo 잔향) -->
+      <ellipse cx="98" cy="156" rx="3" ry="1.5" fill="#7FE8F0" opacity="0.7"/>
+      <ellipse cx="142" cy="156" rx="3" ry="1.5" fill="#7FE8F0" opacity="0.7"/>
+    </g>
+
+    <!-- 활짝 웃는 입 -->
+    <path d="M 100 178 Q 120 198, 140 178" stroke="#1A1A2E" stroke-width="3" stroke-linecap="round" fill="none"/>
+    <path d="M 113 188 Q 120 195, 127 188 Q 120 192, 113 188 Z" fill="#FF9EBE" opacity="0.75"/>
+
+    <ellipse cx="78" cy="178" rx="11" ry="6" fill="#FF9EBE" opacity="0.7"/>
+    <ellipse cx="162" cy="178" rx="11" ry="6" fill="#FF9EBE" opacity="0.7"/>
+  </g>
+
+  <g class="moodie-sparkles">
+    <g class="sparkle" transform="translate(36 70)"><path d="M0 -10 L 2.5 -2.5 L 10 0 L 2.5 2.5 L 0 10 L -2.5 2.5 L -10 0 L -2.5 -2.5 Z" fill="#FFE89E" opacity="0.95"/></g>
+    <g class="sparkle" transform="translate(208 110)"><path d="M0 -8 L 2 -2 L 8 0 L 2 2 L 0 8 L -2 2 L -8 0 L -2 -2 Z" fill="#FFF6C2" opacity="0.95"/></g>
+    <g class="sparkle" transform="translate(196 50)"><path d="M0 -7 L 1.7 -1.7 L 7 0 L 1.7 1.7 L 0 7 L -1.7 1.7 L -7 0 L -1.7 -1.7 Z" fill="#7FF5FF" opacity="0.9"/></g>
+    <g class="sparkle" transform="translate(28 168)"><path d="M0 -6 L 1.5 -1.5 L 6 0 L 1.5 1.5 L 0 6 L -1.5 1.5 L -6 0 L -1.5 -1.5 Z" fill="#FFE89E" opacity="0.85"/></g>
+    <g class="sparkle" transform="translate(214 200)"><path d="M0 -8 L 2 -2 L 8 0 L 2 2 L 0 8 L -2 2 L -8 0 L -2 -2 Z" fill="#FFFFFF" opacity="0.95"/></g>
+    <g class="sparkle" transform="translate(48 50)"><path d="M0 -5 L 1.2 -1.2 L 5 0 L 1.2 1.2 L 0 5 L -1.2 1.2 L -5 0 L -1.2 -1.2 Z" fill="#FFE89E" opacity="0.8"/></g>
+  </g>
+</svg>

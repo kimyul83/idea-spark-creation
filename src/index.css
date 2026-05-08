@@ -123,16 +123,18 @@
   }
 
   * { @apply border-border; }
-  /* iOS 네이티브 + 웹 둘 다에서 스크롤 동작하도록 */
-  html { @apply h-full; height: 100%; }
+  /* iOS rubber-band overscroll 시 흰 화면 안 보이게 — html/body 배경을 페이지 배경에 맞춤 */
+  html { @apply h-full; height: 100%; background: hsl(var(--background)); }
   body {
     @apply text-foreground antialiased;
-    /* 스크롤 명시적 허용 — iOS WebView 가 contentInset overlay 일 때 안 막히게 */
+    /* iOS WebView 흰 배경 노출 차단 — body 도 같은 청록 cream 배경 */
+    background: hsl(var(--background));
     min-height: 100%;
     overflow-x: hidden;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
-    overscroll-behavior-y: none;
+    /* overscroll 으로 rubber-band 영역에 흰 색 안 보이게 */
+    overscroll-behavior-y: contain;
     /* AppleEmojiOverride 가 unicode-range 로 이모지 영역만 가져감 → Pretendard tofu 차단 */
     font-family: 'AppleEmojiOverride', 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
     /* 14px 기본 — 한 화면에 더 많이 보이게 (이전 16px 너무 큼) */

@@ -1,21 +1,25 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Moody } from "@/components/Moody";
+import { useAuth } from "@/hooks/useAuth";
 
 /**
- * 로딩 화면 — iOS 스플래시(cream)와 같은 배경으로 매끄럽게 이어지게.
- * 다크/cream 색 점프 ❌ → 같은 색감으로 부드럽게 페이드인 → 페이드아웃.
+ * 로딩 화면 — auth 상태 hydrate 까지 대기 후 라우팅:
+ *   - 로그인 + 온보딩 완료 → /home
+ *   - 로그아웃 OR 온보딩 미완 → /onboarding (Apple 로그인 보임)
  */
 const Index = () => {
   const navigate = useNavigate();
+  const { user, loading: authLoading } = useAuth();
   const [fadeOut, setFadeOut] = useState(false);
   useEffect(() => {
+    if (authLoading) return;
     const seen = localStorage.getItem("moody_onboarded");
-    // 800ms 보여주고 → 페이드아웃 → navigate
-    const fade = setTimeout(() => setFadeOut(true), 800);
-    const go = setTimeout(() => navigate(seen ? "/home" : "/onboarding", { replace: true }), 1100);
+    const target = (user && seen) ? "/home" : "/onboarding";
+    const fade = setTimeout(() => setFadeOut(true), 600);
+    const go = setTimeout(() => navigate(target, { replace: true }), 900);
     return () => { clearTimeout(fade); clearTimeout(go); };
-  }, [navigate]);
+  }, [navigate, user, authLoading]);
   return (
     <div
       className="min-h-screen flex items-center justify-center transition-opacity duration-300"

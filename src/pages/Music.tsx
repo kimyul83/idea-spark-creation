@@ -9,6 +9,7 @@ import { MusicGuideSheet } from "@/components/MusicGuideSheet";
 import { Howl } from "howler";
 import { MonetBackground } from "@/components/MonetBackground";
 import { audioEngine } from "@/lib/audio-engine";
+import { audioAdapter } from "@/lib/audio-adapter";
 import { toCdnUrl } from "@/lib/situation-tracks";
 import {
   setMediaSession,

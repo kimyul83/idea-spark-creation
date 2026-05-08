@@ -16,7 +16,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             try AVAudioSession.sharedInstance().setCategory(
                 .playback,
                 mode: .default,
-                options: [.allowAirPlay, .allowBluetooth, .allowBluetoothA2DP]
+                options: [.allowAirPlay, .allowBluetoothA2DP]
             )
             try AVAudioSession.sharedInstance().setActive(true)
             print("[Mint Wave] AVAudioSession 백그라운드 재생 활성화")
@@ -37,24 +37,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
-        // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
-    }
-
-    func applicationDidBecomeActive(_ application: UIApplication) {
-        // 앱 재활성화 시 AVAudioSession 다시 활성화 — 백그라운드에서 deactivate 됐을 때 대응
+        // 백그라운드 → 포그라운드 복귀 시 AVAudioSession 재활성화 (deactivate 됐을 가능성 대응)
         do {
             try AVAudioSession.sharedInstance().setActive(true)
         } catch {
-            print("[Mint Wave] AVAudioSession 재활성화 실패: \(error)")
+            print("[Mint Wave] AVAudioSession 재활성화 실패 (foreground): \(error)")
         }
     }
 
-    func applicationWillEnterForeground(_ application: UIApplication) {
-        // 백그라운드 → 포그라운드 전환 시도 audio session 보장
+    func applicationDidBecomeActive(_ application: UIApplication) {
+        // 앱 활성화 시도 audio session 보장
         do {
             try AVAudioSession.sharedInstance().setActive(true)
         } catch {
-            print("[Mint Wave] AVAudioSession 활성화 실패 (foreground): \(error)")
+            print("[Mint Wave] AVAudioSession 활성화 실패 (active): \(error)")
         }
     }
 

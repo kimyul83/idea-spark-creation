@@ -320,9 +320,26 @@ const Music = () => {
     howl.play();
     howlsRef.current.set(item.id, howl);
 
+    // 재생 시간 — 사용자 설정 타이머 (시간) 또는 12시간 기본
+    const totalSec = (timerHours ?? 12) * 3600;
     setMediaSession(
-      { title: `${item.label} · ${v.name}`, artist: "Mint Wave · Sound Mix", album: item.tag },
-      { onPause: () => stopAll() }
+      {
+        title: `${item.label} · ${v.name}`,
+        artist: "Mint Wave · Sound Mix",
+        album: item.tag,
+        durationSeconds: totalSec,
+        elapsedSeconds: 0,
+      },
+      {
+        onPause: () => {
+          howlsRef.current.forEach((h) => h.pause());
+          setMediaSessionPlaying(false);
+        },
+        onPlay: () => {
+          howlsRef.current.forEach((h) => { if (!h.playing()) h.play(); });
+          setMediaSessionPlaying(true);
+        },
+      }
     );
     setMediaSessionPlaying(true);
     requestWakeLock();
@@ -366,8 +383,23 @@ const Music = () => {
     }
     setActiveIds((prev) => new Set(prev).add(item.id));
     setMediaSession(
-      { title: item.label, artist: "Mint Wave · Frequency", album: item.tag },
-      { onPause: () => stopAll() }
+      {
+        title: item.label,
+        artist: "Mint Wave · Frequency",
+        album: item.tag,
+        durationSeconds: (timerHours ?? 12) * 3600,
+        elapsedSeconds: 0,
+      },
+      {
+        onPause: () => {
+          howlsRef.current.forEach((h) => h.pause());
+          setMediaSessionPlaying(false);
+        },
+        onPlay: () => {
+          howlsRef.current.forEach((h) => { if (!h.playing()) h.play(); });
+          setMediaSessionPlaying(true);
+        },
+      }
     );
     setMediaSessionPlaying(true);
     requestWakeLock();

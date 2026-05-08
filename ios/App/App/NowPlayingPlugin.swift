@@ -36,9 +36,11 @@ public class NowPlayingPlugin: CAPPlugin, CAPBridgedPlugin {
             info[MPMediaItemPropertyAlbumTitle] = album
         }
         info[MPNowPlayingInfoPropertyPlaybackRate] = 1.0
-        // 무한 루프 — 진행률 시뮬레이션 (12 시간으로 표시)
-        info[MPMediaItemPropertyPlaybackDuration] = 12 * 60 * 60
-        info[MPNowPlayingInfoPropertyElapsedPlaybackTime] = 0
+        // 사용자 설정 재생 시간 (12시간 기본 / 수면 사용자가 고른 값)
+        let durationSec = call.getDouble("durationSeconds") ?? (12 * 60 * 60)
+        let elapsedSec = call.getDouble("elapsedSeconds") ?? 0
+        info[MPMediaItemPropertyPlaybackDuration] = durationSec
+        info[MPNowPlayingInfoPropertyElapsedPlaybackTime] = elapsedSec
 
         MPNowPlayingInfoCenter.default().nowPlayingInfo = info
 

@@ -316,8 +316,23 @@ const Sleep = () => {
     startedAt.current = Date.now();
     setEndsAt(new Date(Date.now() + totalSec * 1000));
     setMediaSession(
-      { title: `${firstTrackName} · 수면 믹스`, artist: "Mint Wave · Sleep", album: formatHours(hours) },
-      { onPause: () => stopAll() },
+      {
+        title: `${firstTrackName} · 수면 믹스`,
+        artist: "Mint Wave · Sleep",
+        album: formatHours(hours),
+        durationSeconds: totalSec,
+        elapsedSeconds: 0,
+      },
+      {
+        onPause: () => {
+          howlsRef.current.forEach((h) => h.pause());
+          setMediaSessionPlaying(false);
+        },
+        onPlay: () => {
+          howlsRef.current.forEach((h) => { if (!h.playing()) h.play(); });
+          setMediaSessionPlaying(true);
+        },
+      },
     );
   };
 

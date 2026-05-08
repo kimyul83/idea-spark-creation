@@ -12,6 +12,10 @@ interface MediaMeta {
   artist?: string;
   album?: string;
   artwork?: string;
+  /** 재생 총 시간(초) — 잠금화면 위젯에 표시. 미지정 시 12시간. */
+  durationSeconds?: number;
+  /** 현재 경과 시간(초) — 위젯 진행 막대용. 미지정 시 0. */
+  elapsedSeconds?: number;
 }
 
 let wakeLock: WakeLockSentinel | null = null;
@@ -40,6 +44,8 @@ export const setMediaSession = (
       title: meta.title,
       artist: meta.artist ?? "Mint Wave",
       album: meta.album ?? "Therapeutic Soundscape",
+      durationSeconds: meta.durationSeconds ?? 12 * 60 * 60,
+      elapsedSeconds: meta.elapsedSeconds ?? 0,
     }).catch(() => {});
 
     // 잠금화면 ▶/⏸ 버튼 → JS handlers 실행

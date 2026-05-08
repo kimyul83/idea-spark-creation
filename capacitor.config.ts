@@ -11,11 +11,10 @@ const config: CapacitorConfig = {
     cleartext: false,
   },
   ios: {
-    // 흰 배경 깜빡임 방지: 앱 배경을 글래스 청록으로
-    backgroundColor: "#5FCDD0",
-    // WebView 가 자체 스크롤 — pull-to-refresh 비활성화
+    // WebView 배경 — 페이지 로드 전 깜빡임 방지. 페이지 실제 배경(라이트 테마 cream)에 맞춤.
+    // 청록(#5FCDD0)은 스플래시에서만 사용, 앱 안에선 페이지가 자체 배경 가짐.
+    backgroundColor: "#F2FBFC",
     contentInset: "always",
-    // 외부 링크는 in-app browser 가 아니라 Safari 로 열어 (App Store 정책)
     limitsNavigationsToAppBoundDomains: false,
   },
   android: {
@@ -33,9 +32,10 @@ const config: CapacitorConfig = {
       splashImmersive: true,
     },
     StatusBar: {
-      style: "DEFAULT",        // 라이트 테마면 검정 텍스트, 다크면 자동
-      backgroundColor: "#5FCDD0",
-      overlaysWebView: false,
+      // overlaysWebView: true → 페이지가 status bar 아래까지 확장 (네이티브 모던 룩)
+      // backgroundColor 안 지정 → 기존 청록 띠 사라지고 페이지 자체 배경이 보임
+      style: "DEFAULT",
+      overlaysWebView: true,
     },
   },
 };

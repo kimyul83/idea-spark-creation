@@ -21,7 +21,6 @@ import ThemeSettings from "./pages/ThemeSettings";
 import LanguageSettings from "./pages/LanguageSettings";
 import Admin from "./pages/Admin";
 import { AppShell } from "./components/AppShell";
-import { InstallPrompt } from "./components/InstallPrompt";
 import { useEffect } from "react";
 import { trackVisit } from "@/lib/track-visit";
 import { initRevenueCat, setRevenueCatUser } from "@/lib/revenuecat";
@@ -61,7 +60,6 @@ const App = () => (
       <Sonner position="top-center" />
       <VisitTracker />
       <RevenueCatInitializer />
-      <InstallPrompt />
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />

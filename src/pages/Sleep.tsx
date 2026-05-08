@@ -341,7 +341,7 @@ const Sleep = () => {
 
     const howl = new Howl({
       src: [toCdnUrl(v.file)],
-      html5: false, // Web Audio — iOS 백그라운드 멀티 믹스 지원
+      html5: true, // HTMLAudioElement — iOS 백그라운드/재진입 정상
       loop: true,
       volume: volumes[track.id] ?? DEFAULT_NATURE_VOL,
       preload: true,
@@ -439,7 +439,7 @@ const Sleep = () => {
   };
 
   return (
-    <div className="px-5 pt-10 pb-6 relative flex-1 flex flex-col gap-4">
+    <div className="px-5 pt-16 pb-8 relative flex-1 flex flex-col gap-5">
       <MonetBackground intensity="soft" emotion="sleepy" />
 
       <header className="flex items-start justify-between">

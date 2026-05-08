@@ -40,12 +40,12 @@ const Home = () => {
   };
 
   return (
-    <div className="px-5 pt-6 pb-6 relative flex-1 flex flex-col">
+    <div className="px-5 pt-16 pb-8 relative flex-1 flex flex-col gap-6">
       <MonetBackground intensity="medium" />
 
       {/* Hero — 큰 마스코트 + 인사말 (중앙 정렬) */}
-      <div className="animate-fade-up flex flex-col items-center text-center">
-        <Moody size={300} emotion={moodyEmotion} onClick={handleMoodyTap} />
+      <div className="animate-fade-up flex flex-col items-center text-center pt-2">
+        <Moody size={260} emotion={moodyEmotion} onClick={handleMoodyTap} />
         {tapHint && (
           <p className="text-[10px] text-primary/60 tracking-widest uppercase animate-pulse">
             {t("home.tapHint")}
@@ -63,7 +63,7 @@ const Home = () => {
       </div>
 
       {/* 호흡 · 깨기 빠른 진입 */}
-      <div className="mt-5 grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-2 gap-3.5">
         <button
           onClick={() => navigate("/breathing")}
           className="liquid-card liquid-card-hover p-4 flex items-center gap-3 text-left"

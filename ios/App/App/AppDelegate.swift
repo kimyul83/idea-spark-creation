@@ -41,7 +41,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {
-        // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+        // 앱 재활성화 시 AVAudioSession 다시 활성화 — 백그라운드에서 deactivate 됐을 때 대응
+        do {
+            try AVAudioSession.sharedInstance().setActive(true)
+        } catch {
+            print("[Mint Wave] AVAudioSession 재활성화 실패: \(error)")
+        }
+    }
+
+    func applicationWillEnterForeground(_ application: UIApplication) {
+        // 백그라운드 → 포그라운드 전환 시도 audio session 보장
+        do {
+            try AVAudioSession.sharedInstance().setActive(true)
+        } catch {
+            print("[Mint Wave] AVAudioSession 활성화 실패 (foreground): \(error)")
+        }
     }
 
     func applicationWillTerminate(_ application: UIApplication) {

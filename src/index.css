@@ -123,25 +123,27 @@
   }
 
   * { @apply border-border; }
-  /* 전체 스케일 다운 — root rem = 14px (기본 16px) → 모든 Tailwind spacing/font 88% 로 컴팩트해짐 */
+  /* root rem = 15px — 14px 너무 컴팩트, 15px 가 균형 (Tailwind spacing 도 자연스럽게 ↑) */
   html {
     @apply h-full;
     height: 100%;
     background: hsl(var(--background));
-    font-size: 14px;
+    font-size: 15px;
   }
   body {
     @apply text-foreground antialiased;
-    background: hsl(var(--background));
+    /* 페이지 배경 그라디언트 → overscroll 시에도 깔끔 (흰 화면 절대 안 보임) */
+    background:
+      radial-gradient(ellipse at top, hsl(var(--background)) 0%, hsl(var(--background-end)) 100%);
+    background-attachment: fixed;
     min-height: 100%;
     overflow-x: hidden;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
     overscroll-behavior-y: contain;
     font-family: 'AppleEmojiOverride', 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
-    /* body 자체 글자는 13px (살짝 더 작게) */
-    font-size: 13px;
-    line-height: 1.5;
+    font-size: 14px;
+    line-height: 1.55;
     background:
       radial-gradient(ellipse at top, hsl(var(--background)) 0%, hsl(var(--background-end)) 100%);
     background-attachment: fixed;

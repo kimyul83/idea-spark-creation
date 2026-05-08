@@ -61,7 +61,7 @@ const Me = () => {
   };
 
   return (
-    <div className="px-5 pt-10 pb-6 relative flex-1 flex flex-col gap-3">
+    <div className="px-5 pt-16 pb-8 relative flex-1 flex flex-col gap-4">
       <MonetBackground intensity="soft" />
 
       {/* premium / profile hero */}

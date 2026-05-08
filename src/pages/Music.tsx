@@ -303,11 +303,11 @@ const Music = () => {
       return next;
     });
 
-    // html5: false → Web Audio (단일 AudioContext) → 화면 꺼도 여러 트랙 동시 재생 유지.
-    // (html5: true는 트랙마다 <audio> 별도 → iOS가 1개만 살림)
+    // html5: true → HTMLAudioElement → iOS 가 진짜 미디어로 인식해서 백그라운드/재진입 정상.
+    // (Web Audio 는 WKWebView 백그라운드에서 suspend → 돌아와도 재생 안 됨)
     const howl = new Howl({
       src: [url],
-      html5: false,
+      html5: true,
       loop: true,
       // 자연 기본 0.45 — 사용자가 슬라이더로 변경 가능 (volumes[item.id])
       volume: volumes[item.id] ?? 0.45,
@@ -396,7 +396,7 @@ const Music = () => {
   };
 
   return (
-    <div className="px-5 pt-12 pb-6 relative flex-1 flex flex-col">
+    <div className="px-5 pt-16 pb-8 relative flex-1 flex flex-col gap-2">
       <MonetBackground intensity="medium" />
 
       <div className="flex items-end justify-between animate-fade-up">

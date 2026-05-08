@@ -65,7 +65,7 @@ const Breathing = () => {
   };
 
   return (
-    <div className="px-5 pt-12 pb-6 relative flex-1 flex flex-col">
+    <div className="px-5 pt-16 pb-8 relative flex-1 flex flex-col gap-3">
       <MonetBackground intensity="medium" />
 
       {/* Header */}

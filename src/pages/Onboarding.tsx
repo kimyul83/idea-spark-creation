@@ -7,7 +7,6 @@ import { Input } from "@/components/ui/input";
 import { Moody } from "@/components/Moody";
 import { MonetBackground } from "@/components/MonetBackground";
 import { supabase } from "@/integrations/supabase/client";
-import { lovable } from "@/integrations/lovable";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
@@ -44,14 +43,18 @@ const Onboarding = () => {
   const handleOAuth = async (provider: "google" | "apple") => {
     setBusy(true);
     try {
-      const result = await lovable.auth.signInWithOAuth(provider, {
-        redirect_uri: `${window.location.origin}/auth/callback`,
+      // Supabase 직접 OAuth — Lovable cloud-auth 안 거침 (Lovable 화면 등장 차단)
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider,
+        options: {
+          redirectTo: `${window.location.origin}/auth/callback`,
+        },
       });
-      if (result.error) {
+      if (error) {
         toast.error(t("onboarding.errOAuth", { provider: provider === "google" ? "Google" : "Apple" }));
         setBusy(false);
-        return;
       }
+      // signInWithOAuth 성공 시 페이지 자체가 OAuth provider 로 리다이렉트됨
     } catch (e: any) {
       toast.error(e?.message ?? t("onboarding.errLogin"));
       setBusy(false);

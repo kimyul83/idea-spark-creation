@@ -39,77 +39,42 @@ const isNative = Capacitor.isNativePlatform();
 // 웹 폴백용 Howl 인스턴스
 const howls = new Map<string, Howl>();
 
-/** Gapless 재생을 위한 더블 버퍼 — 한 Howl 이 끝나기 직전 다른 Howl 시작.
- *  HTMLAudioElement loop=true 의 50ms 갭 회피. */
-class GaplessTrack {
-  private a: Howl;
-  private b: Howl;
-  private active: 0 | 1 = 0;
-  private id: string;
-  private nextTimer: number | undefined;
-
-  constructor(opts: PlayOpts) {
-    this.id = opts.id;
-    const make = (idx: 0 | 1): Howl => new Howl({
-      src: [opts.url],
-      html5: true,
-      loop: false,            // 수동 swap → loop 비활성
-      volume: opts.volume ?? 0.5,
-      preload: true,
-      onload: () => {
-        if (idx === 0) this.startA();
-      },
-      onend: () => {
-        // 한쪽 끝남 — 다음 swap 은 이미 schedule 돼있음
-      },
-    });
-    this.a = make(0);
-    this.b = make(1);
-  }
-
-  private startA() {
-    this.a.play();
-    this.active = 0;
-    this.scheduleSwap(this.a);
-  }
-
-  private scheduleSwap(current: Howl) {
-    const dur = current.duration();
-    if (!dur || dur <= 0) return;
-    // 갭 0 보장 — 200ms 전에 다음 시작 (브라우저 지연 흡수)
-    const swapAt = Math.max(50, (dur - 0.2) * 1000);
-    if (this.nextTimer) window.clearTimeout(this.nextTimer);
-    this.nextTimer = window.setTimeout(() => this.swap(), swapAt);
-  }
-
-  private swap() {
-    const next = (this.active === 0 ? this.b : this.a);
-    next.play();
-    next.seek(0);
-    this.active = this.active === 0 ? 1 : 0;
-    this.scheduleSwap(next);
-  }
-
-  setVolume(v: number) {
-    this.a.volume(v);
-    this.b.volume(v);
-  }
-
-  stop() {
-    if (this.nextTimer) window.clearTimeout(this.nextTimer);
-    this.a.stop(); this.a.unload();
-    this.b.stop(); this.b.unload();
-  }
-}
-
-const tracks = new Map<string, GaplessTrack>();
+/** Web Audio (html5:false) → AudioBufferSourceNode.loop=true = bit-perfect gapless.
+ *  HTMLAudioElement 의 50ms 갭 vs Web Audio 의 0ms gapless 차이 명확. */
+const tracks = new Map<string, Howl>();
 
 const playWithHowler = (opts: PlayOpts) => {
   const existing = tracks.get(opts.id);
-  if (existing) existing.stop();
-  const t = new GaplessTrack(opts);
-  tracks.set(opts.id, t);
+  if (existing) {
+    existing.stop();
+    existing.unload();
+  }
+  const howl = new Howl({
+    src: [opts.url],
+    html5: false,                  // ← Web Audio (gapless)
+    loop: opts.loop ?? true,
+    volume: opts.volume ?? 0.5,
+    preload: true,
+    onloaderror: (_id, err) => console.warn("[audio] load error:", err),
+    onplayerror: (_id, err) => console.warn("[audio] play error:", err),
+  });
+  howl.play();
+  tracks.set(opts.id, howl);
 };
+
+/** Web Audio context 는 백그라운드 → 포그라운드 복귀 시 suspended 상태일 수 있음. resume. */
+const resumeContextIfNeeded = () => {
+  try {
+    const Howler = (window as any).Howler;
+    if (Howler?.ctx?.state === "suspended") Howler.ctx.resume();
+  } catch {}
+};
+
+if (typeof document !== "undefined") {
+  document.addEventListener("visibilitychange", () => {
+    if (!document.hidden) resumeContextIfNeeded();
+  });
+}
 
 export const audioAdapter = {
   async play(opts: PlayOpts): Promise<void> {
@@ -135,15 +100,15 @@ export const audioAdapter = {
     if (native) {
       try { await native.stop({ id }); } catch {}
     }
-    tracks.get(id)?.stop();
-    tracks.delete(id);
+    const h = tracks.get(id);
+    if (h) { h.stop(); h.unload(); tracks.delete(id); }
   },
 
   async stopAll(): Promise<void> {
     if (native) {
       try { await native.stopAll(); } catch {}
     }
-    tracks.forEach((t) => t.stop());
+    tracks.forEach((h) => { h.stop(); h.unload(); });
     tracks.clear();
   },
 
@@ -151,7 +116,7 @@ export const audioAdapter = {
     if (native) {
       try { await native.setVolume({ id, volume }); } catch {}
     }
-    tracks.get(id)?.setVolume(volume);
+    tracks.get(id)?.volume(volume);
   },
 
   async pauseAll(): Promise<void> {},

@@ -41,14 +41,14 @@ const Onboarding = () => {
     navigate("/home", { replace: true });
   };
 
-  const handleOAuth = async (provider: "google") => {
+  const handleOAuth = async (provider: "google" | "apple") => {
     setBusy(true);
     try {
       const result = await lovable.auth.signInWithOAuth(provider, {
         redirect_uri: `${window.location.origin}/auth/callback`,
       });
       if (result.error) {
-        toast.error(t("onboarding.errOAuth", { provider: "Google" }));
+        toast.error(t("onboarding.errOAuth", { provider: provider === "google" ? "Google" : "Apple" }));
         setBusy(false);
         return;
       }
@@ -182,6 +182,15 @@ const Onboarding = () => {
           </>
         ) : (
           <>
+            {/* Apple — iOS 사용자에겐 1순위로 (App Store 정책상 OAuth 다른 옵션 있으면 Apple 도 필수) */}
+            <button
+              disabled={busy}
+              onClick={() => handleOAuth("apple")}
+              className="w-full h-14 rounded-3xl bg-[#000] text-white font-semibold shadow-soft flex items-center justify-center gap-3 disabled:opacity-60 transition-transform active:scale-[0.98]"
+            >
+              <AppleLogo />
+              <span>{t("onboarding.apple")}</span>
+            </button>
             {/* Google */}
             <button
               disabled={busy}
@@ -216,6 +225,12 @@ const GoogleLogo = () => (
     <path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.6 16.2 18.9 13 24 13c2.8 0 5.3 1 7.3 2.7l5.7-5.7C33.5 6.7 29 5 24 5 16.3 5 9.7 9.3 6.3 14.7z"/>
     <path fill="#4CAF50" d="M24 43c5 0 9.5-1.6 13-4.4l-6-5.1c-1.9 1.4-4.4 2.4-7 2.4-5.2 0-9.6-2.9-11.3-7l-6.5 5C9.5 39.6 16.2 43 24 43z"/>
     <path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.3-2.3 4.3-4.3 5.7l6 5.1c-.4.4 6.5-4.7 6.5-14.8 0-1.2-.1-2.4-.4-3.5z"/>
+  </svg>
+);
+
+const AppleLogo = () => (
+  <svg width="18" height="20" viewBox="0 0 384 512" fill="currentColor" aria-hidden>
+    <path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zM256 84.5c19.4-23 17.6-43.9 17-51.5-17.1 1-36.9 11.7-48.2 24.8-12.4 14-19.7 31.4-18.1 50.7 18.5 1.4 35.4-8.1 49.3-24z"/>
   </svg>
 );
 

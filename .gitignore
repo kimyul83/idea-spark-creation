@@ -49,3 +49,6 @@ android/local.properties
 *.njsproj
 *.sln
 *.sw?
+ios/App/build-device/
+ios/App/build/
+ios/App/build-device/

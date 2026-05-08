@@ -1,5 +1,6 @@
 import UIKit
 import Capacitor
+import AVFoundation
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -7,7 +8,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        // 백그라운드 오디오 활성화 — 화면 꺼도, 다른 앱 가도, 12시간까지 재생 유지.
+        // .playback = 미디어 재생 의도 (음소거 스위치도 무시)
+        // .mixWithOthers = 다른 앱 (전화 등) 과 같이 재생 가능
+        // .allowAirPlay = AirPlay 지원
+        do {
+            try AVAudioSession.sharedInstance().setCategory(
+                .playback,
+                mode: .default,
+                options: [.allowAirPlay, .allowBluetooth, .allowBluetoothA2DP]
+            )
+            try AVAudioSession.sharedInstance().setActive(true)
+            print("[Mint Wave] AVAudioSession 백그라운드 재생 활성화")
+        } catch {
+            print("[Mint Wave] AVAudioSession 설정 실패: \(error)")
+        }
         return true
     }
 

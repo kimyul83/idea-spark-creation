@@ -278,6 +278,13 @@ const Music = () => {
   };
 
   const playFile = (item: NatureItem, idx: number) => {
+    // 재생 전 AudioContext 깨우기 — 전체정지 후 재생 안 되는 버그 방지.
+    // (Howler.ctx 가 suspended 상태면 새 Howl 도 못 재생)
+    try {
+      const Howler = (window as any).Howler;
+      if (Howler?.ctx?.state === "suspended") Howler.ctx.resume();
+    } catch {}
+
     const existing = howlsRef.current.get(item.id);
     if (existing) {
       existing.stop();

@@ -239,6 +239,8 @@ const Sleep = () => {
   const [volumes, setVolumes] = useState<Record<string, number>>({});
   const [editingVolume, setEditingVolume] = useState<string | null>(null);
   const [endsAt, setEndsAt] = useState<Date | null>(null);
+  // 실시간 경과 시간 (초) — 30초마다 갱신
+  const [elapsedSec, setElapsedSec] = useState(0);
 
   // 자연 트랙 Howl 들 — id → Howl
   const howlsRef = useRef<Map<string, Howl>>(new Map());
@@ -282,6 +284,21 @@ const Sleep = () => {
     setActiveIds(new Set());
     setEndsAt(null);
   };
+
+  // 활성 시 30초마다 경과 시간 갱신
+  useEffect(() => {
+    if (activeIds.size === 0) {
+      setElapsedSec(0);
+      return;
+    }
+    const tick = () => {
+      const sec = Math.round((Date.now() - startedAt.current) / 1000);
+      setElapsedSec(sec);
+    };
+    tick();
+    const id = window.setInterval(tick, 30000);
+    return () => window.clearInterval(id);
+  }, [activeIds.size]);
 
   useEffect(() => {
     return () => {
@@ -483,16 +500,30 @@ const Sleep = () => {
           <span>6{t("sleep.hours")}</span>
           <span>12{t("sleep.hours")}</span>
         </div>
-        {activeIds.size > 0 && endsAt && (
-          <div className="mt-3 flex items-center justify-between bg-primary/10 rounded-2xl px-3 py-2">
-            <div className="flex items-center gap-2">
-              <Sparkles className="w-3 h-3 text-primary" />
-              <span className="text-[11px] text-foreground/80">
-                {t("sleep.autoStop", { time: formatClock(endsAt) })}
-              </span>
+        {activeIds.size > 0 && (
+          <>
+            {/* 실시간 경과 시간 — 진행 중 강조 */}
+            <div className="mt-3 bg-primary/15 rounded-2xl px-4 py-3 flex items-center justify-between">
+              <div>
+                <p className="text-[10px] text-foreground/60 tracking-widest uppercase font-semibold">
+                  지금까지 자는 중 🌙
+                </p>
+                <p className="num-display text-[24px] text-primary leading-none mt-1">
+                  {Math.floor(elapsedSec / 3600) > 0 && `${Math.floor(elapsedSec / 3600)}시간 `}
+                  {Math.floor((elapsedSec % 3600) / 60)}분
+                </p>
+              </div>
+              <span className="text-[11px] text-primary font-semibold">{activeIds.size}개 믹스</span>
             </div>
-            <span className="text-[11px] text-primary font-semibold">{activeIds.size}개 믹스</span>
-          </div>
+            {endsAt && (
+              <div className="mt-2 flex items-center gap-2 px-1">
+                <Sparkles className="w-3 h-3 text-foreground/45" />
+                <span className="text-[11px] text-foreground/55">
+                  {t("sleep.autoStop", { time: formatClock(endsAt) })}
+                </span>
+              </div>
+            )}
+          </>
         )}
       </section>
 

@@ -5,7 +5,16 @@
  * Web: navigator.mediaSession (브라우저 탭 미디어 키)
  */
 
-import { Capacitor } from "@capacitor/core";
+import { Capacitor, registerPlugin } from "@capacitor/core";
+
+interface NowPlayingPlugin {
+  setInfo(opts: { title: string; artist: string; album: string; durationSeconds: number; elapsedSeconds: number }): Promise<void>;
+  setPlaybackState(opts: { playing: boolean }): Promise<void>;
+  clear(): Promise<void>;
+  addListener(event: string, cb: () => void): { remove: () => Promise<void> };
+}
+
+const NowPlayingNative = registerPlugin<NowPlayingPlugin>("NowPlaying");
 
 interface MediaMeta {
   title: string;
@@ -29,9 +38,9 @@ let currentDuration = 0;
 let currentMeta: MediaMeta | null = null;
 
 /** 네이티브 NowPlaying 플러그인 (iOS 잠금화면 위젯). */
-const getNativePlugin = (): any => {
+const getNativePlugin = (): NowPlayingPlugin | null => {
   if (!Capacitor.isNativePlatform()) return null;
-  return (Capacitor as any).Plugins?.NowPlaying;
+  return NowPlayingNative;
 };
 
 export const setMediaSession = (

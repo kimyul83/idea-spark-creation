@@ -7,7 +7,7 @@
  * 같은 API 로 양쪽 처리 → Music.tsx, Sleep.tsx 가 분기 안 함.
  */
 
-import { Capacitor } from "@capacitor/core";
+import { Capacitor, registerPlugin } from "@capacitor/core";
 import { Howl } from "howler";
 
 interface PlayOpts {
@@ -17,8 +17,19 @@ interface PlayOpts {
   loop?: boolean;
 }
 
+interface NativeAudioPlugin {
+  play(opts: { id: string; url: string; volume: number; loop: boolean }): Promise<void>;
+  stop(opts: { id: string }): Promise<void>;
+  stopAll(): Promise<void>;
+  setVolume(opts: { id: string; volume: number }): Promise<void>;
+  isPlaying(opts: { id: string }): Promise<{ playing: boolean }>;
+}
+
+// Capacitor 8 플러그인 등록 — 네이티브 클래스(NativeAudioPlugin.swift) 와 jsName: "NativeAudio" 매칭
+const NativeAudio = registerPlugin<NativeAudioPlugin>("NativeAudio");
+
 const isNative = Capacitor.isNativePlatform();
-const native: any = isNative ? (Capacitor as any).Plugins?.NativeAudio : null;
+const native: NativeAudioPlugin | null = isNative ? NativeAudio : null;
 
 // 웹 폴백용 Howl 인스턴스
 const howls = new Map<string, Howl>();

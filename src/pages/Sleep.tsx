@@ -356,8 +356,10 @@ const Sleep = () => {
 
     const howl = new Howl({
       src: [toCdnUrl(v.file)],
-      html5: true, // HTMLAudioElement — iOS 백그라운드/재진입 정상
+      html5: true,
       loop: true,
+      // iOS 가끔 loop 안 통할 때 안전망
+      onend: function() { if (!this.playing()) this.play(); },
       volume: volumes[track.id] ?? DEFAULT_NATURE_VOL,
       preload: true,
       onplay: () => {

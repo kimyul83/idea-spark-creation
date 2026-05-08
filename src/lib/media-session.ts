@@ -22,6 +22,12 @@ let wakeLock: WakeLockSentinel | null = null;
 let nativeListenersAdded = false;
 const nativeHandlers: { onPlay?: () => void; onPause?: () => void } = {};
 
+/** 주기적 NowPlayingInfo 재설정 — iOS 가 HTMLAudioElement 길이로 덮어쓰기 막기 */
+let durationRepeatTimer: number | undefined;
+let sessionStart = 0;
+let currentDuration = 0;
+let currentMeta: MediaMeta | null = null;
+
 /** 네이티브 NowPlaying 플러그인 (iOS 잠금화면 위젯). */
 const getNativePlugin = (): any => {
   if (!Capacitor.isNativePlatform()) return null;
@@ -40,13 +46,24 @@ export const setMediaSession = (
   // 1) 네이티브 (iOS 잠금화면 위젯)
   const native = getNativePlugin();
   if (native) {
-    native.setInfo({
-      title: meta.title,
-      artist: meta.artist ?? "Mint Wave",
-      album: meta.album ?? "Therapeutic Soundscape",
-      durationSeconds: meta.durationSeconds ?? 12 * 60 * 60,
-      elapsedSeconds: meta.elapsedSeconds ?? 0,
-    }).catch(() => {});
+    sessionStart = Date.now();
+    currentDuration = meta.durationSeconds ?? 12 * 60 * 60;
+    currentMeta = meta;
+
+    const push = () => {
+      const elapsed = Math.min(currentDuration, (Date.now() - sessionStart) / 1000);
+      native.setInfo({
+        title: meta.title,
+        artist: meta.artist ?? "Mint Wave",
+        album: meta.album ?? "Therapeutic Soundscape",
+        durationSeconds: currentDuration,
+        elapsedSeconds: elapsed,
+      }).catch(() => {});
+    };
+    push();
+    // 5초마다 재설정 → iOS 가 HTMLAudioElement 파일 길이로 덮어쓰기 시도해도 즉시 우리 값으로 복원
+    if (durationRepeatTimer) window.clearInterval(durationRepeatTimer);
+    durationRepeatTimer = window.setInterval(push, 5000);
 
     // 잠금화면 ▶/⏸ 버튼 → JS handlers 실행
     nativeHandlers.onPlay = handlers.onPlay;
@@ -93,6 +110,12 @@ export const setMediaSessionPlaying = (playing: boolean) => {
 };
 
 export const clearMediaSession = () => {
+  // 주기 갱신 타이머 해제
+  if (durationRepeatTimer) {
+    window.clearInterval(durationRepeatTimer);
+    durationRepeatTimer = undefined;
+  }
+  currentMeta = null;
   // 네이티브
   const native = getNativePlugin();
   if (native) {

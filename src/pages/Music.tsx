@@ -316,6 +316,8 @@ const Music = () => {
       onload: clearLoading,
       onloaderror: clearLoading,
       onplayerror: clearLoading,
+      // iOS HTMLAudioElement 가 loop=true 인데도 가끔 끝나는 경우 안전망
+      onend: function() { if (!this.playing()) this.play(); },
     });
     howl.play();
     howlsRef.current.set(item.id, howl);

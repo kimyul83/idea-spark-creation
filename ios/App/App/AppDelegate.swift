@@ -7,14 +7,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-    /**
-     * 플러그인 클래스 강제 참조 — Swift dead-code elimination 으로 Capacitor 런타임 스캔이
-     * 못 찾던 거 해결. 이 배열만 있어도 두 클래스 binary 에 유지됨.
-     */
-    private let registeredPluginClasses: [AnyClass] = [
-        NativeAudioPlugin.self,
-        NowPlayingPlugin.self,
-    ]
+    // 플러그인은 CapApp-SPM 모듈로 이동 — Capacitor SPM 같은 모듈에 박혀서 정식 스캔됨
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // 백그라운드 오디오 활성화 — 화면 꺼도, 다른 앱 가도, 12시간까지 재생 유지.

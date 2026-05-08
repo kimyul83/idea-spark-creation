@@ -519,6 +519,7 @@ const Sleep = () => {
                 <div className="flex items-center gap-2.5">
                   <button
                     onClick={() => toggleTrack(track)}
+                    disabled={locked}
                     className="flex-1 min-w-0 flex items-center gap-2.5 text-left"
                   >
                     <div className="w-10 h-10 rounded-2xl bg-primary/15 flex items-center justify-center shrink-0">
@@ -532,21 +533,10 @@ const Sleep = () => {
                         {locked && <Lock className="w-3 h-3 text-foreground/40" />}
                       </div>
                       <p className="text-[10.5px] text-foreground/55 mt-0.5 truncate">
-                        {isActive
-                          ? `${curIdx + 1}/${track.variants.length} · ${v?.name}`
-                          : `${track.variants.length}종 변주`}
+                        {isActive ? v?.name : `${track.variants.length}종 · 번호로 선택`}
                       </p>
                     </div>
                   </button>
-                  {isActive && track.variants.length > 1 && (
-                    <button
-                      onClick={() => cycleVariant(track)}
-                      className="text-[10px] text-foreground/55 hover:text-foreground px-2 py-1 rounded-full bg-foreground/5"
-                      aria-label="다음 변주"
-                    >
-                      ▶
-                    </button>
-                  )}
                   {isActive && (
                     <button
                       onClick={() => setEditingVolume(editingVolume === track.id ? null : track.id)}
@@ -578,6 +568,33 @@ const Sleep = () => {
                     )}
                   </button>
                 </div>
+
+                {/* 번호로 변주 선택 — 활성/비활성 모두 노출. 비활성 시 번호 누르면 즉시 재생 시작 + 그 변주로. */}
+                {!locked && track.variants.length > 1 && (
+                  <div className="mt-2.5 flex flex-wrap gap-1">
+                    {track.variants.map((variant, i) => {
+                      const isCurrent = isActive && curIdx === i;
+                      return (
+                        <button
+                          key={i}
+                          onClick={() => playTrack(track, i)}
+                          title={variant.name}
+                          className={cn(
+                            "min-w-[26px] h-6 px-2 rounded-full text-[10px] font-semibold transition",
+                            isCurrent
+                              ? "bg-primary text-primary-foreground"
+                              : isActive
+                                ? "bg-foreground/8 text-foreground/65 hover:bg-foreground/15"
+                                : "bg-foreground/5 text-foreground/55 hover:bg-foreground/12",
+                          )}
+                        >
+                          {i + 1}
+                        </button>
+                      );
+                    })}
+                  </div>
+                )}
+
                 {isActive && editingVolume === track.id && (
                   <div className="mt-2 flex items-center gap-2">
                     <Volume2 className="w-3 h-3 text-foreground/55 shrink-0" />

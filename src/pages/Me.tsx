@@ -10,6 +10,7 @@ import { LogOut, Crown, Heart, Bell, ChevronRight, FlaskConical, Palette, Langua
 import { useTranslation } from "react-i18next";
 import { SUPPORTED_LANGUAGES } from "@/i18n/config";
 import { MonetBackground } from "@/components/MonetBackground";
+import { SleepCalendar } from "@/components/SleepCalendar";
 import { usePremium } from "@/hooks/usePremium";
 import { useTheme } from "@/contexts/ThemeContext";
 
@@ -93,6 +94,9 @@ const Me = () => {
           <StatCard label={t("me.statTime")} value={`${stats.minutes}`} unit={t("me.statTimeUnit")} />
         </div>
       )}
+
+      {/* 수면 캘린더 — 자동으로 기록된 수면 세션 시각화 */}
+      {(user || tokenSeen) && <SleepCalendar />}
 
       {/* user info — 로그인 사용자만. 게스트는 로그인 CTA 로 대체. */}
       {user ? (

@@ -47,11 +47,11 @@ export const setMediaSession = (
   const native = getNativePlugin();
   if (native) {
     sessionStart = Date.now();
-    currentDuration = meta.durationSeconds ?? 12 * 60 * 60;
+    // durationSeconds 미지정 = 무한 재생 (정지 누를 때까지)
+    const isInfinite = meta.durationSeconds == null || meta.durationSeconds <= 0;
+    currentDuration = isInfinite ? 0 : meta.durationSeconds;
     currentMeta = meta;
 
-    // 시간 정보를 title 에 텍스트로 박음 ("깊은 파도 · 7:55 남음").
-    // 이유: iOS 잠금화면 진행 막대는 IsLiveStream=true 라 안 보이지만 텍스트는 보임.
     const formatRemaining = (sec: number): string => {
       const total = Math.max(0, currentDuration - sec);
       const h = Math.floor(total / 3600);
@@ -62,22 +62,27 @@ export const setMediaSession = (
     };
 
     const baseTitle = meta.title;
+    const baseArtist = meta.artist ?? "Mint Wave";
     const push = () => {
-      const elapsed = Math.min(currentDuration, (Date.now() - sessionStart) / 1000);
-      const remainingText = formatRemaining(elapsed);
+      let artistText = baseArtist;
+      if (!isInfinite) {
+        const elapsed = (Date.now() - sessionStart) / 1000;
+        artistText = `${baseArtist} · ${formatRemaining(elapsed)}`;
+      } else {
+        artistText = `${baseArtist} · 무한 재생`;
+      }
       native.setInfo({
         title: baseTitle,
-        // album 자리에 시간 정보 — 잠금화면 카드 두 번째 줄로 표시
-        artist: `${meta.artist ?? "Mint Wave"} · ${remainingText}`,
+        artist: artistText,
         album: meta.album ?? "Therapeutic Soundscape",
         durationSeconds: currentDuration,
-        elapsedSeconds: elapsed,
+        elapsedSeconds: 0,
       }).catch(() => {});
     };
     push();
-    // 30초마다 재설정 → 시간 정보 갱신 (분 단위라 충분)
+    // 무한 재생일 땐 텍스트 안 바뀌니까 갱신 필요 없음. 타이머만 30초 갱신.
     if (durationRepeatTimer) window.clearInterval(durationRepeatTimer);
-    durationRepeatTimer = window.setInterval(push, 30000);
+    if (!isInfinite) durationRepeatTimer = window.setInterval(push, 30000);
 
     // 잠금화면 ▶/⏸ 버튼 → JS handlers 실행
     nativeHandlers.onPlay = handlers.onPlay;

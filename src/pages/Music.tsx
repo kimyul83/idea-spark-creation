@@ -389,7 +389,8 @@ const Music = () => {
         title: item.label,
         artist: "Mint Wave · Frequency",
         album: item.tag,
-        durationSeconds: (timerHours ?? 12) * 3600,
+        // 타이머 설정 시에만 시간 표시. 미설정 = 무한 (사용자가 정지 누를 때까지)
+        durationSeconds: timerHours != null ? timerHours * 3600 : undefined,
         elapsedSeconds: 0,
       },
       {

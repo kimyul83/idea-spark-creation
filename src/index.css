@@ -107,6 +107,21 @@
 }
 
 @layer base {
+  /* 이모지 강제 우선 — Pretendard 가 이모지 자리에 tofu(빈 글리프)를 갖고 있어서
+   * 단순 fallback 으론 부족. unicode-range 로 이모지 코드포인트만 분리해서 Apple Emoji 사용 강제 */
+  @font-face {
+    font-family: 'AppleEmojiOverride';
+    src: local('Apple Color Emoji'), local('Segoe UI Emoji'), local('Noto Color Emoji');
+    unicode-range:
+      U+1F000-1FFFF,   /* 모든 이모지 (😀🌙✨ 등) */
+      U+2600-27BF,     /* 기호 ☀ ☂ ✨ ❤ 등 */
+      U+2300-23FF,     /* 기술 기호 ⏰ ⏳ */
+      U+2B00-2BFF,     /* 추가 기호 ⭐ ⬇ */
+      U+3030,
+      U+FE0F,          /* 이모지 variation selector */
+      U+200D;          /* zero-width joiner (가족 이모지 등) */
+  }
+
   * { @apply border-border; }
   /* iOS 네이티브 + 웹 둘 다에서 스크롤 동작하도록 */
   html { @apply h-full; height: 100%; }
@@ -118,9 +133,8 @@
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
     overscroll-behavior-y: none;
-    /* iOS WebView 에서 Pretendard subset 폰트가 이모지를 가리는 문제 → Apple Color Emoji 명시 fallback */
-    font-family: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui,
-      'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif;
+    /* AppleEmojiOverride 가 unicode-range 로 이모지 영역만 가져감 → Pretendard tofu 차단 */
+    font-family: 'AppleEmojiOverride', 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
     /* 14px 기본 — 한 화면에 더 많이 보이게 (이전 16px 너무 큼) */
     font-size: 14.5px;
     line-height: 1.55;

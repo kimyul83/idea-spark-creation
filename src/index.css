@@ -108,12 +108,20 @@
 
 @layer base {
   * { @apply border-border; }
-  html, body, #root { @apply h-full; }
+  /* iOS 네이티브 + 웹 둘 다에서 스크롤 동작하도록 */
+  html { @apply h-full; height: 100%; }
   body {
     @apply text-foreground antialiased;
+    /* 스크롤 명시적 허용 — iOS WebView 가 contentInset overlay 일 때 안 막히게 */
+    min-height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-y: none;
     font-family: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
-    font-size: 16px;
-    line-height: 1.6;
+    /* 14px 기본 — 한 화면에 더 많이 보이게 (이전 16px 너무 큼) */
+    font-size: 14.5px;
+    line-height: 1.55;
     background:
       radial-gradient(ellipse at top, hsl(var(--background)) 0%, hsl(var(--background-end)) 100%);
     background-attachment: fixed;
@@ -130,6 +138,8 @@
   .app-shell {
     @apply mx-auto w-full max-w-[500px] relative;
     min-height: 100dvh;
+    /* iOS status bar overlay 모드일 때 콘텐츠가 status bar 아래 가려지지 않게 안전영역 */
+    padding-top: env(safe-area-inset-top, 0px);
     background: transparent;
   }
 
@@ -380,7 +390,7 @@
   }
 
   /* === Mascot motions === */
-  .animate-mascot-float { animation: mascotFloat 2s ease-in-out infinite; }
+  .animate-mascot-float { animation: mascotFloat 1.4s ease-in-out infinite; }
   @keyframes mascotFloat {
     0%, 100% { transform: translateY(-8px); }
     50% { transform: translateY(8px); }
@@ -388,7 +398,7 @@
   .moodie .moodie-body {
     transform-origin: 120px 130px;
     transform-box: view-box;
-    animation: mascotBreathe 3.2s ease-in-out infinite;
+    animation: mascotBreathe 2.2s ease-in-out infinite;
   }
   @keyframes mascotBreathe {
     0%, 100% { transform: scale(1); }
@@ -399,8 +409,8 @@
     transform-origin: center;
     transform-box: fill-box;
   }
-  .moodie .eye-left  { animation: mascotBlink 4.2s ease-in-out infinite; }
-  .moodie .eye-right { animation: mascotBlink 4.2s ease-in-out infinite; animation-delay: 0.12s; }
+  .moodie .eye-left  { animation: mascotBlink 3s ease-in-out infinite; }
+  .moodie .eye-right { animation: mascotBlink 3s ease-in-out infinite; animation-delay: 0.08s; }
   @keyframes mascotBlink {
     0%, 92%, 100% { transform: scaleY(1); }
     95%, 97%      { transform: scaleY(0.05); }
@@ -408,7 +418,7 @@
   .moodie .sparkle {
     transform-origin: center;
     transform-box: fill-box;
-    animation: mascotSparkle 2s ease-in-out infinite;
+    animation: mascotSparkle 1.4s ease-in-out infinite;
   }
   .moodie .sparkle-2 { animation-delay: 0.4s; }
   .moodie .sparkle-3 { animation-delay: 0.8s; }

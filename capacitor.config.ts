@@ -24,15 +24,13 @@ const config: CapacitorConfig = {
   },
   plugins: {
     SplashScreen: {
-      // 600ms 로 줄임 — 무디 캐릭터만 살짝 보이고 빠르게 앱 진입.
-      launchShowDuration: 600,
-      // 페이지 배경(cream/light)에 맞춰 자연스럽게 트랜지션.
+      // 스플래시 화면 ❌ — 즉시 앱 진입
+      launchShowDuration: 0,
+      launchAutoHide: true,
       backgroundColor: "#F2FBFC",
-      androidSplashResourceName: "splash",
-      androidScaleType: "CENTER_CROP",
       showSpinner: false,
-      splashFullScreen: true,
-      splashImmersive: true,
+      splashFullScreen: false,
+      splashImmersive: false,
     },
     StatusBar: {
       // overlaysWebView: true → 페이지가 status bar 아래까지 확장 (네이티브 모던 룩)

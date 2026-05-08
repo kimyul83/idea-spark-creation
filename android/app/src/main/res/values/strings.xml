@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Mint Wave</string>
+    <string name="title_activity_main">Mint Wave</string>
+    <string name="package_name">com.mintwave.app</string>
+    <string name="custom_url_scheme">com.mintwave.app</string>
+</resources>

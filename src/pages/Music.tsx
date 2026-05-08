@@ -237,13 +237,12 @@ const Music = () => {
   // 타일별 볼륨 (0~1). 미설정 시 기본값(자연 0.45 / 노이즈 0.13 / 톤 0.09) 적용.
   const [volumes, setVolumes] = useState<Record<string, number>>({});
   const [editingVolume, setEditingVolume] = useState<string | null>(null);
-  const howlsRef = useRef<Map<string, Howl>>(new Map());
+  const howlsRef = useRef<Map<string, Howl>>(new Map()); // legacy — adapter 가 대신 관리
   const timerRef = useRef<number | undefined>();
 
   useEffect(() => {
     return () => {
-      howlsRef.current.forEach((h) => { h.stop(); h.unload(); });
-      howlsRef.current.clear();
+      audioAdapter.stopAll().catch(() => {});
       audioEngine.stopAll();
       clearMediaSession();
       releaseWakeLock();
@@ -286,14 +285,8 @@ const Music = () => {
       if (Howler?.ctx?.state === "suspended") Howler.ctx.resume();
     } catch {}
 
-    const existing = howlsRef.current.get(item.id);
-    if (existing) {
-      existing.stop();
-      existing.unload();
-    }
     const v = item.variants[idx];
     const url = toCdnUrl(v.file);
-    // 즉시 active + loading 상태 — 사용자 피드백 빠르게
     setVersionIdx((prev) => ({ ...prev, [item.id]: idx }));
     setActiveIds((prev) => new Set(prev).add(item.id));
     setLoadingIds((prev) => new Set(prev).add(item.id));
@@ -304,24 +297,13 @@ const Music = () => {
       return next;
     });
 
-    // html5: true → HTMLAudioElement → iOS 가 진짜 미디어로 인식해서 백그라운드/재진입 정상.
-    // (Web Audio 는 WKWebView 백그라운드에서 suspend → 돌아와도 재생 안 됨)
-    const howl = new Howl({
-      src: [url],
-      html5: true,
-      loop: true,
-      // 자연 기본 0.45 — 사용자가 슬라이더로 변경 가능 (volumes[item.id])
+    // audioAdapter — iOS 면 AVAudioPlayer (잠금화면 자동 메타 충돌 0), 웹은 Howler
+    audioAdapter.play({
+      id: item.id,
+      url,
       volume: volumes[item.id] ?? 0.45,
-      preload: true,
-      onplay: clearLoading,
-      onload: clearLoading,
-      onloaderror: clearLoading,
-      onplayerror: clearLoading,
-      // iOS HTMLAudioElement 가 loop=true 인데도 가끔 끝나는 경우 안전망
-      onend: function() { if (!this.playing()) this.play(); },
-    });
-    howl.play();
-    howlsRef.current.set(item.id, howl);
+      loop: true,
+    }).then(clearLoading).catch(clearLoading);
 
     // 재생 시간 — 사용자 설정 타이머 (시간) 또는 12시간 기본
     const totalSec = (timerHours ?? 12) * 3600;
@@ -335,11 +317,11 @@ const Music = () => {
       },
       {
         onPause: () => {
-          howlsRef.current.forEach((h) => h.pause());
+          audioAdapter.pauseAll();
           setMediaSessionPlaying(false);
         },
         onPlay: () => {
-          howlsRef.current.forEach((h) => { if (!h.playing()) h.play(); });
+          audioAdapter.resumeAll();
           setMediaSessionPlaying(true);
         },
       }
@@ -349,10 +331,7 @@ const Music = () => {
   };
 
   const stopFile = (id: string) => {
-    const howl = howlsRef.current.get(id);
-    howl?.stop();
-    howl?.unload();
-    howlsRef.current.delete(id);
+    audioAdapter.stop(id).catch(() => {});
     setActiveIds((prev) => {
       const next = new Set(prev);
       next.delete(id);
@@ -396,11 +375,11 @@ const Music = () => {
       },
       {
         onPause: () => {
-          howlsRef.current.forEach((h) => h.pause());
+          audioAdapter.pauseAll();
           setMediaSessionPlaying(false);
         },
         onPlay: () => {
-          howlsRef.current.forEach((h) => { if (!h.playing()) h.play(); });
+          audioAdapter.resumeAll();
           setMediaSessionPlaying(true);
         },
       }
@@ -409,22 +388,16 @@ const Music = () => {
     requestWakeLock();
   };
 
-  /** 활성 트랙 볼륨 변경 — 자연(Howl) / 노이즈·톤(audioEngine) 분기. */
+  /** 활성 트랙 볼륨 변경 — 자연 / 노이즈·톤 양쪽 모두 시도 */
   const updateVolume = (id: string, vol: number) => {
     const v = Math.max(0, Math.min(1, vol));
     setVolumes((prev) => ({ ...prev, [id]: v }));
-    const howl = howlsRef.current.get(id);
-    if (howl) {
-      howl.volume(v);
-    } else {
-      // audioEngine.setVolume — 노이즈/톤 GainNode 직접 조절
-      audioEngine.setVolume(id, v);
-    }
+    audioAdapter.setVolume(id, v).catch(() => {});
+    audioEngine.setVolume(id, v);
   };
 
   const stopAll = () => {
-    howlsRef.current.forEach((h) => { h.stop(); h.unload(); });
-    howlsRef.current.clear();
+    audioAdapter.stopAll().catch(() => {});
     audioEngine.stopAll();
     setActiveIds(new Set());
     clearMediaSession();

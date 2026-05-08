@@ -10,6 +10,7 @@ import { Howl } from "howler";
 import { MonetBackground } from "@/components/MonetBackground";
 import { Moody } from "@/components/Moody";
 import { audioEngine } from "@/lib/audio-engine";
+import { audioAdapter } from "@/lib/audio-adapter";
 import { toCdnUrl } from "@/lib/situation-tracks";
 import {
   setMediaSession,
@@ -260,8 +261,7 @@ const Sleep = () => {
   const stopAll = async () => {
     const elapsedSec = Math.round((Date.now() - startedAt.current) / 1000);
 
-    howlsRef.current.forEach((h) => { h.stop(); h.unload(); });
-    howlsRef.current.clear();
+    audioAdapter.stopAll().catch(() => {});
     audioEngine.stopAll();
 
     if (endTimer.current) window.clearTimeout(endTimer.current);
@@ -285,8 +285,7 @@ const Sleep = () => {
 
   useEffect(() => {
     return () => {
-      howlsRef.current.forEach((h) => { h.stop(); h.unload(); });
-      howlsRef.current.clear();
+      audioAdapter.stopAll().catch(() => {});
       audioEngine.stopAll();
       if (endTimer.current) window.clearTimeout(endTimer.current);
       if (fadeTimer.current) window.clearTimeout(fadeTimer.current);
@@ -305,7 +304,8 @@ const Sleep = () => {
 
     fadeTimer.current = window.setTimeout(() => {
       // 모든 자연 트랙 fade
-      howlsRef.current.forEach((h) => h.fade(h.volume(), 0, FADE_DURATION_SECONDS * 1000));
+      // 페이드아웃 — 네이티브에선 그냥 stopAll (AVAudioPlayer fade 미지원, 추후 네이티브에 추가 가능)
+      audioAdapter.stopAll().catch(() => {});
     }, fadeStartIn);
 
     endTimer.current = window.setTimeout(() => {
@@ -325,11 +325,11 @@ const Sleep = () => {
       },
       {
         onPause: () => {
-          howlsRef.current.forEach((h) => h.pause());
+          audioAdapter.pauseAll();
           setMediaSessionPlaying(false);
         },
         onPlay: () => {
-          howlsRef.current.forEach((h) => { if (!h.playing()) h.play(); });
+          audioAdapter.resumeAll();
           setMediaSessionPlaying(true);
         },
       },
@@ -346,29 +346,15 @@ const Sleep = () => {
     const v = track.variants[useIdx];
     if (!v) return;
 
-    // 이미 재생 중이면 정지 후 새 변주
-    const existing = howlsRef.current.get(track.id);
-    if (existing) {
-      existing.stop();
-      existing.unload();
-      howlsRef.current.delete(track.id);
-    }
-
-    const howl = new Howl({
-      src: [toCdnUrl(v.file)],
-      html5: true,
-      loop: true,
-      // iOS 가끔 loop 안 통할 때 안전망
-      onend: function() { if (!this.playing()) this.play(); },
+    // audioAdapter — iOS 면 AVAudioPlayer (잠금화면 자동 메타 충돌 0), 웹은 Howler
+    audioAdapter.play({
+      id: track.id,
+      url: toCdnUrl(v.file),
       volume: volumes[track.id] ?? DEFAULT_NATURE_VOL,
-      preload: true,
-      onplay: () => {
-        setMediaSessionPlaying(true);
-        requestWakeLock();
-      },
-    });
-    howl.play();
-    howlsRef.current.set(track.id, howl);
+      loop: true,
+    }).catch(() => {});
+    setMediaSessionPlaying(true);
+    requestWakeLock();
 
     ensureGlobalTimers(track.name);
     setActiveIds((prev) => new Set(prev).add(track.id));
@@ -380,12 +366,7 @@ const Sleep = () => {
   };
 
   const stopTrack = (id: string) => {
-    const howl = howlsRef.current.get(id);
-    if (howl) {
-      howl.stop();
-      howl.unload();
-      howlsRef.current.delete(id);
-    }
+    audioAdapter.stop(id).catch(() => {});
     audioEngine.stop(id);
 
     setActiveIds((prev) => {
@@ -450,8 +431,7 @@ const Sleep = () => {
 
   const updateVolume = (id: string, vol: number) => {
     setVolumes((prev) => ({ ...prev, [id]: vol }));
-    const howl = howlsRef.current.get(id);
-    if (howl) howl.volume(vol);
+    audioAdapter.setVolume(id, vol).catch(() => {});
     audioEngine.setVolume(id, vol);
   };
 

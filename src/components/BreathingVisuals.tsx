@@ -50,10 +50,25 @@ const phaseFullness = (phase: BreathingPhase) => {
   }
 };
 
+/** 첫 마운트엔 fullness=0 으로 렌더 → 다음 프레임에 실제 값으로 변경.
+ *  CSS transition 이 첫 들숨에서도 작동하도록 (변화 없으면 transition 안 일어남). */
+const useWarmedFullness = (phase: BreathingPhase): number => {
+  const [warmed, setWarmed] = useState(false);
+  useEffect(() => {
+    const r1 = requestAnimationFrame(() => {
+      const r2 = requestAnimationFrame(() => setWarmed(true));
+      // cleanup r2 reference
+      (window as any).__bw_r2 = r2;
+    });
+    return () => cancelAnimationFrame(r1);
+  }, []);
+  return warmed ? phaseFullness(phase) : 0;
+};
+
 /* ────────────── 1. Bubble ────────────── */
 
 const Bubble = ({ phase, seconds, mini }: Omit<BreathingVisualProps, "visual">) => {
-  const full = phaseFullness(phase);
+  const full = useWarmedFullness(phase);
   // 더 다이내믹: 들숨에 크게 부풀고 (0.45 → 1.35), 날숨에 살짝 작아짐
   const scale = 0.45 + full * 0.90;
   const lift  = (full - 0.5) * (mini ? 12 : 60); // 위로 더 떠오름
@@ -135,7 +150,7 @@ const Bubble = ({ phase, seconds, mini }: Omit<BreathingVisualProps, "visual">) 
 /* ────────────── 2. Wave ────────────── */
 
 const Wave = ({ phase, seconds, mini }: Omit<BreathingVisualProps, "visual">) => {
-  const full = phaseFullness(phase);
+  const full = useWarmedFullness(phase);
   // wave rises from bottom upward as fullness grows
   const rise = full * (mini ? 60 : 70); // % of container height
   const dur = `${seconds}s`;
@@ -193,7 +208,7 @@ const Wave = ({ phase, seconds, mini }: Omit<BreathingVisualProps, "visual">) =>
 /* ────────────── 3. Moonrise ────────────── */
 
 const Moonrise = ({ phase, seconds, mini }: Omit<BreathingVisualProps, "visual">) => {
-  const full = phaseFullness(phase);
+  const full = useWarmedFullness(phase);
   const moonSize = mini ? 36 : 140;
   const travel = mini ? 50 : 220;
   const lift = full * travel;
@@ -312,7 +327,7 @@ const Orbit = ({ phase, seconds, mini }: Omit<BreathingVisualProps, "visual">) =
 /* ────────────── 5. Bloom (flower) ────────────── */
 
 const Bloom = ({ phase, seconds, mini }: Omit<BreathingVisualProps, "visual">) => {
-  const full = phaseFullness(phase);
+  const full = useWarmedFullness(phase);
   const open = full;          // 0..1 petal openness
   const dur = `${seconds}s`;
   const isHold = phase === "hold1";
@@ -396,7 +411,7 @@ export const BreathingVisual = ({
 
   if (reduced) {
     // Soft fade fallback
-    const full = phaseFullness(phase);
+    const full = useWarmedFullness(phase);
     return (
       <div className={cn("relative flex items-center justify-center w-full h-full", className)} aria-hidden>
         <div

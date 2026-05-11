@@ -36,6 +36,14 @@ class AudioEngine {
   private ctx: AudioContext | null = null;
 
   private getCtx(): AudioContext {
+    // iOS 백그라운드 정책: AudioContext 가 여러 개면 그 중 일부만 살아남고 나머지는 suspend.
+    // Howler 의 글로벌 ctx 와 공유하면 단일 audio session 으로 묶여서 자연음악+주파수 함께 유지.
+    const Howler = (window as any).Howler;
+    if (Howler?.ctx instanceof AudioContext) {
+      if (Howler.ctx.state === "suspended") Howler.ctx.resume();
+      return Howler.ctx;
+    }
+    // 자연음악 안 켜진 상태에서 주파수만 켤 때 fallback
     if (!this.ctx) {
       this.ctx = new (window.AudioContext || (window as any).webkitAudioContext)();
     }

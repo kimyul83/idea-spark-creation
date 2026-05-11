@@ -85,39 +85,20 @@ const playWithHowler = (opts: PlayOpts) => {
   tracks.set(opts.id, howl);
 };
 
-// 진단 토스트 — 사용자 한 번만 음악 켜고 결과 보고. 진단 끝나면 이 블록 제거.
-let __nativeDiagShown = false;
-const showNativeDiag = async (msg: string) => {
-  if (__nativeDiagShown) return;
-  __nativeDiagShown = true;
-  try {
-    const { toast } = await import("sonner");
-    toast(msg, { duration: 8000 });
-  } catch {}
-};
-
 export const audioAdapter = {
   async play(opts: PlayOpts): Promise<void> {
-    if (!native) {
-      console.warn("[audio] ⚠️ native plugin null");
-      showNativeDiag("⚠️ NativeAudio 등록 안 됨 → Howler 사용");
-    } else {
+    // iOS: native plugin 우선 시도 → 실패하면 Howler 폴백
+    if (native) {
       try {
-        console.log("[audio] 🟢 native.play 시도:", opts.id, opts.url);
         await native.play({
           id: opts.id,
           url: opts.url,
           volume: opts.volume ?? 0.5,
           loop: opts.loop ?? true,
         });
-        console.log("[audio] ✅ native.play 성공:", opts.id);
-        showNativeDiag("✅ NativeAudio 동작 중 — 끊김 없음");
         return;
-      } catch (err: any) {
-        const msg = err?.message ?? err?.errorMessage ?? String(err);
-        console.error("[audio] ❌ native 실패:", msg);
-        showNativeDiag(`❌ NativeAudio 실패: ${msg.slice(0, 60)}`);
-        // Howler 폴백 (사용자가 음악 안 들리는 거 막기)
+      } catch (err) {
+        console.warn("[audio] native 실패 → Howler 폴백:", err);
       }
     }
     playWithHowler(opts);

@@ -297,7 +297,8 @@ const Sleep = () => {
       setElapsedSec(sec);
     };
     tick();
-    const id = window.setInterval(tick, 30000);
+    // 매초 갱신 — HH:MM:SS 초 단위까지 실시간 표시
+    const id = window.setInterval(tick, 1000);
     return () => window.clearInterval(id);
   }, [activeIds.size]);
 
@@ -512,9 +513,10 @@ const Sleep = () => {
                 <p className="text-[10px] text-foreground/60 tracking-widest uppercase font-semibold">
                   지금까지 자는 중 🌙
                 </p>
-                <p className="num-display text-[24px] text-primary leading-none mt-1">
-                  {Math.floor(elapsedSec / 3600) > 0 && `${Math.floor(elapsedSec / 3600)}시간 `}
-                  {Math.floor((elapsedSec % 3600) / 60)}분
+                <p className="num-display text-[28px] text-primary leading-none mt-1 tabular-nums">
+                  {String(Math.floor(elapsedSec / 3600)).padStart(2, "0")}:
+                  {String(Math.floor((elapsedSec % 3600) / 60)).padStart(2, "0")}:
+                  {String(elapsedSec % 60).padStart(2, "0")}
                 </p>
               </div>
               <span className="text-[11px] text-primary font-semibold">{activeIds.size}개 믹스</span>

@@ -237,6 +237,9 @@ const Music = () => {
   // 타일별 볼륨 (0~1). 미설정 시 기본값(자연 0.45 / 노이즈 0.13 / 톤 0.09) 적용.
   const [volumes, setVolumes] = useState<Record<string, number>>({});
   const [editingVolume, setEditingVolume] = useState<string | null>(null);
+  // 실시간 경과 시간 (초) — HH:MM:SS 표시용
+  const [elapsedSec, setElapsedSec] = useState(0);
+  const startedAt = useRef<number>(0);
   const howlsRef = useRef<Map<string, Howl>>(new Map()); // legacy — adapter 가 대신 관리
   const timerRef = useRef<number | undefined>();
 
@@ -249,6 +252,20 @@ const Music = () => {
       if (timerRef.current) window.clearTimeout(timerRef.current);
     };
   }, []);
+
+  // 활성 시 매초 elapsed 갱신, 비활성 시 0
+  useEffect(() => {
+    if (activeIds.size === 0) {
+      setElapsedSec(0);
+      startedAt.current = 0;
+      return;
+    }
+    if (startedAt.current === 0) startedAt.current = Date.now();
+    const tick = () => setElapsedSec(Math.round((Date.now() - startedAt.current) / 1000));
+    tick();
+    const id = window.setInterval(tick, 1000);
+    return () => window.clearInterval(id);
+  }, [activeIds.size]);
 
   const applyTimer = (hours: number | null) => {
     setTimerHours(hours);
@@ -453,6 +470,20 @@ const Music = () => {
           </span>
         </div>
       </div>
+
+      {activeIds.size > 0 && (
+        <div className="mt-3 bg-primary/10 rounded-2xl px-4 py-2.5 flex items-center justify-between animate-fade-up">
+          <div className="flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+            <span className="text-[10px] text-foreground/60 tracking-widest uppercase font-semibold">재생 중</span>
+          </div>
+          <span className="num-display text-[18px] text-primary tabular-nums leading-none">
+            {String(Math.floor(elapsedSec / 3600)).padStart(2, "0")}:
+            {String(Math.floor((elapsedSec % 3600) / 60)).padStart(2, "0")}:
+            {String(elapsedSec % 60).padStart(2, "0")}
+          </span>
+        </div>
+      )}
 
       <section className="mt-7">
         <div className="flex items-center justify-between mb-3 px-1">

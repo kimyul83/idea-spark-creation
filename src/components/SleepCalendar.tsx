@@ -9,6 +9,8 @@ interface SleepRow {
   created_at: string;
 }
 
+type ViewMode = "week" | "month" | "year";
+
 /** YYYY-MM-DD 키 */
 const dateKey = (d: Date) => {
   const y = d.getFullYear();
@@ -27,18 +29,20 @@ const fmtHours = (sec: number) => {
 };
 
 const WEEK_LABELS = ["일", "월", "화", "수", "목", "금", "토"];
+const MONTH_LABELS = ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"];
 
 export const SleepCalendar = () => {
   const { user } = useAuth();
   const [rows, setRows] = useState<SleepRow[]>([]);
+  const [view, setView] = useState<ViewMode>("month");
   const [cursor, setCursor] = useState(() => new Date());
   const [selectedDay, setSelectedDay] = useState<string | null>(null);
 
   useEffect(() => {
     if (!user) return;
-    // 최근 90일치 sleep 세션
+    // 1년치 fetch — year view 까지 커버
     const since = new Date();
-    since.setDate(since.getDate() - 90);
+    since.setFullYear(since.getFullYear() - 1);
     supabase
       .from("sessions")
       .select("duration_seconds, created_at")
@@ -61,49 +65,110 @@ export const SleepCalendar = () => {
     return map;
   }, [rows]);
 
-  const monthStats = useMemo(() => {
-    const year = cursor.getFullYear();
-    const month = cursor.getMonth();
+  // 현재 view 기준 통계 (week=일요일~토요일, month=달, year=1월~12월)
+  const stats = useMemo(() => {
     let totalSec = 0;
     let nights = 0;
-    sessionsByDay.forEach((v, k) => {
-      const d = new Date(k);
-      if (d.getFullYear() === year && d.getMonth() === month) {
-        totalSec += v.totalSec;
-        nights += 1;
+    if (view === "week") {
+      const sunday = new Date(cursor);
+      sunday.setDate(cursor.getDate() - cursor.getDay());
+      sunday.setHours(0, 0, 0, 0);
+      for (let i = 0; i < 7; i++) {
+        const d = new Date(sunday);
+        d.setDate(sunday.getDate() + i);
+        const v = sessionsByDay.get(dateKey(d));
+        if (v) { totalSec += v.totalSec; nights += 1; }
       }
-    });
-    const avgPerNight = nights > 0 ? totalSec / nights : 0;
-    return { totalSec, nights, avgPerNight };
-  }, [cursor, sessionsByDay]);
+    } else if (view === "month") {
+      const y = cursor.getFullYear(), m = cursor.getMonth();
+      sessionsByDay.forEach((v, k) => {
+        const d = new Date(k);
+        if (d.getFullYear() === y && d.getMonth() === m) {
+          totalSec += v.totalSec; nights += 1;
+        }
+      });
+    } else {
+      const y = cursor.getFullYear();
+      sessionsByDay.forEach((v, k) => {
+        const d = new Date(k);
+        if (d.getFullYear() === y) { totalSec += v.totalSec; nights += 1; }
+      });
+    }
+    const avg = nights > 0 ? totalSec / nights : 0;
+    return { totalSec, nights, avg };
+  }, [view, cursor, sessionsByDay]);
 
-  const days = useMemo(() => {
+  const monthCells = useMemo(() => {
     const year = cursor.getFullYear();
     const month = cursor.getMonth();
     const firstDay = new Date(year, month, 1);
     const lastDay = new Date(year, month + 1, 0);
     const startWeekday = firstDay.getDay();
     const totalDays = lastDay.getDate();
-
     const cells: Array<{ day: number | null; key: string | null }> = [];
-    // 빈 셀 (이전 달)
     for (let i = 0; i < startWeekday; i++) cells.push({ day: null, key: null });
     for (let d = 1; d <= totalDays; d++) {
-      const date = new Date(year, month, d);
-      cells.push({ day: d, key: dateKey(date) });
+      cells.push({ day: d, key: dateKey(new Date(year, month, d)) });
     }
     return cells;
   }, [cursor]);
 
-  // 색 강도 — 시간에 비례 (0~12h → 0.0~1.0)
-  const intensityFor = (key: string | null): number => {
+  const weekCells = useMemo(() => {
+    const sunday = new Date(cursor);
+    sunday.setDate(cursor.getDate() - cursor.getDay());
+    sunday.setHours(0, 0, 0, 0);
+    return Array.from({ length: 7 }, (_, i) => {
+      const d = new Date(sunday);
+      d.setDate(sunday.getDate() + i);
+      return { date: d, key: dateKey(d) };
+    });
+  }, [cursor]);
+
+  const yearMonths = useMemo(() => {
+    const y = cursor.getFullYear();
+    return Array.from({ length: 12 }, (_, i) => {
+      let total = 0, nights = 0;
+      sessionsByDay.forEach((v, k) => {
+        const d = new Date(k);
+        if (d.getFullYear() === y && d.getMonth() === i) {
+          total += v.totalSec; nights += 1;
+        }
+      });
+      return { month: i, total, nights };
+    });
+  }, [cursor, sessionsByDay]);
+
+  const intensityFor = (sec: number, maxSec = 8 * 3600) => Math.min(1, sec / maxSec);
+  const intensityForKey = (key: string | null) => {
     if (!key) return 0;
     const s = sessionsByDay.get(key);
-    if (!s) return 0;
-    return Math.min(1, s.totalSec / (8 * 3600)); // 8시간 자면 max
+    return s ? intensityFor(s.totalSec) : 0;
   };
 
   const todayKey = dateKey(new Date());
+
+  const shift = (dir: -1 | 1) => {
+    if (view === "week") {
+      const d = new Date(cursor);
+      d.setDate(d.getDate() + dir * 7);
+      setCursor(d);
+    } else if (view === "month") {
+      setCursor(new Date(cursor.getFullYear(), cursor.getMonth() + dir, 1));
+    } else {
+      setCursor(new Date(cursor.getFullYear() + dir, 0, 1));
+    }
+  };
+
+  const headerLabel =
+    view === "week"
+      ? (() => {
+          const sun = weekCells[0].date;
+          const sat = weekCells[6].date;
+          return `${sun.getMonth() + 1}/${sun.getDate()} – ${sat.getMonth() + 1}/${sat.getDate()}`;
+        })()
+      : view === "month"
+      ? `${cursor.getFullYear()}.${cursor.getMonth() + 1}`
+      : `${cursor.getFullYear()}`;
 
   if (!user) {
     return (
@@ -125,100 +190,164 @@ export const SleepCalendar = () => {
           <p className="text-[13px] font-bold text-foreground">수면 기록</p>
         </div>
         <div className="flex items-center gap-1">
-          <button
-            onClick={() => setCursor(new Date(cursor.getFullYear(), cursor.getMonth() - 1, 1))}
-            className="w-7 h-7 rounded-full hover:bg-foreground/5 flex items-center justify-center"
-            aria-label="이전 달"
-          >
+          <button onClick={() => shift(-1)} className="w-7 h-7 rounded-full hover:bg-foreground/5 flex items-center justify-center" aria-label="이전">
             <ChevronLeft className="w-4 h-4 text-foreground/60" />
           </button>
-          <span className="text-[12px] font-semibold text-foreground/80 min-w-[64px] text-center">
-            {cursor.getFullYear()}.{cursor.getMonth() + 1}
+          <span className="text-[12px] font-semibold text-foreground/80 min-w-[88px] text-center">
+            {headerLabel}
           </span>
-          <button
-            onClick={() => setCursor(new Date(cursor.getFullYear(), cursor.getMonth() + 1, 1))}
-            className="w-7 h-7 rounded-full hover:bg-foreground/5 flex items-center justify-center"
-            aria-label="다음 달"
-          >
+          <button onClick={() => shift(1)} className="w-7 h-7 rounded-full hover:bg-foreground/5 flex items-center justify-center" aria-label="다음">
             <ChevronRight className="w-4 h-4 text-foreground/60" />
           </button>
         </div>
       </div>
 
-      {/* 월간 통계 */}
-      <div className="grid grid-cols-3 gap-2 mb-3">
-        <Stat label="잠든 밤" value={`${monthStats.nights}일`} />
-        <Stat label="총 수면" value={fmtHours(monthStats.totalSec)} />
-        <Stat label="하루 평균" value={fmtHours(monthStats.avgPerNight)} />
-      </div>
-
-      {/* 요일 헤더 */}
-      <div className="grid grid-cols-7 gap-1 mb-1">
-        {WEEK_LABELS.map((w, i) => (
-          <div
-            key={w}
+      {/* view 토글 — 주/월/연 */}
+      <div className="flex gap-1 mb-3 p-1 bg-foreground/5 rounded-2xl">
+        {(["week", "month", "year"] as ViewMode[]).map((v) => (
+          <button
+            key={v}
+            onClick={() => setView(v)}
             className={cn(
-              "text-[10px] text-center font-semibold tracking-wide",
-              i === 0 ? "text-rose-400/70" : i === 6 ? "text-blue-400/70" : "text-foreground/40",
+              "flex-1 py-1.5 text-[11px] font-semibold rounded-xl transition",
+              view === v ? "bg-primary text-primary-foreground shadow-sm" : "text-foreground/55 hover:text-foreground/85",
             )}
           >
-            {w}
-          </div>
+            {v === "week" ? "주" : v === "month" ? "월" : "연"}
+          </button>
         ))}
       </div>
 
-      {/* 캘린더 그리드 */}
-      <div className="grid grid-cols-7 gap-1">
-        {days.map((cell, i) => {
-          const intensity = intensityFor(cell.key);
-          const session = cell.key ? sessionsByDay.get(cell.key) : null;
-          const isToday = cell.key === todayKey;
-          const isSelected = cell.key === selectedDay;
-          return (
-            <button
-              key={i}
-              onClick={() => cell.key && setSelectedDay(isSelected ? null : cell.key)}
-              disabled={!cell.day}
-              className={cn(
-                "aspect-square rounded-xl flex flex-col items-center justify-center transition-all",
-                cell.day === null && "invisible",
-                isSelected && "ring-2 ring-primary",
-                isToday && "ring-1 ring-primary/40",
-              )}
-              style={{
-                background: intensity > 0
-                  ? `hsl(var(--primary) / ${0.15 + intensity * 0.5})`
-                  : "hsl(var(--foreground) / 0.04)",
-              }}
-            >
-              <span
-                className={cn(
-                  "text-[11px] font-semibold",
-                  isToday ? "text-primary" : intensity > 0.5 ? "text-primary-foreground" : "text-foreground/70",
-                )}
-              >
-                {cell.day}
-              </span>
-              {session && (
-                <span className="w-1 h-1 rounded-full bg-current opacity-60 mt-0.5" />
-              )}
-            </button>
-          );
-        })}
+      {/* 통계 */}
+      <div className="grid grid-cols-3 gap-2 mb-3">
+        <Stat label="잠든 밤" value={`${stats.nights}일`} />
+        <Stat label="총 수면" value={fmtHours(stats.totalSec)} />
+        <Stat label="평균" value={fmtHours(stats.avg)} />
       </div>
 
-      {/* 선택된 날 상세 */}
-      {selectedDay && sessionsByDay.has(selectedDay) && (
-        <div className="mt-3 p-3 rounded-xl bg-primary/5 flex items-center justify-between animate-fade-up">
-          <div>
-            <p className="text-[10px] text-foreground/50 tracking-widest uppercase">{selectedDay}</p>
-            <p className="text-[14px] font-bold text-foreground mt-0.5">
-              {fmtHours(sessionsByDay.get(selectedDay)!.totalSec)}
-            </p>
+      {/* week view — 7개 큰 셀 (요일 + 날짜 + 시간) */}
+      {view === "week" && (
+        <div className="grid grid-cols-7 gap-1.5">
+          {weekCells.map((c, i) => {
+            const v = sessionsByDay.get(c.key);
+            const intensity = v ? intensityFor(v.totalSec) : 0;
+            const isToday = c.key === todayKey;
+            return (
+              <div
+                key={c.key}
+                className={cn(
+                  "rounded-2xl aspect-[0.7] p-2 flex flex-col items-center justify-between",
+                  isToday && "ring-2 ring-primary/40",
+                )}
+                style={{
+                  background: intensity > 0
+                    ? `hsl(var(--primary) / ${0.15 + intensity * 0.5})`
+                    : "hsl(var(--foreground) / 0.04)",
+                }}
+              >
+                <div className="text-center">
+                  <p className={cn("text-[9px]", i === 0 ? "text-rose-400" : i === 6 ? "text-blue-400" : "text-foreground/45")}>
+                    {WEEK_LABELS[i]}
+                  </p>
+                  <p className={cn("text-[14px] font-bold mt-0.5", isToday && "text-primary")}>{c.date.getDate()}</p>
+                </div>
+                <p className={cn("text-[9px] font-semibold text-center", intensity > 0.5 ? "text-primary-foreground" : "text-foreground/70")}>
+                  {v ? fmtHours(v.totalSec) : "—"}
+                </p>
+              </div>
+            );
+          })}
+        </div>
+      )}
+
+      {/* month view — 캘린더 */}
+      {view === "month" && (
+        <>
+          <div className="grid grid-cols-7 gap-1 mb-1">
+            {WEEK_LABELS.map((w, i) => (
+              <div key={w} className={cn("text-[10px] text-center font-semibold tracking-wide",
+                i === 0 ? "text-rose-400/70" : i === 6 ? "text-blue-400/70" : "text-foreground/40")}>
+                {w}
+              </div>
+            ))}
           </div>
-          <p className="text-[11px] text-foreground/55">
-            {sessionsByDay.get(selectedDay)!.count}회 수면 세션
-          </p>
+          <div className="grid grid-cols-7 gap-1">
+            {monthCells.map((cell, i) => {
+              const intensity = intensityForKey(cell.key);
+              const session = cell.key ? sessionsByDay.get(cell.key) : null;
+              const isToday = cell.key === todayKey;
+              const isSelected = cell.key === selectedDay;
+              return (
+                <button
+                  key={i}
+                  onClick={() => cell.key && setSelectedDay(isSelected ? null : cell.key)}
+                  disabled={!cell.day}
+                  className={cn(
+                    "aspect-square rounded-xl flex flex-col items-center justify-center transition-all",
+                    cell.day === null && "invisible",
+                    isSelected && "ring-2 ring-primary",
+                    isToday && "ring-1 ring-primary/40",
+                  )}
+                  style={{
+                    background: intensity > 0
+                      ? `hsl(var(--primary) / ${0.15 + intensity * 0.5})`
+                      : "hsl(var(--foreground) / 0.04)",
+                  }}
+                >
+                  <span className={cn("text-[11px] font-semibold",
+                    isToday ? "text-primary" : intensity > 0.5 ? "text-primary-foreground" : "text-foreground/70")}>
+                    {cell.day}
+                  </span>
+                  {session && <span className="w-1 h-1 rounded-full bg-current opacity-60 mt-0.5" />}
+                </button>
+              );
+            })}
+          </div>
+          {selectedDay && sessionsByDay.has(selectedDay) && (
+            <div className="mt-3 p-3 rounded-xl bg-primary/5 flex items-center justify-between animate-fade-up">
+              <div>
+                <p className="text-[10px] text-foreground/50 tracking-widest uppercase">{selectedDay}</p>
+                <p className="text-[14px] font-bold text-foreground mt-0.5">
+                  {fmtHours(sessionsByDay.get(selectedDay)!.totalSec)}
+                </p>
+              </div>
+              <p className="text-[11px] text-foreground/55">
+                {sessionsByDay.get(selectedDay)!.count}회 수면 세션
+              </p>
+            </div>
+          )}
+        </>
+      )}
+
+      {/* year view — 12개월 grid */}
+      {view === "year" && (
+        <div className="grid grid-cols-4 gap-1.5">
+          {yearMonths.map((m) => {
+            const maxMonthSec = 31 * 8 * 3600;  // 한 달 max ~ 31일 × 8시간
+            const intensity = intensityFor(m.total, maxMonthSec);
+            return (
+              <div
+                key={m.month}
+                className="rounded-xl aspect-square p-2 flex flex-col items-center justify-center"
+                style={{
+                  background: intensity > 0
+                    ? `hsl(var(--primary) / ${0.12 + intensity * 0.5})`
+                    : "hsl(var(--foreground) / 0.04)",
+                }}
+              >
+                <p className={cn("text-[10px] font-semibold", intensity > 0.5 ? "text-primary-foreground" : "text-foreground/55")}>
+                  {MONTH_LABELS[m.month]}
+                </p>
+                <p className={cn("text-[10px] font-bold mt-0.5 text-center leading-tight",
+                  intensity > 0.5 ? "text-primary-foreground" : "text-foreground/85")}>
+                  {m.nights > 0 ? fmtHours(m.total) : "—"}
+                </p>
+                <p className={cn("text-[8px] mt-0.5", intensity > 0.5 ? "text-primary-foreground/70" : "text-foreground/45")}>
+                  {m.nights > 0 ? `${m.nights}일` : ""}
+                </p>
+              </div>
+            );
+          })}
         </div>
       )}
 

@@ -4,7 +4,7 @@ const fs = require("fs");
 const path = require("path");
 
 const SR = 44100;
-const SECONDS = 30;
+const SECONDS = 60;  // 30→60: loop 빈도 절반, 잠금화면 "1분"
 const OUT = path.resolve(__dirname, "../public/sounds/frequencies");
 fs.mkdirSync(OUT, { recursive: true });
 

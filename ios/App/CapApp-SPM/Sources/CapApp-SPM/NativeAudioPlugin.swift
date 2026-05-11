@@ -27,6 +27,10 @@ public class NativeAudioPlugin: CAPPlugin, CAPBridgedPlugin {
     private var players: [String: AVAudioPlayer] = [:]
     private let queue = DispatchQueue(label: "com.mintwave.nativeaudio")
 
+    override public func load() {
+        print("[NativeAudio] ✅ plugin loaded as 'NativeAudio'")
+    }
+
     @objc func play(_ call: CAPPluginCall) {
         guard let id = call.getString("id"),
               let urlString = call.getString("url"),
@@ -36,6 +40,7 @@ public class NativeAudioPlugin: CAPPlugin, CAPBridgedPlugin {
         }
         let volume = call.getFloat("volume") ?? 0.5
         let loop = call.getBool("loop") ?? true
+        print("[NativeAudio] ▶ play: id=\(id) url=\(urlString) vol=\(volume) loop=\(loop)")
 
         queue.async { [weak self] in
             guard let self = self else { return }

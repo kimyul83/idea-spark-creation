@@ -1,6 +1,7 @@
 import UIKit
 import Capacitor
 import AVFoundation
+import CapApp_SPM
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -10,6 +11,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // 플러그인은 CapApp-SPM 모듈로 이동 — Capacitor SPM 같은 모듈에 박혀서 정식 스캔됨
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        // CapApp-SPM 모듈 안 plugin (NativeAudio, NowPlaying) 강제 등록
+        // Swift dead-code elimination 으로 plugin 클래스가 binary 에서 제거되는 거 방지
+        CapAppSPMPlugins.ensureRegistered()
+
         // 백그라운드 오디오 활성화 — 화면 꺼도, 다른 앱 가도, 12시간까지 재생 유지.
         // .playback = 미디어 재생 의도 (음소거 스위치도 무시)
         // .mixWithOthers = 다른 앱 (전화 등) 과 같이 재생 가능

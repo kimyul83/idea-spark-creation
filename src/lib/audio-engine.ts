@@ -73,46 +73,90 @@ class AudioEngine {
     this.tracks.set(id, { kind: "howl", howl, volume });
   }
 
-  // ─── Pure tone (sine osc) — 부드러운 attack + warm filter ──────────
+  // ─── Pure tone — OfflineAudioContext 로 10초 WAV 렌더링 후 Howler html5 재생.
+  //     이유: 자연 음악(Howler html5 = HTMLAudioElement) 과 같은 audio session 묶여
+  //     iOS 백그라운드에서 함께 살아남음. OscillatorNode 별도 ctx 면 백그라운드 죽음.
   playTone(id: string, frequencyHz: number, volume = 0.15) {
     if (this.tracks.has(id)) return;
-    const ctx = this.getCtx();
-    const osc = ctx.createOscillator();
-    const gain = ctx.createGain();
-    const filter = ctx.createBiquadFilter();
+    // placeholder — 비동기 렌더링 중에도 isPlaying 일관
+    this.tracks.set(id, { kind: "synth", nodes: [], gain: null as any, volume });
 
+    const sampleRate = 44100;
+    const seconds = 10;
+    const offline = new OfflineAudioContext(1, sampleRate * seconds, sampleRate);
+    const osc = offline.createOscillator();
+    const filter = offline.createBiquadFilter();
     osc.type = "sine";
     osc.frequency.value = frequencyHz;
-    // 미세한 디튠으로 살짝 따뜻한 느낌
     osc.detune.value = -3;
-
-    // Lowpass: 고주파 거친 부분 부드럽게
     filter.type = "lowpass";
     filter.frequency.value = Math.max(800, frequencyHz * 4);
     filter.Q.value = 0.6;
+    osc.connect(filter).connect(offline.destination);
+    osc.start(0);
+    osc.stop(seconds);
 
-    // 페이드 인 (3초) — 갑자기 시작 안 하게
-    const now = ctx.currentTime;
-    gain.gain.setValueAtTime(0, now);
-    gain.gain.linearRampToValueAtTime(volume, now + 3);
+    offline.startRendering().then((rendered) => {
+      // 중간에 stop 됐는지 확인
+      if (!this.tracks.has(id)) return;
+      const url = URL.createObjectURL(AudioEngine.audioBufferToWavBlob(rendered));
+      const howl = new Howl({
+        src: [url],
+        format: ["wav"],
+        loop: true,
+        html5: true,
+        volume: 0,
+        onloaderror: () => { this.tracks.delete(id); URL.revokeObjectURL(url); },
+        onplayerror: () => { this.tracks.delete(id); URL.revokeObjectURL(url); },
+      });
+      howl.play();
+      howl.fade(0, volume, 3000);  // 3초 페이드인
+      this.tracks.set(id, {
+        kind: "howl", howl, volume,
+      });
+      // 정리 시점에 blob URL 도 해제
+      (howl as any).__objectUrl = url;
+    }).catch(() => this.tracks.delete(id));
+  }
 
-    osc.connect(filter).connect(gain).connect(ctx.destination);
-    osc.start();
-    this.tracks.set(id, {
-      kind: "synth", nodes: [osc, filter, gain], gain, volume,
-      cleanup: () => {
-        try {
-          gain.gain.cancelScheduledValues(ctx.currentTime);
-          gain.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.5);
-          setTimeout(() => { try { osc.stop(); osc.disconnect(); filter.disconnect(); } catch {} }, 600);
-        } catch {}
-      },
-    });
+  // ─── WAV blob 인코더 — AudioBuffer 를 HTMLAudioElement 가 재생 가능한 형태로 ─────
+  private static audioBufferToWavBlob(buffer: AudioBuffer): Blob {
+    const numCh = buffer.numberOfChannels;
+    const sampleRate = buffer.sampleRate;
+    const samples = buffer.length;
+    const dataSize = samples * numCh * 2;
+    const ab = new ArrayBuffer(44 + dataSize);
+    const v = new DataView(ab);
+    const writeStr = (off: number, s: string) => {
+      for (let i = 0; i < s.length; i++) v.setUint8(off + i, s.charCodeAt(i));
+    };
+    writeStr(0, "RIFF");
+    v.setUint32(4, 36 + dataSize, true);
+    writeStr(8, "WAVE");
+    writeStr(12, "fmt ");
+    v.setUint32(16, 16, true);
+    v.setUint16(20, 1, true);  // PCM
+    v.setUint16(22, numCh, true);
+    v.setUint32(24, sampleRate, true);
+    v.setUint32(28, sampleRate * numCh * 2, true);
+    v.setUint16(32, numCh * 2, true);
+    v.setUint16(34, 16, true);
+    writeStr(36, "data");
+    v.setUint32(40, dataSize, true);
+    let off = 44;
+    for (let i = 0; i < samples; i++) {
+      for (let ch = 0; ch < numCh; ch++) {
+        const s = Math.max(-1, Math.min(1, buffer.getChannelData(ch)[i]));
+        v.setInt16(off, s < 0 ? s * 0x8000 : s * 0x7fff, true);
+        off += 2;
+      }
+    }
+    return new Blob([ab], { type: "audio/wav" });
   }
 
   // ─── Noise generators ─────────────────────────────────────────────
-  private makeNoiseBuffer(seconds = 2, type: "white" | "pink" | "brown" = "white"): AudioBuffer {
-    const ctx = this.getCtx();
+  private makeNoiseBuffer(seconds = 2, type: "white" | "pink" | "brown" = "white", ctxArg?: BaseAudioContext): AudioBuffer {
+    const ctx = ctxArg ?? this.getCtx();
     const len = seconds * ctx.sampleRate;
     const buffer = ctx.createBuffer(1, len, ctx.sampleRate);
     const data = buffer.getChannelData(0);
@@ -140,37 +184,42 @@ class AudioEngine {
     return buffer;
   }
 
+  // 노이즈 — OfflineAudioContext 로 10초 lowpass-filtered noise 렌더링 후 Howler 재생.
+  // 자연 음악과 같은 audio session 묶여 iOS 백그라운드 안 죽음.
   playNoise(id: string, type: "white" | "pink" | "brown", volume = 0.2) {
     if (this.tracks.has(id)) return;
-    const ctx = this.getCtx();
-    const source = ctx.createBufferSource();
-    source.buffer = this.makeNoiseBuffer(2, type);
-    source.loop = true;
+    this.tracks.set(id, { kind: "synth", nodes: [], gain: null as any, volume });
 
-    // 노이즈는 거친 고주파를 lowpass로 깎고 부드러운 attack
-    const filter = ctx.createBiquadFilter();
+    const sampleRate = 44100;
+    const seconds = 10;
+    const offline = new OfflineAudioContext(1, sampleRate * seconds, sampleRate);
+    const source = offline.createBufferSource();
+    source.buffer = this.makeNoiseBuffer(seconds, type, offline);
+    source.loop = false;
+    const filter = offline.createBiquadFilter();
     filter.type = "lowpass";
-    // 화이트는 더 강하게 깎음 (가장 거칠어서)
     filter.frequency.value = type === "white" ? 6000 : type === "pink" ? 8000 : 4000;
     filter.Q.value = 0.6;
+    source.connect(filter).connect(offline.destination);
+    source.start(0);
 
-    const gain = ctx.createGain();
-    const now = ctx.currentTime;
-    gain.gain.setValueAtTime(0, now);
-    gain.gain.linearRampToValueAtTime(volume, now + 2.5);  // 2.5초 페이드인
-
-    source.connect(filter).connect(gain).connect(ctx.destination);
-    source.start();
-    this.tracks.set(id, {
-      kind: "synth", nodes: [source, filter, gain], gain, volume,
-      cleanup: () => {
-        try {
-          gain.gain.cancelScheduledValues(ctx.currentTime);
-          gain.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.5);
-          setTimeout(() => { try { source.stop(); source.disconnect(); filter.disconnect(); } catch {} }, 600);
-        } catch {}
-      },
-    });
+    offline.startRendering().then((rendered) => {
+      if (!this.tracks.has(id)) return;
+      const url = URL.createObjectURL(AudioEngine.audioBufferToWavBlob(rendered));
+      const howl = new Howl({
+        src: [url],
+        format: ["wav"],
+        loop: true,
+        html5: true,
+        volume: 0,
+        onloaderror: () => { this.tracks.delete(id); URL.revokeObjectURL(url); },
+        onplayerror: () => { this.tracks.delete(id); URL.revokeObjectURL(url); },
+      });
+      howl.play();
+      howl.fade(0, volume, 2500);
+      this.tracks.set(id, { kind: "howl", howl, volume });
+      (howl as any).__objectUrl = url;
+    }).catch(() => this.tracks.delete(id));
   }
 
   // ─── Real CC0 nature recordings ──────────
@@ -679,18 +728,26 @@ class AudioEngine {
     if (!t) return;
     t.volume = volume;
     if (t.kind === "howl") t.howl.volume(volume);
-    else t.gain.gain.value = volume;
+    else if (t.gain) t.gain.gain.value = volume;
   }
 
   stop(id: string) {
     const t = this.tracks.get(id);
     if (!t) return;
-    const ctx = this.getCtx();
     if (t.kind === "howl") {
       t.howl.fade(t.volume, 0, 600);
-      setTimeout(() => t.howl.unload(), 700);
+      const blobUrl = (t.howl as any).__objectUrl;
+      setTimeout(() => {
+        t.howl.unload();
+        if (blobUrl) URL.revokeObjectURL(blobUrl);
+      }, 700);
     } else {
-      try { t.gain.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.5); } catch {}
+      try {
+        if (t.gain) {
+          const ctx = this.getCtx();
+          t.gain.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.5);
+        }
+      } catch {}
       setTimeout(() => t.cleanup?.(), 600);
     }
     this.tracks.delete(id);

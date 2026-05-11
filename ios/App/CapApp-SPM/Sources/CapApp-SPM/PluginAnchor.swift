@@ -1,17 +1,19 @@
 import Foundation
 
-// Swift dead-code elimination 방지 — SPM 모듈 안 Capacitor plugin 이 외부 참조 없으면
-// 컴파일러가 binary 에서 제거함. AppDelegate 가 ensureRegistered() 한 번 호출하면
-// 안의 [AnyClass] 배열이 평가되며 plugin 클래스들이 ObjC runtime 에 강제 등록됨.
+// SPM 모듈 안 Capacitor plugin 강제 anchor — Swift dead-code elimination 방지.
+//
+// 핵심 트릭: 인스턴스를 static let 으로 만들면 컴파일러가 절대 elim 못 함.
+// 인스턴스가 만들어진다는 건 = 클래스가 ObjC runtime 에 등록되어 있다는 것.
+// Capacitor 의 enumeration 이 그 클래스를 발견 가능.
 @objc public final class CapAppSPMPlugins: NSObject {
-    @objc public static let allPlugins: [AnyClass] = [
-        NativeAudioPlugin.self,
-        NowPlayingPlugin.self,
-    ]
+    // 인스턴스 자체를 anchor — 클래스 link 100% 보장
+    private static let _nativeAudioInstance = NativeAudioPlugin()
+    private static let _nowPlayingInstance = NowPlayingPlugin()
 
     @objc public static func ensureRegistered() {
-        // allPlugins 참조만으로 strict evaluation 보장 → dead-code elim 차단
-        _ = allPlugins.count
-        print("[CapAppSPMPlugins] ensureRegistered — \(allPlugins.count) plugins anchored")
+        // static let 평가 강제 → 두 인스턴스 생성 → 두 클래스 ObjC runtime 등록
+        _ = _nativeAudioInstance
+        _ = _nowPlayingInstance
+        print("[CapAppSPMPlugins] ensureRegistered — NativeAudio + NowPlaying anchored")
     }
 }

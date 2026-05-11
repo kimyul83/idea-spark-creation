@@ -39,10 +39,11 @@ const isNative = Capacitor.isNativePlatform();
 // 웹 폴백용 Howl 인스턴스
 const howls = new Map<string, Howl>();
 
-/** 가장 단순+안정 — html5:true + loop:true.
- *  - iOS 백그라운드 / 다른 앱 사용 / 재진입 모두 안정
- *  - loop 경계에 50ms 미세 갭 (자연 사운드라 거의 인식 안 됨)
- *  - 진짜 갭 0 은 native AVAudioPlayer 만 가능 (별도 작업)
+/** Web Audio API (html5:false) 기반 — sample-accurate gapless loop.
+ *  - AudioBufferSourceNode.loop = true → loop 경계에 진짜 갭 0
+ *  - 4개 동시 재생해도 갭 시점 어긋남 없음 (모든 트랙이 끊김 없이 이어짐)
+ *  - AVAudioSession.playback 활성화돼있어서 백그라운드도 살아있음
+ *  - 메모리: 1분짜리 stereo 48k 16bit ≈ 11MB / 트랙. 4개 = ~44MB (iOS 여유)
  */
 const tracks = new Map<string, Howl>();
 
@@ -54,13 +55,22 @@ const playWithHowler = (opts: PlayOpts) => {
   }
   const howl = new Howl({
     src: [opts.url],
-    html5: true,                   // ← HTMLAudioElement (백그라운드 안정)
-    loop: opts.loop ?? true,       // ← iOS 가 직접 loop 처리
+    html5: false,                  // ← Web Audio API (sample-accurate gapless)
+    loop: opts.loop ?? true,       // ← AudioBufferSourceNode.loop
     volume: opts.volume ?? 0.5,
     preload: true,
     onloaderror: (_id, err) => console.warn("[audio] load error:", err),
-    onplayerror: (_id, err) => console.warn("[audio] play error:", err),
-    // iOS HTMLAudioElement 가 어쩌다 loop=true 인데도 끝나면 안전망
+    onplayerror: (_id, err) => {
+      console.warn("[audio] play error → resume + retry:", err);
+      // iOS WKWebView: AudioContext 가 suspended 일 때 unlock 후 재시도
+      try {
+        const Howler = (window as any).Howler;
+        if (Howler?.ctx?.state === "suspended") {
+          Howler.ctx.resume().then(() => howl.play());
+        }
+      } catch {}
+    },
+    // 안전망 — 정상이면 loop:true 라 onend 자체가 안 불림
     onend: function () { if (!this.playing()) this.play(); },
   });
   howl.play();

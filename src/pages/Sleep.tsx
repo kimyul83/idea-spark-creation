@@ -212,10 +212,11 @@ const STEP_HOURS = 0.5;
 const FADE_BEFORE_END_SECONDS = 20 * 60;
 const FADE_DURATION_SECONDS = 5 * 60;
 
-// 자연 0.45 / 노이즈 0.13 / 톤 0.09 — Music 탭과 같은 기본값
+// 자연 0.45 / 노이즈 0.3 / 톤 0.2 — Music 탭과 같은 기본값.
+// 노이즈/톤 너무 작아 안 들린다는 피드백 반영.
 const DEFAULT_NATURE_VOL = 0.45;
-const DEFAULT_NOISE_VOL = 0.13;
-const DEFAULT_TONE_VOL = 0.09;
+const DEFAULT_NOISE_VOL = 0.3;
+const DEFAULT_TONE_VOL = 0.2;
 
 const formatHours = (h: number) =>
   Number.isInteger(h) ? `${h}시간` : `${Math.floor(h)}시간 30분`;

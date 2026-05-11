@@ -357,11 +357,11 @@ const Music = () => {
       });
       return;
     }
-    // 노이즈/톤 기본 — Fletcher-Munson 보정. 사용자 슬라이더 우선.
+    // 노이즈 0.3 / 톤 0.2 — 자연 음악(0.45)과 균형. 사용자 슬라이더 우선.
     if (item.type === "noise" && item.noiseType) {
-      audioEngine.playNoise(item.id, item.noiseType, volumes[item.id] ?? 0.13);
+      audioEngine.playNoise(item.id, item.noiseType, volumes[item.id] ?? 0.3);
     } else {
-      audioEngine.playTone(item.id, item.hz, volumes[item.id] ?? 0.09);
+      audioEngine.playTone(item.id, item.hz, volumes[item.id] ?? 0.2);
     }
     setActiveIds((prev) => new Set(prev).add(item.id));
     setMediaSession(
@@ -486,7 +486,7 @@ const Music = () => {
         </h2>
         <div className="grid grid-cols-3 gap-3">
           {FREQUENCIES.map((item) => {
-            const def = item.type === "noise" ? 0.13 : 0.09;
+            const def = item.type === "noise" ? 0.3 : 0.2;
             return (
               <FreqTile
                 key={item.id}

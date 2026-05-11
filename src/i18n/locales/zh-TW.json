@@ -14,7 +14,7 @@
     "label": "Sound Mix", "title": "聲音混音",
     "subtitle": "可同時播放·再次點擊切換版本",
     "selected": "已選 {{count}}",
-    "nature": "自然", "frequencies": "頻率", "stopAll": "全部停止",
+    "nature": "自然", "realRecording": "🌿 真實自然錄音", "frequencies": "頻率", "stopAll": "全部停止",
     "kinds": "{{count}}種·點擊切換",
     "tags": {
       "waterfall": "粉噪 · 多巴胺 ↑",

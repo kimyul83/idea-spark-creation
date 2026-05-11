@@ -14,7 +14,7 @@
     "label": "Sound Mix", "title": "ผสมเสียง",
     "subtitle": "ผสมได้อิสระ · แตะอีกครั้งเพื่อเปลี่ยนเวอร์ชัน",
     "selected": "เลือก {{count}}",
-    "nature": "ธรรมชาติ", "frequencies": "ความถี่", "stopAll": "หยุดทั้งหมด",
+    "nature": "ธรรมชาติ", "realRecording": "🌿 บันทึกเสียงธรรมชาติจริง", "frequencies": "ความถี่", "stopAll": "หยุดทั้งหมด",
     "kinds": "{{count}} แบบ · แตะ"
   },
   "sleep": {

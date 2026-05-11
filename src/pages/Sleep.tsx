@@ -46,7 +46,7 @@ const TRACKS: SleepTrack[] = [
     name: "깊은 파도",
     premium: false,
     variants: [
-      { name: "스칸디나비아 군도", file: "/sounds/ES_Water, Wave, Waves Sweeping Over Rocks, Calm, Lapping, Scandinavian Archipelago - Epidemic Sound.mp3" },
+      { name: "북유럽 해안 군도", file: "/sounds/ES_Water, Wave, Waves Sweeping Over Rocks, Calm, Lapping, Scandinavian Archipelago - Epidemic Sound.mp3" },
       { name: "호수의 잔물결", file: "/sounds/ES_Water, Lap, Lake, Small Waves Lapping, Detailed, 1m, Loop 01 - Epidemic Sound.mp3" },
       { name: "바위에 부서지는 잔파도", file: "/sounds/ES_Water, Lap, Gentle Waves, Splashing Against Rocks, Calm, Light Water Fizz - Epidemic Sound.mp3" },
       { name: "해변의 작은 파도", file: "/sounds/ES_Water, Wave, Ocean, Beach Waves, Small, Lapping - Epidemic Sound.mp3" },
@@ -62,11 +62,11 @@ const TRACKS: SleepTrack[] = [
     name: "잔잔한 빗소리",
     premium: false,
     variants: [
-      { name: "잎새 위 빗방울", file: "/sounds/ES_Rain, Vegetation, Medium Leaves, Drop, Tropical, Jungle - Epidemic Sound.mp3" },
+      { name: "열대 잎새 빗방울", file: "/sounds/ES_Rain, Vegetation, Medium Leaves, Drop, Tropical, Jungle - Epidemic Sound.mp3" },
       { name: "낮의 거센 빗줄기", file: "/sounds/ES_Rain, Vegetation, Rain, Daytime, Incoming Hard Rain, Baratang Island - Epidemic Sound.mp3" },
       { name: "오후의 강한 비", file: "/sounds/ES_Rain, Vegetation, Rain, Afternoon, Strong Rain, Baratang Island 02 - Epidemic Sound.mp3" },
       { name: "오후의 잔잔한 비와 새소리", file: "/sounds/ES_Rain, Vegetation, Rain, Afternoon, Gentle Rain, Birds, Baratang Island 02 - Epidemic Sound.mp3" },
-      { name: "낮 중간 빗줄기", file: "/sounds/ES_Rain, Vegetation, Rain, Daytime, Mid To Hard Rainfall, Havelock Island, Second 01 - Epidemic Sound.mp3" },
+      { name: "한낮 빗줄기", file: "/sounds/ES_Rain, Vegetation, Rain, Daytime, Mid To Hard Rainfall, Havelock Island, Second 01 - Epidemic Sound.mp3" },
       { name: "야자 잎에 떨어지는 비", file: "/sounds/ES_Rain, Vegetation, Rain, Daytime, Rain Drops Hitting Hard Palm Leaves, Havelock Island 02 - Epidemic Sound.mp3" },
     ],
   },
@@ -79,10 +79,10 @@ const TRACKS: SleepTrack[] = [
       { name: "맑은 밤의 귀뚜라미", file: "/sounds/ES_Ambience, Insect, Cricket, Night, Clean - Epidemic Sound.mp3" },
       { name: "밤 풀밭 귀뚜라미 1", file: "/sounds/ES_Ambience, Insect, Cricket, Night, Meadow, Jungle 01 - Epidemic Sound.mp3" },
       { name: "밤 풀밭 귀뚜라미 2", file: "/sounds/ES_Ambience, Insect, Cricket, Night, Meadow, Jungle 02 - Epidemic Sound.mp3" },
-      { name: "아마존 강가의 밤", file: "/sounds/ES_Ambience, Tropical, Amazonas, Night Close, River Crickets, Frogs Bird Sometimes - Epidemic Sound.mp3" },
-      { name: "열대우림의 밤 (Boobook)", file: "/sounds/ES_Ambience, Tropical, Rainforest, Night, Insects, Boobook, Middle Jarawa, Edge 02 - Epidemic Sound.mp3" },
+      { name: "열대 강가의 밤", file: "/sounds/ES_Ambience, Tropical, Amazonas, Night Close, River Crickets, Frogs Bird Sometimes - Epidemic Sound.mp3" },
+      { name: "열대우림의 밤", file: "/sounds/ES_Ambience, Tropical, Rainforest, Night, Insects, Boobook, Middle Jarawa, Edge 02 - Epidemic Sound.mp3" },
       { name: "신비한 열대의 밤", file: "/sounds/ES_Ambience, Tropical, Mysterious Night, Cricket - Epidemic Sound.mp3" },
-      { name: "열대우림 밤 (벌·야행성)", file: "/sounds/ES_Ambience, Tropical, Rainforest, Night, Nocturnal Animals, Bees, Background, Little Andaman 02 - Epidemic Sound.mp3" },
+      { name: "열대우림 밤 (야행성)", file: "/sounds/ES_Ambience, Tropical, Rainforest, Night, Nocturnal Animals, Bees, Background, Little Andaman 02 - Epidemic Sound.mp3" },
       { name: "밤바다 (멀리 거친 파도)", file: "/sounds/ES_Water, Surf, Seaside, Night, Distant Rough Sea, Crickets, Middle Andaman - Epidemic Sound.mp3" },
     ],
   },
@@ -108,7 +108,7 @@ const TRACKS: SleepTrack[] = [
     variants: [
       { name: "약한 비와 바람 부는 숲", file: "/sounds/ES_Ambience, Forest, Birds Chirping, Light Rain, Light Wind - Epidemic Sound.mp3" },
       { name: "낮 바람에 삐걱이는 나무", file: "/sounds/ES_Ambience, Forest, Wind, Daytime, Creaking Tree In Wind, Little Andaman - Epidemic Sound.mp3" },
-      { name: "발트 해안 숲 낮바람", file: "/sounds/ES_Ambience, Forest, Day, Wind In Trees, Birds Chirping, Calm, Baltic - Epidemic Sound.mp3" },
+      { name: "해안 숲의 낮바람", file: "/sounds/ES_Ambience, Forest, Day, Wind In Trees, Birds Chirping, Calm, Baltic - Epidemic Sound.mp3" },
       { name: "약한 비 내리는 열대 숲", file: "/sounds/ES_Ambience, Tropical, Slightly Raining, Forest - Epidemic Sound.mp3" },
       { name: "산속 숲, 멀고 가까운 강", file: "/sounds/ES_Ambience, Rural, Mountain Forest, Distant & Close River, Water Flow, Light Wind, Calm - Epidemic Sound.mp3" },
     ],
@@ -156,7 +156,7 @@ const TRACKS: SleepTrack[] = [
     name: "카페 ASMR",
     premium: true,
     variants: [
-      { name: "밴쿠버 카페", file: "/sounds/ES_Ambience, Restaurant & Bar, Coffee Shop, Spacious, Hum, Coffee Machines, Walla, Vancouver 01 - Epidemic Sound.mp3" },
+      { name: "아늑한 카페", file: "/sounds/ES_Ambience, Restaurant & Bar, Coffee Shop, Spacious, Hum, Coffee Machines, Walla, Vancouver 01 - Epidemic Sound.mp3" },
       { name: "카페 카운터 곁", file: "/sounds/ES_Ambience, Restaurant & Bar, Coffee Shop, Walla, By Counter, Cash Register - Epidemic Sound.mp3" },
     ],
   },
@@ -173,7 +173,7 @@ const TRACKS: SleepTrack[] = [
   {
     id: "storm",
     Icon: Zap,
-    name: "히말라야 폭풍우",
+    name: "산속 폭풍우",
     premium: true,
     variants: [
       { name: "천둥번개 04", file: "/sounds/ES_Weather, Storm, Strong, Storm 2, Lightning, High Mountains, Bhaleydhunga, Himalaya 04 - Epidemic Sound.mp3" },
@@ -465,6 +465,9 @@ const Sleep = () => {
             {t("sleep.title")}
           </h1>
           <p className="text-sm text-foreground/65 mt-1">{greeting}</p>
+          <span className="inline-block mt-2 text-[10px] text-primary/85 font-semibold bg-primary/10 rounded-full px-2.5 py-1">
+            {t("music.realRecording")}
+          </span>
         </div>
         <Moody size={120} emotion="calm" />
       </header>

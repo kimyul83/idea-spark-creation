@@ -14,7 +14,7 @@
     "label": "Sound Mix", "title": "Geluidsmix",
     "subtitle": "Vrij mixen · tik opnieuw voor andere versie",
     "selected": "{{count}} geselecteerd",
-    "nature": "Natuur", "frequencies": "Frequenties", "stopAll": "Alles stoppen",
+    "nature": "Natuur", "realRecording": "🌿 Echte natuuropnames", "frequencies": "Frequenties", "stopAll": "Alles stoppen",
     "kinds": "{{count}} varianten · tik"
   },
   "sleep": {

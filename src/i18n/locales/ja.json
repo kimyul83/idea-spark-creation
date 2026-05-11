@@ -20,7 +20,7 @@
   "music": {
     "label": "Sound Mix", "title": "サウンドミックス",
     "subtitle": "同時再生可・同じタイルをもう一度タップで別バージョン",
-    "selected": "{{count}}個", "nature": "自然", "frequencies": "周波数",
+    "selected": "{{count}}個", "nature": "自然", "realRecording": "🌿 本物の自然音録音", "frequencies": "周波数",
     "stopAll": "すべて停止", "kinds": "{{count}}種・タップで切替",
     "categories": {
       "waterfall": "滝", "rain": "雨音", "ocean": "海の波", "stream": "小川",

@@ -14,7 +14,7 @@
     "label": "Sound Mix", "title": "Campuran Suara",
     "subtitle": "Mix bebas · ketuk lagi untuk versi lain",
     "selected": "{{count}} dipilih",
-    "nature": "Alam", "frequencies": "Frekuensi", "stopAll": "Hentikan semua",
+    "nature": "Alam", "realRecording": "🌿 Rekaman alam asli", "frequencies": "Frekuensi", "stopAll": "Hentikan semua",
     "kinds": "{{count}} varian · ketuk"
   },
   "sleep": {

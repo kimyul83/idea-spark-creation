@@ -14,7 +14,7 @@
     "label": "Sound Mix", "title": "Ses Karışımı",
     "subtitle": "Özgürce karıştır · başka sürüm için tekrar dokun",
     "selected": "{{count}} seçili",
-    "nature": "Doğa", "frequencies": "Frekanslar", "stopAll": "Hepsini durdur",
+    "nature": "Doğa", "realRecording": "🌿 Gerçek doğa kayıtları", "frequencies": "Frekanslar", "stopAll": "Hepsini durdur",
     "kinds": "{{count}} varyant · dokun"
   },
   "sleep": {

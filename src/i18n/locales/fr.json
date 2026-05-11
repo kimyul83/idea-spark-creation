@@ -15,7 +15,7 @@
     "label": "Sound Mix", "title": "Mixage sonore",
     "subtitle": "Mélangez · re-touchez pour une autre version",
     "selected": "{{count}} sélectionnés",
-    "nature": "Nature", "frequencies": "Fréquences", "stopAll": "Tout arrêter",
+    "nature": "Nature", "realRecording": "🌿 Vrais enregistrements naturels", "frequencies": "Fréquences", "stopAll": "Tout arrêter",
     "kinds": "{{count}} variantes · touchez pour changer",
     "categories": { "waterfall": "Cascade", "rain": "Pluie", "ocean": "Vagues", "stream": "Ruisseau", "bird": "Oiseaux", "forest": "Forêt", "meadow": "Prairie", "wind": "Vent", "cave": "Grotte", "fire": "Feu de camp", "night": "Insectes nuit", "storm": "Orage", "cafe": "Café" },
     "freqs": { "brown": "Bruit brun", "pink": "Bruit rose", "white": "Bruit blanc" },

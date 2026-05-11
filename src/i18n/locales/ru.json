@@ -14,7 +14,7 @@
     "label": "Sound Mix", "title": "Звуковой микс",
     "subtitle": "Микс свободно · нажмите ещё раз для другой версии",
     "selected": "Выбрано {{count}}",
-    "nature": "Природа", "frequencies": "Частоты", "stopAll": "Остановить всё",
+    "nature": "Природа", "realRecording": "🌿 Подлинные записи природы", "frequencies": "Частоты", "stopAll": "Остановить всё",
     "kinds": "{{count}} вариантов · нажмите"
   },
   "sleep": {

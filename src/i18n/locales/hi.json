@@ -14,7 +14,7 @@
     "label": "Sound Mix", "title": "साउंड मिक्स",
     "subtitle": "मिक्स करें · दूसरा संस्करण के लिए फिर टैप करें",
     "selected": "{{count}} चयनित",
-    "nature": "प्रकृति", "frequencies": "आवृत्तियाँ", "stopAll": "सब रोकें",
+    "nature": "प्रकृति", "realRecording": "🌿 असली प्रकृति की रिकॉर्डिंग", "frequencies": "आवृत्तियाँ", "stopAll": "सब रोकें",
     "kinds": "{{count}} प्रकार · टैप करें"
   },
   "sleep": {

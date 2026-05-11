@@ -20,7 +20,7 @@
   "music": {
     "label": "Sound Mix", "title": "声音混音",
     "subtitle": "可同时播放·再次点击同一格切换版本",
-    "selected": "已选 {{count}}", "nature": "自然", "frequencies": "频率",
+    "selected": "已选 {{count}}", "nature": "自然", "realRecording": "🌿 真实自然录音", "frequencies": "频率",
     "stopAll": "全部停止", "kinds": "{{count}}种·点击切换",
     "categories": {
       "waterfall": "瀑布", "rain": "雨声", "ocean": "海浪", "stream": "小溪",

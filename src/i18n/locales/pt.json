@@ -14,7 +14,7 @@
     "label": "Sound Mix", "title": "Mistura sonora",
     "subtitle": "Misture · toque novamente para outra versão",
     "selected": "{{count}} selecionados",
-    "nature": "Natureza", "frequencies": "Frequências", "stopAll": "Parar tudo",
+    "nature": "Natureza", "realRecording": "🌿 Gravações reais da natureza", "frequencies": "Frequências", "stopAll": "Parar tudo",
     "kinds": "{{count}} variações · toque"
   },
   "sleep": {

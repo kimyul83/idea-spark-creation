@@ -14,7 +14,7 @@
     "label": "Sound Mix", "title": "Trộn Âm Thanh",
     "subtitle": "Trộn tự do · chạm lại để đổi phiên bản",
     "selected": "Đã chọn {{count}}",
-    "nature": "Thiên nhiên", "frequencies": "Tần số", "stopAll": "Dừng tất cả",
+    "nature": "Thiên nhiên", "realRecording": "🌿 Âm thanh thiên nhiên thực", "frequencies": "Tần số", "stopAll": "Dừng tất cả",
     "kinds": "{{count}} biến thể · chạm"
   },
   "sleep": {

@@ -55,12 +55,12 @@ const NATURE: NatureItem[] = [
     id: "rain", label: "빗소리", tag: "Pink Noise · Melatonin · 수면",
     icon: CloudRain,
     variants: [
-      { name: "잎새 위 빗방울 (열대)", file: "/sounds/ES_Rain, Vegetation, Medium Leaves, Drop, Tropical, Jungle - Epidemic Sound.mp3" },
+      { name: "열대 잎새 빗방울", file: "/sounds/ES_Rain, Vegetation, Medium Leaves, Drop, Tropical, Jungle - Epidemic Sound.mp3" },
       { name: "낮의 거센 빗줄기", file: "/sounds/ES_Rain, Vegetation, Rain, Daytime, Incoming Hard Rain, Baratang Island - Epidemic Sound.mp3" },
-      { name: "오후 강한 비", file: "/sounds/ES_Rain, Vegetation, Rain, Afternoon, Strong Rain, Baratang Island 02 - Epidemic Sound.mp3" },
+      { name: "오후의 강한 비", file: "/sounds/ES_Rain, Vegetation, Rain, Afternoon, Strong Rain, Baratang Island 02 - Epidemic Sound.mp3" },
       { name: "오후 잔잔한 비와 새소리", file: "/sounds/ES_Rain, Vegetation, Rain, Afternoon, Gentle Rain, Birds, Baratang Island 02 - Epidemic Sound.mp3" },
-      { name: "낮 중간 빗줄기 1", file: "/sounds/ES_Rain, Vegetation, Rain, Daytime, Mid To Hard Rainfall, Havelock Island, Second 01 - Epidemic Sound.mp3" },
-      { name: "낮 중간 빗줄기 2", file: "/sounds/ES_Rain, Vegetation, Rain, Daytime, Mid To Hard Rainfall, Havelock Island, Second 02 - Epidemic Sound.mp3" },
+      { name: "한낮 빗줄기 1", file: "/sounds/ES_Rain, Vegetation, Rain, Daytime, Mid To Hard Rainfall, Havelock Island, Second 01 - Epidemic Sound.mp3" },
+      { name: "한낮 빗줄기 2", file: "/sounds/ES_Rain, Vegetation, Rain, Daytime, Mid To Hard Rainfall, Havelock Island, Second 02 - Epidemic Sound.mp3" },
       { name: "야자 잎에 떨어지는 비", file: "/sounds/ES_Rain, Vegetation, Rain, Daytime, Rain Drops Hitting Hard Palm Leaves, Havelock Island 02 - Epidemic Sound.mp3" },
     ],
   },
@@ -76,8 +76,8 @@ const NATURE: NatureItem[] = [
       { name: "해변의 작은 파도", file: "/sounds/ES_Water, Wave, Ocean, Beach Waves, Small, Lapping - Epidemic Sound.mp3" },
       { name: "넓은 바다의 중간 파도", file: "/sounds/ES_Water, Wave, Ocean, Medium Waves, Wind - Epidemic Sound.mp3" },
       { name: "잔잔한 작은 파도 움직임", file: "/sounds/ES_Water, Wave, Small Waves, Movements - Epidemic Sound.mp3" },
-      { name: "망그로브 해안", file: "/sounds/ES_Water, Wave, Seaside, Waves, Inside, Mangroves, South Andaman - Epidemic Sound.mp3" },
-      { name: "가깝고 먼 파도 (스웨덴)", file: "/sounds/ES_Water, Wave, Small Waves Close, Bigger Distant Waves, 5 Meters From Ocean, Halmstad, Sweden - Epidemic Sound.mp3" },
+      { name: "맹그로브 해안", file: "/sounds/ES_Water, Wave, Seaside, Waves, Inside, Mangroves, South Andaman - Epidemic Sound.mp3" },
+      { name: "다층의 파도", file: "/sounds/ES_Water, Wave, Small Waves Close, Bigger Distant Waves, 5 Meters From Ocean, Halmstad, Sweden - Epidemic Sound.mp3" },
       { name: "바위를 쓸고 가는 파도", file: "/sounds/ES_Water, Wave, Waves Sweeping Over Rocks, Calm, Lapping, Scandinavian Archipelago - Epidemic Sound.mp3" },
     ],
   },
@@ -98,9 +98,9 @@ const NATURE: NatureItem[] = [
     icon: Bird,
     variants: [
       { name: "여름 침엽수 숲의 새들", file: "/sounds/ES_Ambience, Birdsong, Chaffinch, Blackbird, Black Woodpecker, Coniferous Forest, Summer, Afternoon - Epidemic Sound.mp3" },
-      { name: "새벽 열대우림 (하벨록)", file: "/sounds/ES_Birds, Songbird, Rainforest, Dawn, Pied, Imperial, Pigeon, Ambience, Havelock Island - Epidemic Sound.mp3" },
+      { name: "새벽 열대우림", file: "/sounds/ES_Birds, Songbird, Rainforest, Dawn, Pied, Imperial, Pigeon, Ambience, Havelock Island - Epidemic Sound.mp3" },
       { name: "오후 열대우림의 새와 곤충", file: "/sounds/ES_Birds, Tropical, Rainforest, Afternoon, Singing Bird, Insects, Little Andaman 02 - Epidemic Sound.mp3" },
-      { name: "아침의 풍부한 새소리 (Drongo)", file: "/sounds/ES_Birds, Tropical, Rainforest, Morning, Rich, Bird, Drongo, Baratang Island 01 - Epidemic Sound.mp3" },
+      { name: "아침의 풍부한 새소리", file: "/sounds/ES_Birds, Tropical, Rainforest, Morning, Rich, Bird, Drongo, Baratang Island 01 - Epidemic Sound.mp3" },
       { name: "아침 매미와 새소리", file: "/sounds/ES_Birds, Tropical, Rainforest, Morning, Cicadas, Singing Bird, Little Andaman 01 - Epidemic Sound.mp3" },
     ],
   },
@@ -109,10 +109,10 @@ const NATURE: NatureItem[] = [
     icon: Trees,
     variants: [
       { name: "약한 비와 바람 부는 숲", file: "/sounds/ES_Ambience, Forest, Birds Chirping, Light Rain, Light Wind - Epidemic Sound.mp3" },
-      { name: "노래하는 숲의 새 (멀리 도시)", file: "/sounds/ES_Ambience, Forest, Singing Birds, Distant Traffic - Epidemic Sound.mp3" },
+      { name: "노래하는 숲의 새", file: "/sounds/ES_Ambience, Forest, Singing Birds, Distant Traffic - Epidemic Sound.mp3" },
       { name: "낮 바람에 삐걱이는 나무", file: "/sounds/ES_Ambience, Forest, Wind, Daytime, Creaking Tree In Wind, Little Andaman - Epidemic Sound.mp3" },
-      { name: "발트 해안 숲 낮바람", file: "/sounds/ES_Ambience, Forest, Day, Wind In Trees, Birds Chirping, Calm, Baltic - Epidemic Sound.mp3" },
-      { name: "우크라이나 숲 아침", file: "/sounds/ES_Ambience, Forest, Ukraine, Morning, Birds, Nature, Trees, Calm, Breeze, Wildlife - Epidemic Sound.mp3" },
+      { name: "해안 숲의 낮바람", file: "/sounds/ES_Ambience, Forest, Day, Wind In Trees, Birds Chirping, Calm, Baltic - Epidemic Sound.mp3" },
+      { name: "이른 아침의 숲", file: "/sounds/ES_Ambience, Forest, Ukraine, Morning, Birds, Nature, Trees, Calm, Breeze, Wildlife - Epidemic Sound.mp3" },
       { name: "약한 비 내리는 열대 숲", file: "/sounds/ES_Ambience, Tropical, Slightly Raining, Forest - Epidemic Sound.mp3" },
       { name: "산속 숲, 멀고 가까운 강", file: "/sounds/ES_Ambience, Rural, Mountain Forest, Distant & Close River, Water Flow, Light Wind, Calm - Epidemic Sound.mp3" },
       { name: "산의 고요, 먼 강물 소리", file: "/sounds/ES_Ambience, Rural, Mountain, Quiet, Distant River, Light Wind, Calm - Epidemic Sound.mp3" },
@@ -124,9 +124,9 @@ const NATURE: NatureItem[] = [
     variants: [
       { name: "여름 풀밭의 새와 잎사귀", file: "/sounds/ES_Ambience, Birdsong, Meadow, Summer, Birds Sing, Wind, Light Rustle In Trees - Epidemic Sound.mp3" },
       { name: "풀밭의 가까운 새와 곤충", file: "/sounds/ES_Ambience, Grassland, Bird Chirping Close, Insects, Flies 02 - Epidemic Sound.mp3" },
-      { name: "스위스 작은 마을의 풀밭", file: "/sounds/ES_Ambience, Grassland, Field, Outisde Small City, Fribourg, Switzerland - Epidemic Sound.mp3" },
-      { name: "도미니카 시골의 들판", file: "/sounds/ES_Ambience, Rural, Countryside, Field, Horses Eating Grass, Insects, Distant Loud Traffic, Cotui, Dominican Republic - Epidemic Sound.mp3" },
-      { name: "이탈리아 봄날의 자연공원", file: "/sounds/ES_Ambience, Rural, Spring Day, Italy, Nature Park, Birds, High Activity 02 - Epidemic Sound.mp3" },
+      { name: "작은 마을의 풀밭", file: "/sounds/ES_Ambience, Grassland, Field, Outisde Small City, Fribourg, Switzerland - Epidemic Sound.mp3" },
+      { name: "들판의 말과 곤충", file: "/sounds/ES_Ambience, Rural, Countryside, Field, Horses Eating Grass, Insects, Distant Loud Traffic, Cotui, Dominican Republic - Epidemic Sound.mp3" },
+      { name: "봄날의 자연공원", file: "/sounds/ES_Ambience, Rural, Spring Day, Italy, Nature Park, Birds, High Activity 02 - Epidemic Sound.mp3" },
     ],
   },
   {
@@ -143,9 +143,9 @@ const NATURE: NatureItem[] = [
     id: "cave", label: "동굴", tag: "Delta · ASMR · 물방울",
     icon: Mountain,
     variants: [
-      { name: "동굴의 물방울 흐름 02", file: "/sounds/ES_Ambience, Underground, Cave, Water, Dripping, Flowing 02 - Epidemic Sound.mp3" },
-      { name: "동굴의 물방울 흐름 03", file: "/sounds/ES_Ambience, Underground, Cave, Water, Dripping, Flowing 03 - Epidemic Sound.mp3" },
-      { name: "동굴의 깊은 물방울 06", file: "/sounds/ES_Ambience, Underground, Cave, Water, Dripping, Flowing 06 - Epidemic Sound.mp3" },
+      { name: "동굴의 물방울 1", file: "/sounds/ES_Ambience, Underground, Cave, Water, Dripping, Flowing 02 - Epidemic Sound.mp3" },
+      { name: "동굴의 물방울 2", file: "/sounds/ES_Ambience, Underground, Cave, Water, Dripping, Flowing 03 - Epidemic Sound.mp3" },
+      { name: "깊은 동굴의 물방울", file: "/sounds/ES_Ambience, Underground, Cave, Water, Dripping, Flowing 06 - Epidemic Sound.mp3" },
       { name: "동굴 강물과 바람구멍", file: "/sounds/ES_Ambience, Underground, Cave, Water, River, Wind Hole - Epidemic Sound.mp3" },
     ],
   },
@@ -153,13 +153,13 @@ const NATURE: NatureItem[] = [
     id: "fire", label: "모닥불", tag: "60Hz · Oxytocin · Serotonin",
     icon: Flame,
     variants: [
-      { name: "타닥거리는 모닥불 (가까이)", file: "/sounds/ES_Fire, Burning, Bonfire, Moderate Size, Close, Crackling - Epidemic Sound.mp3" },
-      { name: "잔잔한 장작 모닥불 (Loop)", file: "/sounds/ES_Fire, Burning, Burning Wood, Bonfire, Crispy, Soft Intensity, Loop - Epidemic Sound.mp3" },
+      { name: "타닥거리는 모닥불", file: "/sounds/ES_Fire, Burning, Bonfire, Moderate Size, Close, Crackling - Epidemic Sound.mp3" },
+      { name: "잔잔한 장작 모닥불", file: "/sounds/ES_Fire, Burning, Burning Wood, Bonfire, Crispy, Soft Intensity, Loop - Epidemic Sound.mp3" },
       { name: "중간 세기의 장작불", file: "/sounds/ES_Fire, Burning, Wood, Crispy, Medium Intensity - Epidemic Sound.mp3" },
-      { name: "유리벽 안 장작불 (가까이)", file: "/sounds/ES_Fire, Burning, Fireplace, Glass Walls, Wood Burning Calm, Close Up - Epidemic Sound.mp3" },
+      { name: "유리벽 안 장작불", file: "/sounds/ES_Fire, Burning, Fireplace, Glass Walls, Wood Burning Calm, Close Up - Epidemic Sound.mp3" },
       { name: "해변 야외 모닥불 + 갈매기", file: "/sounds/ES_Fire, Burning, Fireplace, Outdoor, Seaside, Plank Firewood Burning Medium, Heavy Crackling, Seagulls, Birds In Background - Epidemic Sound.mp3" },
       { name: "사우나의 작은 장작불", file: "/sounds/ES_Fire, Crackle, Fireplace In Sauna, Small, Thin, Bright - Epidemic Sound.mp3" },
-      { name: "실내 벽난로 (낮은 세기)", file: "/sounds/ES_Fire, Crackle, Fireplace, Indoor, Open, Crackling, Transient, Low Intensity - Epidemic Sound.mp3" },
+      { name: "실내 벽난로 (잔잔)", file: "/sounds/ES_Fire, Crackle, Fireplace, Indoor, Open, Crackling, Transient, Low Intensity - Epidemic Sound.mp3" },
     ],
   },
   {
@@ -169,10 +169,10 @@ const NATURE: NatureItem[] = [
       { name: "맑은 밤의 귀뚜라미", file: "/sounds/ES_Ambience, Insect, Cricket, Night, Clean - Epidemic Sound.mp3" },
       { name: "밤 풀밭 귀뚜라미 1", file: "/sounds/ES_Ambience, Insect, Cricket, Night, Meadow, Jungle 01 - Epidemic Sound.mp3" },
       { name: "밤 풀밭 귀뚜라미 2", file: "/sounds/ES_Ambience, Insect, Cricket, Night, Meadow, Jungle 02 - Epidemic Sound.mp3" },
-      { name: "아마존 강가의 밤", file: "/sounds/ES_Ambience, Tropical, Amazonas, Night Close, River Crickets, Frogs Bird Sometimes - Epidemic Sound.mp3" },
-      { name: "신비한 열대의 밤 (귀뚜라미)", file: "/sounds/ES_Ambience, Tropical, Mysterious Night, Cricket - Epidemic Sound.mp3" },
-      { name: "열대우림의 밤 (Boobook)", file: "/sounds/ES_Ambience, Tropical, Rainforest, Night, Insects, Boobook, Middle Jarawa, Edge 02 - Epidemic Sound.mp3" },
-      { name: "열대우림 밤 (벌·야행성)", file: "/sounds/ES_Ambience, Tropical, Rainforest, Night, Nocturnal Animals, Bees, Background, Little Andaman 02 - Epidemic Sound.mp3" },
+      { name: "열대 강가의 밤", file: "/sounds/ES_Ambience, Tropical, Amazonas, Night Close, River Crickets, Frogs Bird Sometimes - Epidemic Sound.mp3" },
+      { name: "신비한 열대의 밤", file: "/sounds/ES_Ambience, Tropical, Mysterious Night, Cricket - Epidemic Sound.mp3" },
+      { name: "열대우림의 밤", file: "/sounds/ES_Ambience, Tropical, Rainforest, Night, Insects, Boobook, Middle Jarawa, Edge 02 - Epidemic Sound.mp3" },
+      { name: "열대우림 밤 (야행성)", file: "/sounds/ES_Ambience, Tropical, Rainforest, Night, Nocturnal Animals, Bees, Background, Little Andaman 02 - Epidemic Sound.mp3" },
       { name: "밤바다 (멀리 거친 파도)", file: "/sounds/ES_Water, Surf, Seaside, Night, Distant Rough Sea, Crickets, Middle Andaman - Epidemic Sound.mp3" },
     ],
   },
@@ -180,19 +180,19 @@ const NATURE: NatureItem[] = [
     id: "storm", label: "폭풍우", tag: "Pink Noise · Theta · 깊은수면",
     icon: Zap,
     variants: [
-      { name: "히말라야 천둥번개 04", file: "/sounds/ES_Weather, Storm, Strong, Storm 2, Lightning, High Mountains, Bhaleydhunga, Himalaya 04 - Epidemic Sound.mp3" },
-      { name: "히말라야 천둥번개 01", file: "/sounds/ES_Weather, Storm, Strong, Storm 2, Lightning, High Mountains, Bhaleydhunga, Himalaya 01 - Epidemic Sound.mp3" },
-      { name: "히말라야 천둥번개 03", file: "/sounds/ES_Weather, Storm, Strong, Storm 2, Lightning, High Mountains, Bhaleydhunga, Himalaya 03 - Epidemic Sound.mp3" },
-      { name: "히말라야 강한 폭풍 01", file: "/sounds/ES_Weather, Storm, Strong, Storm 3, Lightning, High Mountains, Bhaleydhunga, Himalaya 01 - Epidemic Sound.mp3" },
-      { name: "히말라야 강한 폭풍 03", file: "/sounds/ES_Weather, Storm, Strong, Storm 3, Lightning, High Mountains, Bhaleydhunga, Himalaya 03 - Epidemic Sound.mp3" },
+      { name: "산속 천둥번개 1", file: "/sounds/ES_Weather, Storm, Strong, Storm 2, Lightning, High Mountains, Bhaleydhunga, Himalaya 04 - Epidemic Sound.mp3" },
+      { name: "산속 천둥번개 2", file: "/sounds/ES_Weather, Storm, Strong, Storm 2, Lightning, High Mountains, Bhaleydhunga, Himalaya 01 - Epidemic Sound.mp3" },
+      { name: "산속 천둥번개 3", file: "/sounds/ES_Weather, Storm, Strong, Storm 2, Lightning, High Mountains, Bhaleydhunga, Himalaya 03 - Epidemic Sound.mp3" },
+      { name: "강한 산속 폭풍 1", file: "/sounds/ES_Weather, Storm, Strong, Storm 3, Lightning, High Mountains, Bhaleydhunga, Himalaya 01 - Epidemic Sound.mp3" },
+      { name: "강한 산속 폭풍 2", file: "/sounds/ES_Weather, Storm, Strong, Storm 3, Lightning, High Mountains, Bhaleydhunga, Himalaya 03 - Epidemic Sound.mp3" },
     ],
   },
   {
     id: "cafe", label: "카페", tag: "Brown Noise · Dopamine · 집중",
     icon: Coffee,
     variants: [
-      { name: "밴쿠버 카페의 아늑함", file: "/sounds/ES_Ambience, Restaurant & Bar, Coffee Shop, Spacious, Hum, Coffee Machines, Walla, Vancouver 01 - Epidemic Sound.mp3" },
-      { name: "카페 카운터 곁 (계산대)", file: "/sounds/ES_Ambience, Restaurant & Bar, Coffee Shop, Walla, By Counter, Cash Register - Epidemic Sound.mp3" },
+      { name: "아늑한 카페", file: "/sounds/ES_Ambience, Restaurant & Bar, Coffee Shop, Spacious, Hum, Coffee Machines, Walla, Vancouver 01 - Epidemic Sound.mp3" },
+      { name: "카페 카운터 곁", file: "/sounds/ES_Ambience, Restaurant & Bar, Coffee Shop, Walla, By Counter, Cash Register - Epidemic Sound.mp3" },
     ],
   },
 ];
@@ -455,9 +455,12 @@ const Music = () => {
       </div>
 
       <section className="mt-7">
-        <h2 className="section-title mb-3 px-1">
-          {t("music.nature")}
-        </h2>
+        <div className="flex items-center justify-between mb-3 px-1">
+          <h2 className="section-title">{t("music.nature")}</h2>
+          <span className="text-[10px] text-primary/85 font-semibold bg-primary/10 rounded-full px-2.5 py-1">
+            {t("music.realRecording")}
+          </span>
+        </div>
         <div className="grid grid-cols-3 gap-3">
           {NATURE.map((item) => (
             <NatureTile

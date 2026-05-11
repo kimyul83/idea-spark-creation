@@ -14,7 +14,7 @@
     "label": "Sound Mix", "title": "مزج الأصوات",
     "subtitle": "امزج بحرية · المس مرة أخرى لنسخة أخرى",
     "selected": "محدد {{count}}",
-    "nature": "الطبيعة", "frequencies": "الترددات", "stopAll": "إيقاف الكل",
+    "nature": "الطبيعة", "realRecording": "🌿 تسجيلات طبيعية حقيقية", "frequencies": "الترددات", "stopAll": "إيقاف الكل",
     "kinds": "{{count}} أنواع · المس للتبديل"
   },
   "sleep": {

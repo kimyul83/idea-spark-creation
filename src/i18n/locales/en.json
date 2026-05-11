@@ -27,7 +27,7 @@
     "label": "Sound Mix", "title": "Sound Mix",
     "subtitle": "Mix freely · tap a tile again for another version",
     "selected": "{{count}} selected",
-    "nature": "Nature", "frequencies": "Frequencies", "stopAll": "Stop All",
+    "nature": "Nature", "realRecording": "🌿 Real nature recordings", "frequencies": "Frequencies", "stopAll": "Stop All",
     "kinds": "{{count}} variants · tap to switch",
     "categories": {
       "waterfall": "Waterfall", "rain": "Rain", "ocean": "Ocean Waves",

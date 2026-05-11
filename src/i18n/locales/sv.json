@@ -14,7 +14,7 @@
     "label": "Sound Mix", "title": "Ljudmix",
     "subtitle": "Mixa fritt · tryck igen för annan version",
     "selected": "{{count}} valda",
-    "nature": "Natur", "frequencies": "Frekvenser", "stopAll": "Stoppa allt",
+    "nature": "Natur", "realRecording": "🌿 Äkta naturinspelningar", "frequencies": "Frekvenser", "stopAll": "Stoppa allt",
     "kinds": "{{count}} varianter · tryck"
   },
   "sleep": {

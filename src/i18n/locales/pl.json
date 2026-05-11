@@ -14,7 +14,7 @@
     "label": "Sound Mix", "title": "Mieszanka dźwięków",
     "subtitle": "Mieszaj · dotknij ponownie dla innej wersji",
     "selected": "Wybrano {{count}}",
-    "nature": "Natura", "frequencies": "Częstotliwości", "stopAll": "Zatrzymaj wszystko",
+    "nature": "Natura", "realRecording": "🌿 Prawdziwe nagrania natury", "frequencies": "Częstotliwości", "stopAll": "Zatrzymaj wszystko",
     "kinds": "{{count}} wariantów · dotknij"
   },
   "sleep": {

@@ -73,50 +73,33 @@ class AudioEngine {
     this.tracks.set(id, { kind: "howl", howl, volume });
   }
 
-  // ─── Pure tone — OfflineAudioContext 로 10초 WAV 렌더링 후 Howler html5 재생.
-  //     이유: 자연 음악(Howler html5 = HTMLAudioElement) 과 같은 audio session 묶여
-  //     iOS 백그라운드에서 함께 살아남음. OscillatorNode 별도 ctx 면 백그라운드 죽음.
+  // ─── Pure tone — 정적 WAV 파일 (public/sounds/frequencies/) Howler html5 재생.
+  //     자연 음악과 같은 HTMLAudioElement 경로 → 같은 audio session 묶여
+  //     iOS 백그라운드에서 함께 살아남음. WAV blob 보다 안정적 (정적 URL).
   playTone(id: string, frequencyHz: number, volume = 0.15) {
     if (this.tracks.has(id)) return;
-    // placeholder — 비동기 렌더링 중에도 isPlaying 일관
-    this.tracks.set(id, { kind: "synth", nodes: [], gain: null as any, volume });
+    const file =
+      frequencyHz === 432 ? "tone-432.wav" :
+      frequencyHz === 528 ? "tone-528.wav" :
+      frequencyHz === 40  ? "tone-40.wav"  : null;
+    if (!file) return;  // 지원되지 않는 주파수
+    this.playStaticFile(id, `/sounds/frequencies/${file}`, volume, 3000);
+  }
 
-    const sampleRate = 44100;
-    const seconds = 10;
-    const offline = new OfflineAudioContext(1, sampleRate * seconds, sampleRate);
-    const osc = offline.createOscillator();
-    const filter = offline.createBiquadFilter();
-    osc.type = "sine";
-    osc.frequency.value = frequencyHz;
-    osc.detune.value = -3;
-    filter.type = "lowpass";
-    filter.frequency.value = Math.max(800, frequencyHz * 4);
-    filter.Q.value = 0.6;
-    osc.connect(filter).connect(offline.destination);
-    osc.start(0);
-    osc.stop(seconds);
-
-    offline.startRendering().then((rendered) => {
-      // 중간에 stop 됐는지 확인
-      if (!this.tracks.has(id)) return;
-      const url = URL.createObjectURL(AudioEngine.audioBufferToWavBlob(rendered));
-      const howl = new Howl({
-        src: [url],
-        format: ["wav"],
-        loop: true,
-        html5: true,
-        volume: 0,
-        onloaderror: () => { this.tracks.delete(id); URL.revokeObjectURL(url); },
-        onplayerror: () => { this.tracks.delete(id); URL.revokeObjectURL(url); },
-      });
-      howl.play();
-      howl.fade(0, volume, 3000);  // 3초 페이드인
-      this.tracks.set(id, {
-        kind: "howl", howl, volume,
-      });
-      // 정리 시점에 blob URL 도 해제
-      (howl as any).__objectUrl = url;
-    }).catch(() => this.tracks.delete(id));
+  /** 정적 WAV 파일 재생 — Howler html5 + 페이드인 */
+  private playStaticFile(id: string, url: string, volume: number, fadeInMs: number) {
+    const howl = new Howl({
+      src: [url],
+      format: ["wav"],
+      loop: true,
+      html5: true,
+      volume: 0,
+      onloaderror: () => this.tracks.delete(id),
+      onplayerror: () => this.tracks.delete(id),
+    });
+    howl.play();
+    howl.fade(0, volume, fadeInMs);
+    this.tracks.set(id, { kind: "howl", howl, volume });
   }
 
   // ─── WAV blob 인코더 — AudioBuffer 를 HTMLAudioElement 가 재생 가능한 형태로 ─────
@@ -184,42 +167,11 @@ class AudioEngine {
     return buffer;
   }
 
-  // 노이즈 — OfflineAudioContext 로 10초 lowpass-filtered noise 렌더링 후 Howler 재생.
-  // 자연 음악과 같은 audio session 묶여 iOS 백그라운드 안 죽음.
+  // 노이즈 — 정적 WAV 파일 (public/sounds/frequencies/) Howler html5 재생.
+  // 자연 음악과 같은 audio session → iOS 백그라운드 함께 살아남음.
   playNoise(id: string, type: "white" | "pink" | "brown", volume = 0.2) {
     if (this.tracks.has(id)) return;
-    this.tracks.set(id, { kind: "synth", nodes: [], gain: null as any, volume });
-
-    const sampleRate = 44100;
-    const seconds = 10;
-    const offline = new OfflineAudioContext(1, sampleRate * seconds, sampleRate);
-    const source = offline.createBufferSource();
-    source.buffer = this.makeNoiseBuffer(seconds, type, offline);
-    source.loop = false;
-    const filter = offline.createBiquadFilter();
-    filter.type = "lowpass";
-    filter.frequency.value = type === "white" ? 6000 : type === "pink" ? 8000 : 4000;
-    filter.Q.value = 0.6;
-    source.connect(filter).connect(offline.destination);
-    source.start(0);
-
-    offline.startRendering().then((rendered) => {
-      if (!this.tracks.has(id)) return;
-      const url = URL.createObjectURL(AudioEngine.audioBufferToWavBlob(rendered));
-      const howl = new Howl({
-        src: [url],
-        format: ["wav"],
-        loop: true,
-        html5: true,
-        volume: 0,
-        onloaderror: () => { this.tracks.delete(id); URL.revokeObjectURL(url); },
-        onplayerror: () => { this.tracks.delete(id); URL.revokeObjectURL(url); },
-      });
-      howl.play();
-      howl.fade(0, volume, 2500);
-      this.tracks.set(id, { kind: "howl", howl, volume });
-      (howl as any).__objectUrl = url;
-    }).catch(() => this.tracks.delete(id));
+    this.playStaticFile(id, `/sounds/frequencies/${type}-noise.wav`, volume, 2500);
   }
 
   // ─── Real CC0 nature recordings ──────────

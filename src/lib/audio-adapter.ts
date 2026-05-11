@@ -36,6 +36,24 @@ try {
 }
 const isNative = Capacitor.isNativePlatform();
 
+// iOS WKWebView: 백그라운드 진입 시 HTMLAudioElement 가 paused 상태로 변하고,
+// 복귀 시 자동 resume 안 함. visibilitychange 에 howl.play() 호출만 (ctx 건드리지 않음).
+// 안전: stop 트리거 0, ctx 공유 0 — 단순 재생 명령만.
+if (typeof window !== "undefined") {
+  const resumeAllTracks = () => {
+    tracks.forEach((howl) => {
+      try {
+        if (!howl.playing()) howl.play();
+      } catch {}
+    });
+  };
+  document.addEventListener("visibilitychange", () => {
+    if (!document.hidden) resumeAllTracks();
+  });
+  window.addEventListener("pageshow", resumeAllTracks);
+  window.addEventListener("focus", resumeAllTracks);
+}
+
 // 웹 폴백용 Howl 인스턴스
 const howls = new Map<string, Howl>();
 

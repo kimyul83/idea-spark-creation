@@ -36,6 +36,25 @@ try {
 }
 const isNative = Capacitor.isNativePlatform();
 
+// iOS 백그라운드 → 포그라운드 복귀 시 AudioContext 가 suspended/interrupted 로 남아있어
+// 주파수/노이즈가 무음으로 멈춰있는 경우 대비 — 강제 resume.
+// (자연 음악은 Howler 가 자체 unlock 처리하지만 audioEngine 의 sources 는 안 됨)
+if (typeof window !== "undefined") {
+  const resumeAllContexts = () => {
+    try {
+      const Howler = (window as any).Howler;
+      if (Howler?.ctx && Howler.ctx.state !== "closed" && Howler.ctx.state !== "running") {
+        Howler.ctx.resume().catch(() => {});
+      }
+    } catch {}
+  };
+  document.addEventListener("visibilitychange", () => {
+    if (!document.hidden) resumeAllContexts();
+  });
+  window.addEventListener("pageshow", resumeAllContexts);
+  window.addEventListener("focus", resumeAllContexts);
+}
+
 // 웹 폴백용 Howl 인스턴스
 const howls = new Map<string, Howl>();
 

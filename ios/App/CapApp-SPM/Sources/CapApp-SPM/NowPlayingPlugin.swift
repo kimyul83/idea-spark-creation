@@ -62,7 +62,19 @@ public class NowPlayingPlugin: CAPPlugin, CAPBridgedPlugin {
     }
 
     @objc func clear(_ call: CAPPluginCall) {
+        // 1) 재생 상태 stopped 마킹 → 위젯이 paused 상태로 남는 거 방지
+        var info = MPNowPlayingInfoCenter.default().nowPlayingInfo ?? [:]
+        info[MPNowPlayingInfoPropertyPlaybackRate] = 0.0
+        MPNowPlayingInfoCenter.default().nowPlayingInfo = info
+        // 2) 정보 nil — 잠금화면 위젯 정보 제거
         MPNowPlayingInfoCenter.default().nowPlayingInfo = nil
+        // 3) AVAudioSession deactivate — session active 면 위젯이 그대로 anchored 됨
+        //    .notifyOthersOnDeactivation → 다른 음악 앱에 양보 (예의)
+        do {
+            try AVAudioSession.sharedInstance().setActive(false, options: .notifyOthersOnDeactivation)
+        } catch {
+            print("[NowPlaying] audio session deactivate 실패: \(error)")
+        }
         call.resolve()
     }
 

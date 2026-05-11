@@ -36,33 +36,13 @@ try {
 }
 const isNative = Capacitor.isNativePlatform();
 
-// iOS 백그라운드 → 포그라운드 복귀 시 AudioContext 가 suspended/interrupted 로 남아있어
-// 주파수/노이즈가 무음으로 멈춰있는 경우 대비 — 강제 resume.
-// (자연 음악은 Howler 가 자체 unlock 처리하지만 audioEngine 의 sources 는 안 됨)
-if (typeof window !== "undefined") {
-  const resumeAllContexts = () => {
-    try {
-      const Howler = (window as any).Howler;
-      if (Howler?.ctx && Howler.ctx.state !== "closed" && Howler.ctx.state !== "running") {
-        Howler.ctx.resume().catch(() => {});
-      }
-    } catch {}
-  };
-  document.addEventListener("visibilitychange", () => {
-    if (!document.hidden) resumeAllContexts();
-  });
-  window.addEventListener("pageshow", resumeAllContexts);
-  window.addEventListener("focus", resumeAllContexts);
-}
-
 // 웹 폴백용 Howl 인스턴스
 const howls = new Map<string, Howl>();
 
-/** Web Audio API (html5:false) 기반 — sample-accurate gapless loop.
- *  - AudioBufferSourceNode.loop = true → loop 경계에 진짜 갭 0
- *  - 4개 동시 재생해도 갭 시점 어긋남 없음 (모든 트랙이 끊김 없이 이어짐)
- *  - AVAudioSession.playback 활성화돼있어서 백그라운드도 살아있음
- *  - 메모리: 1분짜리 stereo 48k 16bit ≈ 11MB / 트랙. 4개 = ~44MB (iOS 여유)
+/** html5:true (HTMLAudioElement) — iOS 백그라운드 안정 우선.
+ *  - 다른 앱으로 가도 / 화면 꺼도 / 복귀해도 음악 살아있음
+ *  - loop 경계에 50-100ms 갭 (자연 사운드라 거의 안 거슬림)
+ *  - 진짜 갭 0 은 v1.1 에서 native AVAudioPlayer 플러그인으로 해결
  */
 const tracks = new Map<string, Howl>();
 
@@ -74,22 +54,13 @@ const playWithHowler = (opts: PlayOpts) => {
   }
   const howl = new Howl({
     src: [opts.url],
-    html5: false,                  // ← Web Audio API (sample-accurate gapless)
-    loop: opts.loop ?? true,       // ← AudioBufferSourceNode.loop
+    html5: true,                   // ← HTMLAudioElement (백그라운드 안정)
+    loop: opts.loop ?? true,       // ← iOS native 가 직접 loop 처리
     volume: opts.volume ?? 0.5,
     preload: true,
     onloaderror: (_id, err) => console.warn("[audio] load error:", err),
-    onplayerror: (_id, err) => {
-      console.warn("[audio] play error → resume + retry:", err);
-      // iOS WKWebView: AudioContext 가 suspended 일 때 unlock 후 재시도
-      try {
-        const Howler = (window as any).Howler;
-        if (Howler?.ctx?.state === "suspended") {
-          Howler.ctx.resume().then(() => howl.play());
-        }
-      } catch {}
-    },
-    // 안전망 — 정상이면 loop:true 라 onend 자체가 안 불림
+    onplayerror: (_id, err) => console.warn("[audio] play error:", err),
+    // 안전망 — loop:true 인데도 끝나면 재시작
     onend: function () { if (!this.playing()) this.play(); },
   });
   howl.play();

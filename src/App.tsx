@@ -21,6 +21,7 @@ import ThemeSettings from "./pages/ThemeSettings";
 import LanguageSettings from "./pages/LanguageSettings";
 import Admin from "./pages/Admin";
 import { AppShell } from "./components/AppShell";
+import { AccessGate } from "./components/AccessGate";
 import { useEffect } from "react";
 import { trackVisit } from "@/lib/track-visit";
 import { initRevenueCat, setRevenueCatUser } from "@/lib/revenuecat";
@@ -58,6 +59,7 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <Sonner position="top-center" />
+      <AccessGate>
       <VisitTracker />
       <RevenueCatInitializer />
       <BrowserRouter>
@@ -84,6 +86,7 @@ const App = () => (
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
+      </AccessGate>
     </TooltipProvider>
   </QueryClientProvider>
 );

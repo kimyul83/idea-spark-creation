@@ -10,7 +10,9 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "postinstall": "node scripts/patch-google-signin-plugin.mjs",
+    "sync:ios": "vite build && npx cap sync ios && node scripts/patch-google-signin-plugin.mjs"
   },
   "dependencies": {
     "@capacitor/android": "^8.3.1",
@@ -19,6 +21,8 @@
     "@capacitor/ios": "^8.3.1",
     "@capacitor/splash-screen": "^8.0.1",
     "@capacitor/status-bar": "^8.0.2",
+    "@capawesome/capacitor-apple-sign-in": "^0.1.0",
+    "@capawesome/capacitor-google-sign-in": "^0.1.2",
     "@hookform/resolvers": "^3.10.0",
     "@lovable.dev/cloud-auth-js": "^1.1.1",
     "@radix-ui/react-accordion": "^1.2.11",
@@ -93,6 +97,7 @@
     "eslint": "^9.32.0",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.20",
+    "ffmpeg-static": "^5.3.0",
     "globals": "^15.15.0",
     "jsdom": "^20.0.3",
     "lovable-tagger": "^1.1.13",

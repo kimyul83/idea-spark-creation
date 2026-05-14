@@ -8,6 +8,7 @@ import { Moody } from "@/components/Moody";
 import { MonetBackground } from "@/components/MonetBackground";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
+import { signInWithProvider } from "@/lib/social-auth";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 
@@ -43,20 +44,13 @@ const Onboarding = () => {
   const handleOAuth = async (provider: "google" | "apple") => {
     setBusy(true);
     try {
-      // Supabase 직접 OAuth — Lovable cloud-auth 안 거침 (Lovable 화면 등장 차단)
-      const { error } = await supabase.auth.signInWithOAuth({
-        provider,
-        options: {
-          redirectTo: `${window.location.origin}/auth/callback`,
-        },
-      });
-      if (error) {
-        toast.error(t("onboarding.errOAuth", { provider: provider === "google" ? "Google" : "Apple" }));
-        setBusy(false);
-      }
-      // signInWithOAuth 성공 시 페이지 자체가 OAuth provider 로 리다이렉트됨
+      await signInWithProvider(provider);
+      // 네이티브: signInWithIdToken 성공 시 onAuthStateChange 가 user 세팅 → useEffect 가 /home 으로
+      // 웹: signInWithOAuth 는 redirect 로 이동, 여기까지 안 옴
+      finish();
     } catch (e: any) {
-      toast.error(e?.message ?? t("onboarding.errLogin"));
+      const base = t("onboarding.errOAuth", { provider: provider === "google" ? "Google" : "Apple" });
+      toast.error(`${base}\n${e?.message ?? e?.toString() ?? "알 수 없는 오류"}`);
       setBusy(false);
     }
   };
@@ -83,7 +77,8 @@ const Onboarding = () => {
       }
       finish();
     } catch (e: any) {
-      toast.error(e.message ?? t("onboarding.errGeneric"));
+      // 실제 Supabase 에러 메시지 그대로 표시 (Invalid login, Email not confirmed, ...)
+      toast.error(`${e?.message ?? t("onboarding.errGeneric")}\n(코드: ${e?.code ?? e?.status ?? "unknown"})`);
     } finally {
       setBusy(false);
     }

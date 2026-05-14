@@ -61,5 +61,23 @@
 		<false/>
 	</dict>
 	<!-- 마이크/카메라 미사용 — 권한 요청 안 함. 추후 ASMR 녹음 등 필요 시 NSMicrophoneUsageDescription 추가 -->
+	<!--
+		Google Sign-In URL Scheme:
+		아래 com.googleusercontent.apps.PLACEHOLDER 를 Google Cloud Console 에서
+		받은 iOS Client ID 의 REVERSED CLIENT ID 로 바꿔야 함.
+		예: iOS Client ID 가 634051967148-abc123.apps.googleusercontent.com 이면
+		    Reversed ID 는 com.googleusercontent.apps.634051967148-abc123
+	-->
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>com.mintwave.app.googlesignin</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.PLACEHOLDER</string>
+			</array>
+		</dict>
+	</array>
 </dict>
 </plist>

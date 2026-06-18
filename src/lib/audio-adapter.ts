@@ -25,10 +25,15 @@ interface NativeAudioPlugin {
   isPlaying(opts: { id: string }): Promise<{ playing: boolean }>;
 }
 
-// NativeAudio 플러그인 비활성 — Howler html5 로 강제. 사용자 요청: 기계음 소리 X, 원본 그대로.
-// AVAudioPlayer 가 어떻게든 오디오 파이프라인 깨고 있어서 무조건 Howler 만 쓰게 함.
-const native: NativeAudioPlugin | null = null;
-void registerPlugin;  // import 안 지우려고 유지
+// Capacitor 8 플러그인 등록 — 네이티브 클래스 안 잡혔을 때 throw 안 하도록 try/catch
+let native: NativeAudioPlugin | null = null;
+try {
+  if (Capacitor.isNativePlatform()) {
+    native = registerPlugin<NativeAudioPlugin>("NativeAudio");
+  }
+} catch {
+  native = null;
+}
 const isNative = Capacitor.isNativePlatform();
 
 // iOS WKWebView: 백그라운드 진입 시 HTMLAudioElement 가 paused 상태로 변하고,

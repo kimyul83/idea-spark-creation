@@ -1,15 +1,35 @@
 {
-  "app": { "name": "민트웨이브", "character": "무디" },
+  "app": {
+    "name": "민트웨이브",
+    "character": "무디"
+  },
   "tabs": {
-    "home": "홈", "music": "음악", "breathing": "호흡",
-    "sleep": "수면", "release": "깨기", "me": "마이"
+    "home": "홈",
+    "music": "음악",
+    "breathing": "호흡",
+    "sleep": "수면",
+    "release": "깨기",
+    "me": "마이"
   },
   "common": {
-    "back": "뒤로", "close": "닫기", "play": "재생", "pause": "정지", "stop": "정지",
-    "save": "저장", "cancel": "취소", "confirm": "확인", "next": "다음",
-    "again": "한 번 더", "more": "더 보기", "loading": "불러오는 중",
-    "error": "오류", "retry": "다시 시도", "delete": "삭제",
-    "premium": "프리미엄", "comingSoon": "준비 중", "coming": "곧 출시"
+    "back": "뒤로",
+    "close": "닫기",
+    "play": "재생",
+    "pause": "정지",
+    "stop": "정지",
+    "save": "저장",
+    "cancel": "취소",
+    "confirm": "확인",
+    "next": "다음",
+    "again": "한 번 더",
+    "more": "더 보기",
+    "loading": "불러오는 중",
+    "error": "오류",
+    "retry": "다시 시도",
+    "delete": "삭제",
+    "premium": "프리미엄",
+    "comingSoon": "준비 중",
+    "coming": "곧 출시"
   },
   "home": {
     "label": "Home",
@@ -26,7 +46,7 @@
     "breathingSub": "10가지 기법",
     "release": "깨기",
     "releaseSub": "스트레스 해소",
-    "healingSounds": "힐링 사운드"
+    "healingSounds": "쉼의 사운드"
   },
   "music": {
     "label": "Sound Mix",
@@ -59,25 +79,25 @@
       "white": "화이트 노이즈"
     },
     "tags": {
-      "waterfall": "핑크노이즈 · 도파민 ↑",
-      "rain":      "핑크노이즈 · 멜라토닌 · 수면",
-      "ocean":     "0.5Hz · 옥시토신 · HRV ↑",
-      "stream":    "알파파 · 세로토닌 · 이완",
-      "bird":      "피톤치드 · 코르티솔 −50%",
-      "forest":    "산림욕 · 가바 · 코르티솔 −15%",
-      "meadow":    "세로토닌 ↑ · 알파파 · 햇살",
-      "wind":      "핑크노이즈 · 가바 · 마스킹",
-      "cave":      "델타파 · ASMR · 물방울",
-      "fire":      "60Hz · 옥시토신 · 세로토닌",
-      "night":     "델타파 · 멜라토닌 · 수면",
-      "storm":     "핑크노이즈 · 세타파 · 깊은수면",
-      "cafe":      "브라운노이즈 · 도파민 · 집중",
-      "brown":     "델타파 · 멜라토닌 · 수면",
-      "pink":      "세타파 · 코르티솔 ↓ · 임상",
-      "white":     "베타파 · 도파민 · 집중",
-      "432":       "432Hz · HRV ↑ · 힐링",
-      "528":       "528Hz · 옥시토신 · 사랑",
-      "40":        "감마파 · 집중 · MIT 임상"
+      "waterfall": "핑크노이즈 · 활력",
+      "rain": "핑크노이즈 · 깊은 잠",
+      "ocean": "0.5Hz · 차분함",
+      "stream": "알파파 · 이완",
+      "bird": "피톤치드 · 청량함",
+      "forest": "산림욕 · 평온",
+      "meadow": "알파파 · 햇살",
+      "wind": "핑크노이즈 · 백색소음",
+      "cave": "델타파 · 물방울",
+      "fire": "60Hz · 따뜻함",
+      "night": "델타파 · 수면",
+      "storm": "핑크노이즈 · 깊은 잠",
+      "cafe": "브라운노이즈 · 집중",
+      "brown": "델타파 · 수면",
+      "pink": "세타파 · 차분함",
+      "white": "베타파 · 집중",
+      "432": "432Hz · 명상",
+      "528": "528Hz · 따뜻함",
+      "40": "감마파 · 집중"
     }
   },
   "musicPlay": {
@@ -137,29 +157,92 @@
       "sleep": "수면"
     },
     "patterns": {
-      "4-7-8":         { "title": "4-7-8 호흡",       "description": "수면·불안 완화 (숙련자용)" },
-      "4-7-8-easy":    { "title": "4-4-6 호흡 (초보)", "description": "수면·불안 완화 (부담 없이)" },
-      "box":           { "title": "박스 호흡",         "description": "집중·안정" },
-      "5-5":           { "title": "5-5 코히어런트",   "description": "심박변이도 개선" },
-      "6-6":           { "title": "6-6 깊은 호흡",    "description": "이완·명상" },
-      "8-2-8":         { "title": "6-2-6 진정 호흡",  "description": "공황·과각성 (현실적)" },
-      "3-3-3":         { "title": "3-3-3 그라운딩",   "description": "즉각 안정" },
-      "wim-hof":       { "title": "Wim Hof",          "description": "면역력·에너지" },
-      "kapalabhati":   { "title": "카팔라바티",        "description": "각성·집중력" },
-      "bhastrika":     { "title": "바스트리카",        "description": "에너지 폭발" },
-      "4-8":           { "title": "4-8 수면 호흡",    "description": "깊은 이완" },
-      "diaphragm":     { "title": "횡경막 호흡",       "description": "복식호흡 · 산소 흡수율 ↑" },
-      "brain-oxygen":  { "title": "뇌 산소 호흡",      "description": "전두엽 산소 공급·집중력 향상" },
-      "lung-capacity": { "title": "폐활량 강화",       "description": "폐 확장 · 횡경막 강화" },
-      "alpine":        { "title": "고산 적응 호흡",    "description": "혈중 이산화탄소 균형·미주신경" },
-      "energy-boost":  { "title": "에너지 충전 호흡",  "description": "산소포화도 ↑ · 즉각 각성" }
+      "4-7-8": {
+        "title": "4-7-8 호흡",
+        "description": "수면·불안 완화 (숙련자용)"
+      },
+      "4-7-8-easy": {
+        "title": "4-4-6 호흡 (초보)",
+        "description": "수면·불안 완화 (부담 없이)"
+      },
+      "box": {
+        "title": "박스 호흡",
+        "description": "집중·안정"
+      },
+      "5-5": {
+        "title": "5-5 코히어런트",
+        "description": "심박변이도 개선"
+      },
+      "6-6": {
+        "title": "6-6 깊은 호흡",
+        "description": "이완·명상"
+      },
+      "8-2-8": {
+        "title": "6-2-6 진정 호흡",
+        "description": "공황·과각성 (현실적)"
+      },
+      "3-3-3": {
+        "title": "3-3-3 그라운딩",
+        "description": "즉각 안정"
+      },
+      "wim-hof": {
+        "title": "Wim Hof",
+        "description": "면역력·에너지"
+      },
+      "kapalabhati": {
+        "title": "카팔라바티",
+        "description": "각성·집중력"
+      },
+      "bhastrika": {
+        "title": "바스트리카",
+        "description": "에너지 폭발"
+      },
+      "4-8": {
+        "title": "4-8 수면 호흡",
+        "description": "깊은 이완"
+      },
+      "diaphragm": {
+        "title": "횡경막 호흡",
+        "description": "복식호흡 · 산소 흡수율 ↑"
+      },
+      "brain-oxygen": {
+        "title": "뇌 산소 호흡",
+        "description": "전두엽 산소 공급·집중력 향상"
+      },
+      "lung-capacity": {
+        "title": "폐활량 강화",
+        "description": "폐 확장 · 횡경막 강화"
+      },
+      "alpine": {
+        "title": "고산 적응 호흡",
+        "description": "혈중 이산화탄소 균형·미주신경"
+      },
+      "energy-boost": {
+        "title": "에너지 충전 호흡",
+        "description": "산소포화도 ↑ · 즉각 각성"
+      }
     },
     "visuals": {
-      "bubble":   { "name": "버블",         "description": "유기적인 물방울이 부드럽게 호흡해요" },
-      "wave":     { "name": "웨이브",       "description": "잔잔한 파도가 차오르고 빠져요" },
-      "moonrise": { "name": "떠오르는 달",  "description": "달이 뜨고 지며 별이 깜빡여요" },
-      "orbit":    { "name": "흐르는 광륜",  "description": "빛이 궤도를 돌며 명상을 도와요" },
-      "bloom":    { "name": "피어나는 꽃",  "description": "꽃잎이 활짝 열리고 닫혀요" }
+      "bubble": {
+        "name": "버블",
+        "description": "유기적인 물방울이 부드럽게 호흡해요"
+      },
+      "wave": {
+        "name": "웨이브",
+        "description": "잔잔한 파도가 차오르고 빠져요"
+      },
+      "moonrise": {
+        "name": "떠오르는 달",
+        "description": "달이 뜨고 지며 별이 깜빡여요"
+      },
+      "orbit": {
+        "name": "흐르는 광륜",
+        "description": "빛이 궤도를 돌며 명상을 도와요"
+      },
+      "bloom": {
+        "name": "피어나는 꽃",
+        "description": "꽃잎이 활짝 열리고 닫혀요"
+      }
     },
     "session": {
       "back": "뒤로",
@@ -184,7 +267,11 @@
     "today": "Today",
     "intro": "오늘, 무엇을 깨부수고 싶나요?",
     "introSub": "손끝으로 만지면 깨져요 · 나를 누르던 감정을 작은 조각들로",
-    "tabs": { "slice": "슬라이싱", "smash": "파괴", "asmr": "ASMR" },
+    "tabs": {
+      "slice": "슬라이싱",
+      "smash": "파괴",
+      "asmr": "ASMR"
+    },
     "tagline": {
       "slice": "자르기·슬라이싱 쾌감",
       "smash": "분노 해소·폭발",
@@ -236,7 +323,7 @@
   },
   "subscribe": {
     "label": "Moody+",
-    "title": "프리미엄으로\n더 깊은 힐링을",
+    "title": "프리미엄으로\n더 깊은 쉼을",
     "subtitle": "12가지 감정 · 모든 호흡법 · ADHD · 유리 깨기까지",
     "active": "프리미엄 활성",
     "monthly": "월 구독",
@@ -246,13 +333,34 @@
     "yearlyBadge": "두 달 무료 · 25% 할인",
     "benefitsTitle": "포함된 혜택",
     "benefits": {
-      "unlimited": { "title": "12시간 무제한 재생", "desc": "무료는 10분 미리듣기 · 프리미엄은 잠들 때까지" },
-      "natureMix": { "title": "자연 사운드 무제한 믹스", "desc": "폭포·빗소리·바다·숲·동굴 등 60+ 변주 잠금 해제" },
-      "breathing": { "title": "모든 호흡법 16가지", "desc": "Wim Hof · 6-6 깊은 호흡 · 카팔라바티 · 건강 호흡 등" },
-      "sleep": { "title": "수면 사운드 풀 라이브러리", "desc": "모닥불 ASMR · 깊은 밤 명상 · 카페 ASMR + 최대 12시간 타이머" },
-      "glass": { "title": "유리 깨기 모든 영상", "desc": "프리미엄 슬라이싱·파괴·ASMR 영상 12개 전부" },
-      "adhd": { "title": "ADHD 집중 모드", "desc": "40Hz 감마파 + 집중 사운드 · 뽀모도로 자동" },
-      "noAds": { "title": "광고 없음 · 끊김 없는 재생", "desc": "잠들 때까지 한 번 켜면 끝" }
+      "unlimited": {
+        "title": "12시간 무제한 재생",
+        "desc": "무료는 10분 미리듣기 · 프리미엄은 잠들 때까지"
+      },
+      "natureMix": {
+        "title": "자연 사운드 무제한 믹스",
+        "desc": "폭포·빗소리·바다·숲·동굴 등 60+ 변주 잠금 해제"
+      },
+      "breathing": {
+        "title": "모든 호흡법 16가지",
+        "desc": "Wim Hof · 6-6 깊은 호흡 · 카팔라바티 · 건강 호흡 등"
+      },
+      "sleep": {
+        "title": "수면 사운드 풀 라이브러리",
+        "desc": "모닥불 ASMR · 깊은 밤 명상 · 카페 ASMR + 최대 12시간 타이머"
+      },
+      "glass": {
+        "title": "유리 깨기 모든 영상",
+        "desc": "프리미엄 슬라이싱·파괴·ASMR 영상 12개 전부"
+      },
+      "adhd": {
+        "title": "ADHD 집중 모드",
+        "desc": "40Hz 감마파 + 집중 사운드 · 뽀모도로 자동"
+      },
+      "noAds": {
+        "title": "광고 없음 · 끊김 없는 재생",
+        "desc": "잠들 때까지 한 번 켜면 끝"
+      }
     },
     "cta": "프리미엄 시작하기",
     "footer": "언제든 해지 가능 · 첫 7일 환불 보장",
@@ -270,12 +378,30 @@
     "hour12": "12시간"
   },
   "situations": {
-    "sleep":    { "mood": "깊이 잠들기",       "scene": "베개에 머리를 파묻고 온전히 내려놓기" },
-    "relax":    { "mood": "물소리 힐링",       "scene": "흐르는 물·시냇물·잔잔한 파도에 마음을 흘려보내요" },
-    "focus":    { "mood": "몰입하기",         "scene": "책상 앞 한 가지 일에 집중해요" },
-    "mountain": { "mood": "자연에 머물기",     "scene": "숲의 새소리·바람·따뜻한 모닥불" },
-    "tropical": { "mood": "풀밭에 누워 힐링",  "scene": "여름 풀밭의 새소리·잎사귀·따뜻한 햇살" },
-    "reading":  { "mood": "조용히 책읽기",     "scene": "약한 비·새벽 새소리·아늑한 카페" }
+    "sleep": {
+      "mood": "깊이 잠들기",
+      "scene": "베개에 머리를 파묻고 온전히 내려놓기"
+    },
+    "relax": {
+      "mood": "물소리 명상",
+      "scene": "흐르는 물·시냇물·잔잔한 파도에 마음을 흘려보내요"
+    },
+    "focus": {
+      "mood": "몰입하기",
+      "scene": "책상 앞 한 가지 일에 집중해요"
+    },
+    "mountain": {
+      "mood": "자연에 머물기",
+      "scene": "숲의 새소리·바람·따뜻한 모닥불"
+    },
+    "tropical": {
+      "mood": "풀밭에 누워 쉼",
+      "scene": "여름 풀밭의 새소리·잎사귀·따뜻한 햇살"
+    },
+    "reading": {
+      "mood": "조용히 책읽기",
+      "scene": "약한 비·새벽 새소리·아늑한 카페"
+    }
   },
   "languageSettings": {
     "label": "Language",
@@ -283,9 +409,21 @@
   },
   "onboarding": {
     "slides": [
-      { "eyebrow": "Moody", "title": "당신의 감정에 맞춘\n사운드 테라피", "desc": "기분과 상황에 꼭 맞는 소리로\n마음을 부드럽게 다독여요" },
-      { "eyebrow": "Care",  "title": "호흡 · 자연 · 집중\n세 가지로 마음을 돌봐요", "desc": "과학적으로 설계된 주파수와\n자연의 소리, 깊은 호흡까지" },
-      { "eyebrow": "Begin", "title": "간편하게\n시작하세요", "desc": "소셜 로그인으로 빠르게 시작하고\n맞춤 추천을 받아보세요" }
+      {
+        "eyebrow": "Moody",
+        "title": "당신의 감정에 맞춘\n사운드 테라피",
+        "desc": "기분과 상황에 꼭 맞는 소리로\n마음을 부드럽게 다독여요"
+      },
+      {
+        "eyebrow": "Care",
+        "title": "호흡 · 자연 · 집중\n세 가지로 마음을 돌봐요",
+        "desc": "과학적으로 설계된 주파수와\n자연의 소리, 깊은 호흡까지"
+      },
+      {
+        "eyebrow": "Begin",
+        "title": "간편하게\n시작하세요",
+        "desc": "소셜 로그인으로 빠르게 시작하고\n맞춤 추천을 받아보세요"
+      }
     ],
     "next": "다음",
     "later": "나중에 할게요",
@@ -346,7 +484,7 @@
     "brightness": "밝기",
     "tip": "선택은 즉시 앱 전체에 적용돼요. 로그인 상태라면 다른 기기에서도 같은 테마로 이어집니다."
   },
-  "common2": { },
+  "common2": {},
   "installPrompt": {
     "title": "홈 화면에 추가하기",
     "subtitle": "앱처럼 빠르게 · 오프라인에서도",

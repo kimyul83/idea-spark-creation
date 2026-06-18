@@ -1,12 +1,35 @@
 {
-  "app": { "name": "Mint Wave", "character": "Moody" },
-  "tabs": { "home": "Home", "music": "Music", "breathing": "Breathe", "sleep": "Sleep", "release": "Release", "me": "Me" },
+  "app": {
+    "name": "Mint Wave",
+    "character": "Moody"
+  },
+  "tabs": {
+    "home": "Home",
+    "music": "Music",
+    "breathing": "Breathe",
+    "sleep": "Sleep",
+    "release": "Release",
+    "me": "Me"
+  },
   "common": {
-    "back": "Back", "close": "Close", "play": "Play", "pause": "Pause", "stop": "Stop",
-    "save": "Save", "cancel": "Cancel", "confirm": "Confirm", "next": "Next",
-    "again": "Once more", "more": "More", "loading": "Loading",
-    "error": "Error", "retry": "Retry", "delete": "Delete",
-    "premium": "Premium", "comingSoon": "Coming soon", "coming": "Soon"
+    "back": "Back",
+    "close": "Close",
+    "play": "Play",
+    "pause": "Pause",
+    "stop": "Stop",
+    "save": "Save",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "next": "Next",
+    "again": "Once more",
+    "more": "More",
+    "loading": "Loading",
+    "error": "Error",
+    "retry": "Retry",
+    "delete": "Delete",
+    "premium": "Premium",
+    "comingSoon": "Coming soon",
+    "coming": "Soon"
   },
   "home": {
     "label": "Home",
@@ -19,43 +42,62 @@
     },
     "subtitle": "What kind of moment do you need?",
     "tapHint": "✨ Tap to greet",
-    "breathing": "Breathing", "breathingSub": "10 techniques",
-    "release": "Release", "releaseSub": "Stress relief",
-    "healingSounds": "Healing Sounds"
+    "breathing": "Breathing",
+    "breathingSub": "10 techniques",
+    "release": "Release",
+    "releaseSub": "Stress relief",
+    "healingSounds": "Soothing Sounds"
   },
   "music": {
-    "label": "Sound Mix", "title": "Sound Mix",
+    "label": "Sound Mix",
+    "title": "Sound Mix",
     "subtitle": "Mix freely · tap a tile again for another version",
     "selected": "{{count}} selected",
-    "nature": "Nature", "realRecording": "🌿 Real nature recordings", "frequencies": "Frequencies", "stopAll": "Stop All",
+    "nature": "Nature",
+    "realRecording": "🌿 Real nature recordings",
+    "frequencies": "Frequencies",
+    "stopAll": "Stop All",
     "kinds": "{{count}} variants · tap to switch",
     "categories": {
-      "waterfall": "Waterfall", "rain": "Rain", "ocean": "Ocean Waves",
-      "stream": "Stream", "bird": "Birds", "forest": "Forest",
-      "meadow": "Meadow", "wind": "Wind", "cave": "Cave",
-      "fire": "Fire", "night": "Night Insects", "storm": "Storm", "cafe": "Cafe"
+      "waterfall": "Waterfall",
+      "rain": "Rain",
+      "ocean": "Ocean Waves",
+      "stream": "Stream",
+      "bird": "Birds",
+      "forest": "Forest",
+      "meadow": "Meadow",
+      "wind": "Wind",
+      "cave": "Cave",
+      "fire": "Fire",
+      "night": "Night Insects",
+      "storm": "Storm",
+      "cafe": "Cafe"
     },
-    "freqs": { "brown": "Brown Noise", "pink": "Pink Noise", "white": "White Noise" },
+    "freqs": {
+      "brown": "Brown Noise",
+      "pink": "Pink Noise",
+      "white": "White Noise"
+    },
     "tags": {
-      "waterfall": "Pink Noise · Dopamine ↑",
-      "rain":      "Pink Noise · Melatonin · Sleep",
-      "ocean":     "0.5Hz · Oxytocin · HRV ↑",
-      "stream":    "Alpha · Serotonin · Relax",
-      "bird":      "Phytoncide · Cortisol −50%",
-      "forest":    "Forest Bathing · GABA · Cortisol −15%",
-      "meadow":    "Serotonin ↑ · Alpha · Sunlight",
-      "wind":      "Pink Noise · GABA · Masking",
-      "cave":      "Delta · ASMR · Water Drops",
-      "fire":      "60Hz · Oxytocin · Serotonin",
-      "night":     "Delta · Melatonin · Sleep",
-      "storm":     "Pink Noise · Theta · Deep Sleep",
-      "cafe":      "Brown Noise · Dopamine · Focus",
-      "brown":     "Delta · Melatonin · Sleep",
-      "pink":      "Theta · Cortisol ↓ · Clinical",
-      "white":     "Beta · Dopamine · Focus",
-      "432":       "432Hz · HRV ↑ · Healing",
-      "528":       "528Hz · Oxytocin · Love",
-      "40":        "Gamma · Focus · MIT Clinical"
+      "waterfall": "Pink Noise · Energy",
+      "rain": "Pink Noise · Deep Sleep",
+      "ocean": "0.5Hz · Calm",
+      "stream": "Alpha · Relaxation",
+      "bird": "Phytoncide · Fresh",
+      "forest": "Forest Bathing · Peaceful",
+      "meadow": "Alpha · Sunshine",
+      "wind": "Pink Noise · White Noise",
+      "cave": "Delta · Droplets",
+      "fire": "60Hz · Warmth",
+      "night": "Delta · Sleep",
+      "storm": "Pink Noise · Deep Sleep",
+      "cafe": "Brown Noise · Focus",
+      "brown": "Delta · Sleep",
+      "pink": "Theta · Calm",
+      "white": "Beta · Focus",
+      "432": "432Hz · Meditation",
+      "528": "528Hz · Warmth",
+      "40": "Gamma · Focus"
     }
   },
   "musicPlay": {
@@ -65,12 +107,14 @@
     "noSituation": "Situation not found"
   },
   "sleep": {
-    "label": "Sleep", "title": "Restful Sleep",
+    "label": "Sleep",
+    "title": "Restful Sleep",
     "greetingLight": "Sweet dreams tonight 🌙",
     "greetingDark": "Ready for deep rest? 🌙",
     "duration": "Sleep Duration",
     "startsToEnds": "Now → ends at {{time}}",
-    "hours": "hours", "hoursHalf": "h 30m",
+    "hours": "hours",
+    "hoursHalf": "h 30m",
     "sounds": "Sleep Sounds",
     "autoStop": "Auto stop at {{time}} · fade 20m before",
     "tip": "Keeps playing even when screen is off. Gentle fade-out instead of an alarm.",
@@ -78,40 +122,67 @@
     "playToast": "{{name}} {{n}} · {{duration}}",
     "morningToast": "Good morning ☀️",
     "categories": {
-      "deep_waves": "Deep Waves", "calm_rain": "Gentle Rain",
-      "forest_night": "Forest Night", "stream": "Flowing Water",
-      "forest_day": "Forest Day", "mountain": "Mountain Nature",
-      "wind": "Song of the Wind", "fire_asmr": "Fire ASMR",
-      "cafe": "Cafe ASMR", "deep_ambience": "Deep Night Meditation",
+      "deep_waves": "Deep Waves",
+      "calm_rain": "Gentle Rain",
+      "forest_night": "Forest Night",
+      "stream": "Flowing Water",
+      "forest_day": "Forest Day",
+      "mountain": "Mountain Nature",
+      "wind": "Song of the Wind",
+      "fire_asmr": "Fire ASMR",
+      "cafe": "Cafe ASMR",
+      "deep_ambience": "Deep Night Meditation",
       "storm": "Himalaya Storm"
     }
   },
   "breathing": {
-    "label": "Breathing", "title": "Breathing",
+    "label": "Breathing",
+    "title": "Breathing",
     "selectPattern": "Pick a pattern",
-    "selectReps": "Repetitions", "reps": "reps",
+    "selectReps": "Repetitions",
+    "reps": "reps",
     "selectVisual": "Visual",
     "start": "Start",
-    "phases": { "inhale": "Inhale", "hold1": "Hold", "exhale": "Exhale", "hold2": "Hold" },
+    "phases": {
+      "inhale": "Inhale",
+      "hold1": "Hold",
+      "exhale": "Exhale",
+      "hold2": "Hold"
+    },
     "categories": {
-      "calm": "Calm", "emergency": "Emergency",
-      "energize": "Energize", "health": "Health", "sleep": "Sleep"
+      "calm": "Calm",
+      "emergency": "Emergency",
+      "energize": "Energize",
+      "health": "Health",
+      "sleep": "Sleep"
     },
     "session": {
-      "back": "Back", "muteOn": "Voice on", "muteOff": "Voice off",
-      "stop": "End", "pause": "Pause", "resume": "Resume",
-      "wellDone": "Well done", "completed": "Done!",
+      "back": "Back",
+      "muteOn": "Voice on",
+      "muteOff": "Voice off",
+      "stop": "End",
+      "pause": "Pause",
+      "resume": "Resume",
+      "wellDone": "Well done",
+      "completed": "Done!",
       "completedSub": "{{count}} cycles completed",
       "completedHint": "Hope your heart feels lighter 🌿",
-      "again": "Once more", "home": "Home",
+      "again": "Once more",
+      "home": "Home",
       "remaining": "{{count}} left"
     }
   },
   "glass": {
-    "label": "Release", "title": "Glass Break", "today": "Today",
+    "label": "Release",
+    "title": "Glass Break",
+    "today": "Today",
     "intro": "What do you want to break today?",
     "introSub": "Touch to shatter · let small pieces carry the heavy emotions away",
-    "tabs": { "slice": "Slice", "smash": "Smash", "asmr": "ASMR" },
+    "tabs": {
+      "slice": "Slice",
+      "smash": "Smash",
+      "asmr": "ASMR"
+    },
     "tagline": {
       "slice": "Slicing pleasure",
       "smash": "Anger relief · explosion",
@@ -120,7 +191,9 @@
     "tapHint": "Tap the screen · {{count}} taps",
     "rateTitle": "Feel any lighter?",
     "rateSub": "{{count}} pieces today · well done",
-    "again": "Once more", "watchOther": "Other clips", "home": "Home",
+    "again": "Once more",
+    "watchOther": "Other clips",
+    "home": "Home",
     "afterMessage": "Fragments return as light to you.",
     "premiumTitle": "Premium clip",
     "premiumSub": "Subscribe to unlock all clips.",
@@ -136,9 +209,14 @@
     "premiumDesc": "All ASMR · unlimited mix · ADHD · Sleep",
     "manageSubscription": "Manage Subscription",
     "startPremium": "Start Premium",
-    "sessions": "Sessions", "minutes": "Minutes",
-    "statSessions": "Sessions", "statSessionsUnit": "", "statTime": "Total time", "statTimeUnit": "m",
-    "signIn": "Sign in · Create account", "adminDashboard": "Admin",
+    "sessions": "Sessions",
+    "minutes": "Minutes",
+    "statSessions": "Sessions",
+    "statSessionsUnit": "",
+    "statTime": "Total time",
+    "statTimeUnit": "m",
+    "signIn": "Sign in · Create account",
+    "adminDashboard": "Admin",
     "guest": "Browsing as guest",
     "providerGoogle": "Google account",
     "providerApple": "Apple account",
@@ -156,21 +234,44 @@
   },
   "subscribe": {
     "label": "Moody+",
-    "title": "Go Premium\nfor deeper healing",
+    "title": "Go Premium\nfor deeper calm",
     "subtitle": "12 moods · all breathwork · ADHD · Glass Break",
     "active": "Premium active",
-    "monthly": "Monthly", "yearly": "Yearly",
-    "perMonth": "/ mo", "perYear": "/ yr",
+    "monthly": "Monthly",
+    "yearly": "Yearly",
+    "perMonth": "/ mo",
+    "perYear": "/ yr",
     "yearlyBadge": "2 months free · 25% off",
     "benefitsTitle": "What's Included",
     "benefits": {
-      "unlimited": { "title": "12-hour unlimited playback", "desc": "Free: 10-min preview · Premium: until you fall asleep" },
-      "natureMix": { "title": "Unlimited nature sound mix", "desc": "Waterfall · rain · ocean · forest · cave · 60+ variants unlocked" },
-      "breathing": { "title": "All 16 breathing techniques", "desc": "Wim Hof · 6-6 deep · Kapalabhati · health breathing & more" },
-      "sleep": { "title": "Full sleep sound library", "desc": "Fireplace ASMR · deep night meditation · cafe ASMR + 12-hour timer" },
-      "glass": { "title": "All glass-break clips", "desc": "Premium slicing · smash · ASMR — all 12 clips" },
-      "adhd": { "title": "ADHD focus mode", "desc": "40Hz gamma + focus sounds · auto Pomodoro" },
-      "noAds": { "title": "No ads · uninterrupted", "desc": "Turn it on once until you sleep" }
+      "unlimited": {
+        "title": "12-hour unlimited playback",
+        "desc": "Free: 10-min preview · Premium: until you fall asleep"
+      },
+      "natureMix": {
+        "title": "Unlimited nature sound mix",
+        "desc": "Waterfall · rain · ocean · forest · cave · 60+ variants unlocked"
+      },
+      "breathing": {
+        "title": "All 16 breathing techniques",
+        "desc": "Wim Hof · 6-6 deep · Kapalabhati · health breathing & more"
+      },
+      "sleep": {
+        "title": "Full sleep sound library",
+        "desc": "Fireplace ASMR · deep night meditation · cafe ASMR + 12-hour timer"
+      },
+      "glass": {
+        "title": "All glass-break clips",
+        "desc": "Premium slicing · smash · ASMR — all 12 clips"
+      },
+      "adhd": {
+        "title": "ADHD focus mode",
+        "desc": "40Hz gamma + focus sounds · auto Pomodoro"
+      },
+      "noAds": {
+        "title": "No ads · uninterrupted",
+        "desc": "Turn it on once until you sleep"
+      }
     },
     "cta": "Start Premium",
     "footer": "Cancel anytime · 7-day refund",
@@ -180,18 +281,43 @@
   "timer": {
     "title": "Auto-stop Timer",
     "off": "Off (unlimited)",
-    "minutes30": "30 min", "hour1": "1 hour", "hour3": "3 hours",
-    "hour6": "6 hours", "hour8": "8 hours", "hour12": "12 hours"
+    "minutes30": "30 min",
+    "hour1": "1 hour",
+    "hour3": "3 hours",
+    "hour6": "6 hours",
+    "hour8": "8 hours",
+    "hour12": "12 hours"
   },
   "situations": {
-    "sleep":    { "mood": "Deep Sleep",        "scene": "Bury your head in the pillow and let go completely" },
-    "relax":    { "mood": "Water Healing",     "scene": "Let your mind flow with streams and gentle waves" },
-    "focus":    { "mood": "Deep Focus",        "scene": "Concentrate on one thing at your desk" },
-    "mountain": { "mood": "Stay in Nature",    "scene": "Forest birds · wind · warm campfire" },
-    "tropical": { "mood": "Meadow Relax",      "scene": "Summer meadow birds · leaves · warm sunlight" },
-    "reading":  { "mood": "Quiet Reading",     "scene": "Light rain · dawn birds · cozy cafe" }
+    "sleep": {
+      "mood": "Deep Sleep",
+      "scene": "Bury your head in the pillow and let go completely"
+    },
+    "relax": {
+      "mood": "Water Calm",
+      "scene": "Let your mind flow with streams and gentle waves"
+    },
+    "focus": {
+      "mood": "Deep Focus",
+      "scene": "Concentrate on one thing at your desk"
+    },
+    "mountain": {
+      "mood": "Stay in Nature",
+      "scene": "Forest birds · wind · warm campfire"
+    },
+    "tropical": {
+      "mood": "Meadow Relax",
+      "scene": "Summer meadow birds · leaves · warm sunlight"
+    },
+    "reading": {
+      "mood": "Quiet Reading",
+      "scene": "Light rain · dawn birds · cozy cafe"
+    }
   },
-  "languageSettings": { "label": "Language", "title": "Language" },
+  "languageSettings": {
+    "label": "Language",
+    "title": "Language"
+  },
   "installPrompt": {
     "title": "Add to Home Screen",
     "subtitle": "Fast like an app · works offline",

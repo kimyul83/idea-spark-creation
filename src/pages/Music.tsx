@@ -41,7 +41,7 @@ interface NatureItem {
 
 const NATURE: NatureItem[] = [
   {
-    id: "waterfall", label: "폭포", tag: "Pink Noise · Dopamine ↑",
+    id: "waterfall", label: "폭포", tag: "Pink Noise · Energy",
     icon: Droplets,
     variants: [
       { name: "안정적인 폭포 (멀리서)", file: "/sounds/ES_Water, Waterfall, Steady, Perspective - Epidemic Sound.mp3" },
@@ -52,7 +52,7 @@ const NATURE: NatureItem[] = [
     ],
   },
   {
-    id: "rain", label: "빗소리", tag: "Pink Noise · Melatonin · 수면",
+    id: "rain", label: "빗소리", tag: "Pink Noise · Deep Sleep",
     icon: CloudRain,
     variants: [
       { name: "열대 잎새 빗방울", file: "/sounds/ES_Rain, Vegetation, Medium Leaves, Drop, Tropical, Jungle - Epidemic Sound.mp3" },
@@ -65,7 +65,7 @@ const NATURE: NatureItem[] = [
     ],
   },
   {
-    id: "ocean", label: "바다 파도", tag: "0.5Hz · Oxytocin · HRV ↑",
+    id: "ocean", label: "바다 파도", tag: "0.5Hz · Calm",
     icon: Waves,
     variants: [
       { name: "고요한 바위 위 잔파도", file: "/sounds/ES_Water, Lap, Gentle, On Rocks, Quiet, Peaceful, Calm Waves - Epidemic Sound.mp3" },
@@ -82,7 +82,7 @@ const NATURE: NatureItem[] = [
     ],
   },
   {
-    id: "stream", label: "시냇물", tag: "Alpha · Serotonin · 이완",
+    id: "stream", label: "시냇물", tag: "Alpha · Relaxation",
     icon: Waves,
     variants: [
       { name: "고요한 숲의 작은 시내", file: "/sounds/ES_Water, Flow, Creek, Light, Flowing, Foam Details, Calm Forest 01 - Epidemic Sound.mp3" },
@@ -94,7 +94,7 @@ const NATURE: NatureItem[] = [
     ],
   },
   {
-    id: "bird", label: "새소리", tag: "Phytoncide · Cortisol −50%",
+    id: "bird", label: "새소리", tag: "Phytoncide · Fresh",
     icon: Bird,
     variants: [
       { name: "여름 침엽수 숲의 새들", file: "/sounds/ES_Ambience, Birdsong, Chaffinch, Blackbird, Black Woodpecker, Coniferous Forest, Summer, Afternoon - Epidemic Sound.mp3" },
@@ -105,7 +105,7 @@ const NATURE: NatureItem[] = [
     ],
   },
   {
-    id: "forest", label: "숲속", tag: "Forest Bathing · GABA · Cortisol −15%",
+    id: "forest", label: "숲속", tag: "Forest Bathing · Peaceful",
     icon: Trees,
     variants: [
       { name: "약한 비와 바람 부는 숲", file: "/sounds/ES_Ambience, Forest, Birds Chirping, Light Rain, Light Wind - Epidemic Sound.mp3" },
@@ -119,7 +119,7 @@ const NATURE: NatureItem[] = [
     ],
   },
   {
-    id: "meadow", label: "풀밭", tag: "Serotonin ↑ · Alpha · Sunlight",
+    id: "meadow", label: "풀밭", tag: "Alpha · Sunshine",
     icon: Sun,
     variants: [
       { name: "여름 풀밭의 새와 잎사귀", file: "/sounds/ES_Ambience, Birdsong, Meadow, Summer, Birds Sing, Wind, Light Rustle In Trees - Epidemic Sound.mp3" },
@@ -130,7 +130,7 @@ const NATURE: NatureItem[] = [
     ],
   },
   {
-    id: "wind", label: "바람", tag: "Pink Noise · GABA · Masking",
+    id: "wind", label: "바람", tag: "Pink Noise · White Noise",
     icon: Wind,
     variants: [
       { name: "겨울 활엽수 사이 바람", file: "/sounds/ES_Wind, Vegetation, Blowing Through Deciduous Trees, Leaves Rustling, Moderate Intensity, Winter, Afternoon - Epidemic Sound.mp3" },
@@ -140,7 +140,7 @@ const NATURE: NatureItem[] = [
     ],
   },
   {
-    id: "cave", label: "동굴", tag: "Delta · ASMR · 물방울",
+    id: "cave", label: "동굴", tag: "Delta · Droplets",
     icon: Mountain,
     variants: [
       { name: "동굴의 물방울 1", file: "/sounds/ES_Ambience, Underground, Cave, Water, Dripping, Flowing 02 - Epidemic Sound.mp3" },
@@ -150,7 +150,7 @@ const NATURE: NatureItem[] = [
     ],
   },
   {
-    id: "fire", label: "모닥불", tag: "60Hz · Oxytocin · Serotonin",
+    id: "fire", label: "모닥불", tag: "60Hz · Warmth",
     icon: Flame,
     variants: [
       { name: "타닥거리는 모닥불", file: "/sounds/ES_Fire, Burning, Bonfire, Moderate Size, Close, Crackling - Epidemic Sound.mp3" },
@@ -163,7 +163,7 @@ const NATURE: NatureItem[] = [
     ],
   },
   {
-    id: "night", label: "밤 풀벌레", tag: "Delta · Melatonin · 수면",
+    id: "night", label: "밤 풀벌레", tag: "Delta · Sleep",
     icon: Moon,
     variants: [
       { name: "맑은 밤의 귀뚜라미", file: "/sounds/ES_Ambience, Insect, Cricket, Night, Clean - Epidemic Sound.mp3" },
@@ -177,7 +177,7 @@ const NATURE: NatureItem[] = [
     ],
   },
   {
-    id: "storm", label: "폭풍우", tag: "Pink Noise · Theta · 깊은수면",
+    id: "storm", label: "폭풍우", tag: "Pink Noise · Deep Sleep",
     icon: Zap,
     variants: [
       { name: "산속 천둥번개 1", file: "/sounds/ES_Weather, Storm, Strong, Storm 2, Lightning, High Mountains, Bhaleydhunga, Himalaya 04 - Epidemic Sound.mp3" },
@@ -188,7 +188,7 @@ const NATURE: NatureItem[] = [
     ],
   },
   {
-    id: "cafe", label: "카페", tag: "Brown Noise · Dopamine · 집중",
+    id: "cafe", label: "카페", tag: "Brown Noise · Focus",
     icon: Coffee,
     variants: [
       { name: "아늑한 카페", file: "/sounds/ES_Ambience, Restaurant & Bar, Coffee Shop, Spacious, Hum, Coffee Machines, Walla, Vancouver 01 - Epidemic Sound.mp3" },
@@ -208,12 +208,12 @@ interface FreqItem {
 }
 
 const FREQUENCIES: FreqItem[] = [
-  { id: "brown",  label: "브라운 노이즈", tag: "Delta · Melatonin · 수면",  icon: Music2, hz: 0,   type: "noise", noiseType: "brown" },
-  { id: "pink",   label: "핑크 노이즈",   tag: "Theta · Cortisol ↓ · 임상",  icon: Music2, hz: 0,   type: "noise", noiseType: "pink" },
-  { id: "white",  label: "화이트 노이즈", tag: "Beta · Dopamine · 집중",     icon: Music2, hz: 0,   type: "noise", noiseType: "white" },
-  { id: "432",    label: "432Hz",         tag: "432Hz · HRV ↑ · Healing",   icon: Waves,  hz: 432, type: "tone" },
-  { id: "528",    label: "528Hz",         tag: "528Hz · Oxytocin · Love",   icon: Heart,  hz: 528, type: "tone" },
-  { id: "40",     label: "40Hz",          tag: "Gamma · Focus · MIT 임상",  icon: Brain,  hz: 40,  type: "tone" },
+  { id: "brown",  label: "브라운 노이즈", tag: "Delta · Sleep",            icon: Music2, hz: 0,   type: "noise", noiseType: "brown" },
+  { id: "pink",   label: "핑크 노이즈",   tag: "Theta · Calm",             icon: Music2, hz: 0,   type: "noise", noiseType: "pink" },
+  { id: "white",  label: "화이트 노이즈", tag: "Beta · Focus",             icon: Music2, hz: 0,   type: "noise", noiseType: "white" },
+  { id: "432",    label: "432Hz",         tag: "432Hz · Meditation",       icon: Waves,  hz: 432, type: "tone" },
+  { id: "528",    label: "528Hz",         tag: "528Hz · Warmth",           icon: Heart,  hz: 528, type: "tone" },
+  { id: "40",     label: "40Hz",          tag: "Gamma · Focus",            icon: Brain,  hz: 40,  type: "tone" },
 ];
 
 const TIMER_OPTIONS: Array<{ hours: number | null; key: string }> = [

@@ -25,15 +25,11 @@ interface NativeAudioPlugin {
   isPlaying(opts: { id: string }): Promise<{ playing: boolean }>;
 }
 
-// Capacitor 8 플러그인 등록 — 네이티브 클래스 안 잡혔을 때 throw 안 하도록 try/catch
-let native: NativeAudioPlugin | null = null;
-try {
-  if (Capacitor.isNativePlatform()) {
-    native = registerPlugin<NativeAudioPlugin>("NativeAudio");
-  }
-} catch {
-  native = null;
-}
+// NativeAudio plugin 영구 비활성 — URLSession.dataTask 가 capacitor:// 스킴 로컬 파일 못 다운로드 →
+// 깨진 데이터로 AVAudioPlayer 만들어서 "기계음" 출력. Howler html5 만 사용 (HTMLAudioElement = WebKit 직접 디코드).
+const native: NativeAudioPlugin | null = null;
+void registerPlugin;
+void Capacitor;
 const isNative = Capacitor.isNativePlatform();
 
 // iOS WKWebView: 백그라운드 진입 시 HTMLAudioElement 가 paused 상태로 변하고,

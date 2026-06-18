@@ -73,24 +73,24 @@ class AudioEngine {
     this.tracks.set(id, { kind: "howl", howl, volume });
   }
 
-  // ─── Pure tone — 정적 WAV 파일 (public/sounds/frequencies/) Howler html5 재생.
-  //     자연 음악과 같은 HTMLAudioElement 경로 → 같은 audio session 묶여
-  //     iOS 백그라운드에서 함께 살아남음. WAV blob 보다 안정적 (정적 URL).
+  // ─── Pure tone — 1시간짜리 정적 mp3 (public/sounds/frequencies/) Howler html5 재생.
+  //     1시간이라 loop 경계 갭이 실질적으로 인식 불가능 (사용자가 1시간 잠들지 않는 한).
+  //     자연 음악과 같은 HTMLAudioElement 경로 → 같은 audio session 묶여 백그라운드 OK.
   playTone(id: string, frequencyHz: number, volume = 0.15) {
     if (this.tracks.has(id)) return;
     const file =
-      frequencyHz === 432 ? "tone-432.wav" :
-      frequencyHz === 528 ? "tone-528.wav" :
-      frequencyHz === 40  ? "tone-40.wav"  : null;
-    if (!file) return;  // 지원되지 않는 주파수
+      frequencyHz === 432 ? "tone-432.mp3" :
+      frequencyHz === 528 ? "tone-528.mp3" :
+      frequencyHz === 40  ? "tone-40.mp3"  : null;
+    if (!file) return;
     this.playStaticFile(id, `/sounds/frequencies/${file}`, volume, 3000);
   }
 
-  /** 정적 WAV 파일 재생 — Howler html5 + 페이드인 */
+  /** 정적 mp3 파일 재생 — Howler html5 + 페이드인 */
   private playStaticFile(id: string, url: string, volume: number, fadeInMs: number) {
     const howl = new Howl({
       src: [url],
-      format: ["wav"],
+      format: ["mp3"],
       loop: true,
       html5: true,
       volume: 0,
@@ -167,11 +167,10 @@ class AudioEngine {
     return buffer;
   }
 
-  // 노이즈 — 정적 WAV 파일 (public/sounds/frequencies/) Howler html5 재생.
-  // 자연 음악과 같은 audio session → iOS 백그라운드 함께 살아남음.
+  // 노이즈 — 1시간짜리 정적 mp3. loop 갭 인식 불가.
   playNoise(id: string, type: "white" | "pink" | "brown", volume = 0.2) {
     if (this.tracks.has(id)) return;
-    this.playStaticFile(id, `/sounds/frequencies/${type}-noise.wav`, volume, 2500);
+    this.playStaticFile(id, `/sounds/frequencies/${type}-noise.mp3`, volume, 2500);
   }
 
   // ─── Real CC0 nature recordings ──────────

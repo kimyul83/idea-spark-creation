@@ -7,13 +7,13 @@ import Foundation
 // Capacitor 의 enumeration 이 그 클래스를 발견 가능.
 @objc public final class CapAppSPMPlugins: NSObject {
     // 인스턴스 자체를 anchor — 클래스 link 100% 보장
-    private static let _nativeAudioInstance = NativeAudioPlugin()
+    // NativeAudio anchor 제거 — capacitor:// 스킴 URLSession 다운로드 실패로 깨진 데이터 재생 (사용자 보고: "기계음").
+    // plugin 등록 안 되면 audio-adapter.ts 의 registerPlugin 이 null 리턴 → Howler html5 폴백 (깨끗한 재생).
+    // 잠금화면 미디어 컨트롤은 NowPlaying 만으로 유지됨.
     private static let _nowPlayingInstance = NowPlayingPlugin()
 
     @objc public static func ensureRegistered() {
-        // static let 평가 강제 → 두 인스턴스 생성 → 두 클래스 ObjC runtime 등록
-        _ = _nativeAudioInstance
         _ = _nowPlayingInstance
-        print("[CapAppSPMPlugins] ensureRegistered — NativeAudio + NowPlaying anchored")
+        print("[CapAppSPMPlugins] ensureRegistered — NowPlaying only (NativeAudio disabled)")
     }
 }

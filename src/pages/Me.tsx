@@ -4,14 +4,11 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { useIsAdmin } from "@/hooks/useIsAdmin";
 import { Moody } from "@/components/Moody";
-import { Button } from "@/components/ui/button";
-import { Switch } from "@/components/ui/switch";
-import { LogOut, Crown, Heart, Bell, ChevronRight, FlaskConical, Palette, Languages, ShieldCheck, LogIn } from "lucide-react";
+import { LogOut, Heart, Bell, ChevronRight, Palette, Languages, ShieldCheck, LogIn } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { SUPPORTED_LANGUAGES } from "@/i18n/config";
 import { MonetBackground } from "@/components/MonetBackground";
 import { SleepCalendar } from "@/components/SleepCalendar";
-import { usePremium } from "@/hooks/usePremium";
 import { useTheme } from "@/contexts/ThemeContext";
 
 /**
@@ -35,7 +32,6 @@ const Me = () => {
   const [stats, setStats] = useState({ total: 0, minutes: 0 });
   const [tokenSeen] = useState(hasStoredSession);
   const navigate = useNavigate();
-  const { isPremium, devPremium, setDev } = usePremium();
   const { label: themeLabel } = useTheme();
   const { t, i18n } = useTranslation();
   const currentLangLabel = SUPPORTED_LANGUAGES.find(
@@ -65,26 +61,19 @@ const Me = () => {
     <div className="px-5 pt-16 pb-8 relative flex-1 flex flex-col gap-4">
       <MonetBackground intensity="soft" />
 
-      {/* premium / profile hero */}
+      {/* v1.0 출시 — premium hero 숨김 (결제 미도입). 로고 + 인사만 */}
       <div className="liquid-hero p-6 text-white">
         <span className="shimmer" />
         <div className="relative flex items-start justify-between">
           <div>
-            <p className="text-[11px] tracking-[0.3em] uppercase opacity-70 font-serif">{t("subscribe.label")}</p>
+            <p className="text-[11px] tracking-[0.3em] uppercase opacity-70 font-serif">MINT WAVE</p>
             <h2 className="text-[22px] font-bold mt-1 leading-tight whitespace-pre-line">
-              {isPremium ? t("me.premiumThanks") : t("me.premiumCta")}
+              {t("me.premiumThanks")}
             </h2>
             <p className="opacity-70 text-xs mt-2">{t("me.premiumDesc")}</p>
           </div>
-          <Moody size={160} emotion={isPremium ? "happy" : "default"} />
+          <Moody size={160} emotion="happy" />
         </div>
-        <Button
-          onClick={() => navigate("/subscribe")}
-          className="relative w-full mt-5 h-11 rounded-2xl bg-white/95 text-[#0A1525] hover:bg-white font-semibold"
-        >
-          <Crown className="w-4 h-4 mr-2" />
-          {isPremium ? t("me.manageSubscription") : t("me.startPremium")}
-        </Button>
       </div>
 
       {/* stats — 로그인 사용자만 노출 (게스트한테 0/0 보여줘봤자 의미없음) */}
@@ -145,11 +134,7 @@ const Me = () => {
             onClick={() => navigate("/admin")}
           />
         )}
-        <MenuRow
-          Icon={Crown}
-          label={t("me.premiumSubscription")}
-          onClick={() => navigate("/subscribe")}
-        />
+        {/* v1.0 — Premium 구독 메뉴 row 숨김 (결제 미도입) */}
         <MenuRow
           Icon={Palette}
           label={t("me.themeSettings")}
@@ -166,22 +151,7 @@ const Me = () => {
         <MenuRow Icon={Bell}  label={t("me.notifications")} tag={t("me.comingSoon")} />
       </div>
 
-      {/* DEV toggle — extra subtle */}
-      <div
-        className="liquid-card p-4 mt-1"
-        style={{ background: "hsl(0 0% 100% / 0.05)" }}
-      >
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-accent/20 flex items-center justify-center">
-            <FlaskConical className="w-5 h-5 text-accent-foreground" strokeWidth={1.8} />
-          </div>
-          <div className="flex-1">
-            <p className="font-semibold text-foreground text-sm">{t("me.devToggle")}</p>
-            <p className="text-[11px] text-foreground/50 mt-0.5">{t("me.devDesc")}</p>
-          </div>
-          <Switch checked={devPremium} onCheckedChange={setDev} />
-        </div>
-      </div>
+      {/* v1.0 — DEV premium toggle 숨김 (결제 미도입이라 무의미) */}
 
       {/* logout — 눈에 잘 띄게: 빨간 톤 + 카드형. */}
       {/* useAuth 가 아직 안 떠도 토큰만 있으면 노출 → race 로 사라지는 버그 방지. */}

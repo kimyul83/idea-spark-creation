@@ -1,79 +1,22 @@
-import { useEffect, useState, useCallback } from "react";
-import { supabase } from "@/integrations/supabase/client";
-import { useAuth } from "@/hooks/useAuth";
-import { checkPremium, isRevenueCatActive } from "@/lib/revenuecat";
-
-const DEV_KEY = "moody_dev_premium";
+import { useCallback } from "react";
 
 /**
- * Premium status with optional dev-toggle stored in localStorage.
- * `isPremium` is true if either the profile row says so, or the local
- * developer override is on.
+ * v1.0 출시 — 결제 시스템 없이 모든 기능 무료.
+ * 향후 v1.x 에서 RevenueCat 붙일 때 아래 주석 블록 복원하면 됨.
  *
- * NOTE: During public preview / friend-testing phase, the dev toggle
- * defaults to ON so visitors can try every feature without sign-up.
- * Set DEV_KEY to "0" explicitly in localStorage to lock features again.
+ * 코드 곳곳의 `track.premium && !isPremium` 가드는 그대로 유지 — 나중에 결제 붙이면
+ * 자동으로 잠금 동작 함. 지금은 isPremium=true 라 모두 통과.
  */
 export function usePremium() {
-  const { user } = useAuth();
-  const [serverPremium, setServerPremium] = useState(false);
-  const [devPremium, setDevPremium] = useState<boolean>(() => {
-    if (typeof window === "undefined") return false;
-    const stored = localStorage.getItem(DEV_KEY);
-    // 처음 방문자: 자동으로 잠금 해제 (프리뷰 모드)
-    if (stored === null) {
-      localStorage.setItem(DEV_KEY, "1");
-      return true;
-    }
-    return stored === "1";
-  });
-  const [loading, setLoading] = useState(true);
-
-  const refresh = useCallback(async () => {
-    if (!user) {
-      setServerPremium(false);
-      setLoading(false);
-      return;
-    }
-
-    // 1) RevenueCat (네이티브 + API 키 있을 때) — 진짜 결제 검증
-    if (isRevenueCatActive()) {
-      try {
-        const isRcPremium = await checkPremium();
-        if (isRcPremium) {
-          setServerPremium(true);
-          setLoading(false);
-          return;
-        }
-      } catch {/* fall through to Supabase */}
-    }
-
-    // 2) Supabase profiles.is_premium (관리자가 부여한 프리미엄 — 친구·이벤트 등)
-    const { data } = await supabase
-      .from("profiles")
-      .select("is_premium")
-      .eq("id", user.id)
-      .maybeSingle();
-    setServerPremium(!!data?.is_premium);
-    setLoading(false);
-  }, [user]);
-
-  useEffect(() => {
-    refresh();
-  }, [refresh]);
-
-  const setDev = (v: boolean) => {
-    setDevPremium(v);
-    if (v) localStorage.setItem(DEV_KEY, "1");
-    else localStorage.removeItem(DEV_KEY);
-  };
-
+  // no-op refresh — 결제 비활성 상태라 server/RevenueCat 조회 없음
+  const refresh = useCallback(async () => {}, []);
+  const setDev = useCallback((_v: boolean) => {}, []);
   return {
-    isPremium: serverPremium || devPremium,
-    serverPremium,
-    devPremium,
+    isPremium: true,
+    serverPremium: true,
+    devPremium: true,
     setDev,
-    loading,
+    loading: false,
     refresh,
   };
 }
@@ -89,17 +32,10 @@ export const PREMIUM_EMOTION_NAMES = new Set([
 /** Premium breathing pattern ids. Only 4-7-8 is free. */
 export const PREMIUM_BREATHING = new Set(["box", "8-2-8"]);
 
-/** ADHD daily-trial helper.
- *  프리뷰 모드에서는 항상 사용 가능하도록 dev premium ON이면 true 반환. */
+/** ADHD daily-trial helper — v1.0 출시는 결제 없어서 항상 true. */
 const ADHD_KEY = "moody_adhd_last";
 export function adhdTrialAvailable(): boolean {
-  if (typeof window !== "undefined" && localStorage.getItem(DEV_KEY) === "1") {
-    return true;
-  }
-  const last = localStorage.getItem(ADHD_KEY);
-  if (!last) return true;
-  const lastDay = new Date(last).toDateString();
-  return lastDay !== new Date().toDateString();
+  return true;
 }
 export function markAdhdUsed() {
   localStorage.setItem(ADHD_KEY, new Date().toISOString());

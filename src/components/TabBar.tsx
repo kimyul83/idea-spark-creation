@@ -1,14 +1,14 @@
 import { NavLink } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { Home, Music, Wind, Moon, Sparkles, User } from "lucide-react";
+import { Home, Music, Wind, Moon, User } from "lucide-react";
 import { cn } from "@/lib/utils";
 
+// v1.0 출시 — 유리깨기(/release/glass) 탭 숨김. 라우트는 살아있지만 진입 경로 없음.
 const TAB_DEFS = [
   { to: "/home",         key: "home",      Icon: Home },
   { to: "/music",        key: "music",     Icon: Music },
   { to: "/breathing",    key: "breathing", Icon: Wind },
   { to: "/sleep",        key: "sleep",     Icon: Moon },
-  { to: "/release/glass",key: "release",   Icon: Sparkles },
   { to: "/me",           key: "me",        Icon: User },
 ] as const;
 
@@ -24,7 +24,7 @@ export const TabBar = () => {
             "0 12px 36px -8px hsl(var(--shadow-hue, 217 33% 15%) / 0.18), inset 0 1px 0 hsl(0 0% 100% / 0.5)",
         }}
       >
-        <ul className="grid grid-cols-6">
+        <ul className="grid grid-cols-5">
           {tabs.map(({ to, label, Icon }) => (
             <li key={to}>
               <NavLink
